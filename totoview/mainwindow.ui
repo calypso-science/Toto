@@ -31,15 +31,11 @@
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout_3">
     <item>
-     <widget class="QWidget" name="mplwindow" native="true">
-      <property name="minimumSize">
-       <size>
-        <width>750</width>
-        <height>0</height>
-       </size>
+     <layout class="QVBoxLayout" name="mplvl">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetMinimumSize</enum>
       </property>
-      <layout class="QVBoxLayout" name="mplvl"/>
-     </widget>
+     </layout>
     </item>
     <item>
      <spacer name="horizontalSpacer">
@@ -60,8 +56,11 @@
        <number>6</number>
       </property>
       <property name="sizeConstraint">
-       <enum>QLayout::SetMaximumSize</enum>
+       <enum>QLayout::SetFixedSize</enum>
       </property>
+      <item>
+       <widget class="QComboBox" name="plot_name"/>
+      </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout">
         <property name="spacing">
@@ -104,60 +103,8 @@
         <property name="horizontalSpacing">
          <number>6</number>
         </property>
-        <item row="0" column="0">
-         <widget class="QPushButton" name="pushButton_2">
-          <property name="minimumSize">
-           <size>
-            <width>200</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>PushButton</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QPushButton" name="pushButton_3">
-          <property name="minimumSize">
-           <size>
-            <width>200</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>PushButton</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QPushButton" name="pushButton_4">
-          <property name="maximumSize">
-           <size>
-            <width>80</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>PushButton</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="QPushButton" name="pushButton">
-          <property name="maximumSize">
-           <size>
-            <width>80</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>PushButton</string>
-          </property>
-         </widget>
-        </item>
         <item row="1" column="0">
-         <widget class="QPushButton" name="pushButton_5">
+         <widget class="QPushButton" name="reset_buttn">
           <property name="minimumSize">
            <size>
             <width>200</width>
@@ -165,7 +112,20 @@
            </size>
           </property>
           <property name="text">
-           <string>PushButton</string>
+           <string>Reset</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QPushButton" name="delete_buttn">
+          <property name="minimumSize">
+           <size>
+            <width>200</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Delete</string>
           </property>
          </widget>
         </item>
@@ -202,7 +162,7 @@
   <customwidget>
    <class>CustomTreeWidget</class>
    <extends>QTreeWidget</extends>
-   <header>customtree</header>
+   <header>totoview.customtree</header>
   </customwidget>
  </customwidgets>
  <resources/>

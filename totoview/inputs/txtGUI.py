@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import QApplication, QWidget, QPushButton,QHBoxLayout, QVBo
 
 from PyQt5.QtGui import QIntValidator
 from PyQt5 import QtCore
-
+from toto.inputs.txt import TXTfile as reader
 def xstr(s):
     if s is None:
         return ''
@@ -21,31 +21,16 @@ def matlab2datetime(matlab_datenum):
 
 
 class ImportGUI(QDialog):
-    def __init__(self,TXTfile,parent=None):
+    def __init__(self,TXTfile,parent,options):
         super(ImportGUI, self).__init__(parent)
         
-
-        self.TXTfile=TXTfile
-
-        options = QFileDialog.Options()
-        options |= QFileDialog.DontUseNativeDialog
-
-        filt='TXT Files ('
-        for ext in TXTfile.ext:
-            filt+='*'+ext+', '
-        filt=filt[:-2]+')'
-
-        self.TXTfile.filename, _ = QFileDialog.getOpenFileNames(self,"QFileDialog.getOpenFileName()", "",filt+";;All Files (*)", options=options)
-        if not self.TXTfile.filename:
-             self.close()
-
-
-
+        self.options=options
+        
         Vlayout = QVBoxLayout()
         Hlayout = QHBoxLayout()
         ## number of Headerlines
         Hlayout.addWidget(QLabel('# of line before the data'))
-        self.skiprows=QLineEdit(xstr(TXTfile.skiprows))
+        self.skiprows=QLineEdit(xstr(self.options['skiprows']))
         self.skiprows.setValidator(QIntValidator())
         self.skiprows.setFixedWidth(30)
         Hlayout.addWidget(self.skiprows)
@@ -54,7 +39,7 @@ class ImportGUI(QDialog):
         ## Header line
         Hlayout = QHBoxLayout()
         Hlayout.addWidget(QLabel('Header line'))
-        self.colNamesLine=QLineEdit(xstr(TXTfile.colNamesLine))
+        self.colNamesLine=QLineEdit(xstr(self.options['colNamesLine']))
         self.colNamesLine.setValidator(QIntValidator())
         self.colNamesLine.setFixedWidth(30)
         Hlayout.addWidget(self.colNamesLine)
@@ -64,7 +49,7 @@ class ImportGUI(QDialog):
         ## Unit line
         Hlayout = QHBoxLayout()
         Hlayout.addWidget(QLabel('Unit line'))
-        self.unitNamesLine=QLineEdit(xstr(TXTfile.unitNamesLine))
+        self.unitNamesLine=QLineEdit(xstr(self.options['unitNamesLine']))
         self.unitNamesLine.setValidator(QIntValidator())
         self.unitNamesLine.setFixedWidth(30)
         Hlayout.addWidget(self.unitNamesLine)
@@ -74,7 +59,7 @@ class ImportGUI(QDialog):
         ## skipfooter line
         Hlayout = QHBoxLayout()
         Hlayout.addWidget(QLabel('Footer line'))
-        self.skipfooter=QLineEdit(xstr(TXTfile.skipfooter))
+        self.skipfooter=QLineEdit(xstr(self.options['skipfooter']))
         self.skipfooter.setValidator(QIntValidator())
         self.skipfooter.setFixedWidth(30)
         Hlayout.addWidget(self.skipfooter)
@@ -96,27 +81,30 @@ class ImportGUI(QDialog):
         ## skipfooter line
         Hlayout = QHBoxLayout()
         Hlayout.addWidget(QLabel('Missing values'))
-        self.miss_val=QLineEdit(xstr(TXTfile.miss_val))
+        self.miss_val=QLineEdit(xstr(self.options['miss_val']))
         self.miss_val.setFixedWidth(100)
         Hlayout.addWidget(self.miss_val)
         Vlayout.addLayout(Hlayout)
                
 
-        Hlayout = QHBoxLayout()
-        btn = QPushButton('Import')     
-        btn.clicked.connect(self.import_input)
-        Hlayout.addWidget(btn)
+        # Hlayout = QHBoxLayout()
+        # btn = QPushButton('Import')     
+        # btn.clicked.connect(self.import_input)
+        # Hlayout.addWidget(btn)
 
-        btn = QPushButton('Cancel')     
-        btn.clicked.connect(self.close)
-        Hlayout.addWidget(btn)
-        Vlayout.addLayout(Hlayout)
+        # btn = QPushButton('Cancel')     
+        # btn.clicked.connect(self.close)
+        # Hlayout.addWidget(btn)
+        # Vlayout.addLayout(Hlayout)
 
         self.setLayout(Vlayout)
     
         self.center_window()
         self.setWindowTitle('Parse data')
+    def exec(self):
         self.exec_()
+        self.import_input()
+        return self.options
 
     def center_window(self):
         frameGm = self.frameGeometry()
@@ -127,28 +115,26 @@ class ImportGUI(QDialog):
 
     def import_input(self):
         text = str(self.sep.currentText())
-        
-        self.TXTfile.sep=text.replace('tab','\t')
 
-        self.TXTfile.skiprows=strx(self.skiprows.text())
-        self.TXTfile.skipfooter=strx(self.skipfooter.text())
-        self.TXTfile.colNamesLine=strx(self.colNamesLine.text())
-        self.TXTfile.unitNamesLine=strx(self.unitNamesLine.text())
+        self.options['sep']=text.replace('tab','\t')
+
+        self.options['skiprows']=strx(self.skiprows.text())
+        self.options['skipfooter']=strx(self.skipfooter.text())
+        self.options['colNamesLine']=strx(self.colNamesLine.text())
+        self.options['unitNamesLine']=strx(self.unitNamesLine.text())
 
         self.close()
 
-        return self.TXTfile
+        return self.options
 
 class parse_time_GUI(QDialog):
-    def __init__(self,TXTfile,parent=None):
+    def __init__(self,TXTfile,parent,options):
         super(parse_time_GUI, self).__init__(parent)
         
-
-        self.TXTfile=TXTfile
-
+        self.options=options
 
         colNames=['None']
-        colNames+=self.TXTfile.colNames
+        colNames+=TXTfile.colNames
         
 
         mainVL = QVBoxLayout()
@@ -163,12 +149,12 @@ class parse_time_GUI(QDialog):
 
         timeHL.addWidget(QLabel('Time:'))
         self.single_time_column = QComboBox()
-        for colName in self.TXTfile.colNames:
+        for colName in TXTfile.colNames:
             self.single_time_column.addItem(colName)
 
-        idx=[col for col in self.TXTfile.colNames if 'time' in col.lower()]
+        idx=[col for col in TXTfile.colNames if 'time' in col.lower()]
         if idx:
-            idx=self.TXTfile.colNames.index(idx[0])
+            idx=TXTfile.colNames.index(idx[0])
             self.single_time_column.setCurrentIndex(idx)
 
         timeHL.addWidget(self.single_time_column)
@@ -183,7 +169,7 @@ class parse_time_GUI(QDialog):
         
         self.unit_choice.setCurrentIndex(2)
         unitHL.addWidget(self.unit_choice)
-        self.customUnit=QLineEdit(self.TXTfile.customUnit)
+        self.customUnit=QLineEdit(self.options['customUnit'])
         self.customUnit.setVisible(False)
         self.customUnit.setFixedWidth(200)
         self.unit_choice.currentIndexChanged.connect(self.display_custom)
@@ -214,16 +200,7 @@ class parse_time_GUI(QDialog):
             mainVL.addLayout(Hlayout)
 
         
-        Hlayout = QHBoxLayout()
-        btn = QPushButton('Import')     
-        btn.clicked.connect(self.import_input)
-        Hlayout.addWidget(btn)
-
-        btn = QPushButton('Cancel')     
-        btn.clicked.connect(self.close)
-        Hlayout.addWidget(btn)
-        mainVL.addLayout(Hlayout)
-        
+       
         self.setLayout(mainVL)
     
         self.center_window()
@@ -232,7 +209,10 @@ class parse_time_GUI(QDialog):
 
         self.setWindowTitle('Parse time')
         self.show()
+    def exec(self):
         self.exec_()
+        self.import_input()
+        return self.options
 
     def checkBoxAChangedAction(self,state):
         if (QtCore.Qt.Checked == state):
@@ -248,23 +228,21 @@ class parse_time_GUI(QDialog):
     
     def import_input(self):
         if self.checkBoxA.isChecked():
-            self.TXTfile.single_column=True
-            self.TXTfile.unit=self.unit_choice.currentText()
-            self.TXTfile.customUnit=self.customUnit.text()
-            self.TXTfile.time_col_name=self.single_time_column.currentText()
+            self.options['single_column']=True
+            self.options['unit']=self.unit_choice.currentText()
+            self.options['customUnit']=self.customUnit.text()
+            self.options['time_col_name']=self.single_time_column.currentText()
         
         else:
 
-            self.TXTfile.single_column=False
+            self.options['single_column']=False
             names=['year','month','day','hour','minute','second']
-            self.TXTfile.time_col_name={}
+            self.options['time_col_name']={}
             for i in range(0,len(self.time_column)):
                 if self.time_column[i].currentText() !="None":
-                    self.TXTfile.time_col_name[self.time_column[i].currentText()]=names[i]
+                    self.options['time_col_name'][self.time_column[i].currentText()]=names[i]
 
-        
-        self.close()
-        return self.TXTfile
+ 
 
     def display_custom():
         if self.unit_choice.currentIndex()==3:
@@ -278,3 +256,53 @@ class parse_time_GUI(QDialog):
         centerPoint = QApplication.desktop().screenGeometry(screen).center()
         frameGm.moveCenter(centerPoint)
         self.move(frameGm.topLeft())
+
+
+class TXTfile():
+    def __init__(self,parent,filename):
+        
+        self.fileparam=lambda:None
+
+        self.parent   =parent
+        self.filename     = filename
+
+
+        options={}
+
+        options['sep']          = '\t'
+        options['colNames']     = []
+        options['unitNames']     = []
+        options['miss_val']    = 'NaN'
+
+
+        options['colNamesLine'] = 1
+        options['skiprows']     = 2
+        options['unitNamesLine'] = 2
+        options['skipfooter'] = 0
+
+        options['single_column']=True
+        options['unit']='s'
+        options['customUnit']='%d-%m-%Y %H:%M:%S'
+
+        options['time_col_name']={}
+
+        self.encoding    = None
+
+
+        # set usr defined parameter
+        opt=ImportGUI(filename[0],self.parent,options)
+        options=opt.exec()
+        Re=reader(filename,**options) 
+        Re.reads()   
+        # # Parse the date
+        opt=parse_time_GUI(Re.fileparam,self.parent,options)
+        options=opt.exec()
+        Re.fileparam.single_column=options['single_column']
+        Re.fileparam.unit=options['unit']
+        Re.fileparam.customUnit=options['customUnit']
+        Re.fileparam.time_col_name=options['time_col_name']
+        Re.read_time()
+        self.Re=Re
+
+    def _toDataFrame(self):
+        return self.Re._toDataFrame()

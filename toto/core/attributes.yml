@@ -1,0 +1,51 @@
+OPT:
+  null_value: NaN
+  scale_factor: 1
+  add_offset: 0
+
+ATTRS:
+    default:
+        long_name: &LONGNAME None
+        units: &UNIT None
+    time:
+        long_name: Time
+        units: 'UTC'
+    hs:
+        long_name: sea surface wave significant height
+        units: m   
+    hmax:
+        long_name: sea surface wave maximum height
+        units: m
+    tp:
+        long_name: sea surface wave period at variance spectral density maximum
+        units: s
+    dpm:
+        long_name: sea surface wave from direction at variance spectral density maximum
+        units: degree
+    dp:
+        long_name: sea surface wave from direction at variance spectral density maximum
+        units: degree
+    dm:
+        long_name: sea surface wave mean from direction
+        units: degree
+    dspr:
+        long_name: sea surface wave directional spread
+        units: degree
+    sw:
+        long_name: sea surface wave spectral width
+        units: ""
+    swe:
+        long_name: sea surface wave spectral width
+        units: ""
+    tm01:
+        long_name: sea surface wave mean period from variance spectral density first frequency moment
+        units: s
+    tm02:
+        long_name: sea surface wave mean period from variance spectral density second frequency moment
+        units: s
+    freq:
+        long_name: frequency
+        units: Hz
+    density:
+        long_name: density
+        units: M^2/Hz

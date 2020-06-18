@@ -26,6 +26,10 @@ class CustomTreeWidget(QTreeWidget):
         self.setDragEnabled(True)
         self.setDropIndicatorShown(True)
         self.setDragDropMode(QAbstractItemView.InternalMove)
+        self.blocker = QtCore.QSignalBlocker(self)
+        self.blocker.unblock()
+        
+
         # only one by on for now
         #self.setSelectionMode(QAbstractItemView.ExtendedSelection)
         self.settings=SETTINGS
@@ -112,7 +116,7 @@ class CustomTreeWidget(QTreeWidget):
             return False
         if parent is None:
             parent=self.invisibleRootItem()
-            fl=self.settings[category][1] |Qt.ItemIsTristate| Qt.ItemIsUserCheckable
+            fl=self.settings[category][1] | Qt.ItemIsUserCheckable #Qt.ItemIsTristate
         else:
             fl=self.settings[category][1]| Qt.ItemIsUserCheckable
 
@@ -132,3 +136,39 @@ class CustomTreeWidget(QTreeWidget):
     def rename(self,item,new_name):
         item.model().setData(item,new_name)
 
+    def populate_tree(self,data,keys=None):
+
+        self.blocker.reblock()
+
+        if keys is None:
+            keys=data.keys()
+
+        for file in keys:
+            parent=self.addItem(file,"family")
+            for var in data[file]['metadata'].keys():
+                if var != 'time':
+                    self.addItem(var,"children",parent,data[file]['metadata'][var]['short_name'])
+
+        self.expandAll()
+        self.blocker.unblock()
+
+    def get_all_items(self):
+        """Returns all QTreeWidgetItems in the given QTreeWidget."""
+        self.blocker.reblock()
+        check_vars = []
+        checks_files=[]
+
+        for i in range(self.topLevelItemCount()):
+            top_item = self.topLevelItem(i)
+            file=top_item.text(0)
+            var=[]
+            for j in range(top_item.childCount()):
+                if (top_item.child(j).checkState(0) == Qt.Checked):# and (top_item.child(j).text(0)[:2] != 'No'):
+                    var.append(top_item.child(j).text(0))
+
+            check_vars.append(var)
+            checks_files.append(file)
+
+        self.blocker.unblock()
+
+        return checks_files,check_vars
