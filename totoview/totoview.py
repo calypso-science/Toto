@@ -19,16 +19,15 @@ except:
     print('Error: problem loading pandas package:')
     print('  - Check if this package is installed ( e.g. type: `pip install pandas`)')
     print('  - If you are using anaconda, try `conda update python.app`')
-    print('  - If none of the above work, contact the developer.')
     print('')
     print('')
     sys.exit(-1)
-    #raise
+
 
 
 #  GUI
 from PyQt5 import uic
-
+from PyQt5 import QtGui
 from PyQt5.QtWidgets import QMainWindow, QAction, QMenu, QApplication
 from .message import *
 from .plotting import Plotting
@@ -37,11 +36,6 @@ from .filemanip import EditFile,EditMetadata
 # toto
 import toto
 from toto.totoframe import TotoFrame
-# from toto.core.cleaning import filled_gap,move_var,move_metadata,delete_variable,delete_file
-# 
-
-# from time import mktime
-# from datetime import datetime, timedelta
 
 
 
@@ -77,6 +71,7 @@ class TotoGUI(QMainWindow,FORM_CLASS):
         
         self.databackup=copy.deepcopy(data)
         self.setupUi(self)
+        self.setWindowIcon(QtGui.QIcon(os.path.join(here,'..','_tools','toto.jpg')))
         
         # 
         self.plotting=Plotting(self.mplvl,self.plot_name)
@@ -94,14 +89,14 @@ class TotoGUI(QMainWindow,FORM_CLASS):
         self.list_file.editmetadata.connect(self.change_metadata)
         self.list_file.editfile.connect(self.edit_file)
         self.delete_buttn.clicked.connect(self.delete_item)
-
+        
 
     def load_df(self,dataframe,filename='dataset'):
         if isinstance(dataframe,pd.DataFrame):
             dataframe=[dataframe]
 
-        self.data.add_dataframe(dataframe,filename)
-
+        filename=self.data.add_dataframe(dataframe,filename)
+        return filename
     def load_tf(self,totoframe):
         self.data=totoframe
 
@@ -128,16 +123,25 @@ class TotoGUI(QMainWindow,FORM_CLASS):
         self.load_df(df,filename=filenames)
         self.list_file.populate_tree(self.data)
 
-
-
-
     def delete_item(self):
+
         item=self.list_file.currentItem()
         if item:
             if item.parent():
-                delete_variable(item.parent().text())
+                rep=yes_no_question('do you really want to delete var: %s' % item.text(0))
+                if rep:
+                    if self.data[item.parent().text(0)]['dataframe'].index.name==item.text(0):
+                        display_error('the variable you are trying to delete is set as index\n'+\
+                            'Change index and then delete the variable')
+                        return
+
+                    self.data.del_var(item.parent().text(0),item.text(0))
+                    item.parent().removeChild(item)
             else:
-                delete_file(item.text())
+                rep=yes_no_question('do you really want to delete file: %s' % item.text(0))
+                if rep:
+                    self.data.del_file(item.text(0))
+                    item.removeChild(item)
 
 
 
@@ -170,6 +174,7 @@ class TotoGUI(QMainWindow,FORM_CLASS):
 
 
     def change_metadata(self,item,parents,childs):
+        self.list_file.blocker.reblock()
         metadata=self.data[parents]['metadata'][childs]
         ed=EditMetadata(self,variable_name=childs,metadata=metadata)
         
@@ -221,6 +226,22 @@ class TotoGUI(QMainWindow,FORM_CLASS):
             ext+='*'+ex+' '
         ext+=");;All Files (*)"
         return ext
+    
+    def get_all_out(self,reader):
+
+        ext=''
+
+        run_ft=self._import_from('toto.outputs.%s' % reader,'defaultExtensions')
+        exs=run_ft()
+        ext+='%s Files (*%s);;' % (reader,exs[0])
+
+        ext+="All Files (*)"
+        return ext,exs[0]
+
+    def output_data(self,reader,filename):
+        run_ft=self._import_from('toto.outputs.%s' % reader,'%sfile' %reader.upper())
+        checks_files,_=self.list_file.get_all_items()
+        df=run_ft(filename,[self.data[file] for file in checks_files])
 
     def import_data(self,reader,filenames):
         try:
@@ -239,13 +260,30 @@ class TotoGUI(QMainWindow,FORM_CLASS):
             if filenames:
                 # check if there is a GUI function
                 df=self.import_data(name,filenames)
-                self.load_df(df,filename=filenames)
-                self.list_file.populate_tree(self.data,keys=list(self.data.keys()))
+                filenames=self.load_df(df,filename=filenames)
+                self.list_file.populate_tree(self.data,keys=filenames)
 
         return imp
-
+    def callOutput(self,name):
+        def out():
+            ext,exs=self.get_all_out(name)
+            filename=put_file(self,ext,exs)
+            if filename:
+                # check if there is a GUI function
+                self.output_data(name,filename)
+        return out
     def initExport(self):
-        pass
+        # Main menu
+        fileMenu=self.menu_File
+        impMenu = QMenu('Export', self)
+        # Look for all readers
+        outputers=[d for d in dir(toto.outputs) if not d.startswith('_')]
+        for outputer in outputers:
+            im = QAction('%s file' % outputer, self)
+            im.triggered.connect(self.callOutput(outputer))
+            impMenu.addAction(im)
+
+        fileMenu.addMenu(impMenu)
     def initWindow(self):
         #self.showMaximized()
         self.setWindowTitle('TOTO')
@@ -256,9 +294,6 @@ class TotoGUI(QMainWindow,FORM_CLASS):
         
         self.plotting.refresh_plot(self.data,checks_files,check_vars)
         self.list_file.blocker.unblock()
-
-
-        #self.list_file.blockSignals(False)
 
     
 
@@ -287,115 +322,7 @@ def showApp(firstArg=None,dataframe=None,filenames=[]):
     elif len(filenames)>0:
         frame.load_files(filenames)
 
-    #ex = TotoGUI(data=data)
-    # ex = TotoGUI(data=[df],metadata=[metadata])
-    # ex = TotoGUI()
     sys.exit(app.exec_())
-
-
-# def cmdline():
-#     if len(sys.argv)>1:
-#         totoview(filename=sys.argv[1])
-#     else:
-#         totoview()
-
-
-# def main():
-    
-#     import pandas as pd
-#     pd.plotting.register_matplotlib_converters()
-
-#     data={}
-
-#     filename='/home/remy/Calypso/Projects/004_Toto/test/txt/test1.txt'
-
-#     p,f=os.path.split(filename)
-#     data[f]={}
-#     data[f]['path']=p
-#     df=pd.read_csv(filename,sep='\t',skiprows=1,header=0,names=['year','month','day','hour','minute','second','depth','e','u','v'])
-#     df['time']=pd.to_datetime(df[['year','month','day','hour','minute','second']])
-#     del df['year']
-#     del df['month']
-#     del df['day']
-#     del df['hour']
-#     del df['minute']
-#     del df['second']
-#     df=df.set_index('time',drop=False)
-
-
-
-#     df=filled_gap(df,missing_value=np.NaN)
-
-
-#     data[f]['dataframe']=df
-#     data[f]['metadata']={}
-
-#     for col in df:
-#         if col=='time':
-#             data[f]['metadata'][col]={}
-#             data[f]['metadata'][col]['unit']='UTC'
-#             data[f]['metadata'][col]['null value']='NaN'
-#             data[f]['metadata'][col]['scale factor']=1
-#             data[f]['metadata'][col]['offset']=0
-#             data[f]['metadata'][col]['long name']='Time'
-#             data[f]['metadata'][col]['short name']=col
-#         else:
-
-#             data[f]['metadata'][col]={}
-#             data[f]['metadata'][col]['unit']='m.s-1'
-#             data[f]['metadata'][col]['null value']='NaN'
-#             data[f]['metadata'][col]['scale factor']=1
-#             data[f]['metadata'][col]['offset']=0
-#             data[f]['metadata'][col]['long name']='bla'
-#             data[f]['metadata'][col]['short name']=col
-
-  
-#     filename='/home/remy/Calypso/Projects/004_Toto/test/txt/test2.txt'
-#     p,f=os.path.split(filename)
-#     data[f]={}
-#     data[f]['path']=p
-#     df2=pd.read_csv(filename,sep='\t',skiprows=1,header=0,names=['year','month','day','hour','minute','second','depth','em','um','vm'])
-#     df2['time']=pd.to_datetime(df2[['year','month','day','hour','minute','second']])
-#     del df2['year']
-#     del df2['month']
-#     del df2['day']
-#     del df2['hour']
-#     del df2['minute']
-#     del df2['second']
-#     df2=df2.set_index('time',drop=False)
-
-#     df2=filled_gap(df2,missing_value=np.NaN)
-#     data[f]['dataframe']=df2
-#     data[f]['metadata']={}
-
-#     for col in df2:
-#         if col=='time':
-#             data[f]['metadata'][col]={}
-#             data[f]['metadata'][col]['unit']='UTC'
-#             data[f]['metadata'][col]['null value']='NaN'
-#             data[f]['metadata'][col]['scale factor']=1
-#             data[f]['metadata'][col]['offset']=0
-#             data[f]['metadata'][col]['long name']='Time'
-#             data[f]['metadata'][col]['short name']=col
-#         else:
-
-#             data[f]['metadata'][col]={}
-#             data[f]['metadata'][col]['unit']='m.s-1'
-#             data[f]['metadata'][col]['null value']='NaN'
-#             data[f]['metadata'][col]['scale factor']=1
-#             data[f]['metadata'][col]['offset']=0
-#             data[f]['metadata'][col]['long name']='bla'
-#             data[f]['metadata'][col]['short name']=col
-
-#     ex = TotoGUI(data=data)
-#     # ex = TotoGUI(data=[df],metadata=[metadata])
-#     # ex = TotoGUI()
-#     sys.exit(app.exec_())
-
-
-# if __name__ == '__main__':
-#     main()
-
 
 
 

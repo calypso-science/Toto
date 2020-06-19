@@ -21,7 +21,7 @@ class MSLfile():
         self.filenames=filenames
 
         self.data=[]
-        self.unit=[]
+
 
         # READ 
         self._reads_nc()

@@ -4,6 +4,8 @@ import numpy as np
 from toto.core.attributes import attrs
 from toto.core.metadataframe import MetadataFrame
 import os
+import copy
+
 
 def sort_dataset(df,**args):
     df.sort_index(inplace=True,**args)
@@ -19,7 +21,8 @@ def filled_gap(df,missing_value=np.NaN):
     dt=get_freq(df)
     idx = pd.period_range(min(df.index), max(df.index),freq='%is'%dt)
     idx=idx.to_timestamp()
-    df=df.reindex(idx, fill_value=missing_value)
+
+    df=df.reindex(idx,method='nearest', fill_value=missing_value,tolerance=dt)
     df.index.name='time' 
     return df
 
@@ -33,9 +36,7 @@ class TotoFrame(dict):
                 self.add_dataframe(self,dataframe,filename)
 
     def _get_filename(self,dataframe,prefix):
-
-
-        
+      
 
         n0=len(self.keys())
         filename=[]
@@ -60,7 +61,7 @@ class TotoFrame(dict):
         
         for i,data in enumerate(dataframe):
             self[filename[i]]['metadata']={}
-            for key in data:
+            for key in data.keys():
                 self[filename[i]]['metadata'].update(metadataframe(key))
                 if hasattr(data[key],'units'):
                     self[filename[i]]['metadata'][key]['units']=data[key].units
@@ -70,26 +71,26 @@ class TotoFrame(dict):
                 data=filled_gap(data)
 
             self[filename[i]]['dataframe']=data
-
+        return filename
     def del_file(self,filename):
         del self[filename]
 
     def del_var(self,filename,variable,delete_metadata=True):
+
+
         del self[filename]['dataframe'][variable]
         if delete_metadata:
             del self[filename]['metadata'][variable]
 
-    def move_metadata(fTo,fFrom,var):
-        self[fTo]['metadata']=self[fFrom]['metadata'].pop(var)
-        return dfIn,dfOut
+    def move_metadata(self,fTo,fFrom,var):
+        self[fTo]['metadata'][var]=self[fFrom]['metadata'].pop(var)
+        return fTo,fFrom
 
-    def move_var(self,fTo,fFrom,var,methods='exactly'):
-        if methods is 'exactly':
-            self[fTo]['dataframe'][var]=self[fTo]['dataframe'].index(self[fFrom]['dataframe'][var])
-            self.del_var(fTo,var,delete_metadata=False)
-        else:
-            pass
-
+    def move_var(self,fTo,fFrom,var,methods='nearest'):
+        df=copy.deepcopy(self[fFrom]['dataframe'])
+        tmp=df.reindex(self[fTo]['dataframe'].index,method=methods)
+        self[fTo]['dataframe'][var]=tmp[var]
+        self.del_var(fFrom,var,delete_metadata=False)
         self.move_metadata(fTo,fFrom,var)
 
 

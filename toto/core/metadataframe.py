@@ -3,15 +3,16 @@ from .attributes import attrs
 
 class MetadataFrame(dict):
 
-    def __init__(self,varnames='hs'):
-        if type(varnames) != type(list):
-            varnames=[varnames]
+    def __init__(self,Vars='hs'):
+        if type(Vars) != type(list):
+            Vars=[Vars]
 
-        for varname in varnames:
+        for varname in Vars:
             self[varname]={}
-            self[varname]=attrs['ATTRS'].get(varname,attrs['ATTRS']['default'])
+            self[varname].update(attrs['ATTRS'].get(varname,attrs['ATTRS']['default']))
             self[varname].update(attrs['OPT'])
             self[varname]['short_name']=varname
+
 
 
     def stuff(self):

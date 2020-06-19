@@ -103,7 +103,13 @@ class TXTfile():
         # unit header
         if self.fileparam.unitNamesLine:
             line=readline(max(0,self.fileparam.unitNamesLine-1))
-            self.fileparam.unitNames=split(str(line).strip())
+            unit={}
+            unitNames=split(str(line).strip())
+            for i,col in enumerate(self.fileparam.colNames): 
+                unit[col]=unitNames[i].replace('[','').replace(']','')
+
+            self.fileparam.unitNames=unit
+
 
         
         try:
@@ -118,9 +124,11 @@ class TXTfile():
         self.data.append(df)
 
     def read_time(self):
+
         
 
         for i,df in enumerate(self.data):
+
             if self.fileparam.single_column is True:
                 if self.fileparam.unit == 'auto':
                     time=pd.to_datetime(df[self.fileparam.time_col_name])
@@ -140,9 +148,24 @@ class TXTfile():
                 for oldkey in old_name:
                     del df[oldkey]
 
+
+
             self.data[i]=df
             self.data[i]['time']=time
             self.data[i].set_index('time',inplace=True,drop=False)
+
+            self.add_unit()
+    
+    def add_unit(self):
+
+        keys=self.data[0].keys()
+        for key in keys:
+            if key in self.fileparam.unitNames:
+                units=self.fileparam.unitNames[key]
+                for j in range(0,len(self.data)):
+                    self.data[j][key].units=units
+
+
 
     def _toDataFrame(self):
         return self.data

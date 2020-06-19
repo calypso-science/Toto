@@ -8,6 +8,9 @@ from .message import *
 import numpy as np
 import copy
 
+from windrose import WindroseAxes
+
+
 # Matplotlib canvas class to create figure
 class MplCanvas(FigureCanvasQTAgg):
 
@@ -59,6 +62,7 @@ class Plotting(object):
                         continue
                 x=data[file]['dataframe'].index
                 y=((data[file]['dataframe'][var])*scl_fac)+add_offset
+
                 
                 plot_name=str(self.plot_name.currentText())
                 if 'hist'==plot_name:
@@ -80,14 +84,17 @@ class Plotting(object):
                     posX[innX] = np.NaN;  
                     posY[innY] = np.NaN;
                     ax1f1.quiver(posX, posY, X, Y)
-                    print(index_name)
-
+ 
                     self.add_metadata(ax1f1,data[file]['metadata'][index_name],data[file]['metadata'][var])
                 elif 'rose'==plot_name:
-                    pass
-                    # ax = WindroseAxes.from_ax(ax1f1)
-                    # ax.bar(x, y)#, normed=True, opening=0.8, edgecolor='white')
-                    # ax.set_legend()
+                    if index_name=='time':
+                        display_error('Index can not be time')
+                        continue
+                    self.sc.fig1.clf()
+                    ax = WindroseAxes.from_ax(fig=self.sc.fig1)
+                    ax.bar(x, y, normed=True, opening=0.8, edgecolor='white')                   
+                    ax.set_legend()#units=data[file]['metadata'][var]['units'])
+
 
                 else:
                     plot_ft=getattr(ax1f1, plot_name)
