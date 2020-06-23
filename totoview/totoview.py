@@ -26,6 +26,7 @@ except:
 
 
 #  GUI
+from PyQt5.QtCore import Qt
 from PyQt5 import uic
 from PyQt5 import QtGui
 from PyQt5.QtWidgets import QMainWindow, QAction, QMenu, QApplication
@@ -89,7 +90,15 @@ class TotoGUI(QMainWindow,FORM_CLASS):
         self.list_file.editmetadata.connect(self.change_metadata)
         self.list_file.editfile.connect(self.edit_file)
         self.delete_buttn.clicked.connect(self.delete_item)
-        
+        self.reset_buttn.clicked.connect(self.reset_item)
+    
+    def keyPressEvent(self, event):
+
+        if event.key() == Qt.Key_Escape:
+            self.close()
+        if event.key() == 16777223: # delete key
+            self.delete_selection()
+            
 
     def load_df(self,dataframe,filename='dataset'):
         if isinstance(dataframe,pd.DataFrame):
@@ -296,7 +305,36 @@ class TotoGUI(QMainWindow,FORM_CLASS):
         self.list_file.blocker.unblock()
 
     
+    def delete_selection(self):
+        axes=self.plotting.sc.fig1.get_axes()
+        ax=[ax for ax in axes if ax.get_gid()=='ax'][0]
+        
+        lines = [line for line in ax.lines if line.get_gid() and line.get_gid().startswith('selected')]
+        for line in lines:
+            x=line.get_xdata(orig=True)
+            y=line.get_ydata(orig=True)
+            label=line.get_gid().replace('selected_','').split(';')
+            file=label[0]
+            var=label[1]
+            self.data.delete_data(file,var,xlim=[min(x),max(x)],ylim=[min(y),max(y)])
 
+
+        self.get_file_var()
+
+    def reset_item(self):
+        item=self.list_file.currentItem()
+        if item:
+            if item.parent():
+                rep=yes_no_question('do you really want to reset var: %s' % item.text(0))
+                if rep:
+                    self.data.reset(item.parent().text(0),varname=item.text(0))
+            else:
+                rep=yes_no_question('do you really want to reset file: %s' % item.text(0))
+                if rep:
+                    self.data.reset(item.parent().text(0),varname=None)
+
+
+            self.get_file_var()
 # --------------------------------------------------------------------------------}
 # --- Mains 
 # --------------------------------------------------------------------------------{

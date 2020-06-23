@@ -1,10 +1,12 @@
 
 import pandas as pd
 import numpy as np
+np.warnings.filterwarnings('ignore')
 from toto.core.attributes import attrs
 from toto.core.metadataframe import MetadataFrame
 import os
 import copy
+from matplotlib.dates import date2num,num2date
 
 
 def sort_dataset(df,**args):
@@ -71,6 +73,8 @@ class TotoFrame(dict):
                 data=filled_gap(data)
 
             self[filename[i]]['dataframe']=data
+            self[filename[i]]['BACKUPdataframe']=copy.deepcopy(data)
+
         return filename
     def del_file(self,filename):
         del self[filename]
@@ -94,8 +98,27 @@ class TotoFrame(dict):
         self.move_metadata(fTo,fFrom,var)
 
 
+    def delete_data(self,filename,varname,xlim=None,ylim=None):
+
+        if self[filename]['dataframe'].index.name=='time':
+            xdata=date2num(self[filename]['dataframe'].index)
+        else:
+            xdata=self[filename]['dataframe'].index
 
 
+        if xlim and ylim:
+            mask = ((xdata>= xlim[0]) & (xdata<= xlim[1])) &\
+             ((self[filename]['dataframe'][varname]>= ylim[0]) & (self[filename]['dataframe'][varname]<= ylim[1]))
+
+        
+        self[filename]['dataframe'].loc[mask,varname]=np.NaN
+
+
+    def reset(self,filename,varname=None):
+        if varname:
+            self[filename]['dataframe'][varname]=self[filename]['BACKUPdataframe'][varname]
+        else:
+            self[filename]['dataframe']=copy.depcopy(self[filename]['BACKUPdataframe'])
 
 #### TESTING ###
 if __name__ == '__main__':
