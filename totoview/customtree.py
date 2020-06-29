@@ -142,6 +142,9 @@ class CustomTreeWidget(QTreeWidget):
 
         if keys is None:
             keys=data.keys()
+            self.clear()
+
+
 
         for file in keys:
             parent=self.addItem(file,"family")
@@ -165,6 +168,7 @@ class CustomTreeWidget(QTreeWidget):
             for j in range(top_item.childCount()):
                 if (top_item.child(j).checkState(0) == Qt.Checked):# and (top_item.child(j).text(0)[:2] != 'No'):
                     var.append(top_item.child(j).text(0))
+
 
             check_vars.append(var)
             checks_files.append(file)

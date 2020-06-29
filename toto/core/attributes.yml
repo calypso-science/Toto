@@ -49,3 +49,6 @@ ATTRS:
     density:
         long_name: density
         units: M^2/Hz
+    surf_el:
+        long_name: sea-surface elevation
+        units: m   

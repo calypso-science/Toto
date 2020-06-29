@@ -129,6 +129,7 @@ class MplCanvas(FigureCanvasQTAgg):
         fig = Figure(figsize=(width, height), dpi=dpi)
         self.fig1 = fig#.add_subplot(111)
         super(MplCanvas, self).__init__(fig)
+            # --- Drag and drop
 
 
 class Plotting(object):

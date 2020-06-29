@@ -42,6 +42,8 @@ def get_file(parent,ext):
     options = QFileDialog.Options()
     options |= QFileDialog.DontUseNativeDialog
     filenames, _ = QFileDialog.getOpenFileName(parent,"QFileDialog.getOpenFileName()", "",ext, options=options)
+    if isinstance(filenames,str):
+        filenames=[filenames]
     if not filenames:
          return
     else:

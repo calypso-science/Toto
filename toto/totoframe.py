@@ -60,7 +60,6 @@ class TotoFrame(dict):
 
     def add_dataframe(self,dataframe,filename,metadataframe=MetadataFrame):
         filename=self._get_filename(dataframe,filename)
-        
         for i,data in enumerate(dataframe):
             self[filename[i]]['metadata']={}
             for key in data.keys():
@@ -119,6 +118,11 @@ class TotoFrame(dict):
             self[filename]['dataframe'][varname]=self[filename]['BACKUPdataframe'][varname]
         else:
             self[filename]['dataframe']=copy.depcopy(self[filename]['BACKUPdataframe'])
+
+
+
+
+
 
 #### TESTING ###
 if __name__ == '__main__':

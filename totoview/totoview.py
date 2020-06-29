@@ -23,7 +23,7 @@ except:
     print('')
     sys.exit(-1)
 
-
+from matplotlib.dates import num2date
 
 #  GUI
 from PyQt5.QtCore import Qt
@@ -37,13 +37,17 @@ from .filemanip import EditFile,EditMetadata
 # toto
 import toto
 from toto.totoframe import TotoFrame
-
-
+import platform
+# Use NSURL as a workaround to pyside/Qt4 behaviour for dragging and dropping on OSx
+op_sys = platform.system()
+if op_sys == 'Darwin':
+    from Foundation import NSURL
 
 here = os.path.dirname(os.path.abspath(__file__))
 FORM_CLASS, _ = uic.loadUiType(os.path.join(here,'mainwindow.ui'))
 
 PLOT_TYPE=['scatter','plot','bar','hist','rose','progressif']
+
 
 class TotoGUI(QMainWindow,FORM_CLASS):
 
@@ -91,20 +95,56 @@ class TotoGUI(QMainWindow,FORM_CLASS):
         self.list_file.editfile.connect(self.edit_file)
         self.delete_buttn.clicked.connect(self.delete_item)
         self.reset_buttn.clicked.connect(self.reset_item)
+
+
+        self.setAcceptDrops(True)
     
+    def dragEnterEvent(self, e):
+        if e.mimeData().hasUrls:
+            e.accept()
+        else:
+            e.ignore()
+
+    def dropEvent(self, e):
+        """
+        Drop files directly onto the widget
+        File locations are stored in fname
+        :param e:
+        :return:
+        """
+        if e.mimeData().hasUrls:
+            e.setDropAction(Qt.CopyAction)
+            e.accept()
+            # Workaround for OSx dragging and dropping
+            for url in e.mimeData().urls():
+                if op_sys == 'Darwin':
+                    fname = str(NSURL.URLWithString_(str(url.toString())).filePathURL().path())
+                else:
+                    fname = str(url.toLocalFile())
+
+            
+            self.load_files(fname)
+        else:
+            e.ignore()
+
     def keyPressEvent(self, event):
 
         if event.key() == Qt.Key_Escape:
             self.close()
         if event.key() == 16777223: # delete key
             self.delete_selection()
-            
 
-    def load_df(self,dataframe,filename='dataset'):
+        if event.key() ==16777220 or event.key() ==16777221: # Enter key
+            self.add_selection()
+
+                   
+
+    def load_df(self,dataframe,filename=['dataset']):
         if isinstance(dataframe,pd.DataFrame):
             dataframe=[dataframe]
 
         filename=self.data.add_dataframe(dataframe,filename)
+        self.list_file.populate_tree(self.data)
         return filename
     def load_tf(self,totoframe):
         self.data=totoframe
@@ -270,7 +310,7 @@ class TotoGUI(QMainWindow,FORM_CLASS):
                 # check if there is a GUI function
                 df=self.import_data(name,filenames)
                 filenames=self.load_df(df,filename=filenames)
-                self.list_file.populate_tree(self.data,keys=filenames)
+                self.list_file.populate_tree(self.data)#,keys=filenames)
 
         return imp
     def callOutput(self,name):
@@ -304,7 +344,26 @@ class TotoGUI(QMainWindow,FORM_CLASS):
         self.plotting.refresh_plot(self.data,checks_files,check_vars)
         self.list_file.blocker.unblock()
 
-    
+    def add_selection(self):
+        axes=self.plotting.sc.fig1.get_axes()
+        ax=[ax for ax in axes if ax.get_gid()=='ax'][0]       
+        lines = [line for line in ax.lines if line.get_gid() and line.get_gid().startswith('selected')]
+
+
+        for line in lines:
+            x=line.get_xdata(orig=True)
+            y=line.get_ydata(orig=True)
+            label=line.get_gid().replace('selected_','').split(';')
+            file=label[0]
+            var=label[1]
+            self.data.delete_data(file,var,xlim=[min(x),max(x)],ylim=[min(y),max(y)])
+            df=pd.DataFrame({self.data[file]['dataframe'].index.name:num2date(x),var:y})
+            df[self.data[file]['dataframe'].index.name] = pd.to_datetime(df[self.data[file]['dataframe'].index.name]).dt.tz_localize(None)
+            df.set_index(self.data[file]['dataframe'].index.name,inplace=True,drop=False)
+            self.data.add_dataframe([df],['selection_'+file])
+            self.list_file.populate_tree(self.data)
+
+        self.get_file_var()
     def delete_selection(self):
         axes=self.plotting.sc.fig1.get_axes()
         ax=[ax for ax in axes if ax.get_gid()=='ax'][0]
