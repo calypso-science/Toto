@@ -21,10 +21,12 @@ def filled_gap(df,missing_value=np.NaN):
 
     df=sort_dataset(df)
     dt=get_freq(df)
+    
+    dt=(dt + 9) // 10 * 10
     idx = pd.period_range(min(df.index), max(df.index),freq='%is'%dt)
     idx=idx.to_timestamp()
 
-    df=df.reindex(idx,method='nearest', fill_value=missing_value,tolerance=dt)
+    df=df.reindex(idx,method='nearest', fill_value=missing_value,tolerance=3600)
     df.index.name='time' 
     return df
 
@@ -117,7 +119,7 @@ class TotoFrame(dict):
         if varname:
             self[filename]['dataframe'][varname]=self[filename]['BACKUPdataframe'][varname]
         else:
-            self[filename]['dataframe']=copy.depcopy(self[filename]['BACKUPdataframe'])
+            self[filename]['dataframe']=copy.deepcopy(self[filename]['BACKUPdataframe'])
 
 
 

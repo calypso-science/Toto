@@ -29,15 +29,18 @@ from matplotlib.dates import num2date
 from PyQt5.QtCore import Qt
 from PyQt5 import uic
 from PyQt5 import QtGui
-from PyQt5.QtWidgets import QMainWindow, QAction, QMenu, QApplication
+from PyQt5.QtWidgets import QMainWindow, QAction, QMenu, QApplication,QProxyStyle,QStyle,QStyleFactory
 from .message import *
 from .plotting import Plotting
 from .filemanip import EditFile,EditMetadata
 
+from .filtering import FiltWindow
+from .interpolating import InterpWindow
 # toto
 import toto
 from toto.totoframe import TotoFrame
 import platform
+
 # Use NSURL as a workaround to pyside/Qt4 behaviour for dragging and dropping on OSx
 op_sys = platform.system()
 if op_sys == 'Darwin':
@@ -72,6 +75,12 @@ class TotoGUI(QMainWindow,FORM_CLASS):
         if isinstance(data,str):
                 self.load_files(data)
 
+        ssDir = os.path.join(here,"..", "_tools", "")
+
+        sshFile=os.path.join(ssDir,'TCobra.qss')
+        with open(sshFile,"r") as fh:
+            self.setStyleSheet(fh.read())
+
 
         
         self.databackup=copy.deepcopy(data)
@@ -83,6 +92,7 @@ class TotoGUI(QMainWindow,FORM_CLASS):
        
         self.initImport()
         self.initExport()
+        self.initDatamanip()
         self.initWindow()
         self.initPlotType()
         
@@ -96,9 +106,122 @@ class TotoGUI(QMainWindow,FORM_CLASS):
         self.delete_buttn.clicked.connect(self.delete_item)
         self.reset_buttn.clicked.connect(self.reset_item)
 
+        self.select_all_vars.clicked.connect(self.slc_vars)
+        self.select_all_files.clicked.connect(self.slc_files)
+        self.unselect_all.clicked.connect(self.unslc_all)
 
         self.setAcceptDrops(True)
-    
+
+    def _get_file_list(self):
+        return [metadata['filename'] for metadata in self.metadata]
+
+    def _import_from(self,module, name):
+        module = __import__(module, fromlist=[name])
+        return getattr(module, name)
+#### INit
+    def initExport(self):
+        # Main menu
+        fileMenu=self.menu_File
+        impMenu = QMenu('Export', self)
+        # Look for all readers
+        outputers=[d for d in dir(toto.outputs) if not d.startswith('_')]
+        for outputer in outputers:
+            im = QAction('%s file' % outputer, self)
+            im.triggered.connect(self.callOutput(outputer))
+            impMenu.addAction(im)
+
+        fileMenu.addMenu(impMenu)
+    def initWindow(self):
+        #self.showMaximized()
+        self.setWindowTitle('TOTO')
+
+    def initPlotType(self):
+        for item in PLOT_TYPE:
+            self.plot_name.addItem(item)
+
+        self.plot_name.setCurrentIndex(PLOT_TYPE.index('plot'))
+        self.plot_name.activated.connect (self.get_file_var)
+    def initImport(self):
+        # Main menu
+        fileMenu=self.menu_File
+        impMenu = QMenu('Import', self)
+        # Look for all readers
+        readers=[d for d in dir(toto.inputs) if not d.startswith('_')]
+        for reader in readers:
+            im = QAction('%s file' % reader, self)
+            im.triggered.connect(self.callImport(reader))
+            impMenu.addAction(im)
+
+        fileMenu.addMenu(impMenu)
+        
+    def initDatamanip(self):
+        datamanip=self.menuData_manipulation
+        im = QAction('Data filter', self)
+        im.triggered.connect(self.callFilter)
+        datamanip.addAction(im)
+
+        im = QAction('Data interpolator', self)
+        im.triggered.connect(self.callInterp)
+        datamanip.addAction(im)
+
+
+#### Events
+    def callInterp(self):
+        self.list_file.blocker.reblock()
+        checks_files,check_vars=self.list_file.get_all_items()
+
+        # check variabl from the first file and apply to all slected file
+        data_to_filter=[]
+        for file in checks_files:
+            df=self.data[file]['dataframe']
+            data_to_filter.append(df[check_vars[0]])
+        
+       
+        main = InterpWindow(data_to_filter) 
+        df=main.exec()
+        for i,file in enumerate(checks_files):
+            self.data[file]['dataframe'][check_vars[0]]=df[i]
+        self.plotting.refresh_plot(self.data,checks_files,check_vars)
+        self.list_file.blocker.unblock()
+
+    def callFilter(self):
+        self.list_file.blocker.reblock()
+        checks_files,check_vars=self.list_file.get_all_items()
+
+        # check variabl from the first file and apply to all slected file
+        data_to_filter=[]
+        for file in checks_files:
+            df=self.data[file]['dataframe']
+            data_to_filter.append(df[check_vars[0]])
+        
+       
+        main = FiltWindow(data_to_filter) 
+        df=main.exec()
+        for i,file in enumerate(checks_files):
+            self.data[file]['dataframe'][check_vars[0]]=df[i]
+        self.plotting.refresh_plot(self.data,checks_files,check_vars)
+        self.list_file.blocker.unblock()
+
+
+    def callImport(self,name):
+        def imp():
+            ext=self.get_ext(name)
+            filenames=get_file(self,ext)
+            if filenames:
+                # check if there is a GUI function
+                df=self.import_data(name,filenames)
+                filenames=self.load_df(df,filename=filenames)
+                self.list_file.populate_tree(self.data)#,keys=filenames)
+
+        return imp
+    def callOutput(self,name):
+        def out():
+            ext,exs=self.get_all_out(name)
+            filename=put_file(self,ext,exs)
+            if filename:
+                # check if there is a GUI function
+                self.output_data(name,filename)
+        return out
     def dragEnterEvent(self, e):
         if e.mimeData().hasUrls:
             e.accept()
@@ -128,7 +251,7 @@ class TotoGUI(QMainWindow,FORM_CLASS):
             e.ignore()
 
     def keyPressEvent(self, event):
-
+        print(event.key())
         if event.key() == Qt.Key_Escape:
             self.close()
         if event.key() == 16777223: # delete key
@@ -137,7 +260,8 @@ class TotoGUI(QMainWindow,FORM_CLASS):
         if event.key() ==16777220 or event.key() ==16777221: # Enter key
             self.add_selection()
 
-                   
+
+#### loading                   
 
     def load_df(self,dataframe,filename=['dataset']):
         if isinstance(dataframe,pd.DataFrame):
@@ -145,6 +269,8 @@ class TotoGUI(QMainWindow,FORM_CLASS):
 
         filename=self.data.add_dataframe(dataframe,filename)
         self.list_file.populate_tree(self.data)
+        self.get_file_var()
+
         return filename
     def load_tf(self,totoframe):
         self.data=totoframe
@@ -170,7 +296,37 @@ class TotoGUI(QMainWindow,FORM_CLASS):
 
         df=self.import_data(gd_reader,filenames)
         self.load_df(df,filename=filenames)
-        self.list_file.populate_tree(self.data)
+
+## file manip
+    def unslc_all(self):
+        self.list_file.auto_check(unchecked=True)
+        self.get_file_var()
+    def slc_vars(self):
+        self.list_file.auto_check(all_vars=True)
+        self.get_file_var()
+    def slc_files(self):
+        self.list_file.auto_check(all_file=True)
+        self.get_file_var()
+
+    def edit_file(self,parent):
+
+        variables=self.data[parent]['dataframe'].keys().tolist()
+        old_name=self.data[parent]['dataframe'].index.name
+        # variables.append(old_name)
+        ed=EditFile(self,old_name,filename=parent,varlist=variables)
+        new_index=ed.exec()
+
+        if new_index!=old_name:
+            self.data[parent]['dataframe']=self.data[parent]['dataframe'].set_index(new_index,drop=False)  
+            self.get_file_var()  
+
+
+        if self.data[parent]['dataframe'].index.name!='time':
+            self.list_file.setDragEnabled(False)
+        else:
+            self.list_file.setDragEnabled(True)
+
+
 
     def delete_item(self):
 
@@ -191,35 +347,6 @@ class TotoGUI(QMainWindow,FORM_CLASS):
                 if rep:
                     self.data.del_file(item.text(0))
                     item.removeChild(item)
-
-
-
-    def initPlotType(self):
-        for item in PLOT_TYPE:
-            self.plot_name.addItem(item)
-
-        self.plot_name.setCurrentIndex(PLOT_TYPE.index('plot'))
-        self.plot_name.activated.connect (self.get_file_var)
-
-
-    def edit_file(self,parent):
-
-        variables=self.data[parent]['dataframe'].keys().tolist()
-        old_name=self.data[parent]['dataframe'].index.name
-        # variables.append(old_name)
-        ed=EditFile(self,old_name,filename=parent,varlist=variables)
-        new_index=ed.exec()
-
-        if new_index!=old_name:
-            self.data[parent]['dataframe']=self.data[parent]['dataframe'].set_index(new_index,drop=False)  
-            self.get_file_var()  
-
-
-        if self.data[parent]['dataframe'].index.name!='time':
-            self.list_file.setDragEnabled(False)
-        else:
-            self.list_file.setDragEnabled(True)
-
 
 
     def change_metadata(self,item,parents,childs):
@@ -244,27 +371,8 @@ class TotoGUI(QMainWindow,FORM_CLASS):
         self.data.move_var(fIn,fOut,varIn)
 
 
-    def _get_file_list(self):
-        return [metadata['filename'] for metadata in self.metadata]
 
-    def _import_from(self,module, name):
-        module = __import__(module, fromlist=[name])
-        return getattr(module, name)
 
-    def initImport(self):
-        # Main menu
-        fileMenu=self.menu_File
-        impMenu = QMenu('Import', self)
-        # Look for all readers
-        readers=[d for d in dir(toto.inputs) if not d.startswith('_')]
-        for reader in readers:
-            im = QAction('%s file' % reader, self)
-            im.triggered.connect(self.callImport(reader))
-            impMenu.addAction(im)
-
-        fileMenu.addMenu(impMenu)
-        
-        #
 
     def get_ext(self,reader):
         ext=''
@@ -302,40 +410,8 @@ class TotoGUI(QMainWindow,FORM_CLASS):
             df=run_ft(filenames)
 
         return df._toDataFrame()
-    def callImport(self,name):
-        def imp():
-            ext=self.get_ext(name)
-            filenames=get_file(self,ext)
-            if filenames:
-                # check if there is a GUI function
-                df=self.import_data(name,filenames)
-                filenames=self.load_df(df,filename=filenames)
-                self.list_file.populate_tree(self.data)#,keys=filenames)
 
-        return imp
-    def callOutput(self,name):
-        def out():
-            ext,exs=self.get_all_out(name)
-            filename=put_file(self,ext,exs)
-            if filename:
-                # check if there is a GUI function
-                self.output_data(name,filename)
-        return out
-    def initExport(self):
-        # Main menu
-        fileMenu=self.menu_File
-        impMenu = QMenu('Export', self)
-        # Look for all readers
-        outputers=[d for d in dir(toto.outputs) if not d.startswith('_')]
-        for outputer in outputers:
-            im = QAction('%s file' % outputer, self)
-            im.triggered.connect(self.callOutput(outputer))
-            impMenu.addAction(im)
 
-        fileMenu.addMenu(impMenu)
-    def initWindow(self):
-        #self.showMaximized()
-        self.setWindowTitle('TOTO')
 
     def get_file_var (self):
         self.list_file.blocker.reblock()
@@ -353,6 +429,8 @@ class TotoGUI(QMainWindow,FORM_CLASS):
         for line in lines:
             x=line.get_xdata(orig=True)
             y=line.get_ydata(orig=True)
+            if len(x)<1:
+                continue
             label=line.get_gid().replace('selected_','').split(';')
             file=label[0]
             var=label[1]
@@ -372,6 +450,8 @@ class TotoGUI(QMainWindow,FORM_CLASS):
         for line in lines:
             x=line.get_xdata(orig=True)
             y=line.get_ydata(orig=True)
+            if len(x)<1:
+                continue
             label=line.get_gid().replace('selected_','').split(';')
             file=label[0]
             var=label[1]
@@ -390,7 +470,7 @@ class TotoGUI(QMainWindow,FORM_CLASS):
             else:
                 rep=yes_no_question('do you really want to reset file: %s' % item.text(0))
                 if rep:
-                    self.data.reset(item.parent().text(0),varname=None)
+                    self.data.reset(item.text(0),varname=None)
 
 
             self.get_file_var()

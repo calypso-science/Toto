@@ -129,6 +129,27 @@
           </property>
          </widget>
         </item>
+        <item row="3" column="0">
+         <widget class="QPushButton" name="select_all_vars">
+          <property name="text">
+           <string>Select all variables</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QPushButton" name="select_all_files">
+          <property name="text">
+           <string>Select all files</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QPushButton" name="unselect_all">
+          <property name="text">
+           <string>Unselect All</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
      </layout>
@@ -149,7 +170,13 @@
      <string>&amp;File</string>
     </property>
    </widget>
+   <widget class="QMenu" name="menuData_manipulation">
+    <property name="title">
+     <string>&amp;Data manipulation</string>
+    </property>
+   </widget>
    <addaction name="menu_File"/>
+   <addaction name="menuData_manipulation"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="action_Import_file">

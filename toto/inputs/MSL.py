@@ -55,15 +55,12 @@ class MSLfile():
         ds.drop_vars(key_to_drop)
 
         df = ds.to_dataframe()
-        max_index=df.index.max()
-
-        Isite=df.index.names.index('site')
-        nsite=max_index[Isite]
 
 
+        sites=df.index.get_level_values('site').unique()
 
-        for n in range(0,nsite+1):
-            df0=pd.DataFrame()
+        for n in sites:
+            df0=[]
             if len(D3_keys)>0:
                 nlev=df.index.get_level_values('lev').unique()
                 for m in nlev:
@@ -71,23 +68,22 @@ class MSLfile():
                     df3d.reset_index(inplace=True)
                     df3d.set_index('time',inplace=True)
                     df3d=df3d.add_suffix('_lev_'+str(m))
-                    df0=pd.concat([df0,df3d],axis=1)
+                    df0.append(df3d)
                   
             if len(D2_keys)>0:
                     df2d=df[D2_keys].loc[(0,n)]
                     df2d.reset_index(inplace=True)
                     df2d.set_index('time',inplace=True)
-                    df0=pd.concat([df0,df2d],axis=1)
+                    df0.append(df2d)
 
+            df0=pd.concat(df0,axis=1)
             df0.reset_index(inplace=True)
             df0.set_index('time',inplace=True,drop=False)
-
             for col in list(df0.columns):
                 if '_lev_' in col:
                     Col=col.split('_lev_')[0]
                 else:
                     Col=col
-                    
                 if hasattr(ds[Col],'units'):
                     setattr(df0[col],'units',ds[Col].units)
                 if hasattr(ds[Col],'long_name'):

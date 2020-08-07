@@ -145,12 +145,15 @@ class CustomTreeWidget(QTreeWidget):
             self.clear()
 
 
-
+        first=True
         for file in keys:
             parent=self.addItem(file,"family")
             for var in data[file]['metadata'].keys():
                 if var != 'time':
-                    self.addItem(var,"children",parent,data[file]['metadata'][var]['short_name'])
+                    item=self.addItem(var,"children",parent,data[file]['metadata'][var]['short_name'])
+                    if first:
+                        item.setCheckState(0, Qt.Checked)
+                        first=False
 
         self.expandAll()
         self.blocker.unblock()
@@ -176,3 +179,25 @@ class CustomTreeWidget(QTreeWidget):
         self.blocker.unblock()
 
         return checks_files,check_vars
+
+    def auto_check(self,all_file=False,all_vars=False,unchecked=False):
+        self.blocker.reblock()
+        if unchecked:
+            all_file=True
+            all_vars=True
+            flag=Qt.Unchecked
+        else:
+            flag=Qt.Checked
+
+        for i in range(self.topLevelItemCount()):
+            top_item = self.topLevelItem(i)
+            if all_file:
+                top_item.setCheckState(0, flag)
+
+            for j in range(top_item.childCount()):
+                if all_vars:
+                    top_item.child(j).setCheckState(0, flag)
+
+
+
+        self.blocker.unblock()

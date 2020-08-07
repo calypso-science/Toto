@@ -1,23 +1,33 @@
 import os
 from matplotlib.figure import Figure
-from matplotlib.backends.backend_qt4agg import (
+from matplotlib.backends.backend_qt5agg import (
     FigureCanvasQTAgg,
     NavigationToolbar2QT as NavigationToolbar)
 
 from PyQt5.QtGui import QIcon
 
+
 from .message import *
 
 import numpy as np
+from scipy.signal import find_peaks
 import copy
 
 from windrose import WindroseAxes
 
 from matplotlib.widgets import RectangleSelector
 from matplotlib.axes import SubplotBase
+import matplotlib.pyplot as plt
 from matplotlib.dates import date2num,num2date
 from datetime import datetime
 import pandas as pd
+
+
+from .CustomDialog import CalendarDialog,PeaksDialog
+
+import matplotlib.dates as mpld
+mpld.set_epoch('0000-12-31T00:00:00')
+                    
 class SelectFromCollection(object):
     """Select indices from a matplotlib collection using `LassoSelector`.
 
@@ -41,7 +51,7 @@ class SelectFromCollection(object):
         alpha value of 1 and non-selected points to `alpha_other`.
     """
 
-    def __init__(self, ax, xcollection,ycollection,gid,parent):
+    def __init__(self, ax, xcollection,ycollection,gid,parent,method):
         self.ax=ax
         self.canvas = ax.figure.canvas
         self.x = xcollection
@@ -49,14 +59,32 @@ class SelectFromCollection(object):
         self.parent=parent
         self.gid=gid
 
-        self.lasso = RectangleSelector(ax, onselect=self.onselect)
+        if method == 'manual':
+            self.lasso = RectangleSelector(ax, onselect=self.onselect)
+        elif method == 'time':
+            w = CalendarDialog(self.ax.get_xlim())
+            values = w.getResults()
+            if values:
+                xmin=datetime(values[0][0],values[0][1],values[0][2])
+                xmax=datetime(values[1][0],values[1][1],values[1][2])
+                self.selector(lim=[date2num(xmin),date2num(xmax),-np.inf,np.inf])
+                self.canvas.draw_idle()
+        elif method == 'peaks':
+            w = PeaksDialog()
+            values = w.getResults()
+            self.selector(peaks=values)
+            self.canvas.draw_idle()
+
+
+
         self.ind = []
 
-    def onselect(self, eclick, erelease):
-
-        if self.parent._active == "ZOOM" or self.parent._active == "PAN":
-                return
-
+    def selector(self,lim=None, peaks=None):
+        if lim:
+            xmin=lim[0]
+            xmax=lim[1]
+            ymin=lim[2]
+            ymax=lim[3]
 
         for i in range(0,len(self.x)):
             Y=self.y[i]
@@ -65,10 +93,12 @@ class SelectFromCollection(object):
             if isinstance(X[0],np.datetime64):
                 X=date2num(X)
 
+            if lim:
+                self.ind =np.nonzero(((X>=xmin) & (X<=xmax))\
+                    & ((Y>=ymin) & (Y<=ymax)))[0]
 
-
-            self.ind =np.nonzero(((X>=eclick.xdata) & (X<=erelease.xdata))\
-                & ((Y>=eclick.ydata) & (Y<=erelease.ydata)))[0]
+            if peaks:
+                self.ind = find_peaks(Y,**peaks)[0]
 
             x_data=X[self.ind]
             y_data=Y[self.ind]
@@ -76,8 +106,16 @@ class SelectFromCollection(object):
             
             self.ax.plot(x_data,y_data,'r+',gid='selected_'+gid)
         self.ax.set_xlim(X[0],X[-1])
+
+
+    def onselect(self, eclick, erelease):
+        # if self.parent._active == "ZOOM" or self.parent._active == "PAN":
+        #         return
+        self.selector(lim=[eclick.xdata,erelease.xdata,eclick.ydata,erelease.ydata])
+
     def disconnect(self):
-        self.lasso.disconnect_events()
+        if hasattr(self,'lasso'):
+            self.lasso.disconnect_events()
         self.canvas.draw_idle()
 
 class MyCustomToolbar(NavigationToolbar): 
@@ -88,8 +126,17 @@ class MyCustomToolbar(NavigationToolbar):
         self.plotCanvas=plotCanvas
         self.addSeparator()
         self.a = self.addAction(QIcon(iconDir + "select.png"),
-            "Select data", self.select_data)
-        self.a.setToolTip("Select data")
+            "Select data manually", self.select_data('manual'))
+        self.a.setToolTip("Select data manually")
+
+        self.b = self.addAction(QIcon(iconDir + "calendar.png"),
+            "Select data by dates", self.select_data('time'))
+        self.b.setToolTip("Select data by dates")
+
+        self.c = self.addAction(QIcon(iconDir + "ic-activity.svg"),
+            "Select by peaks", self.select_data('peaks'))
+        self.c.setToolTip("Select data by peaks")
+
 
     def remove_series(self,id='selected'):
         for child in self.plotCanvas.fig1.get_children():
@@ -99,29 +146,28 @@ class MyCustomToolbar(NavigationToolbar):
                     child.lines.remove(line)
 
 
-    def select_data(self):
-        app=self.parentWidget().parent().parent()
-        if hasattr(self,'selector'):
-            self.selector.disconnect()
-            self.remove_series('selected')
-            del self.selector
+    def select_data(self,method):
+        def out():
+            app=self.parentWidget().parent().parent()
+            if hasattr(self,'selector'):
+                self.selector.disconnect()
+                self.remove_series('selected')
+                del self.selector
+                
+            x=[]
+            y=[]
+            gid=[]
+            for child in self.plotCanvas.fig1.get_children():
+                if child.get_gid() == 'ax':
+                    objs=child.get_children()
+                    for obj in objs:
+                        if hasattr(obj,'get_xydata') and obj.get_gid() is not None:
+                            y.append(obj.get_ydata(orig=True))
+                            x.append(obj.get_xdata(orig=True))
+                            gid.append(obj.get_gid())
 
-            
-        x=[]
-        y=[]
-        gid=[]
-        for child in self.plotCanvas.fig1.get_children():
-            if child.get_gid() == 'ax':
-                objs=child.get_children()
-                for obj in objs:
-                    if hasattr(obj,'get_xydata') and obj.get_gid() is not None:
-                        y.append(obj.get_ydata(orig=True))
-                        x.append(obj.get_xdata(orig=True))
-                        gid.append(obj.get_gid())
-
-        self.selector = SelectFromCollection(child, x,y,gid,self)    
-
-
+            self.selector = SelectFromCollection(child, x,y,gid,self,method)    
+        return out
 # Matplotlib canvas class to create figure
 class MplCanvas(FigureCanvasQTAgg):
 
@@ -175,8 +221,11 @@ class Plotting(object):
                 x=data[file]['dataframe'].index
                 y=((data[file]['dataframe'][var])*scl_fac)+add_offset
 
-                
-                plot_name=str(self.plot_name.currentText())
+                if hasattr(self.plot_name,'currentText'):
+                    plot_name=str(self.plot_name.currentText())
+                else:
+                    plot_name='plot'
+
                 if 'hist'==plot_name:
                     # the histogram of the data
                     ax1f1.hist(y, density=1)
@@ -212,9 +261,14 @@ class Plotting(object):
                     ax1f1.set_gid('ax')
                     plot_ft=getattr(ax1f1, plot_name)
                     plot_ft(x,y,label=var,gid=file+';'+var)
+                    ax1f1.set_xlim(x[0],x[-1])
+
                     self.add_metadata(ax1f1,data[file]['metadata'][index_name],data[file]['metadata'][var])
                     if index_name=='time':
                         self.sc.fig1.autofmt_xdate()
+
+                    ax1f1.grid(True)
+
                 index_name0=copy.deepcopy(index_name)
 
 
