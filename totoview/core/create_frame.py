@@ -1,12 +1,18 @@
 import datetime #import datetime
 import dateutil
 
-from PyQt5.QtWidgets import QFormLayout,QHBoxLayout,QStackedWidget,\
+from PyQt5.QtWidgets import QFormLayout,QHBoxLayout,QStackedWidget,QWidget,QPushButton,QFileDialog,\
                             QVBoxLayout,QSpacerItem,QLabel,QPushButton,QApplication,QListWidget,QListWidgetItem,\
                             QLineEdit,QLabel,QGroupBox,QRadioButton,QButtonGroup,QScrollArea,QDateTimeEdit,QComboBox
 
 from PyQt5.QtGui import QIntValidator,QDoubleValidator
-
+import os
+def pick_dir(wd):
+    def cmd():
+        dialog = QFileDialog()
+        folder_path = dialog.getExistingDirectory(None, "Select Folder")
+        wd.setText(folder_path)
+    return cmd
 
 def strx(s,validator):
     if s is '':
@@ -16,7 +22,11 @@ def strx(s,validator):
     elif isinstance(validator,QDoubleValidator):
         val=float(s)
     else:
-        val=s
+        try:
+            if len(s.split(' '))>0:
+                val=[float(s) for s in s.split(' ')]
+        except:
+            val=s
 
 
     return val
@@ -60,11 +70,21 @@ def get_layout_from_sig(sig):
                 wd.setDisplayFormat("dd/MM/yyyy hh:mm:ss")
             elif isinstance(args[arg],str):
                 wd.setText(args[arg])
-            elif isinstance(args[arg],list):
-                wd.setText(args[arg]) !!!! ADD LIST
-               
 
-            Vl.addRow(arg,wd)
+            elif isinstance(args[arg],list):
+                wd.setText(' '.join([str(i) for i in args[arg]])) 
+               
+            if args[arg]=='/tmp/':
+                container=QWidget()
+                ly=QHBoxLayout()
+                ly.addWidget(wd)
+                bttn=QPushButton('...')
+                bttn.clicked.connect(pick_dir(wd))
+                ly.addWidget(bttn)
+                container.setLayout(ly)
+                Vl.addRow(arg,container)
+            else:
+                Vl.addRow(arg,wd,)
             layout[arg]=wd
     return Vl,layout
 def extract_option_from_frame(pannel):

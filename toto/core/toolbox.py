@@ -4,7 +4,7 @@ def get_number_of_loops(time_blocking):
 
     if 'annual' in time_blocking.lower():
         number_of_loops=1
-        identifiers=['Annual']
+        identidifers=['Annual']
         month_identidier=[np.arange(1,13,1)]
     elif 'seasonal' in time_blocking.lower():
         identidifers,month_identidier=get_seasons(time_blocking)

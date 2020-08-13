@@ -44,6 +44,7 @@ from toto.core.totoframe import TotoFrame,add_metadata_to_df
 from toto.core.metadataframe import MetadataFrame
 import platform
 
+
 # Use NSURL as a workaround to pyside/Qt4 behaviour for dragging and dropping on OSx
 op_sys = platform.system()
 if op_sys == 'Darwin':
@@ -53,6 +54,7 @@ here = os.path.dirname(os.path.abspath(__file__))
 FORM_CLASS, _ = uic.loadUiType(os.path.join(here,'..','_tools','mainwindow.ui'))
 
 PLOT_TYPE=['scatter','plot','bar','hist','rose','progressif']
+
 
 
 class TotoGUI(QMainWindow,FORM_CLASS):
@@ -210,6 +212,7 @@ class TotoGUI(QMainWindow,FORM_CLASS):
             # check selected all slected file                
             data_to_process=[]
             for file in checks_files:
+                self.data[file]['filename']=file
                 data_to_process.append(self.data[file])
 
             fct=self._import_from('toto.plugins.%s'% module[0],module[1])

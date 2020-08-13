@@ -92,7 +92,6 @@ class wrapper_plugins(QDialog):
     def __init__(self,tfs,fct, parent=None):
         super(wrapper_plugins, self).__init__(parent)
         self.fct=fct
-        
         self.tfs=tfs
         self.dfs=[x['dataframe'] for x in tfs]
         self.mets=[x['metadata'] for x in tfs]
@@ -101,7 +100,7 @@ class wrapper_plugins(QDialog):
         for df in self.dfs:
             self.var_list+=list(df.keys())
 
-        self.resize(300,600)
+        self.resize(400,600)
         self.setWindowTitle(fct.__name__)
         ssDir = os.path.join(HERE,"..","..", "_tools", "")
         self.setWindowIcon(QIcon(os.path.join(ssDir,'toto.jpg')))    
@@ -207,13 +206,24 @@ class wrapper_plugins(QDialog):
             df1=add_metadata_to_df(df1,mets)
             df1.longitude=self.tfs[i]['longitude']
             df1.latitude=self.tfs[i]['latitude']
+            df1.filename=self.tfs[i]['filename']
 
             F=getattr(getattr(df1, access),self.fct.__name__)
-            dfout=F()
+
+#            dfout=F(args=opt)
+            try:
+                dfout=F(args=opt)
+            except Exception as exc:
+                display_error("Cannot run {} function:\n{}".format(self.fct.__name__, exc))
+                self.close()
+                return
+
             if isinstance(dfout,pd.DataFrame):
                 del df[index_name]
                 self.dfs[i] = pd.merge_asof(df, dfout, on=index_name).set_index(index_name,drop=False)
-
+            elif isinstance(dfout,str):
+                display_error("Cannot run {} function:\n{}".format(self.fct.__name__, dfout))
+                self.close()
             
         self.close()
     def exec(self):
