@@ -90,6 +90,9 @@ class MSLfile():
                     setattr(df0[col],'long_name',ds[Col].long_name)
 
 
+            if 'lon' in ds:
+                setattr(df0,'longitude',ds['lon'][n].values)
+                setattr(df0,'latitude',ds['lat'][n].values)
             self.data.append(df0)
 
 

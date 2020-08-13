@@ -6,7 +6,8 @@ def moving_average(input_array,args={'N-Points filter':int(),\
 
 
     N=args['N-Points filter']
-    mode=[key for key in args['Mode'] if args['Mode'][key]][0]
+    #mode=[key for key in args['Mode'] if args['Mode'][key]][0]
+    mode=args['Mode']
 
     if mode=='valid':
         y=input_array.to_numpy(copy=True)

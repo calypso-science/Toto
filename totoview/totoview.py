@@ -25,20 +25,23 @@ except:
 
 from matplotlib.dates import num2date
 
+from _tools import resource_rc
 #  GUI
 from PyQt5.QtCore import Qt
 from PyQt5 import uic
 from PyQt5 import QtGui
-from PyQt5.QtWidgets import QMainWindow, QAction, QMenu, QApplication,QProxyStyle,QStyle,QStyleFactory
-from .message import *
-from .plotting import Plotting
-from .filemanip import EditFile,EditMetadata
+from PyQt5.QtWidgets import QMainWindow, QAction, QMenu,QMenuBar, QApplication,QProxyStyle,QStyle,QStyleFactory
+from .dialog.message import *
+from .dialog.plotting import Plotting
+from .dialog.filemanip import EditFile,EditMetadata
 
-from .filtering import FiltWindow
-from .interpolating import InterpWindow
+from .dialog.filtering import FiltWindow
+from .dialog.interpolating import InterpWindow
+from .dialog.selecting import SelectWindow
 # toto
 import toto
-from toto.totoframe import TotoFrame
+from toto.core.totoframe import TotoFrame,add_metadata_to_df
+from toto.core.metadataframe import MetadataFrame
 import platform
 
 # Use NSURL as a workaround to pyside/Qt4 behaviour for dragging and dropping on OSx
@@ -47,7 +50,7 @@ if op_sys == 'Darwin':
     from Foundation import NSURL
 
 here = os.path.dirname(os.path.abspath(__file__))
-FORM_CLASS, _ = uic.loadUiType(os.path.join(here,'mainwindow.ui'))
+FORM_CLASS, _ = uic.loadUiType(os.path.join(here,'..','_tools','mainwindow.ui'))
 
 PLOT_TYPE=['scatter','plot','bar','hist','rose','progressif']
 
@@ -95,6 +98,8 @@ class TotoGUI(QMainWindow,FORM_CLASS):
         self.initDatamanip()
         self.initWindow()
         self.initPlotType()
+        self.initHelp()
+        self.initPlugins()
         
         self.list_file.populate_tree(self.data)
         self.show()
@@ -111,6 +116,7 @@ class TotoGUI(QMainWindow,FORM_CLASS):
         self.unselect_all.clicked.connect(self.unslc_all)
 
         self.setAcceptDrops(True)
+        self.setFocusPolicy(Qt.StrongFocus)
 
     def _get_file_list(self):
         return [metadata['filename'] for metadata in self.metadata]
@@ -119,6 +125,33 @@ class TotoGUI(QMainWindow,FORM_CLASS):
         module = __import__(module, fromlist=[name])
         return getattr(module, name)
 #### INit
+    def initPlugins(self):
+        plugins=self._import_from('toto','plugins')
+        for plugin in [x for x in dir(plugins) if not x.startswith('_')]:
+            acts=self._import_from('toto.plugins',plugin)
+            plugMenu=QMenu(plugin, self)
+            for act in [x for x in dir(acts) if not x.startswith('_')]:
+                im = QAction(act, self)
+                im.triggered.connect(self.CallWrapper([plugin,act]))
+                plugMenu.addAction(im)
+
+
+            self.menubar.addMenu(plugMenu)
+
+
+    def initHelp(self):
+        Bar_help=QMenuBar(self)
+        fileMenu=QMenu('Help',self)
+
+        im = QAction('Shortcuts', self)
+        im.triggered.connect(show_help_shortcuts)
+        fileMenu.addAction(im)
+        im = QAction('Help', self)
+        im.triggered.connect(self.help_browser)
+        fileMenu.addAction(im)
+        Bar_help.addMenu(fileMenu)
+        self.menubar.setCornerWidget(Bar_help)
+
     def initExport(self):
         # Main menu
         fileMenu=self.menu_File
@@ -156,6 +189,10 @@ class TotoGUI(QMainWindow,FORM_CLASS):
         
     def initDatamanip(self):
         datamanip=self.menuData_manipulation
+        im = QAction('Data selector', self)
+        im.triggered.connect(self.callSelect)
+        datamanip.addAction(im)
+
         im = QAction('Data filter', self)
         im.triggered.connect(self.callFilter)
         datamanip.addAction(im)
@@ -164,8 +201,57 @@ class TotoGUI(QMainWindow,FORM_CLASS):
         im.triggered.connect(self.callInterp)
         datamanip.addAction(im)
 
-
 #### Events
+
+    def CallWrapper(self,module):
+        def out():
+            self.list_file.blocker.reblock()
+            checks_files,check_vars=self.list_file.get_all_items()
+            # check selected all slected file                
+            data_to_process=[]
+            for file in checks_files:
+                data_to_process.append(self.data[file])
+
+            fct=self._import_from('toto.plugins.%s'% module[0],module[1])
+            if len(data_to_process)>0:
+                sc=wrapper_plugins(data_to_process,fct)
+                dfout=sc.exec()
+                if dfout:
+                    self._update(checks_files,dfout)
+                    self.list_file.populate_tree(self.data)
+                    self.plotting.refresh_plot(self.data,checks_files,check_vars)
+            else:
+                display_error('You need to select at least on file')
+            self.list_file.blocker.unblock()
+        return out
+
+    def help_browser(self):
+        mss=show_help_browser()
+        mss.exec_()
+    def callSelect(self):
+        self.list_file.blocker.reblock()
+        checks_files,check_vars=self.list_file.get_all_items()
+
+        # check variabl from the first file and apply to all slected file
+        data_to_filter=[]
+        for file in checks_files:
+            df=self.data[file]['dataframe']
+            data_to_filter.append(df[check_vars[0]])
+        
+       
+        main = SelectWindow(data_to_filter) 
+        df=main.exec()
+
+        self._update(check_files,df)
+
+
+                
+                
+
+        self.list_file.populate_tree(self.data)
+        self.plotting.refresh_plot(self.data,checks_files,check_vars)
+        self.list_file.blocker.unblock()
+
     def callInterp(self):
         self.list_file.blocker.reblock()
         checks_files,check_vars=self.list_file.get_all_items()
@@ -190,12 +276,14 @@ class TotoGUI(QMainWindow,FORM_CLASS):
 
         # check variabl from the first file and apply to all slected file
         data_to_filter=[]
+        LonLat=[]
         for file in checks_files:
             df=self.data[file]['dataframe']
             data_to_filter.append(df[check_vars[0]])
-        
+            LonLat.append([self.data[file]['longitude'],self.data[file]['latitude']])
+            #LonLat.append(self.data[file])
        
-        main = FiltWindow(data_to_filter) 
+        main = FiltWindow(data_to_filter,LonLat=LonLat) 
         df=main.exec()
         for i,file in enumerate(checks_files):
             self.data[file]['dataframe'][check_vars[0]]=df[i]
@@ -251,7 +339,7 @@ class TotoGUI(QMainWindow,FORM_CLASS):
             e.ignore()
 
     def keyPressEvent(self, event):
-        print(event.key())
+
         if event.key() == Qt.Key_Escape:
             self.close()
         if event.key() == 16777223: # delete key
@@ -260,8 +348,21 @@ class TotoGUI(QMainWindow,FORM_CLASS):
         if event.key() ==16777220 or event.key() ==16777221: # Enter key
             self.add_selection()
 
+        if event.key() == 16777264: # Press F1
+            mss=show_help_browser()
+            mss.exec_()
+        if event.key() == 16777265: # Press F2
+            show_help_shortcuts()
+
 
 #### loading                   
+    def _update(self,checkfiles,df):
+        for i,file in enumerate(checkfiles):
+            for key in df[i].keys():
+                if key not in self.data[file]['dataframe']:
+                    self.data[file]['metadata'].update(MetadataFrame(key))
+
+                self.data[file]['dataframe'][key]=df[i][key]
 
     def load_df(self,dataframe,filename=['dataset']):
         if isinstance(dataframe,pd.DataFrame):

@@ -2,7 +2,8 @@ from scipy import signal
 
 def detrend(input_array,args={'Type':{'linear':True, 'constant':False}}):
 
-	mode=[key for key in args['Type'] if args['Type'][key]][0]
+	#mode=[key for key in args['Type'] if args['Type'][key]][0]
+	mode=args['Type']
 	input_array=signal.detrend(input_array,type=mode)
 
 	return  input_array

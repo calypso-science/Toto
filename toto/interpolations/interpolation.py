@@ -7,7 +7,8 @@ def interpolation(input_array,args={'limit':float(),'method':{"linear": True,"ti
 						'limit area':{'None':True,'inside':False,'outside':False}}):
 
 	limit=args['limit']
-	method=[key for key in args['method'] if args['method'][key]][0]
+	#method=[key for key in args['method'] if args['method'][key]][0]
+	method=args['method']
 	limit_direction=[key for key in args['limit direction'] if args['limit direction'][key]][0]
 	limit_area=[key for key in args['limit area'] if args['limit area'][key]][0]
 	if limit:

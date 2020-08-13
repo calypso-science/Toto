@@ -7,3 +7,4 @@ xarray
 PyQt5
 git+https://github.com/python-windrose/windrose
 attrdict
+openpyxl

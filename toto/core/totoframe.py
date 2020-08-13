@@ -26,18 +26,27 @@ def filled_gap(df,missing_value=np.NaN):
     idx = pd.period_range(min(df.index), max(df.index),freq='%is'%dt)
     idx=idx.to_timestamp()
 
-    df=df.reindex(idx,method='nearest', fill_value=missing_value,tolerance=3600)
+    df0=pd.DataFrame(index=idx)
+    df0.index.name='time'
+    del df['time']
+    df=pd.merge_asof(df0,df,on='time',direction='nearest', tolerance=pd.Timedelta("1s")).set_index('time',drop=False)
+    #df=df.reindex(idx,method='nearest', fill_value=missing_value,tolerance=3600)
     df.index.name='time' 
+    return df
+def add_metadata_to_df(df,metadata):
+    for key in metadata:
+        for subkey in metadata[key]:
+            setattr(df[key],subkey,metadata[key][subkey])
     return df
 
 class TotoFrame(dict):
 
 
-    def __init__(self,dataframe=None,filename=None):
-        if dataframe:
+    def __init__(self,dataframe=[],filename=[]):
+        if len(dataframe)>0:
             if type(dataframe) != type(list()):
                 dataframe=[dataframe]
-                self.add_dataframe(self,dataframe,filename)
+                self.add_dataframe(dataframe,filename)
 
     def _get_filename(self,dataframe,prefix):
       
@@ -70,6 +79,14 @@ class TotoFrame(dict):
                     self[filename[i]]['metadata'][key]['units']=data[key].units
                 if hasattr(data[key],'long_name'):
                     self[filename[i]]['metadata'][key]['long_name']=data[key].long_name
+
+            if hasattr(data,'longitude'):
+                self[filename[i]]['longitude']=data.longitude
+                self[filename[i]]['latitude']=data.latitude
+            else:
+                self[filename[i]]['longitude']=None
+                self[filename[i]]['latitude']=None
+
             if data.index.name=='time':
                 data=filled_gap(data)
 

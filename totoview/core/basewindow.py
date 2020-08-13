@@ -1,4 +1,6 @@
 import sys,os
+from .create_frame import get_layout_from_sig,extract_option_from_frame
+
 from PyQt5 import QtCore, QtGui
 from PyQt5.QtWidgets import QDialog,QWidget,QFormLayout,QHBoxLayout,QStackedWidget,\
                             QVBoxLayout,QSpacerItem,QLabel,QPushButton,QApplication,QListWidget,QListWidgetItem,\
@@ -20,10 +22,11 @@ class BaseWindow(QDialog):
 
         self.resize(900,600)
         self.setWindowTitle(title)
+        ssDir = os.path.join(here,"..","..", "_tools", "")
         if logo:
         	self.setWindowIcon(QIcon(logo))
         else:
-        	ssDir = os.path.join(here,"..", "_tools", "")
+        	
         	self.setWindowIcon(QIcon(os.path.join(ssDir,'toto.jpg')))    
        
         sshFile=os.path.join(ssDir,'TCobra.qss')
@@ -126,49 +129,11 @@ class BaseWindow(QDialog):
 
         self.setLayout(layout)
 
-    def _strx(self,s,validator):
-        if s is '':
-            val= None
-        elif isinstance(validator,QIntValidator):
-            val=int(s)
-        elif isinstance(validator,QDoubleValidator):
-            val=float(s)
-        else:
-            val=s
-
-
-        return val
-
     def build_layout(self,sig):
+
         qw=QWidget()
-        Vl = QFormLayout()
-        layout={}
-
-        args=sig.parameters['args'].default
-        I=0
-        for arg in args.keys():
-            l = QLabel(arg)
-            Vl.addWidget(l)
-            
-            if isinstance(args[arg],dict):
-                box=QButtonGroup()
-                bx={}
-                for key in args[arg].keys():
-                    qr=QRadioButton(key)
-                    qr.setChecked(args[arg][key])
-                    box.addButton(qr)
-                    Vl.addWidget(qr)
-                    bx[key]=qr
-                layout[arg]=bx
-            else:
-                wd=QLineEdit('')
-                if isinstance(args[arg],int):
-                    wd.setValidator(QIntValidator())
-                elif isinstance(args[arg],float):
-                    wd.setValidator(QDoubleValidator())
-                Vl.addWidget(wd)
-                layout[arg]=wd
-
+ 
+        Vl,layout=get_layout_from_sig(sig)
         
         qw.setLayout(Vl)
         self.opt.append(layout)
@@ -194,17 +159,8 @@ class BaseWindow(QDialog):
         self.method_options.setCurrentIndex(i)
 
     def get_options(self,pannel):
-        opt={}
-        for key in pannel.keys():
-            if isinstance(pannel[key],QLineEdit):
-                opt[key]=self._strx(pannel[key].text(),pannel[key].validator())
-            elif isinstance(pannel[key],QRadioButton):
-                opt[key]=pannel[key].isChecked()
-            elif isinstance(pannel[key],dict):
-                sub={}
-                for children in pannel[key]:
-                    sub[children]=pannel[key][children].isChecked()
-                opt[key]=sub
+
+        opt=extract_option_from_frame(pannel)
 
         return opt
 

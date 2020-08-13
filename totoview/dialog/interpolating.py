@@ -1,4 +1,4 @@
-from .basewindow import BaseWindow
+from ..core.basewindow import BaseWindow
 import toto
 import matplotlib.pyplot as plt
 

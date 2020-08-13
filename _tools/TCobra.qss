@@ -198,7 +198,6 @@ QTreeView::item
 
 
 
-
 QTreeView::item:hover
 {
 	background-color: #1a1b1c;
@@ -301,8 +300,8 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical
 
 
 
-/*-----CustomTreeWidget-----*/
-CustomTreeWidget
+/*-----QTreeWidget-----*/
+QTreeWidget
 {
     background-color: #242526;
     show-decoration-selected: 0;
@@ -315,7 +314,88 @@ CustomTreeWidget
 
 }
 
-CustomTreeWidget::item
+QTreeWidget::item
+{
+    border-top-color: #f0f;
+    border-bottom-color: #f0f;
+
+}
+
+QTreeWidget::indicator:unchecked
+{
+    border-image: none;
+    image: url(:/images/checkbox.png); /*To replace*/
+
+}
+QTreeWidget::indicator:checked
+{
+    border-image: none;
+    image: url(:/images/check.png); /*To replace*/
+
+}
+
+
+QTreeWidget::item:hover
+{
+    background-color: #1a1b1c;
+    show-decoration-selected: 1;
+    color: #f0f;
+
+}
+
+QTreeWidget::item:checked
+{
+    background-color: #41cd52;
+    color: #f0f;
+
+}
+
+QTreeWidget::item:selected:active
+{
+    background-color: rgba(5, 49, 68, 255);
+    color: #b1b1b1;
+
+}
+
+QTreeWidget::item:selected:!active
+{
+    background-color: rgba(57, 49, 68, 255);
+    color: #fff;
+
+}
+
+QTreeWidget::branch:has-children:!has-siblings:closed,
+QTreeWidget::branch:closed:has-children:has-siblings
+{
+    border-image: none;
+    image: url(:/images/down_arrow.png); /*To replace*/
+
+}
+
+QTreeWidget::branch:open:has-children:!has-siblings,
+QTreeWidget::branch:open:has-children:has-siblings
+{
+    border-image: none;
+    image: url(:/images/down_arrow.png); /*To replace*/
+
+}
+
+
+/*-----QTreeWidget-----*/
+QTreeWidget
+{
+    background-color: #242526;
+    show-decoration-selected: 0;
+    selection-background-color: transparent; /* Used on Mac */
+    alternate-background-color: #404040;
+    selection-color: #fff; /* Used on Mac */
+    font: 13pt;
+    color: #b1b1b1;
+    outline : 0;
+
+}
+
+QTreeWidget::item
 {
     border-top-color: #f0f;
     border-bottom-color: #f0f;
@@ -324,7 +404,7 @@ CustomTreeWidget::item
 
 
 
-CustomTreeWidget::item:hover
+QTreeWidget::item:hover
 {
     background-color: #1a1b1c;
     show-decoration-selected: 1;
@@ -332,37 +412,37 @@ CustomTreeWidget::item:hover
 
 }
 
-CustomTreeWidget::item:checked
+QTreeWidget::item:checked
 {
     background-color: #41cd52;
     color: #f0f;
 
 }
 
-CustomTreeWidget::item:selected:active
+QTreeWidget::item:selected:active
 {
     background-color: rgba(5, 49, 68, 255);
     color: #b1b1b1;
 
 }
 
-CustomTreeWidget::item:selected:!active
+QTreeWidget::item:selected:!active
 {
     background-color: rgba(57, 49, 68, 255);
     color: #fff;
 
 }
 
-CustomTreeWidget::branch:has-children:!has-siblings:closed,
-CustomTreeWidget::branch:closed:has-children:has-siblings
+QTreeWidget::branch:has-children:!has-siblings:closed,
+QTreeWidget::branch:closed:has-children:has-siblings
 {
     border-image: none;
     image: url(://tree-closed.png); /*To replace*/
 
 }
 
-CustomTreeWidget::branch:open:has-children:!has-siblings,
-CustomTreeWidget::branch:open:has-children:has-siblings
+QTreeWidget::branch:open:has-children:!has-siblings,
+QTreeWidget::branch:open:has-children:has-siblings
 {
     border-image: none;
     image: url(://tree-open.png); /*To replace*/

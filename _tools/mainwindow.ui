@@ -189,9 +189,8 @@
   <customwidget>
    <class>CustomTreeWidget</class>
    <extends>QTreeWidget</extends>
-   <header>totoview.customtree</header>
+   <header>totoview.core.customtree</header>
   </customwidget>
  </customwidgets>
- <resources/>
  <connections/>
 </ui>
