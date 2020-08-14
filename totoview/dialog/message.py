@@ -224,6 +224,7 @@ class wrapper_plugins(QDialog):
             elif isinstance(dfout,str):
                 display_error("Cannot run {} function:\n{}".format(self.fct.__name__, dfout))
                 self.close()
+                return
             
         self.close()
     def exec(self):
