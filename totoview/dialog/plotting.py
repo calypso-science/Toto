@@ -26,7 +26,7 @@ import pandas as pd
 from .CustomDialog import CalendarDialog,PeaksDialog
 
 import matplotlib.dates as mpld
-mpld.set_epoch('0000-12-31T00:00:00')
+#mpld.set_epoch('0000-12-31T00:00:00')
                     
 class SelectFromCollection(object):
     """Select indices from a matplotlib collection using `LassoSelector`.

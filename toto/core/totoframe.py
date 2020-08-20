@@ -94,8 +94,18 @@ class TotoFrame(dict):
             self[filename[i]]['BACKUPdataframe']=copy.deepcopy(data)
 
         return filename
+
+    def replace_dataframe(self,filename,dataframe):
+        self.del_file(filename)
+        self.add_dataframe(dataframe,filename)
+
+
     def del_file(self,filename):
-        del self[filename]
+        if not isinstance(filename,list):
+            filename=[filename]
+
+        for file in filename:
+            del self[file]
 
     def del_var(self,filename,variable,delete_metadata=True):
 

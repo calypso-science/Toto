@@ -163,22 +163,25 @@ class CustomTreeWidget(QTreeWidget):
         self.blocker.reblock()
         check_vars = []
         checks_files=[]
-
+        checks_dataframe=[]
         for i in range(self.topLevelItemCount()):
             top_item = self.topLevelItem(i)
             file=top_item.text(0)
+            if top_item.checkState(0)== Qt.Checked:
+                checks_dataframe.append(file)
+
             var=[]
             for j in range(top_item.childCount()):
                 if (top_item.child(j).checkState(0) == Qt.Checked):# and (top_item.child(j).text(0)[:2] != 'No'):
                     var.append(top_item.child(j).text(0))
 
-
             check_vars.append(var)
             checks_files.append(file)
 
+
         self.blocker.unblock()
 
-        return checks_files,check_vars
+        return checks_files,check_vars,checks_dataframe
 
     def auto_check(self,all_file=False,all_vars=False,unchecked=False):
         self.blocker.reblock()

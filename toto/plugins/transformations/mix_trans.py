@@ -10,7 +10,7 @@ class DataTransformation:
         self.data = pandas_obj
         self.dfout = pd.DataFrame(index=self.data.index.copy())
 
-    def windprofile(self,ws='ws',opts={
+    def wind_profile(self,ws='ws',opts={
         'Level of input wind speed (in meters)':10.,\
         'Averaging period of input wind speed (in minutes)':10.,\
         'Output level (in meters)':10.,\
@@ -58,9 +58,11 @@ class DataTransformation:
         C=0.0573*np.sqrt( 1 + 0.15*U10T3600)
         Iz=0.06*(1+0.043*U10T3600)*((level_out/10)**-0.22)
         Uz=U10T3600*(1+C*np.log(level_out/10))
-        return Uz*(1-0.41*Iz*np.log(t_av_out/3600))
+        Uz=Uz*(1-0.41*Iz*np.log(t_av_out/3600))
+        self.dfout['Uz']=Uz
+        return self.dfout
 
-    def dav2layers(self,u='u',dp='dp',args={'z':0.,'z0':0.001}):
+    def dav_to_layers(self,u='u',dp='dp',args={'z':0.,'z0':0.001}):
         opt={'z':0.,'z0':0.001}
         opt.update(args)      
 
@@ -74,11 +76,11 @@ class DataTransformation:
             z=0.0001
         
         fac=(np.log(z/z0)/(np.log(h/z0)-1))
+        self.dfout[self.data[u].short_name+'_lev_'+str(Z)]=U*fac
+        return self.dfout
 
-        return U*fac
 
-
-    def layers2dav(self,u='u',dp='dp',args={'z':0.,'z0':0.001}):
+    def layers_to_dav(self,u='u',dp='dp',args={'z':0.,'z0':0.001}):
         opt={'z':0.,'z0':0.001}
         opt.update(args)
 
@@ -92,23 +94,27 @@ class DataTransformation:
 
 
         fac=((np.log(h/z0)-1)/np.log(z/z0))
-        return U*fac
+        self.dfout[self.data[u].short_name+'m']=U*fac
+        return self.dfout
 
     def hs_sea(self,hs='hs',hs_swell='hs_swell'):
-        return np.sqrt(self.data[hs]**2-self.data[hs_swell]**2)
+        self.dfout['Hs_sea']=np.sqrt(self.data[hs]**2-self.data[hs_swell]**2)
+        return self.dfout
 
 
 
-    def Uorb(self,dp='dp',tp='tp',hs='hs',args={'z':0.}):
+    def Oribital_velocity(self,dp='dp',tp='tp',hs='hs',args={'z':0.}):
         z=args['z']
         Z=np.abs(z)
 
         z=self.data[dp]-Z;
         pi2=2*np.pi
         k=wavenuma(pi2/self.data[tp],self.data[dp])
-        return pi2*(self.data[hs]/2)/self.data[tp]*np.cosh(k*z)/np.sinh(k*self.data[dp])
+        Uorb=pi2*(self.data[hs]/2)/self.data[tp]*np.cosh(k*z)/np.sinh(k*self.data[dp])
+        self.dfout['Uorb']=Uorb
+        return self.dfout
 
-    def calc_spdir(self,u='u', v='v', args={'Origin':{'going to':True,'coming from':False}}):
+    def uv_to_spddir(self,u='u', v='v', args={'Origin':{'going to':True,'coming from':False}}):
         """Converts (u, v) to (spd, dir).
         Args:
             u (array): eastward wind component
@@ -133,7 +139,7 @@ class DataTransformation:
 
 
 
-    def calc_uv(self,spd='spd', direc='direc', args={'Origin':{'going to':True,'coming from':False}}):
+    def spddir_to_uv(self,spd='spd', direc='direc', args={'Origin':{'going to':True,'coming from':False}}):
         """Converts (spd, dir) to (u, v).
         Args:
             spd (array): magnitudes to convert
@@ -143,13 +149,13 @@ class DataTransformation:
             u (array): eastward wind component
             v (array): northward wind component
         """
-        dfout = pd.DataFrame(index=self.data.index.copy())
+
         spd=self.data[spd]
         direc=self.data[direc]
         ang_rot = 180 if args['Origin']=='coming from' else 0
         direcR = np.deg2rad(direc + ang_rot)
         u = spd * np.sin(direcR)
         v = spd * np.cos(direcR)
-        dfout['u']=u
-        dfout['v']=v
-        return dfout
+        self.dfout['u']=u
+        self.dfout['v']=v
+        return self.dfout

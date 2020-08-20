@@ -132,8 +132,9 @@ class TotoGUI(QMainWindow,FORM_CLASS):
         for plugin in [x for x in dir(plugins) if not x.startswith('_')]:
             acts=self._import_from('toto.plugins',plugin)
             plugMenu=QMenu(plugin, self)
+
             for act in [x for x in dir(acts) if not x.startswith('_')]:
-                im = QAction(act, self)
+                im = QAction(act.replace('_',' ').capitalize(), self)
                 im.triggered.connect(self.CallWrapper([plugin,act]))
                 plugMenu.addAction(im)
 
@@ -208,10 +209,10 @@ class TotoGUI(QMainWindow,FORM_CLASS):
     def CallWrapper(self,module):
         def out():
             self.list_file.blocker.reblock()
-            checks_files,check_vars=self.list_file.get_all_items()
+            checks_files,check_vars,checks_dataframe=self.list_file.get_all_items()
             # check selected all slected file                
             data_to_process=[]
-            for file in checks_files:
+            for file in checks_dataframe:
                 self.data[file]['filename']=file
                 data_to_process.append(self.data[file])
 
@@ -220,8 +221,9 @@ class TotoGUI(QMainWindow,FORM_CLASS):
                 sc=wrapper_plugins(data_to_process,fct)
                 dfout=sc.exec()
                 if dfout:
-                    self._update(checks_files,dfout)
+                    self.data.replace_dataframe(checks_dataframe,dfout)
                     self.list_file.populate_tree(self.data)
+                    checks_files,check_vars,checks_dataframe=self.list_file.get_all_items()
                     self.plotting.refresh_plot(self.data,checks_files,check_vars)
             else:
                 display_error('You need to select at least on file')
@@ -233,7 +235,7 @@ class TotoGUI(QMainWindow,FORM_CLASS):
         mss.exec_()
     def callSelect(self):
         self.list_file.blocker.reblock()
-        checks_files,check_vars=self.list_file.get_all_items()
+        checks_files,check_vars,checks_dataframe=self.list_file.get_all_items()
 
         # check variabl from the first file and apply to all slected file
         data_to_filter=[]
@@ -257,7 +259,7 @@ class TotoGUI(QMainWindow,FORM_CLASS):
 
     def callInterp(self):
         self.list_file.blocker.reblock()
-        checks_files,check_vars=self.list_file.get_all_items()
+        checks_files,check_vars,checks_dataframe=self.list_file.get_all_items()
 
         # check variabl from the first file and apply to all slected file
         data_to_filter=[]
@@ -275,7 +277,7 @@ class TotoGUI(QMainWindow,FORM_CLASS):
 
     def callFilter(self):
         self.list_file.blocker.reblock()
-        checks_files,check_vars=self.list_file.get_all_items()
+        checks_files,check_vars,checks_dataframe=self.list_file.get_all_items()
 
         # check variabl from the first file and apply to all slected file
         data_to_filter=[]
@@ -364,7 +366,6 @@ class TotoGUI(QMainWindow,FORM_CLASS):
             for key in df[i].keys():
                 if key not in self.data[file]['dataframe']:
                     self.data[file]['metadata'].update(MetadataFrame(key))
-
                 self.data[file]['dataframe'][key]=df[i][key]
 
     def load_df(self,dataframe,filename=['dataset']):
@@ -501,8 +502,8 @@ class TotoGUI(QMainWindow,FORM_CLASS):
 
     def output_data(self,reader,filename):
         run_ft=self._import_from('toto.outputs.%s' % reader,'%sfile' %reader.upper())
-        checks_files,_=self.list_file.get_all_items()
-        df=run_ft(filename,[self.data[file] for file in checks_files])
+        _,_,checks_dataframe=self.list_file.get_all_items()
+        df=run_ft(filename,[self.data[file] for file in checks_dataframe])
 
     def import_data(self,reader,filenames):
         try:
@@ -519,7 +520,7 @@ class TotoGUI(QMainWindow,FORM_CLASS):
 
     def get_file_var (self):
         self.list_file.blocker.reblock()
-        checks_files,check_vars=self.list_file.get_all_items()
+        checks_files,check_vars,checks_dataframe=self.list_file.get_all_items()
         
         self.plotting.refresh_plot(self.data,checks_files,check_vars)
         self.list_file.blocker.unblock()

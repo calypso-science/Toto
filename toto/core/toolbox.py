@@ -1,5 +1,18 @@
 import numpy as np
 import datetime
+
+
+
+def get_opt(var,label_name,default):
+    if hasattr(var,label_name):
+        label=getattr(var,label_name)
+    else:
+        label=''
+    
+    if label=='':
+        label=default
+
+    return label
 def get_number_of_loops(time_blocking):
 
     if 'annual' in time_blocking.lower():
@@ -9,6 +22,8 @@ def get_number_of_loops(time_blocking):
     elif 'seasonal' in time_blocking.lower():
         identidifers,month_identidier=get_seasons(time_blocking)
         number_of_loops=4+1
+        month_identidier.append([np.arange(1,13,1)])
+        identidifers.append('Annual')
     elif 'monthly' in time_blocking.lower():
         identidifers=[]
         month_identidier=[]

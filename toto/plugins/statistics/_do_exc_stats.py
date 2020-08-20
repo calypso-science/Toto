@@ -14,7 +14,7 @@ def do_exc_stats(filename,time,mag,time_blocking,method,threshold,duration):
     sint=(time[2]-time[1]).seconds/(3600)
     gd_value=~np.isnan(mag)
     time=time[gd_value]
-    mag=mag[gd_value]
+    mag=mag[gd_value].values
 
 
     if 'persistence' in method:
@@ -74,7 +74,8 @@ def do_exc_stats(filename,time,mag,time_blocking,method,threshold,duration):
             del n
             del index
         elif analysis_type == 'ordinary':
-            exceedence=np.empty((len(threshold),number_of_loops))
+            if j==0:
+                exceedence=np.empty((len(threshold),number_of_loops))
             data_matrix=mag[index]
             nrecs=len(data_matrix)
             if nrecs>0:
@@ -84,7 +85,7 @@ def do_exc_stats(filename,time,mag,time_blocking,method,threshold,duration):
                     elif persistence_type == 'non-exceedence':
                         exceedence[m,j]=(len((data_matrix <= threshold[m]).nonzero()[0])/nrecs)*100
             else:
-                exceedence[:,0]=0
+                exceedence[:,j]=0
 
 
             del nrecs
@@ -171,6 +172,7 @@ def persistent_percent_exceed(data,thresh,duration,sint,choice='exceedence'):
 
 def do_exc_coinc_stats(filename,time,Xdata,Ydata,X_interval,Y_interval,time_blocking,analysis_method,exceed_type,binning):
     multiplier=100.
+
     if exceed_type=='exceedence':
         sign='>'
     else:
@@ -211,7 +213,7 @@ def do_exc_coinc_stats(filename,time,Xdata,Ydata,X_interval,Y_interval,time_bloc
 
         occurrence[:,-1]=np.sum(occurrence,1)
         
-        if exceed_type=='exceedance':
+        if exceed_type=='exceedence':
             occurrence = np.flipud(occurrence)
         
         occurrence=np.cumsum(occurrence,0)
@@ -222,8 +224,22 @@ def do_exc_coinc_stats(filename,time,Xdata,Ydata,X_interval,Y_interval,time_bloc
             else:
                 occurrence[:,o]=0
 
-        if exceed_type=='exceedance':
+        if exceed_type=='exceedence':
             occurrence = np.flipud(occurrence)
-        
-        
-        
+            printing_threshold=Y_interval[:-1];
+
+        else:
+            printing_threshold=Y_interval[1:];
+
+
+        mat=np.empty((occurrence.shape[0]+1,occurrence.shape[1]+1),dtype = "object")
+        mat[0,0]=exceed_type+' %'
+        for x in range(0,len(X_interval)-1):
+            mat[0,x+1]='%.1f-%.1f' % (X_interval[x],X_interval[x+1])
+        mat[0,-1]='Total'
+        for y in range(0,len(printing_threshold)):
+            mat[y+1,0]=sign+'%.1f' % (printing_threshold[y])
+
+        # mat[1:,0]=Y_interval[:-1]
+        mat[1:,1:]=np.round(occurrence,2).astype(str)
+        create_table(filename,identifiers[j],mat)
