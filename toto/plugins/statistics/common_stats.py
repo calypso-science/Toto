@@ -222,7 +222,7 @@ class Statistics:
         do_workability(filename,self.data[variables],Exc,duration,args['Time blocking'],analysis)
 
 
-        def wave_population(self,Hs='Hs',Tmo02='Tm02',Dpm='Dpm',Tp_optional='Tp_optional',SW_optional='SW',\
+        def wave_population(self,Hs='Hs',Tmo02='Tm02',Drr_optional='Drr_optional',Tp_optional='Tp_optional',SW_optional='SW',\
             args={'Method':{'Height only':True,'Height/Direction':False,'Height/Tp':False,'height/period':False},
                 'Direction binning':{'centered':True,'not-centered':False},
                 'Direction interval': 45.,
@@ -251,9 +251,17 @@ class Statistics:
         else:
             Tp=self.data[Tp_optional].values
 
+        if SW_optional not in self.data:
+            Sw=None
+        else:
+            Sw=self.data[SW_optional].values
 
-        ,self.data[Sw].values
-        do_wave_pop(self.data.index,self.data[Hs].values,self.data[Tm].values,self.data[Drr].values,\
+        if Drr_optional not in self.data:
+            Drr=None
+        else:
+            Drr=self.data[Drr].values
+
+        do_wave_pop(self.data.index,self.data[Hs].values,self.data[Tm].values,Drr,\
             Tp,Sw,method,args['Heigh bin size'],Ddir,args['Period bin size'],\
             args['Exposure (years) (= length of time series if not specified)'],drr_switch,filename)
 
