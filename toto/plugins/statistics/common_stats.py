@@ -222,12 +222,12 @@ class Statistics:
         do_workability(filename,self.data[variables],Exc,duration,args['Time blocking'],analysis)
 
 
-        def wave_population(self,Hs='Hs',Tmo02='Tm02',Drr_optional='Drr_optional',Tp_optional='Tp_optional',SW_optional='SW',\
-            args={'Method':{'Height only':True,'Height/Direction':False,'Height/Tp':False,'height/period':False},
+    def wave_population(self,Hs='Hs',Tm02='Tm02',Drr_optional='Drr_optional',Tp_optional='Tp_optional',SW_optional='SW',\
+            args={'Method':{'Height only':True,'Height/Direction':False,'Height/Tp':False,'Height/period':False},
                 'Direction binning':{'centered':True,'not-centered':False},
                 'Direction interval': 45.,
                 'Heigh bin size': 0.5,
-                'Period bin size': 2
+                'Period bin size': 2,
                 'Exposure (years) (= length of time series if not specified)':0,
                 'folder out':'/tmp/',
                 'Directional switch':{'On':True,'Off':False}
@@ -259,9 +259,9 @@ class Statistics:
         if Drr_optional not in self.data:
             Drr=None
         else:
-            Drr=self.data[Drr].values
+            Drr=self.data[Drr_optional].values
 
-        do_wave_pop(self.data.index,self.data[Hs].values,self.data[Tm].values,Drr,\
+        do_wave_pop(self.data.index,self.data[Hs].values,self.data[Tm02].values,Drr,\
             Tp,Sw,method,args['Heigh bin size'],Ddir,args['Period bin size'],\
             args['Exposure (years) (= length of time series if not specified)'],drr_switch,filename)
 

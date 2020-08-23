@@ -1,5 +1,5 @@
 import os,sys
-sys.path.append('/home/remy/Calypso/Projects/004_Toto/Toto')
+sys.path.append('/home/remy/Software/Toto')
 import numpy as np
 import pandas as pd
 from toto.core.totoframe import TotoFrame
@@ -8,7 +8,7 @@ from toto.inputs.txt import TXTfile
 
 
 
-filename=r'/home/remy/Calypso/Projects/004_Toto/test/GSB.txt'
+filename=r'GSB.txt'
 tx=TXTfile([filename],colNamesLine=1,skiprows=1,unitNamesLine=0,time_col_name={'year':'year','month':'month','day':'day','hour':'hour','min':'Minute'})
 tx.reads()
 tx.read_time()
@@ -32,11 +32,11 @@ df[0].filename='test'
 #         'Time blocking':'Monthly'})
 
 # df[0]['elev'].short_name='E'
-df=df[0].TideAnalysis.tidal_stat(mag='Ve',\
-        args={'Minimum SNR':2,\
-        'Latitude':-36.0,
-        'folder out':'/tmp/',
-        })
+# df=df[0].TideAnalysis.tidal_stat(mag='Ve',\
+#         args={'Minimum SNR':2,\
+#         'Latitude':-36.0,
+#         'folder out':'/tmp/',
+#         })
 
 
 # df=df[0].Statistics.workability(data1='Spd',data2='Dir',data3_optional='data3_optional',data4_optional='data4_optional',\
@@ -82,3 +82,15 @@ df=df[0].TideAnalysis.tidal_stat(mag='Ve',\
 #         'modelled unit':'',
 #         'Quantile increment step (%)':1.0,
 #         'folder out':'/tmp/'})
+
+
+df=df[0].Statistics.wave_population(Hs='Spd',Tm02='Spd',Drr_optional='Dir',Tp_optional='Spd',SW_optional='Spd',\
+            args={'Method':'Height/period',#:True,'Height/Direction':False,'Height/Tp':False,'height/period':False},
+                'Direction binning':'centered',
+                'Direction interval': 45.,
+                'Heigh bin size': 0.1,
+                'Period bin size': 2,
+                'Exposure (years) (= length of time series if not specified)':0,
+                'folder out':'',
+                'Directional switch':'On'}
+            )
