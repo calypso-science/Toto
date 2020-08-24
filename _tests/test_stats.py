@@ -8,7 +8,7 @@ from toto.inputs.txt import TXTfile
 
 
 
-filename=r'GSB.txt'
+filename=r'../GSB.txt'
 tx=TXTfile([filename],colNamesLine=1,skiprows=1,unitNamesLine=0,time_col_name={'year':'year','month':'month','day':'day','hour':'hour','min':'Minute'})
 tx.reads()
 tx.read_time()
@@ -85,7 +85,7 @@ df[0].filename='test'
 
 
 df=df[0].Statistics.wave_population(Hs='Spd',Tm02='Spd',Drr_optional='Dir',Tp_optional='Spd',SW_optional='Spd',\
-            args={'Method':'Height/period',#:True,'Height/Direction':False,'Height/Tp':False,'height/period':False},
+            args={'Method':'Height only',#:True,'Height/Direction':False,'Height/Tp':False,'height/period':False},
                 'Direction binning':'centered',
                 'Direction interval': 45.,
                 'Heigh bin size': 0.1,
@@ -94,3 +94,5 @@ df=df[0].Statistics.wave_population(Hs='Spd',Tm02='Spd',Drr_optional='Dir',Tp_op
                 'folder out':'',
                 'Directional switch':'On'}
             )
+
+
