@@ -22,6 +22,7 @@ from matplotlib.dates import date2num,num2date,DateFormatter,AutoDateFormatter,A
 from datetime import datetime
 import pandas as pd
 
+from toto.core.toolbox import uv2spdir,spdir2uv
 
 from .CustomDialog import CalendarDialog,PeaksDialog
 
@@ -258,6 +259,9 @@ class Plotting(object):
                         Ymetadata=data[file]['metadata'][indexes[1]],
                         legend=False)
                 elif 'progressif'==plot_name:
+                    if index_name=='time':
+                        display_error('Index can not be time')
+                        continue
                     X=x.array
                     Y=y.array
                     innX = np.isnan(X)
@@ -273,13 +277,16 @@ class Plotting(object):
                     posY[innY] = np.NaN;
                     ax1f1.quiver(posX, posY, X, Y)
  
-                    self.add_metadata(ax1f1,data[file]['metadata'][index_name],data[file]['metadata'][var])
+                    self.add_metadata(ax1f1,data[file]['metadata'][index_name],data[file]['metadata'][var],legend=False)
                 elif 'rose'==plot_name:
                     if index_name=='time':
-                        display_error('Index can not be time')
+                        display_error('Index can not be time,must be direction or V')
                         continue
                     self.sc.fig1.clf()
                     ax = WindroseAxes.from_ax(fig=self.sc.fig1)
+
+                    if any(x<0): # it is U and V
+                        y,x=uv2spdir(y.values,x.values)
                     ax.bar(x, y, normed=True, opening=0.8, edgecolor='white')                   
                     ax.set_legend(units=data[file]['metadata'][var]['units'])
 

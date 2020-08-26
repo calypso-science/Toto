@@ -1,8 +1,24 @@
 import numpy as np
 import datetime
+import xarray as xr
 
+def spdir2uv(spd,direc,origin='going to'):
 
+    ang_rot = 180 if origin=='coming from' else 0
+    direcR = np.deg2rad(direc + ang_rot)
+    u = spd * np.sin(direcR)
+    v = spd * np.cos(direcR)
 
+    return u,v
+
+def uv2spdir(u,v,origin='going to'):
+
+    ang_rot = 180 if origin=='coming from' else 0
+    vetor = u + v * 1j
+    mag = np.abs(vetor)
+    direc = xr.ufuncs.angle(vetor, deg=True) + ang_rot
+    direc = np.mod(90 - direc, 360)
+    return mag,direc
 def get_opt(var,label_name,default):
     if hasattr(var,label_name):
         label=getattr(var,label_name)

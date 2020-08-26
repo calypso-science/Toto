@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 import xarray as xr
-from ...core.toolbox import wavenuma
+from ...core.toolbox import wavenuma,uv2spdir,spdir2uv
 
 @pd.api.extensions.register_dataframe_accessor("DataTransformation")
 class DataTransformation:
@@ -125,13 +125,8 @@ class DataTransformation:
             direc (array): directions (degree)
         """
 
-        u=self.data[u]
-        v=self.data[v]
-        ang_rot = 180 if args['Origin']=='coming from' else 0
-        vetor = u + v * 1j
-        mag = np.abs(vetor)
-        direc = xr.ufuncs.angle(vetor, deg=True) + ang_rot
-        direc = np.mod(90 - direc, 360)
+        mag,direc=uv2spdir(self.data[u],self.data[v],args['Origin'])
+
         self.dfout['spd']=mag
         self.dfout['drr']=direc
 
@@ -149,13 +144,8 @@ class DataTransformation:
             u (array): eastward wind component
             v (array): northward wind component
         """
+        u,v=spdir2uv(self.data[spd],self.data[direc],args['Origin'])
 
-        spd=self.data[spd]
-        direc=self.data[direc]
-        ang_rot = 180 if args['Origin']=='coming from' else 0
-        direcR = np.deg2rad(direc + ang_rot)
-        u = spd * np.sin(direcR)
-        v = spd * np.cos(direcR)
         self.dfout['u']=u
         self.dfout['v']=v
         return self.dfout

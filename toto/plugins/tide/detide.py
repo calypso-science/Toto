@@ -63,15 +63,23 @@ class TideAnalysis:
         coef = solve(stime,demeaned,lat= lat,**opts)
 
 
+        min_time=min(args['minimum time'],time[0])
+        max_time=max(args['maximum time'],time[-1])
+        min_dt=min(args['dt(s)'],dt*3600)
+
+        idx=pd.period_range(min_time,max_time,freq='%is'%min_dt)
+        idx=idx.to_timestamp()
+        self.dfout=pd.DataFrame(index=idx)
+        self.dfout.index.name='time'
+
         idx = pd.period_range(args['minimum time'], args['maximum time'],freq='%is'%args['dt(s)'])
         idx=idx.to_timestamp()
         df_new=pd.DataFrame(index=idx)
         df_new[self.data[mag].short_name+'t'] = reconstruct(np.array(date2num(df_new.index)), coef).h
         df_new.index.name='time'
-        self.dfout.index.name='time'
-        self.dfout=pd.merge_asof(df_new,self.dfout,on='time',direction='nearest', tolerance=pd.Timedelta("1s")).set_index('time')
+        
+        self.dfout=pd.merge_asof(self.dfout,df_new,on='time',direction='nearest', tolerance=pd.Timedelta("1s")).set_index('time')
         self.dfout.index.name='time' 
-
 
 
         return self.dfout

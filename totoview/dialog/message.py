@@ -210,7 +210,7 @@ class wrapper_plugins(QDialog):
 
             F=getattr(getattr(df1, access),self.fct.__name__)
 
-           # dfout=F(args=opt)
+            # dfout=F(args=opt)
             try:
                 dfout=F(args=opt)
             except Exception as exc:
@@ -231,9 +231,11 @@ class wrapper_plugins(QDialog):
                     idx = pd.period_range(tstart, tend,freq='%is'%dt).to_timestamp()  
                     df0=pd.DataFrame(index=idx)
                     df0.index.name='time'
+
                     df0=pd.merge_asof(df0,df,on='time',direction='nearest', tolerance=pd.Timedelta("1s"))
                     df0=pd.merge_asof(df0,dfout,on='time',direction='nearest',tolerance=  pd.Timedelta("1s")).set_index('time',drop=False)
-                    df0.index.name='time' 
+                    df0.index.name='time'
+
                     self.dfs[i]=df0
 
                 else:

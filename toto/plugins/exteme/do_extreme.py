@@ -3,7 +3,7 @@ import os
 
 from ...core.toolbox import get_opt,dir_interval
 import numpy as np
-from ._do_EVA_general import do_EVA_general
+#from ._do_EVA_general import do_EVA_general
 
 @pd.api.extensions.register_dataframe_accessor("Extreme")
 class Extreme:
@@ -13,15 +13,15 @@ class Extreme:
 
     def do_extreme(self,magnitude='magnitude',tp_optional='tp_optional',direction_optional='direction_optional',tm_optional='tm_optional',\
         args={'threshold type':{'percentile':True,'value':False},
-         'threshold value':0.0
+         'threshold value':0.0,
          'Directional':{'On':True,'Off':False},
          'Minimum time interval between peaks (h)':24.0,
          'Direction binning':{'centered':True,'not-centered':False},
-         'Direction interval': 45.
+         'Direction interval': 45.,
          'Time blocking':{'Annual':True,'Seasonal (South hemisphere)':False,'Seasonal (North hemisphere)':False,'Monthly':False},
          'display':{'On':True,'Off':False},
          'Estimate Hmax & Cmax RPVs':{'On':False,'Off':True},
-         'Water depth':5000.0
+         'Water depth':5000.0,
          'folder out':'/tmp/'
          }):
     
@@ -70,8 +70,8 @@ class Extreme:
         else:
             tm=None
 
-        _do_EVA_general(self.data.index,self.data[magnitude],tp,drr,tm,
-            dir_interval,threshold_type,directional_pot,min_time,time_blocking,display,Hmax_RPV,water_depth,folderout)
+        # _do_EVA_general(self.data.index,self.data[magnitude],tp,drr,tm,
+        #     dir_interval,threshold_type,directional_pot,min_time,time_blocking,display,Hmax_RPV,water_depth,folderout)
 
 
 
