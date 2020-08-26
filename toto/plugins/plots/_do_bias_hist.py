@@ -3,14 +3,14 @@ import numpy as np
 from matplotlib import pyplot as plt
 from matplotlib.figure import Figure
 
-def do_bias_hist(X,Y,unit,short_name,nbins,filename):
+def do_bias_hist(X,Y,unit,short_name,nbins,filename,show=True):
 
 
   BIAS=X-Y #Bias
 
   a,b = np.histogram(BIAS,nbins) 
 
-  B=max(np.abs(b))
+  B=np.nanmax(np.abs(b))
 
   fig = plt.figure(figsize=(8.27, 11.69), dpi=100)
   ax =fig.add_subplot(111)
@@ -22,7 +22,7 @@ def do_bias_hist(X,Y,unit,short_name,nbins,filename):
   ax.set_ylabel('Datapoints per bin')
   ylim=ax.get_ylim()
   ax.plot([0,0],[0,max(ylim)],'k--')
-  plt.show()
+  plt.show(block=~show)
   plt.savefig(fileout)
 
 

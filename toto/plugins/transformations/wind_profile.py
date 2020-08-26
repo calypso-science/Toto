@@ -10,7 +10,7 @@ class DataTransformation:
         self.data = pandas_obj
         self.dfout = pd.DataFrame(index=self.data.index.copy())
 
-    def wind_profile(self,ws='ws',opts={
+    def wind_profile(self,ws='ws',args={
         'Level of input wind speed (in meters)':10.,\
         'Averaging period of input wind speed (in minutes)':10.,\
         'Output level (in meters)':10.,\
@@ -27,7 +27,7 @@ class DataTransformation:
                 'Output level (in meters)':10.,\
                 'Output time averaging (in minutes)':10.}
 
-        opt.update(opts)
+        opt.update(args)
 
         U_inp=self.data[ws]
         level_inp=opt['Level of input wind speed (in meters)'];
@@ -97,7 +97,7 @@ class DataTransformation:
         self.dfout[self.data[u].short_name+'m']=U*fac
         return self.dfout
 
-    def hs_sea(self,hs='hs',hs_swell='hs_swell'):
+    def hs_sea(self,hs='hs',hs_swell='hs_swell',args={}):
         self.dfout['Hs_sea']=np.sqrt(self.data[hs]**2-self.data[hs_swell]**2)
         return self.dfout
 

@@ -1,8 +1,8 @@
 
 import os
-from PyQt5.QtWidgets import QWidget,QScrollArea,QComboBox,QPushButton,QMessageBox,QFileDialog,QDialog,QTreeWidgetItem,QTreeWidget,QHBoxLayout,QVBoxLayout,QTextBrowser,QFormLayout
+from PyQt5.QtWidgets import QWidget,QListWidgetItem,QListWidget,QScrollArea,QComboBox,QPushButton,QMessageBox,QFileDialog,QDialog,QTreeWidgetItem,QTreeWidget,QHBoxLayout,QVBoxLayout,QTextBrowser,QFormLayout
 from PyQt5.QtGui import QIcon
-from PyQt5 import QtCore
+from PyQt5 import QtCore,QtWidgets
 import toto
 import inspect
 from ..core.create_frame import get_layout_from_sig,extract_option_from_frame
@@ -50,7 +50,7 @@ def yes_no_question(txt):
 def get_file(parent,ext):
     options = QFileDialog.Options()
     options |= QFileDialog.DontUseNativeDialog
-    filenames, _ = QFileDialog.getOpenFileName(parent,"QFileDialog.getOpenFileName()", "",ext, options=options)
+    filenames, _ = QFileDialog.getOpenFileNames(parent,"QFileDialog.getOpenFileName()", "",ext, options=options)
     if filenames=='':
         return None
 
@@ -303,3 +303,60 @@ class show_help_browser(QDialog):
                 self.message.setText(mms)
 
 
+
+class show_list_file(QDialog):
+    def __init__(self,filenames, parent=None):
+        super(show_list_file, self).__init__(parent)
+
+
+        self.resize(900,600)
+        self.setWindowTitle('Choose files')
+        ssDir = os.path.join(HERE,"..","..", "_tools", "")
+        self.setWindowIcon(QIcon(os.path.join(ssDir,'toto.jpg')))    
+           
+        sshFile=os.path.join(ssDir,'TCobra.qss')
+        with open(sshFile,"r") as fh:
+            self.setStyleSheet(fh.read())
+
+
+        layout=QVBoxLayout()
+        self.list = QListWidget()
+        self.list.setSelectionMode(
+            QtWidgets.QAbstractItemView.ExtendedSelection
+        )
+        for filename in filenames:
+            item=QListWidgetItem(filename)
+            self.list.addItem(item)
+        layout.addWidget(self.list)
+        
+        bttn_box = QHBoxLayout()
+        go = QPushButton('Combined')
+        go.setMaximumSize(60,20)
+        go.clicked.connect(self.go)
+
+        cancel = QPushButton('Cancel')
+        cancel.setMaximumSize(60,20)
+        cancel.clicked.connect(self.cancel)
+
+        bttn_box.addWidget(go)
+        bttn_box.addWidget(cancel)
+        layout.addLayout(bttn_box)
+
+        self.setLayout(layout)
+
+
+    def cancel(self):
+        self.fileout=None
+        self.close()
+                
+    def go(self):
+        items = self.list.selectedItems()
+        self.fileout = []
+        for i in range(len(items)):
+            self.fileout.append(str(self.list.selectedItems()[i].text()))
+
+        self.close()   
+
+    def exec(self):
+        self.exec_()
+        return self.fileout

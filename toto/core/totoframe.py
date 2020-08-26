@@ -62,7 +62,7 @@ class TotoFrame(dict):
                 filename.append(file)
         elif type(prefix)==type(list()):   
             for i in range(n0+1,len(dataframe)+n0+1):
-                pref=os.path.split(prefix[i-1])[-1]
+                pref=os.path.split(prefix[i-1-n0])[-1]
                 file='%s%i' % (pref,i)
                 self[file]={}
                 filename.append(file)
@@ -92,7 +92,7 @@ class TotoFrame(dict):
 
             self[filename[i]]['dataframe']=data
             self[filename[i]]['BACKUPdataframe']=copy.deepcopy(data)
-
+            self[filename[i]]['BACKUPmetadata']=copy.deepcopy(self[filename[i]]['metadata'])
         return filename
 
     def replace_dataframe(self,filename,dataframe):
@@ -126,6 +126,8 @@ class TotoFrame(dict):
         self.move_metadata(fTo,fFrom,var)
 
 
+
+
     def delete_data(self,filename,varname,xlim=None,ylim=None):
 
         if self[filename]['dataframe'].index.name=='time':
@@ -143,10 +145,30 @@ class TotoFrame(dict):
 
 
     def reset(self,filename,varname=None):
-        if varname:
-            self[filename]['dataframe'][varname]=self[filename]['BACKUPdataframe'][varname]
-        else:
+        if varname is None:
             self[filename]['dataframe']=copy.deepcopy(self[filename]['BACKUPdataframe'])
+            self[filename]['metadata']=copy.deepcopy(self[filename]['BACKUPmetadata'])
+        else:
+            self[filename]['dataframe'][varname]=self[filename]['BACKUPdataframe'][varname]
+            self[filename]['metadata'][varname]=self[filename]['BACKUPmetadata'][varname]
+        
+            
+
+    def combine_dataframe(self,filenames):
+
+        df0=self[filenames[0]]['dataframe'].copy()
+        df0.set_index('time',inplace=True,drop=False)
+        self.del_file(filenames[0])
+        del filenames[0]
+        for file in filenames:
+            tmp=self[file]['dataframe'].copy()
+            tmp.set_index('time',inplace=True,drop=False)
+            df0=df0.append(tmp)
+            self.del_file(file)
+
+        #df0.set_index(['time', 'freq'], inplace=True,drop=False)
+        df0.set_index('time', inplace=True,drop=False)
+        self.add_dataframe([df0],['combined'])
 
 
 

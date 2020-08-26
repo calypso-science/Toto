@@ -18,7 +18,7 @@ from windrose import WindroseAxes
 from matplotlib.widgets import RectangleSelector
 from matplotlib.axes import SubplotBase
 import matplotlib.pyplot as plt
-from matplotlib.dates import date2num,num2date
+from matplotlib.dates import date2num,num2date,DateFormatter,AutoDateFormatter,AutoDateLocator
 from datetime import datetime
 import pandas as pd
 
@@ -218,7 +218,14 @@ class Plotting(object):
                     if index_name0!=index_name:
                         display_warning('Variables doesn''t have the same index')
                         continue
+
+
+
                 x=data[file]['dataframe'].index
+
+
+
+
                 y=((data[file]['dataframe'][var])*scl_fac)+add_offset
 
                 if hasattr(self.plot_name,'currentText'):
@@ -226,10 +233,30 @@ class Plotting(object):
                 else:
                     plot_name='plot'
 
+                if isinstance(x, pd.MultiIndex):
+                    plot_name='pcolor'
+
+
+
                 if 'hist'==plot_name:
                     # the histogram of the data
                     ax1f1.hist(y, density=1)
                     self.add_metadata(ax1f1,Xmetadata=data[file]['metadata'][var],Ymetadata=None)
+                elif 'pcolor' == plot_name:
+                    indexes=data[file]['dataframe'].index.names
+                    X=data[file]['dataframe'].unstack()[indexes[0]]
+                    Y=data[file]['dataframe'].unstack()[indexes[1]].values
+                    Z=data[file]['dataframe'].unstack()[var].values
+                    ax1f1.set_gid('ax')
+                    cf=ax1f1.pcolormesh(date2num(X), Y, Z)
+                    locator = AutoDateLocator()
+                    date_format = AutoDateFormatter(locator)
+                    ax1f1.xaxis.set_major_formatter(date_format)
+                    self.sc.fig1.autofmt_xdate()
+                    self.sc.fig1.colorbar(cf,ax=ax1f1)
+                    self.add_metadata(ax1f1,Xmetadata=data[file]['metadata'][indexes[0]],
+                        Ymetadata=data[file]['metadata'][indexes[1]],
+                        legend=False)
                 elif 'progressif'==plot_name:
                     X=x.array
                     Y=y.array
@@ -261,7 +288,7 @@ class Plotting(object):
                     ax1f1.set_gid('ax')
                     plot_ft=getattr(ax1f1, plot_name)
                     plot_ft(x,y,label=var,gid=file+';'+var)
-                    ax1f1.set_xlim(x[0],x[-1])
+                    #ax1f1.set_xlim(x[0],x[-1])
 
                     self.add_metadata(ax1f1,data[file]['metadata'][index_name],data[file]['metadata'][var])
                     if index_name=='time':
@@ -272,11 +299,12 @@ class Plotting(object):
                 index_name0=copy.deepcopy(index_name)
 
 
-    def add_metadata(self,ax,Xmetadata=None,Ymetadata=None):
+    def add_metadata(self,ax,Xmetadata=None,Ymetadata=None,legend=True):
 
         if Ymetadata:
             ax.set_ylabel(" %s [%s] " % (Ymetadata['long_name'],Ymetadata['units']))
         if Xmetadata:
             ax.set_xlabel(" %s [%s] " % (Xmetadata['long_name'],Xmetadata['units']))
-        ax.legend()
+        if legend:
+            ax.legend()
 

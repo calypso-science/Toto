@@ -3,9 +3,11 @@ import numpy as np
 from matplotlib import pyplot as plt
 from matplotlib.figure import Figure
 
-def qq_plot(X,Y,pvec,X_short_name,Y_short_name,Xunit,Yunit,fileout):
+def qq_plot(X,Y,pvec,X_short_name,Y_short_name,Xunit,Yunit,fileout,show=True):
 
 
+    Y=Y[~np.isnan(Y)]
+    X=X[~np.isnan(X)]
     yy=np.percentile(Y,pvec)
     xx=np.percentile(X,pvec)
 
@@ -24,7 +26,7 @@ def qq_plot(X,Y,pvec,X_short_name,Y_short_name,Xunit,Yunit,fileout):
     ax.set_ylabel('Modelled %s quantile [%s]'% (Y_short_name,Yunit))
     ylim=ax.get_ylim()
     ax.plot([0,0],[0,max(ylim)],'k--')
-    #plt.show()
+    plt.show(block=~show)
     plt.savefig(fileout)
 
 

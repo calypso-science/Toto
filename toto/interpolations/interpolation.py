@@ -1,7 +1,7 @@
 
-def interpolation(input_array,args={'limit':float(),'method':{"linear": True,"time":False,\
+def interpolation(input_array,args={'limit':int(),'method':{"linear": True,"time":False,\
 						"index":False, "pad":False,"nearest":False,"zero":True,\
-						"slinear":False,"quadratic":False,"cubic":False,"Spline":False,\
+						"slinear":False,"quadratic":False,"cubic":False,"spline":False,\
 						"barycentric":False,"polynomial":False},\
 						'limit direction':{'forward':True,'backward':False,'Both':False},\
 						'limit area':{'None':True,'inside':False,'outside':False}}):
@@ -9,8 +9,10 @@ def interpolation(input_array,args={'limit':float(),'method':{"linear": True,"ti
 	limit=args['limit']
 	#method=[key for key in args['method'] if args['method'][key]][0]
 	method=args['method']
-	limit_direction=[key for key in args['limit direction'] if args['limit direction'][key]][0]
-	limit_area=[key for key in args['limit area'] if args['limit area'][key]][0]
+	limit_direction=args['limit direction']
+	#limit_direction=[key for key in args['limit direction'] if args['limit direction'][key]][0]
+	limit_area=args['limit area']
+	#limit_area=[key for key in args['limit area'] if args['limit area'][key]][0]
 	if limit:
 		if method=='ffill' or method=='pad':
 			args['limit direction']='forward'

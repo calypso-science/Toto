@@ -100,7 +100,7 @@ def extract_option_from_frame(pannel):
         elif isinstance(pannel[key],QDateTimeEdit):
             dt = pannel[key].dateTime()
             dt_string = dt.toString(pannel[key].displayFormat())
-            opt[key]=dateutil.parser.parse(dt_string)
+            opt[key]=dateutil.parser.parse(dt_string,dayfirst=True)
 
         elif isinstance(pannel[key],dict):
             sub={}

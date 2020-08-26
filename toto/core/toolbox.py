@@ -104,7 +104,7 @@ def dir_interval(dir_swath=45,mode='centred'):
         print('The chosen interval is not a multiple of 360')
         raise
     interval=[]
-    if mode == 'centred':
+    if mode == 'centred' or mode=='centered':
         for i in range(0,int(360//dir_swath)):
             if i==0:
                 interval.append(360-(dir_swath/2))
@@ -126,7 +126,22 @@ def dir_interval(dir_swath=45,mode='centred'):
 
     return interval
 
+def degToCompass(num):
+    if isinstance(num,list) or isinstance(num,np.array):
+        rads = np.deg2rad(num)  
+        av_sin = np.mean(np.sin(rads))  
+        av_cos = np.mean(np.cos(rads))  
+        ang_rad = np.arctan2(av_sin,av_cos)  
+        num = np.mod(np.round(np.rad2deg(ang_rad),1),360)
+
+
+    val=int((num/22.5)+.5)
+
+    arr=["N","NNE","NE","ENE","E","ESE", "SE", "SSE","S","SSW","SW","WSW","W","WNW","NW","NNW"]
+    return arr[(val % 16)]
 
 if __name__ == '__main__':
-    print(dir_interval(dir_swath=22.5,mode='centred'))
-    print(dir_interval(dir_swath=45,mode='not-centred'))
+    #print(dir_interval(dir_swath=22.5,mode='centred'))
+    #print(dir_interval(dir_swath=45,mode='not-centred'))
+
+    print(degToCompass([350,3,10]))

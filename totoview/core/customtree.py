@@ -143,6 +143,7 @@ class CustomTreeWidget(QTreeWidget):
         if keys is None:
             keys=data.keys()
             self.clear()
+            
 
 
         first=True

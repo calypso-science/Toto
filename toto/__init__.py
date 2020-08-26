@@ -46,7 +46,7 @@ def _import_plugins(pkgname="inputs",name='read'):
         if os.path.isdir(os.path.join(here, pkgname,dirs)):
             for filename in glob.glob1(os.path.join(here, pkgname,dirs), "*.py"):
                 module = os.path.splitext(filename)[0]
-                if module == "__init__":
+                if module.startswith('_'):
                     continue
 
                 tmp=import_module("toto.{}.{}.{}".format(pkgname,dirs, module))

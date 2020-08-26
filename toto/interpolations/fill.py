@@ -1,6 +1,6 @@
 
 
-def fill(input_array,args={'value':float(),'limit':float(),'method':{"backfill": False,"bfill":False,\
+def fill(input_array,args={'value':float(),'limit':int(),'method':{"backfill": False,"bfill":False,\
 						"pad":False, "pad":False,"ffill":False,"None":True}}):
 
 

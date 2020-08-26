@@ -38,7 +38,7 @@ class Cyclone(object):
                     cyclone_file='/tmp/IBTrACS.ALL.v04r00.nc'):
 
         if not os.path.isfile(cyclone_file):
-            download_cyclone(output_directory,url)
+            self.download_cyclone(output_directory,url)
 
         self.default()
         self.read_cyclone(cyclone_file)

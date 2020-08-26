@@ -261,6 +261,7 @@ class Statistics:
         else:
             Drr=self.data[Drr_optional].values
 
+
         do_wave_pop(self.data.index,self.data[Hs].values,self.data[Tm02].values,Drr,\
             Tp,Sw,method,args['Heigh bin size'],Ddir,args['Period bin size'],\
             args['Exposure (years) (= length of time series if not specified)'],drr_switch,filename)

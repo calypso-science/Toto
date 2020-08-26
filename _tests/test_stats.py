@@ -1,24 +1,26 @@
 import os,sys
 sys.path.append('/home/remy/Software/Toto')
+sys.path.append('/home/remy/Calypso/Projects/004_Toto/Toto')
 import numpy as np
 import pandas as pd
 from toto.core.totoframe import TotoFrame
 import toto
 from toto.inputs.txt import TXTfile
+from toto.inputs.TRYAXIS import TRYAXISfile
+import totoView
 
 
-
-filename=r'../GSB.txt'
+filename=r'../test/GSB.txt'
 tx=TXTfile([filename],colNamesLine=1,skiprows=1,unitNamesLine=0,time_col_name={'year':'year','month':'month','day':'day','hour':'hour','min':'Minute'})
 tx.reads()
 tx.read_time()
 df=tx._toDataFrame()
-
-#df=tf['test1']['dataframe'].Statistics.common_stats(mag='U',drr='drr')
-# df=df[0].Statistics.joint_prob(speed='elev',direction='hvel_U_lev_3.0',period='Tp',args={'method':'Mag vs Dir',\
-# 	'folder out':'/tmp/','X Min Res Max(optional)':[2,1,22],'Y Min Res Max(optional)':[0,0.5],'Direction binning':'centred',\
-# 	'Direction interval': 45.,'Time blocking':'Monthly','Probablity expressed in':'percent'})
-df[0].filename='test'
+df[0].filename='sss'
+# #df=tf['test1']['dataframe'].Statistics.common_stats(mag='U',drr='drr')
+# # df=df[0].Statistics.joint_prob(speed='elev',direction='hvel_U_lev_3.0',period='Tp',args={'method':'Mag vs Dir',\
+# # 	'folder out':'/tmp/','X Min Res Max(optional)':[2,1,22],'Y Min Res Max(optional)':[0,0.5],'Direction binning':'centred',\
+# # 	'Direction interval': 45.,'Time blocking':'Monthly','Probablity expressed in':'percent'})
+# df[0].filename='test'
 # df=df[0].Statistics.exc_prob(data='elev',args={'method':'exceedance persistence',\
 # 	'folder out':'','Exceedance bins: Min Res Max(optional)':[0,0.1],'Duration Min Res Max':[1,1,12],
 # 	'Time blocking':'Monthly','Probablity expressed in':'percent'})
@@ -55,7 +57,15 @@ df[0].filename='test'
 #         'Time blocking':'Annual',
 #         'folder out':'/tmp/',
 #         })
-
+df=df[0].StatPlots.Percentage_of_occurence(mag='Spd',drr='Dir',\
+               args={ 'Magnitude interval (optional)':[],
+                'X label':'Wind speed in [m/s]',
+                'Time blocking':'Monthly',
+                'Direction binning':'centered',
+                'Direction interval': 45.,
+                'display':'On',
+                'folder out':'/tmp/'})
+sys.exit(-1)
 # df=df[0].StatPlots.BIAS_histogramm(measured='Spd',modelled='Dir')#,\
 #         # args={'Title':'Current speed',\
 #         # 'units':'m/s',\
@@ -84,15 +94,46 @@ df[0].filename='test'
 #         'folder out':'/tmp/'})
 
 
-df=df[0].Statistics.wave_population(Hs='Spd',Tm02='Spd',Drr_optional='Dir',Tp_optional='Spd',SW_optional='Spd',\
-            args={'Method':'Height only',#:True,'Height/Direction':False,'Height/Tp':False,'height/period':False},
-                'Direction binning':'centered',
-                'Direction interval': 45.,
-                'Heigh bin size': 0.1,
-                'Period bin size': 2,
-                'Exposure (years) (= length of time series if not specified)':0,
-                'folder out':'',
-                'Directional switch':'On'}
-            )
+# df=df[0].Statistics.wave_population(Hs='Spd',Tm02='Spd',Drr_optional='Dir',Tp_optional='Spd',SW_optional='Spd',\
+#             args={'Method':'Height only',#:True,'Height/Direction':False,'Height/Tp':False,'height/period':False},
+#                 'Direction binning':'centered',
+#                 'Direction interval': 45.,
+#                 'Heigh bin size': 0.1,
+#                 'Period bin size': 2,
+#                 'Exposure (years) (= length of time series if not specified)':0,
+#                 'folder out':'',
+#                 'Directional switch':'On'}
+#             )
+import glob
+filename=glob.glob('../test/1D_spec/*.NONDIRSPEC')
+tx=TRYAXISfile(filename)
+df=tx._toDataFrame()
+data=TotoFrame()
+data.add_dataframe(df,filename)
+data.combine_dataframe(list(data.keys()))
 
 
+#totoView.main(dataframes=[data['combined1']['dataframe']])
+
+
+
+import xarray as xr
+
+from wavespectra.specarray import SpecArray
+from wavespectra.specdataset import SpecDataset
+
+coords = {'time': [df[0]['time'][0]],
+          'freq': df[0]['freq'],
+          }
+
+Z=df[0]['density'].values
+#import pdb;pdb.set_trace()
+
+efth = xr.DataArray(data=np.tile(Z,(1,1)),
+                    coords=coords,
+                    dims=('time','freq'),
+                    name='efth')
+
+dset = efth.to_dataset()
+
+print(dset.spec.hs().values[0])

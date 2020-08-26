@@ -22,10 +22,10 @@ def do_wave_pop(time,Hs,Tm,Drr,Tp,Sw,method,dh,Ddir,tbins,exposure,drr_switch,fi
         return 'Method unknown'
 
     dt=(time[2]-time[1]).seconds
-    print(method)
+
     sheetname=N
     if method == 1:
-        import pdb;pdb.set_trace()
+
         if Sw is None:
             pop,hbins,dbins=wavepop(Hs,Tm,dt,dh,method)
             pop,hbins=update_pop(pop,hbins,len(Hs),dt,exposure)
@@ -264,6 +264,7 @@ def wavepop(hs,tm,dt,dh,method,**varargin):
             #correct directional bin(j)
             for j in range(1,len(dbins)):
                 pop[i-1,j-1]=np.nansum(prob_in_bin[inbin[j-1,:]]*nw[inbin[j-1,:]])
+
 
     return pop,hbins,dbins
 

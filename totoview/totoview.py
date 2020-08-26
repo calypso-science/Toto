@@ -204,8 +204,19 @@ class TotoGUI(QMainWindow,FORM_CLASS):
         im.triggered.connect(self.callInterp)
         datamanip.addAction(im)
 
+        im = QAction('Combined files', self)
+        im.triggered.connect(self.callCombine)
+        datamanip.addAction(im)
+        
 #### Events
-
+    def callCombine(self):
+        mss=show_list_file(list(self.data.keys()))
+        files=mss.exec()
+        self.data.combine_dataframe(files)
+        self.list_file.blocker.reblock()
+        self.list_file.populate_tree(self.data)
+        self.get_file_var()
+        self.list_file.blocker.unblock()
     def CallWrapper(self,module):
         def out():
             self.list_file.blocker.reblock()
@@ -247,11 +258,7 @@ class TotoGUI(QMainWindow,FORM_CLASS):
         main = SelectWindow(data_to_filter) 
         df=main.exec()
 
-        self._update(check_files,df)
-
-
-                
-                
+        self._update(checks_files,df)
 
         self.list_file.populate_tree(self.data)
         self.plotting.refresh_plot(self.data,checks_files,check_vars)
@@ -577,7 +584,7 @@ class TotoGUI(QMainWindow,FORM_CLASS):
                 if rep:
                     self.data.reset(item.text(0),varname=None)
 
-
+            self.list_file.populate_tree(self.data)
             self.get_file_var()
 # --------------------------------------------------------------------------------}
 # --- Mains 
