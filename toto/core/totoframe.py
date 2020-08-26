@@ -69,8 +69,12 @@ class TotoFrame(dict):
 
         return filename
 
-    def add_dataframe(self,dataframe,filename,metadataframe=MetadataFrame):
-        filename=self._get_filename(dataframe,filename)
+    def add_dataframe(self,dataframe,filename,metadataframe=MetadataFrame,change_name=True):
+        if change_name:
+            filename=self._get_filename(dataframe,filename)
+        else:
+            for file in filename:
+                self[file]={}
         for i,data in enumerate(dataframe):
             self[filename[i]]['metadata']={}
             for key in data.keys():
@@ -97,7 +101,7 @@ class TotoFrame(dict):
 
     def replace_dataframe(self,filename,dataframe):
         self.del_file(filename)
-        self.add_dataframe(dataframe,filename)
+        self.add_dataframe(dataframe,filename,change_name=False)
 
 
     def del_file(self,filename):

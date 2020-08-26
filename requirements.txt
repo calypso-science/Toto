@@ -1,11 +1,11 @@
-numpy  
-matplotlib 
-pandas
-future
-scipy
-xarray
+numpy  == 1.19.1
+matplotlib == 3.3.0
+pandas == 1.1.1
+future == 0.18.2
+scipy == 1.5.2
+xarray == 0.16.0
 PyQt5
 git+https://github.com/python-windrose/windrose
 attrdict
-openpyxl
-utide
+openpyxl == 3.0.4
+git+https://github.com/wesleybowman/UTide.git

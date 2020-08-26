@@ -61,7 +61,10 @@ def select_by_time(input_array,args={'minimum time':datetime,'maximum time':date
         name=input_array.name
         input_array = pd.DataFrame(input_array)
         all_month=input_array.index.month
-        choosen_month=map(int, args['month(s)'].split(','))
+        if ',' in args['month(s)']:
+            choosen_month=map(int, args['month(s)'].split(','))
+        else:
+            choosen_month=[int(x) for x in args['month(s)']]
         mask=False
         for m in choosen_month:
             mask+=m==all_month

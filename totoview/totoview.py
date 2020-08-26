@@ -245,16 +245,36 @@ class TotoGUI(QMainWindow,FORM_CLASS):
         mss=show_help_browser()
         mss.exec_()
     def callSelect(self):
+
         self.list_file.blocker.reblock()
         checks_files,check_vars,checks_dataframe=self.list_file.get_all_items()
 
-        # check variabl from the first file and apply to all slected file
+        if len(checks_dataframe)<1:
+            display_error('You need to select at least one variable and one file')
+            return        
+
         data_to_filter=[]
-        for file in checks_files:
+        to_del=[]
+        for i,file in enumerate(checks_files):
             df=self.data[file]['dataframe']
-            data_to_filter.append(df[check_vars[0]])
-        
+            check = np.isin(check_vars[i], df.columns)
+            if np.all(check) and len(check_vars[i])>=1 and file in checks_dataframe:
+                data_to_filter.append(df[check_vars[i]])
+            else:
+                to_del.append(i)
+
+        if len(to_del)>0:
+            for i in sorted(to_del, reverse = True):
+                del checks_files[i]
+                del check_vars[i]
+
+
+        if len(checks_files)<1 or len(data_to_filter)<1:
+            display_error('The selected variable is not present in the selected file')
+            return        
        
+
+
         main = SelectWindow(data_to_filter) 
         df=main.exec()
 
@@ -268,17 +288,35 @@ class TotoGUI(QMainWindow,FORM_CLASS):
         self.list_file.blocker.reblock()
         checks_files,check_vars,checks_dataframe=self.list_file.get_all_items()
 
-        # check variabl from the first file and apply to all slected file
+        if len(checks_dataframe)<1:
+            display_error('You need to select at least one variable and one file')
+            return        
+
         data_to_filter=[]
-        for file in checks_files:
+        to_del=[]
+        for i,file in enumerate(checks_files):
             df=self.data[file]['dataframe']
-            data_to_filter.append(df[check_vars[0]])
-        
+            check = np.isin(check_vars[i], df.columns)
+            if np.all(check) and len(check_vars[i])>=1 and file in checks_dataframe:
+                data_to_filter.append(df[check_vars[i]])
+            else:
+                to_del.append(i)
+
+        if len(to_del)>0:
+            for i in sorted(to_del, reverse = True):
+                del checks_files[i]
+                del check_vars[i]
+
+
+        if len(checks_files)<1 or len(data_to_filter)<1:
+            display_error('The selected variable is not present in the selected file')
+            return        
+               
        
         main = InterpWindow(data_to_filter) 
         df=main.exec()
         for i,file in enumerate(checks_files):
-            self.data[file]['dataframe'][check_vars[0]]=df[i]
+            self.data[file]['dataframe'][check_vars[i]]=df[i]
         self.plotting.refresh_plot(self.data,checks_files,check_vars)
         self.list_file.blocker.unblock()
 
@@ -286,19 +324,36 @@ class TotoGUI(QMainWindow,FORM_CLASS):
         self.list_file.blocker.reblock()
         checks_files,check_vars,checks_dataframe=self.list_file.get_all_items()
 
-        # check variabl from the first file and apply to all slected file
+        if len(checks_dataframe)<1:
+            display_error('You need to select at least one variable and one file')
+            return        
+
         data_to_filter=[]
         LonLat=[]
-        for file in checks_files:
+        to_del=[]
+        for i,file in enumerate(checks_files):
             df=self.data[file]['dataframe']
-            data_to_filter.append(df[check_vars[0]])
-            LonLat.append([self.data[file]['longitude'],self.data[file]['latitude']])
-            #LonLat.append(self.data[file])
+            check = np.isin(check_vars[i], df.columns)
+            if np.all(check) and len(check_vars[i])>=1 and file in checks_dataframe:
+                data_to_filter.append(df[check_vars[i]])
+                LonLat.append([self.data[file]['longitude'],self.data[file]['latitude']])
+            else:
+                to_del.append(i)
+
+        if len(to_del)>0:
+            for i in sorted(to_del, reverse = True):
+                del checks_files[i]
+                del check_vars[i]
+
+
+        if len(checks_files)<1 or len(data_to_filter)<1:
+            display_error('The selected variable is not present in the selected file')
+            return        
        
         main = FiltWindow(data_to_filter,LonLat=LonLat) 
         df=main.exec()
         for i,file in enumerate(checks_files):
-            self.data[file]['dataframe'][check_vars[0]]=df[i]
+            self.data[file]['dataframe'][check_vars[i]]=df[i]
         self.plotting.refresh_plot(self.data,checks_files,check_vars)
         self.list_file.blocker.unblock()
 
@@ -394,18 +449,28 @@ class TotoGUI(QMainWindow,FORM_CLASS):
         ext='.'+os.path.split(filenames[0])[-1].split('.')[-1]
 
         readers=[d for d in dir(toto.inputs) if not d.startswith('_')]
-        gd_reader=False
+        gd_reader=[]
         for reader in readers:
             run_ft=self._import_from('toto.inputs.%s' % reader,'%sfile' % reader.upper())
             exs=run_ft.defaultExtensions()
             if ext in exs:
-                gd_reader=reader
-                break
+                gd_reader.append(reader)
+                
 
-        if not gd_reader:
+        if len(gd_reader)<1:
             display_error('could not find a reader for extension: %s' % ext) 
             sys.exit(-1)
 
+        if len(gd_reader)>1:
+            readername=['%sfile' %reader.upper() for reader in gd_reader]
+            mss=show_list_file(readername,title='Choose a reader',multiple=False)
+            reader=mss.exec()
+            if reader is None:
+                return
+            gd_reader=reader[0].replace('file','').lower()
+
+        if isinstance(gd_reader,list):
+            gd_reader=gd_reader[0]    
         df=self.import_data(gd_reader,filenames)
         self.load_df(df,filename=filenames)
 

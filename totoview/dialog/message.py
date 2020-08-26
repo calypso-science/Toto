@@ -289,6 +289,12 @@ class show_help_browser(QDialog):
             for fct in fcts:
                 child = QTreeWidgetItem(parent)
                 child.setText(0, fct)
+                if module=='plugins':
+                    subs= dir(getattr(getattr(toto,module),fct))
+                    subs=[x.replace('_',' ') for x in subs if not x.startswith('_')]
+                    for sub in subs:
+                        child2 = QTreeWidgetItem(child)
+                        child2.setText(0, sub)
 
         self.tree.expandAll()
         self.tree.setHeaderLabel('Module')
@@ -298,21 +304,27 @@ class show_help_browser(QDialog):
         item=self.tree.currentItem()
         if item:
             if item.parent():
+
                 module=item.parent().text(0)
                 fct=item.text(0)
-                f=getattr(getattr(toto,module),fct)
+                if item.parent().parent():
+                    fct=fct.replace(' ','_')
+                    module0=item.parent().parent().text(0)
+                    f=getattr(getattr(getattr(toto,module0),module),fct)
+                else:
+                    f=getattr(getattr(toto,module),fct)
                 mms=inspect.getdoc(f)
                 self.message.setText(mms)
 
 
 
 class show_list_file(QDialog):
-    def __init__(self,filenames, parent=None):
+    def __init__(self,filenames,title='Choose files',multiple=True, parent=None):
         super(show_list_file, self).__init__(parent)
 
 
         self.resize(900,600)
-        self.setWindowTitle('Choose files')
+        self.setWindowTitle(title)
         ssDir = os.path.join(HERE,"..","..", "_tools", "")
         self.setWindowIcon(QIcon(os.path.join(ssDir,'toto.jpg')))    
            
@@ -323,16 +335,17 @@ class show_list_file(QDialog):
 
         layout=QVBoxLayout()
         self.list = QListWidget()
-        self.list.setSelectionMode(
-            QtWidgets.QAbstractItemView.ExtendedSelection
-        )
+        if multiple:
+            self.list.setSelectionMode(
+                QtWidgets.QAbstractItemView.ExtendedSelection
+            )
         for filename in filenames:
             item=QListWidgetItem(filename)
             self.list.addItem(item)
         layout.addWidget(self.list)
         
         bttn_box = QHBoxLayout()
-        go = QPushButton('Combined')
+        go = QPushButton('Go')
         go.setMaximumSize(60,20)
         go.clicked.connect(self.go)
 
