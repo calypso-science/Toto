@@ -57,15 +57,15 @@ df[0].filename='sss'
 #         'Time blocking':'Annual',
 #         'folder out':'/tmp/',
 #         })
-df=df[0].StatPlots.Percentage_of_occurence(mag='Spd',drr='Dir',\
-               args={ 'Magnitude interval (optional)':[],
-                'X label':'Wind speed in [m/s]',
-                'Time blocking':'Monthly',
-                'Direction binning':'centered',
-                'Direction interval': 45.,
-                'display':'On',
-                'folder out':'/tmp/'})
-sys.exit(-1)
+# df=df[0].StatPlots.Percentage_of_occurence(mag='Spd',drr='Dir',\
+#                args={ 'Magnitude interval (optional)':[],
+#                 'X label':'Wind speed in [m/s]',
+#                 'Time blocking':'Monthly',
+#                 'Direction binning':'centered',
+#                 'Direction interval': 45.,
+#                 'display':'On',
+#                 'folder out':'/tmp/'})
+
 # df=df[0].StatPlots.BIAS_histogramm(measured='Spd',modelled='Dir')#,\
 #         # args={'Title':'Current speed',\
 #         # 'units':'m/s',\
@@ -104,6 +104,25 @@ sys.exit(-1)
 #                 'folder out':'',
 #                 'Directional switch':'On'}
 #             )
+
+
+
+df=df[0].WaveAnalysis.wave_spectra_plot(sea_level='Ve',\
+        args={'units':'m',
+         'Windows': 3600*24.,
+         'Overlap':1800*24.,
+         'Nfft':3600*24.,
+         'Detrend':'default', #:True,'linear':False,'constante':False},
+         'Period (s) min and max for plotting':[10*360, 1000],
+         'Xaxis':'frequency',#{'period':True,'frequency':False}
+         'folder out':'/tmp/',
+         'display':'On'#{'On':True,'Off':False}
+         })
+
+print(df)
+sys.exit(-1)
+
+
 import glob
 filename=glob.glob('../test/1D_spec/*.NONDIRSPEC')
 tx=TRYAXISfile(filename)
