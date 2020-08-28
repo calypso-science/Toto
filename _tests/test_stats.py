@@ -6,16 +6,25 @@ import pandas as pd
 from toto.core.totoframe import TotoFrame
 import toto
 from toto.inputs.txt import TXTfile
+from toto.inputs.mat import MATfile
 from toto.inputs.TRYAXIS import TRYAXISfile
 import totoView
 
 
-filename=r'../test/GSB.txt'
-tx=TXTfile([filename],colNamesLine=1,skiprows=1,unitNamesLine=0,time_col_name={'year':'year','month':'month','day':'day','hour':'hour','min':'Minute'})
-tx.reads()
-tx.read_time()
+# filename=r'_tests/txt_file/GSB.txt'
+# tx=TXTfile([filename],colNamesLine=1,skiprows=1,unitNamesLine=0,time_col_name={'year':'year','month':'month','day':'day','hour':'hour','min':'Minute'})
+# tx.reads()
+# tx.read_time()
+# df=tx._toDataFrame()
+# df[0].filename='sss'
+filename=r'../ssh.mat'
+tx=MATfile(filename)
+# tx=TXTfile([filename],colNamesLine=1,skiprows=1,unitNamesLine=0,time_col_name={'year':'year','month':'month','day':'day','hour':'hour','min':'Minute'})
+# tx.reads()
+# tx.read_time()
 df=tx._toDataFrame()
 df[0].filename='sss'
+
 # #df=tf['test1']['dataframe'].Statistics.common_stats(mag='U',drr='drr')
 # # df=df[0].Statistics.joint_prob(speed='elev',direction='hvel_U_lev_3.0',period='Tp',args={'method':'Mag vs Dir',\
 # # 	'folder out':'/tmp/','X Min Res Max(optional)':[2,1,22],'Y Min Res Max(optional)':[0,0.5],'Direction binning':'centred',\
@@ -107,19 +116,39 @@ df[0].filename='sss'
 
 
 
-df=df[0].WaveAnalysis.wave_spectra_plot(sea_level='Ve',\
-        args={'units':'m',
-         'Windows': 3600*24.,
-         'Overlap':1800*24.,
-         'Nfft':3600*24.,
-         'Detrend':'default', #:True,'linear':False,'constante':False},
-         'Period (s) min and max for plotting':[10*360, 1000],
-         'Xaxis':'frequency',#{'period':True,'frequency':False}
-         'folder out':'/tmp/',
-         'display':'On'#{'On':True,'Off':False}
+# df=df[0].WaveAnalysis.wave_spectra_plot(sea_level='Ve',\
+#         args={'units':'m',
+#          'Windows': 3600*24.,
+#          'Overlap':1800*24.,
+#          'Nfft':3600*24.,
+#          'Detrend':'default', #:True,'linear':False,'constante':False},
+#          'Period (s) min and max for plotting':[10*360, 1000],
+#          'Xaxis':'frequency',#{'period':True,'frequency':False}
+#          'folder out':'/tmp/',
+#          'display':'On'#{'On':True,'Off':False}
+#          })
+
+df=df[0].WaveAnalysis.ssh_to_wave_with_0crossing(sea_level='ssh',\
+        args={
+         'Windows': 3600.,
+         'Overlap':1800.,
+         'Nfft':3600.,
+         'Crossing':'Downcrossing', #:True,'linear':False,'constante':False},
+         'Wave period range (min and max) (in s)':[3, 25],
+         'Minimum number of waves per window for zero crossing analysis':30
          })
 
-print(df)
+
+# df=df[0].WaveAnalysis.ssh_to_wave_with_spectra(sea_level='ssh',\
+#         args={'units':'m',
+#          'Windows': 3600.,
+#          'Overlap':1800.,
+#          'Nfft':3600.,
+#          'Detrend':'default', #:True,'linear':False,'constante':False},
+#          'Wave period range (min and max) (in s)':[3, 25],
+#          })
+
+import pdb;pdb.set_trace()
 sys.exit(-1)
 
 

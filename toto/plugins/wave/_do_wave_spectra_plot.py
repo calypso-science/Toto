@@ -6,7 +6,7 @@ from matplotlib.figure import Figure
 
 def do_wave_spectra_plot(time,mag,unit,nperseg,noverlap,nfft,detrend,period,plotfreq,fileout,display):
 
-    sint=(time[2]-time[1]).seconds
+    sint=(time[2]-time[1]).total_seconds()
     Tmin=period[0]
     Tmax=period[1]
     if period[0] <= 1.9999*sint:

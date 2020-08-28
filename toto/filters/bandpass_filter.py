@@ -1,5 +1,5 @@
 import numpy as np
-from scipy.fftpack import rfft, irfft, fftfreq
+from scipy.fftpack import fft,rfft, irfft, fftfreq
 
 def bandpass_filter(input_array,args={'lower cut-off':float(),'upper cut-off':float()}):
     output_array=input_array.copy()
