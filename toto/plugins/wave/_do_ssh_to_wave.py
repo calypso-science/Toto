@@ -36,7 +36,7 @@ def zerodn(time,mag,Upcross=False):
 
 
     if Nz <= 1:
-        return None
+        return np.zeros((Nz,)),np.zeros((Nz,))
 
     ydiff = ys - ye
     ts =  (te*ys - ts*ye)/ydiff
@@ -48,9 +48,9 @@ def zerodn(time,mag,Upcross=False):
 
     Ht = np.zeros((Nz,))
 
-    for k in range(0,Nz):
+    for k in range(1,Nz+1):
       ysub = mag[cs == k]
-      Ht[k] = max(ysub) - min(ysub)
+      Ht[k-1] = max(ysub) - min(ysub)
 
     return Ht,Period
     
@@ -72,8 +72,9 @@ def get_stats(Ht,Period,min_n=30):
         idx=np.argsort(Ht)
         P=Period[idx]
         H=Ht[idx]
-        s=int(round(n*2/3))
-        s10=int(round(n*9/10))
+
+        s=int(round(n*2/3)-1)
+        s10=int(round(n*9/10)-1)
         stat['hs'] = np.mean(H[s:]);
         stat['ts'] = np.mean(P[s:]);
 
@@ -160,26 +161,34 @@ def do_ssh_to_wave(time,mag,noverlap,nfft,nperseg,detrend,period,min_wave,crossi
 
     mag=mag[start:]
     time=time[start:]
+
+
+
+
     df=pd.DataFrame()
+
     for i in range(0,len(mag)-window,overlap):
         if i % 10000 ==0:
             print('==>%i/%i'%(i,len(mag)-window))
-        data =mag[i:i+window]
+
+        data =mag[i:i+window].copy()
         N=len(data);
         t=time[i:i+window]
         #%%%%%%%%%%%%%identify the length of NaN blocks
         a=np.isnan(data).astype(int)
-        nan_block_length=[sum(1 for i in g) for k,g in groupby(a) if k==1]
+        nan_block_length=np.array([sum(1 for i in g) for k,g in groupby(a) if k==1])
 
         #%%%%%%%%%%%%%%%%%do spectrum analysis
-        if  len(a[a==1]) < N/2: #& len((nan_block_length>Tmin/sint).nonzero()[0]) < 4: 
-                #set_interp = interp1d(t[~np.isnan(data)], data[~np.isnan(data)])
-                #data=set_interp(t) #removes NaN
-                #data=data[~np.isnan(data)] #removes possible NaN on the edges of the time series 
-                if method=='spectra':         
-                    df=spectra_analysis(df,[time[i+int(window/2)]],data,sint,window,overlap,fft,detrend,Tmin,Tmax)
-                else:
-                    df=zero_crossing(df,time[i+int(window/2)],t,data,crossing,min_wave)
+        if  np.logical_and(len(a[a==1]) < N/2,len((nan_block_length>Tmin/sint).nonzero()[0]) < 4): 
+            #import pdb;pdb.set_trace()
+            if nan_block_length:
+                data = np.interp(t,t[~np.isnan(data)], data[~np.isnan(data)]) #removes NaN
+                data=data[~np.isnan(data)] #removes possible NaN on the edges of the time series 
+                #import pdb;pdb.set_trace()
+            if method=='spectra':         
+                df=spectra_analysis(df,[time[i+int(window/2)]],data,sint,window,overlap,fft,detrend,Tmin,Tmax)
+            else:
+                df=zero_crossing(df,time[i+int(window/2)],t,data,crossing,min_wave)
 
 
     return df

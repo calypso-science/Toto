@@ -34,7 +34,7 @@ def do_wavelet(time,mag,mother,period,dj,unit,filename,display):
     s0 = 2**(min_power_of2)*dt
     j1 = (max_power_of2-min_power_of2)/dj;    # this says do (max_power_of2-min_power_of2) powers-of-two above min_power_of2 with dj sub-octaves each
 
-    mag=bandpass_filter(mag,args={'lower cut-off':2**(max_power_of2_filt)*dt,'upper cut-off':2**(min_power_of2_filt)*dt})
+    mag=bandpass_filter(mag,args={'lower cut-off (s)':2**(min_power_of2_filt)*dt,'upper cut-off (s)':2**(max_power_of2_filt)*dt})
 
     mag=mag.values
     n = len(mag);

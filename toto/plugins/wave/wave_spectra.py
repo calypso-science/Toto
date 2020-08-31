@@ -67,7 +67,10 @@ class WaveAnalysis:
         period=args['Wave period range (min and max) (in s)']
         method=args['Method']
         if method=='zero-crossing':
-            self.data[sea_level]=bandpass_filter(self.data[sea_level],args={'lower cut-off':period[1],'upper cut-off':period[0]})
+            self.data[sea_level]=bandpass_filter(self.data[sea_level],args={'lower cut-off (s)':period[0],'upper cut-off (s)':period[1]})
+
+
+
 
         detrend=False
         if args['Detrend']=='linear':

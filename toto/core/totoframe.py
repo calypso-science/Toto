@@ -30,7 +30,9 @@ def filled_gap(df,missing_value=np.NaN):
     df0=pd.DataFrame(index=idx)
     df0.index.name='time'
     del df['time']
-    df=pd.merge_asof(df0,df,on='time',direction='nearest', tolerance=pd.Timedelta("1s")).set_index('time',drop=False)
+    tol=int(dt*2)
+    df=pd.merge_asof(df0,df,on='time',direction='nearest', tolerance=pd.Timedelta("%ims"%tol)).set_index('time',drop=False)
+
     #df=df.reindex(idx,method='nearest', fill_value=missing_value,tolerance=3600)
     df.index.name='time' 
     return df
