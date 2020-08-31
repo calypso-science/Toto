@@ -74,7 +74,7 @@ def get_layout_from_sig(sig):
             elif isinstance(args[arg],list):
                 wd.setText(' '.join([str(i) for i in args[arg]])) 
                
-            if args[arg]=='/tmp/':
+            if isinstance(args[arg],str) and os.path.isdir('/tmp/'):
                 container=QWidget()
                 ly=QHBoxLayout()
                 ly.addWidget(wd)
@@ -85,6 +85,7 @@ def get_layout_from_sig(sig):
                 Vl.addRow(arg,container)
             else:
                 Vl.addRow(arg,wd,)
+
             layout[arg]=wd
     return Vl,layout
 def extract_option_from_frame(pannel):

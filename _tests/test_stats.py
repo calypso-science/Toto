@@ -9,7 +9,7 @@ from toto.inputs.txt import TXTfile
 from toto.inputs.mat import MATfile
 from toto.inputs.TRYAXIS import TRYAXISfile
 import totoView
-
+from toto.plugins.wave._do_ssh_to_wave import zero_crossing
 
 # filename=r'_tests/txt_file/GSB.txt'
 # tx=TXTfile([filename],colNamesLine=1,skiprows=1,unitNamesLine=0,time_col_name={'year':'year','month':'month','day':'day','hour':'hour','min':'Minute'})
@@ -17,7 +17,7 @@ import totoView
 # tx.read_time()
 # df=tx._toDataFrame()
 # df[0].filename='sss'
-filename=r'../ssh.mat'
+filename=r'../ssh2.mat'
 tx=MATfile(filename)
 # tx=TXTfile([filename],colNamesLine=1,skiprows=1,unitNamesLine=0,time_col_name={'year':'year','month':'month','day':'day','hour':'hour','min':'Minute'})
 # tx.reads()
@@ -25,7 +25,9 @@ tx=MATfile(filename)
 df=tx._toDataFrame()
 df[0].filename='sss'
 
-# #df=tf['test1']['dataframe'].Statistics.common_stats(mag='U',drr='drr')
+
+
+#df=tf['test1']['dataframe'].Statistics.common_stats(mag='U',drr='drr')
 # # df=df[0].Statistics.joint_prob(speed='elev',direction='hvel_U_lev_3.0',period='Tp',args={'method':'Mag vs Dir',\
 # # 	'folder out':'/tmp/','X Min Res Max(optional)':[2,1,22],'Y Min Res Max(optional)':[0,0.5],'Direction binning':'centred',\
 # # 	'Direction interval': 45.,'Time blocking':'Monthly','Probablity expressed in':'percent'})
@@ -127,16 +129,37 @@ df[0].filename='sss'
 #          'folder out':'/tmp/',
 #          'display':'On'#{'On':True,'Off':False}
 #          })
-
-df=df[0].WaveAnalysis.ssh_to_wave_with_0crossing(sea_level='ssh',\
+df=df[0].WaveAnalysis.wavelet_analysis(sea_level='ssh',\
         args={
-         'Windows': 3600.,
-         'Overlap':1800.,
-         'Nfft':3600.,
-         'Crossing':'Downcrossing', #:True,'linear':False,'constante':False},
+         'units':'m',
+         'Mother wavelet':'Morlet',#:True,'Paul':False,'DOG':False},
          'Wave period range (min and max) (in s)':[3, 25],
-         'Minimum number of waves per window for zero crossing analysis':30
+         'Number of sub-ocatve per period band': 8,
+         'Sea-level graphs':'On',#:True,'Off':True},
+         'Scale-avgeraged wavelet power time series':'On',#:True,'Off':True},
+         'folder out':os.getcwd(),
+         'display':'On',#:True,'Off':False}
          })
+
+# df=df[0].WaveAnalysis.ssh_to_wave_with_0crossing(sea_level='ssh',\
+#         args={
+#          'Windows': 3600.,
+#          'Overlap':1800.,
+#          'Nfft':3600.,
+#          'Crossing':'Downcrossing', #:True,'linear':False,'constante':False},
+#          'Wave period range (min and max) (in s)':[3, 25],
+#          'Minimum number of waves per window for zero crossing analysis':30
+#          })
+
+# df=df[0].WaveAnalysis.ssh_to_wave_with_0crossing(sea_level='ssh',\
+#         args={
+#          'Windows': 3600.,
+#          'Overlap':1800.,
+#          'Nfft':3600.,
+#          'Crossing':'Downcrossing', #:True,'linear':False,'constante':False},
+#          'Wave period range (min and max) (in s)':[3, 25],
+#          'Minimum number of waves per window for zero crossing analysis':30
+#          })
 
 
 # df=df[0].WaveAnalysis.ssh_to_wave_with_spectra(sea_level='ssh',\

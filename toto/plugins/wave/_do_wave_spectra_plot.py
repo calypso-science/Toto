@@ -28,7 +28,7 @@ def do_wave_spectra_plot(time,mag,unit,nperseg,noverlap,nfft,detrend,period,plot
         xlab_unit='Hz'
         X=freqs
     else:
-        xlab:'Period'
+        xlab='Period'
         xlab_unit='s'
         X=T
 

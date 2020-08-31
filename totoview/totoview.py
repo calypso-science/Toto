@@ -232,7 +232,15 @@ class TotoGUI(QMainWindow,FORM_CLASS):
                 sc=wrapper_plugins(data_to_process,fct)
                 dfout=sc.exec()
                 if dfout:
-                    self.data.replace_dataframe(checks_dataframe,dfout)
+                    for i,df in enumerate(dfout):
+                        if (len(df.index) != len(data_to_process[i]['dataframe'].index)) or\
+                               (df.index[0]!=data_to_process[i]['dataframe'].index[0]):
+
+                            self.data.add_dataframe([df],[checks_dataframe[i]+'_new'])
+                        else:
+                            self.data.replace_dataframe([checks_dataframe[i]],[dfout[i]])
+
+                    
                     self.list_file.populate_tree(self.data)
                     checks_files,check_vars,checks_dataframe=self.list_file.get_all_items()
                     self.plotting.refresh_plot(self.data,checks_files,check_vars)

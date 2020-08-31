@@ -22,7 +22,7 @@ class StatPlots:
         'Speed bins (optional)':[],
         '% quadran (optional)':[],
         'Time blocking':{'Annual':True,'Seasonal (South hemisphere)':False,'Seasonal (North hemisphere)':False,'Monthly':False},
-        'folder out':'/tmp/',
+        'folder out':os.getcwd(),
         'display':{'On':True,'Off':False}
         }):
 
@@ -41,7 +41,7 @@ class StatPlots:
 
     
     def BIAS_histogramm(self,measured='measured',modelled='modelled',
-        args={'Nb of bins':30,'Xlabel':'','units':'','display':{'On':True,'Off':False},'folder out':'/tmp/'}):
+        args={'Nb of bins':30,'Xlabel':'','units':'','display':{'On':True,'Off':False},'folder out':os.getcwd()}):
         display=True
         if args['display']=='Off':
             display=False        
@@ -61,7 +61,7 @@ class StatPlots:
         'X limits':[0,np.inf],
         'Y limits':[0,np.inf],
         'display':{'On':True,'Off':False},
-        'folder out':'/tmp/'}):
+        'folder out':os.getcwd()}):
 
 
         ''' This function provides density diagrams of parameter Y vs parameter X,
@@ -91,7 +91,7 @@ class StatPlots:
         'modelled unit':'',
         'Quantile increment step (%)':1.0,
         'display':{'On':True,'Off':False},
-        'folder out':'/tmp/'}):
+        'folder out':os.getcwd()}):
 
 
         ''' % This function provides Quantile-Quantile plots (Q-Q plots) for comparison
@@ -120,7 +120,7 @@ class StatPlots:
                 'Direction binning':{'centered':True,'not-centered':False},
                 'Direction interval': 45.,
                 'display':{'On':True,'Off':False},
-                'folder out':'/tmp/'}):
+                'folder out':os.getcwd()}):
         
         display=True
         if args['display']=='Off':

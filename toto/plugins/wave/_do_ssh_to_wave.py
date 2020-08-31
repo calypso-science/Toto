@@ -3,18 +3,98 @@ from scipy.interpolate import interp1d
 from scipy import signal
 from itertools import groupby
 from toto.core.wavestats import specstats
+from matplotlib.dates import date2num
 import pandas as pd
 
+def zerodn(time,mag,Upcross=False):
 
-def zero_crossing(df,time,mag,sint):
-    import pdb;pdb.set_trace()
-    # [Ht,Period] = zerodn(data,t,[],cross);
-    # if length(Ht)> min_number_waves
-    #         [hs(n),hmax(n),h10(n),ts(n),tmax(n),t10(n)] = Wave_stats(Ht,Period*24*3600);%period in s
-    #         tm(n) = nanmean(Period*24*3600);
-    # else
+    # normalize elevation
+    mag -= np.mean(mag)
+    time=date2num(time)
+
+    # Number of crests:
+    dfy = np.diff(mag)
+    dfyb = np.concatenate((dfy,[0]))
+    dfyf = np.concatenate(([0],dfy))
+    Ncrests = sum((dfyb<0) & (dfyf>0))
+
+    sy = np.sign(mag)
+    dsy = .5*np.diff(sy)
+    if Upcross:
+        dsy=dsy*-1
+
+    dcinds = np.concatenate(([0],dsy))
+    dcinde = np.concatenate((dsy, [0]))
+    cs = np.cumsum(dcinds == -1)
+    ys = mag[dcinds == -1]
+    ye = mag[dcinde == -1]
+    ts = time[dcinds == -1]
+    te = time[dcinde == -1]
+    Nz = len(ys)
+    if len(ye) != Nz | len(ts) != Nz | len(te) != Nz:
+        assert 'zerodn: Inconsistent number of zero-crossing periods'
 
 
+    if Nz <= 1:
+        return None
+
+    ydiff = ys - ye
+    ts =  (te*ys - ts*ye)/ydiff
+    Stime = ts[:Nz-1]
+    Etime = ts[1:Nz]
+    Htime = .5*(Stime + Etime)
+    Period = np.diff(ts)
+    Nz = Nz - 1;
+
+    Ht = np.zeros((Nz,))
+
+    for k in range(0,Nz):
+      ysub = mag[cs == k]
+      Ht[k] = max(ysub) - min(ysub)
+
+    return Ht,Period
+    
+def get_stats(Ht,Period,min_n=30):
+    stat={}
+    stat['hs']=np.NaN
+    stat['ts']=np.NaN
+    stat['hmax']=np.NaN
+    stat['tmax']=np.NaN
+    stat['h10']=np.NaN
+    stat['t10']=np.NaN
+
+    gd=~np.isnan(Ht)
+    Ht=Ht[gd]
+    Period=Period[gd]
+
+    if len(Ht)>=min_n:
+        n=len(Ht)
+        idx=np.argsort(Ht)
+        P=Period[idx]
+        H=Ht[idx]
+        s=int(round(n*2/3))
+        s10=int(round(n*9/10))
+        stat['hs'] = np.mean(H[s:]);
+        stat['ts'] = np.mean(P[s:]);
+
+        stat['hmax'] = H[-1]
+        stat['tmax'] = P[-1]
+
+        stat['h10'] = np.mean(H[s10:])
+        stat['t10'] = np.mean(P[s10:])
+
+
+    return stat
+
+
+def zero_crossing(df,itime,time,mag,Upcross,min_n):
+
+    Ht,Period=zerodn(time,mag,Upcross)
+    WB=get_stats(Ht,Period*3600*24,min_n)
+    df0=pd.DataFrame(WB,index=[itime])
+
+    df=df.append(df0)
+    return df
 
 
 def spectra_analysis(df,time,mag,sint,window,overlap,fft,detrend,Tmin,Tmax):
@@ -30,7 +110,8 @@ def spectra_analysis(df,time,mag,sint,window,overlap,fft,detrend,Tmin,Tmax):
 
     return df
 
-def do_ssh_to_wave(time,mag,noverlap,nfft,nperseg,detrend,period,min_wave,method='spectra'):
+def do_ssh_to_wave(time,mag,noverlap,nfft,nperseg,detrend,period,min_wave,crossing,method):
+
 
     sint=(time[2]-time[1]).total_seconds()
     Tmin=period[0]
@@ -81,7 +162,7 @@ def do_ssh_to_wave(time,mag,noverlap,nfft,nperseg,detrend,period,min_wave,method
     time=time[start:]
     df=pd.DataFrame()
     for i in range(0,len(mag)-window,overlap):
-        if i % 100000 ==0:
+        if i % 10000 ==0:
             print('==>%i/%i'%(i,len(mag)-window))
         data =mag[i:i+window]
         N=len(data);
@@ -96,9 +177,9 @@ def do_ssh_to_wave(time,mag,noverlap,nfft,nperseg,detrend,period,min_wave,method
                 #data=set_interp(t) #removes NaN
                 #data=data[~np.isnan(data)] #removes possible NaN on the edges of the time series 
                 if method=='spectra':         
-                    df=spectra_analysis(df,[time[i+int(window/2)]],mag,sint,window,overlap,fft,detrend,Tmin,Tmax)
+                    df=spectra_analysis(df,[time[i+int(window/2)]],data,sint,window,overlap,fft,detrend,Tmin,Tmax)
                 else:
-                    df=zero_crossing(df,[time[i+int(window/2)]],mag,sint)
+                    df=zero_crossing(df,time[i+int(window/2)],t,data,crossing,min_wave)
 
 
     return df

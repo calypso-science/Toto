@@ -16,7 +16,7 @@ class TideAnalysis:
     def detide(self,mag='mag',\
         args={'Minimum SNR':2,\
         'Latitude':-36.0,
-        'folder out':'/tmp/',
+        'folder out':os.getcwd(),
         }):
 
 
@@ -28,7 +28,7 @@ class TideAnalysis:
             latitude=args['Latitude']
 
         time=self.data.index
-        dt=(time[2]-time[1]).seconds/3600 # in hours
+        dt=(time[2]-time[1]).total_seconds()/3600 # in hours
         stime=np.array(date2num(time))
         lat=latitude
         outfile=os.path.join(args['folder out'],os.path.splitext(self.data.filename)[0]+'_'+self.data[mag].short_name+'_Conc.xlsx')
@@ -54,7 +54,7 @@ class TideAnalysis:
             latitude=args['Latitude']
 
         time=self.data.index
-        dt=(time[2]-time[1]).seconds/3600 # in hours
+        dt=(time[2]-time[1]).total_seconds()/3600. # in hours
         stime=np.array(date2num(time))
         lat=latitude
         ray=args['Minimum SNR']
@@ -65,12 +65,12 @@ class TideAnalysis:
 
         min_time=min(args['minimum time'],time[0])
         max_time=max(args['maximum time'],time[-1])
-        min_dt=min(args['dt(s)'],dt*3600)
+        min_dt=args['dt(s)']
 
-        idx=pd.period_range(min_time,max_time,freq='%is'%min_dt)
-        idx=idx.to_timestamp()
-        self.dfout=pd.DataFrame(index=idx)
-        self.dfout.index.name='time'
+        # idx=pd.period_range(min_time,max_time,freq='%is'%min_dt)
+        # idx=idx.to_timestamp()
+        # self.dfout=pd.DataFrame(index=idx)
+        # self.dfout.index.name='time'
 
         idx = pd.period_range(args['minimum time'], args['maximum time'],freq='%is'%args['dt(s)'])
         idx=idx.to_timestamp()
@@ -78,7 +78,7 @@ class TideAnalysis:
         df_new[self.data[mag].short_name+'t'] = reconstruct(np.array(date2num(df_new.index)), coef).h
         df_new.index.name='time'
         
-        self.dfout=pd.merge_asof(self.dfout,df_new,on='time',direction='nearest', tolerance=pd.Timedelta("1s")).set_index('time')
+        self.dfout=df_new#pd.merge_asof(self.dfout,df_new,on='time',direction='nearest', tolerance=pd.Timedelta("1s")).set_index('time')
         self.dfout.index.name='time' 
 
 
@@ -88,7 +88,7 @@ class TideAnalysis:
     def tidal_stat(self,mag='mag',\
         args={'Minimum SNR':2,\
         'Latitude':-36.0,
-        'folder out':'/tmp/',
+        'folder out':os.getcwd(),
         }):
 
         '''Function to extract the tide stats from a time series'''
@@ -101,7 +101,7 @@ class TideAnalysis:
             latitude=args['Latitude']
 
         time=self.data.index
-        dt=(time[2]-time[1]).seconds/3600 # in hours
+        dt=(time[2]-time[1]).total_seconds()/3600 # in hours
         stime=np.array(date2num(time))
         lat=latitude
         ray=args['Minimum SNR']

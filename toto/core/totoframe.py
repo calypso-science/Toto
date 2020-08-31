@@ -14,7 +14,7 @@ def sort_dataset(df,**args):
     return df
 
 def get_freq(df):
-    dt=(df.index[2]-df.index[1]).seconds
+    dt=(df.index[2]-df.index[1]).total_seconds()
     return dt
 
 def filled_gap(df,missing_value=np.NaN):
@@ -22,8 +22,9 @@ def filled_gap(df,missing_value=np.NaN):
     df=sort_dataset(df)
     dt=get_freq(df)
     
-    dt=(dt + 9) // 10 * 10
-    idx = pd.period_range(min(df.index), max(df.index),freq='%is'%dt)
+    #dt=(dt + 9) // 10 * 10
+    dt=np.round(dt*1000)
+    idx = pd.period_range(min(df.index), max(df.index),freq='%ims'%dt)
     idx=idx.to_timestamp()
 
     df0=pd.DataFrame(index=idx)

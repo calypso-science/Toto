@@ -8,6 +8,7 @@ import inspect
 from ..core.create_frame import get_layout_from_sig,extract_option_from_frame
 import pandas as pd
 from toto.core.totoframe import add_metadata_to_df
+import numpy as np
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
@@ -190,6 +191,7 @@ class wrapper_plugins(QDialog):
         
         
     def go(self):
+
         opt=extract_option_from_frame(self.opt)
         var=self.get_variables()
         access=self.fct.__repr__().split(' ')[1].split('.')[0]
@@ -209,8 +211,8 @@ class wrapper_plugins(QDialog):
             df1.filename=self.tfs[i]['filename']
 
             F=getattr(getattr(df1, access),self.fct.__name__)
+            #dfout=F(args=opt)
 
-            # dfout=F(args=opt)
             try:
                 dfout=F(args=opt)
             except Exception as exc:
@@ -219,26 +221,29 @@ class wrapper_plugins(QDialog):
                 return
 
             if isinstance(dfout,pd.DataFrame):
-                del df[index_name]
+                
                 if len(df.index) != len(dfout.index):
-                    dt1=(dfout.index[2]-dfout.index[1]).seconds
-                    dt2=(df.index[2]-df.index[1]).seconds
-                    dt=min(dt1,dt2)
-                    dt=(dt + 9) // 10 * 10
+                    # Trying to merg the new time with the old one not a good idea
+                    # dt1=(dfout.index[2]-dfout.index[1]).total_seconds()
+                    # dt2=(df.index[2]-df.index[1]).total_seconds()
+                    # dt=min(dt1,dt2)
+                    
+                    # tstart=min(min(df.index),min(dfout.index))
+                    # tend=max(max(df.index),max(dfout.index))
+                    # dt=int(np.round(dt*1000))
+                    # idx = pd.period_range(tstart, tend,freq='%ims'%dt).to_timestamp()  
+                    # df0=pd.DataFrame(index=idx)
+                    # df0.index.name='time'
 
-                    tstart=min(min(df.index),min(dfout.index))
-                    tend=max(max(df.index),max(dfout.index))
-                    idx = pd.period_range(tstart, tend,freq='%is'%dt).to_timestamp()  
-                    df0=pd.DataFrame(index=idx)
-                    df0.index.name='time'
-
-                    df0=pd.merge_asof(df0,df,on='time',direction='nearest', tolerance=pd.Timedelta("1s"))
-                    df0=pd.merge_asof(df0,dfout,on='time',direction='nearest',tolerance=  pd.Timedelta("1s")).set_index('time',drop=False)
-                    df0.index.name='time'
-
-                    self.dfs[i]=df0
+                    # df0=pd.merge_asof(df0,df,on='time',direction='nearest', tolerance=pd.Timedelta("1s"))
+                    # df0=pd.merge_asof(df0,dfout,on='time',direction='nearest',tolerance=  pd.Timedelta("1s")).set_index('time',drop=False)
+                    # df0.index.name='time'
+                    dfout=dfout.reset_index(drop=False)
+                    dfout=dfout.set_index('time',drop=False)
+                    self.dfs[i]=dfout #df0
 
                 else:
+                    del df[index_name]
                     self.dfs[i] = pd.merge_asof(df, dfout, on=index_name).set_index(index_name,drop=False)
 
             elif isinstance(dfout,str):
