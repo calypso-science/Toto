@@ -1,4 +1,21 @@
 import numpy as np
+from toto.core.toolbox import wavenuma
+G=9.81
+PI2=np.pi*2
+
+def calc_slp(hs,tp,h=None):
+    l=calc_wavelength(tp,h)
+    return hs/l
+
+def calc_wavelength(tp,h=None):
+
+    if h == None or h<0:
+        l=G*tp**2/PI2 #%deep water
+    else:
+        l=PI2/wavenuma(PI2/tp,h)
+
+    return l
+
 def split(S,freq, fmin=None, fmax=None):
         """Split spectra over freq and/or dir dims.
         Args:
@@ -63,10 +80,10 @@ def _interp_freq(freq,S, fint):
 
 def specstats(sp,freq,fmin=1/25.,fmax=1/3.,cutoff=1/8.):
     #-----------------------------------------------------------
-    #%  Based on code written by Richard Gorman, VIMS, University of Waikato
-    #%
-    #%  Make the spectrum a column vector.
-    #%
+    ##  Based on code written by Richard Gorman, VIMS, University of Waikato
+    ##
+    ##  Make the spectrum a column vector.
+    ##
 
     #
     #  Find the peak frequency and spectral density.
@@ -109,9 +126,9 @@ def get_stats(sp,freq):
 
     #  0th and 1st moments:
 
-    Xmom[0] = np.sum(sp*delf);# - .5*sp(1)*delf(1); % 0-th moment
+    Xmom[0] = np.sum(sp*delf);# - .5*sp(1)*delf(1); # 0-th moment
     temp = sp*delf*freq
-    Xmom[1] = np.sum(temp)# % 1st moment
+    Xmom[1] = np.sum(temp)# # 1st moment
 
     #  Goda's spectral peakedness parameter:
 
@@ -135,8 +152,8 @@ def get_stats(sp,freq):
     stat['Tcr'] =  np.sqrt(np.abs(Xmom[2]/Xmom[4]))
     stat['T2'] = stat['Tm01']*stat['fmax']
     stat['QP']=QP/(Xmom[0]**2) #Goda (1970, Eq. 44)(Tech. note Port and Harbour res.)
-    stat['SWe'] = np.sqrt(1 - Xmom[2]**2/(Xmom[0]*Xmom[4])) #%Cartwright and Longuet-Higgins (1956, Eq. 1.20) (Proc. R. Soc. London A)
-    stat['SW'] = np.sqrt(Xmom[0]*Xmom[2]/Xmom[1]**2-1) #%Longuet-Higgins (1984, Eq. 1.1) (Phil. Trans. R. Soc. London. A)
+    stat['SWe'] = np.sqrt(1 - Xmom[2]**2/(Xmom[0]*Xmom[4])) ##Cartwright and Longuet-Higgins (1956, Eq. 1.20) (Proc. R. Soc. London A)
+    stat['SW'] = np.sqrt(Xmom[0]*Xmom[2]/Xmom[1]**2-1) ##Longuet-Higgins (1984, Eq. 1.1) (Phil. Trans. R. Soc. London. A)
 
     return stat
 

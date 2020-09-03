@@ -7,6 +7,7 @@ from ._do_stats import do_stats
 from ._do_exc_stats import do_exc_stats,do_exc_coinc_stats
 from ._do_workability import do_workability
 from ._do_wave_pop import do_wave_pop
+from ._do_dir_max import do_directional_stat
 
 import numpy as np
 
@@ -266,3 +267,32 @@ class Statistics:
             Tp,Sw,method,args['Heigh bin size'],Ddir,args['Period bin size'],\
             args['Exposure (years) (= length of time series if not specified)'],drr_switch,filename)
 
+    
+    def Directional_statistics(self,magnitude='magnitude',direction='direction',\
+        args={
+        'function':{'Max':True, 'Mean':False, 'Median':False, 'Min':False, 'Percentile':False, 'Prod':False, 'Quantile':False, 'Std':False, 'Sum':False, 'Var':False},
+        'Percentile or Quantile': 0.1,
+        'folder out':os.getcwd(),
+        'Direction binning':{'centered':True,'not-centered':False},
+        'Direction interval': 45.,
+        'Time blocking':{'Annual':True,'Seasonal (South hemisphere)':False,'Seasonal (North hemisphere)':False,'Monthly':False},
+        }):
+
+ 
+
+        Ydata=self.data[magnitude]
+        Xdata=self.data[direction]
+
+        filename=os.path.join(args['folder out'],os.path.splitext(self.data.filename)[0]+'directional_max.xlsx')
+
+        X_interval=dir_interval(args['Direction interval'],args['Direction binning'])
+        funct=getattr(np,'nan'+args['function'].lower())
+        val=args['Percentile or Quantile']
+        if hasattr(self.data[magnitude],'short_name'):
+            short_name=self.data[magnitude].short_name
+        else:
+            short_name=magnitude
+        do_directional_stat(filename,funct,val,short_name,self.data.index,Xdata,Ydata,X_interval,args['Time blocking'],args['Direction binning'])
+
+        
+        

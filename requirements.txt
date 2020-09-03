@@ -8,4 +8,8 @@ PyQt5
 git+https://github.com/python-windrose/windrose
 attrdict
 openpyxl == 3.0.4
+pyyaml == 5.3.1
+numba == 0.38.0
+numdifftools>=0.2
 git+https://github.com/wesleybowman/UTide.git
+git+https://github.com/wafo-project/pywafo.git
