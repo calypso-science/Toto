@@ -2,6 +2,8 @@ import numpy as np
 import datetime
 import xarray as xr
 
+def PolyArea(x,y):
+    return 0.5*np.abs(np.dot(x,np.roll(y,1))-np.dot(y,np.roll(x,1)))
 def dyadlength(x):
     '''% dyadlength -- Find length and dyadic length of array
     %  Usage

@@ -282,8 +282,13 @@ class Plotting(object):
                     if index_name=='time':
                         display_error('Index can not be time,must be direction or V')
                         continue
+
+
                     self.sc.fig1.clf()
                     ax = WindroseAxes.from_ax(fig=self.sc.fig1)
+                    gd_data=~np.isnan(y) | ~np.isnan(x)
+                    y=y[gd_data]
+                    x=x[gd_data]
 
                     if any(x<0): # it is U and V
                         y,x=uv2spdir(y.values,x.values)

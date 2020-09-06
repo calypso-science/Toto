@@ -28,6 +28,11 @@ def get_precentage(Ag,Ay,D,F,C,IncHiLow):
     return b
 
 def do_roses(time,spd,drr,units,title,spdedg,quadran,time_blocking,fileout,show=True):
+    gd_data=~np.isnan(spd) | ~np.isnan(drr)
+    spd=spd[gd_data]
+    drr=drr[gd_data]
+    time=time[gd_data]
+
     if spdedg is None or len(spdedg)<1:
         spd_sorted=np.sort(spd)
         spdedg=[np.floor(min(spd*10.))/10.]+list(np.round(spd_sorted[(len(spd_sorted)*np.array([1,2,3,4,5,5.4,5.8,6])/6).astype(int)-1],1))
