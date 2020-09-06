@@ -583,7 +583,10 @@ class TotoGUI(QMainWindow,FORM_CLASS):
     def output_data(self,reader,filename):
         run_ft=self._import_from('toto.outputs.%s' % reader,'%sfile' %reader.upper())
         _,_,checks_dataframe=self.list_file.get_all_items()
-        df=run_ft(filename,[self.data[file] for file in checks_dataframe])
+        if len(checks_dataframe)>0:
+            df=run_ft(filename,[self.data[file] for file in checks_dataframe])
+        else:
+            display_error('You need to select at least on file')
 
     def import_data(self,reader,filenames):
         try:

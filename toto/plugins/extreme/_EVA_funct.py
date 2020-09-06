@@ -1,5 +1,16 @@
 import numpy as np
-import wafo.stats as ws
+import sys
+try:
+    import wafo.stats as ws
+except:
+    print('')
+    print('')
+    print('Error: problem loading wafo package:')
+    print('  - Check if this package is installed ( e.g. type: `pip install pywafo`)')
+    print('')
+    print('')
+    sys.exit(-1)
+
 from numpy.matlib import repmat
 
 def sub_table(stats,varname,rp):

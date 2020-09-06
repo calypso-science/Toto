@@ -99,18 +99,14 @@ class Extreme:
 
 
         self._get_peaks(magnitude,drr=direction_optional,directional_interval=drr_interval,time_blocking=time_blocking,peaks_options=pks_opt,min_peak=min_peak)
-        import pdb;pdb.set_trace()
         if 'Omni' not in self.peaks_index['Annual']:
             return 'No Peak found !!'
-
-        if Hmax_RPV:
-            self._calc_Hmp(magnitude,tm=tm_optional,depth=h,max_storm_duration=48)
 
         if tp_optional in self.data:
             self.dfout['slp']=calc_slp(self.data[magnitude],self.data[tp_optional],h=h)
             self.dfout['slp'].mask(self.dfout['slp']<slp_threshold, inplace=True)
 
-        self._do_EVA(magnitude,tp_optional,rv,fitting,slp_fitting,method,h)
+        self._do_EVA(magnitude,tp_optional,tm_optional,rv,fitting,slp_fitting,method,h,Hmax_RPV)
 
         # if args['Display peaks']=='On':
         #     self._plot_peaks(magnitude,display=True,folder=folderout)
@@ -284,7 +280,7 @@ class Extreme:
         stat['magex']=magex
         return stat
 
-    def _do_EVA(self,mag,tp,rp,fitting,slpfit,method,h):
+    def _do_EVA(self,mag,tp,tm,rp,fitting,slpfit,method,h,Hmax_RPV):
         months=self.peaks_index.keys()
         for month in months:
             self.eva_stats[month]={}
@@ -297,10 +293,11 @@ class Extreme:
                 else:
                     self.eva_stats[month][d]=self._do_EVA_mag(mag,peak,rp,fitting,method)
                 
-                if ~np.all(np.isnan(self.dfout['Hmp'])):
+                if Hmax_RPV:
+                    ind=self.peaks_index[month][d]
+                    self._calc_Hmp(mag,ind,tm=tm,depth=h,max_storm_duration=48)
                     self.eva_stats[month][d]['hmax']=self._do_EVA_hmp('Hmp',peak,rp,fitting,method)
                     self.eva_stats[month][d]['cmax']=self._do_EVA_hmp('Cmp',peak,rp,fitting,method)
-                    import pdb;pdb.set_trace()
 
 
     def _export_as_xls(self,magnitude,rp,folder):
@@ -424,7 +421,7 @@ class Extreme:
         plt.savefig(os.path.join(folder,'peaks.png'))
         plt.close()
 
-    def _calc_Hmp(self,hs,tm=None,depth=5000,max_storm_duration=48):
+    def _calc_Hmp(self,hs,ind,tm=None,depth=5000,max_storm_duration=48):
 
         '''#Estimates the most probable maximum wave heights Hmp and maximum crest Cmp of storms with peak
         #significant wave heights hs(ind) using the Rayleigh and Weibull distributions and the
@@ -441,8 +438,10 @@ class Extreme:
         # Hmp: most probable maximum wave height for each storm (in m)
         # Cmp: most probable maximum crest for each storm (in m)
         # LnN = log(Ts/tm) where Ts is the time scale of the storm (in s) (see  TROMANS and VANDERSCHUREN (1995, eqs. 1-2))'''
-
-        ind=self.peaks_index['Annual']['Omni']
+        self.dfout['Hmp']=np.NaN
+        self.dfout['Cmp']=np.NaN
+        self.dfout['LnN']=np.NaN
+        
         hs=self.dfout[hs].values
 
         # from scipy.io import savemat
