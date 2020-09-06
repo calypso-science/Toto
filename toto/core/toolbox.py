@@ -176,7 +176,7 @@ def dir_interval(dir_swath=45,mode='centred'):
 def degToCompass(num):
     if isinstance(num,list) or isinstance(num,np.array):
         if num[0]==0 and num[1]==360:
-            return 'omni'
+            return 'Omni'
         rads = np.deg2rad(num)  
         av_sin = np.mean(np.sin(rads))  
         av_cos = np.mean(np.cos(rads))  

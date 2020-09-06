@@ -21,17 +21,17 @@ df[0].Extreme.do_extreme(magnitude='hs[m]',tp_optional='tp[s]',direction_optiona
          'Slope treshold':0.005,
          'Return period':[1,10,25,50,100],
          'Estimate Hmax & Cmax RPVs':'On',#:False,'Off':True},
-         'threshold type':'percentile',#:True,'value':False},
-         'threshold value':95.0,
-         'Directional':'On',#:True,'Off':False},
-         'Minimum number of peaks over threshold': 5,
+         'threshold type':'value',#:True,'value':False},
+         'threshold value':6.0,
+         'Directional':'False',#:True,'Off':False},
+         'Minimum number of peaks over threshold': 10,
          'Minimum time interval between peaks (h)':24.0,
          'Direction binning':'centered',#:True,'not-centered':False},
          'Direction interval': 45.,
          'Time blocking':'Annual',#:True,'Seasonal (South hemisphere)':False,'Seasonal (North hemisphere)':False,'Monthly':False},
          'Display peaks':'Off',#{'On':True,'Off':False},
          'Display CDFs':'Off',#{'On':True,'Off':False},
-         'Water depth':5000.0,
+         'Water depth':-5000.0,
          'folder out':os.getcwd()
          })
 

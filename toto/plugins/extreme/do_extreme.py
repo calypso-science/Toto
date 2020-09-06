@@ -85,7 +85,14 @@ class Extreme:
         if args['Estimate Hmax & Cmax RPVs']=='Off':
             Hmax_RPV=False
         
-        drr_interval=dir_interval(args['Direction interval'],args['Direction binning'])
+
+        if args['Directional']=='On':
+            drr_interval=dir_interval(args['Direction interval'],args['Direction binning'])
+        else:
+            drr_interval=[0,360]
+
+        
+
         time_blocking=args['Time blocking']
         pks_opt={}
         thresh=args['threshold value']
@@ -99,6 +106,7 @@ class Extreme:
 
 
         self._get_peaks(magnitude,drr=direction_optional,directional_interval=drr_interval,time_blocking=time_blocking,peaks_options=pks_opt,min_peak=min_peak)
+        
         if 'Omni' not in self.peaks_index['Annual']:
             return 'No Peak found !!'
 
@@ -115,17 +123,22 @@ class Extreme:
 
         # if args['Display CDFs']=='On':
         #     self._plot_cdfs(magnitude,display=True,folder=folderout)
+        #     if tp_optional in self.data: 
+        #        self._plot_contours(magnitude,rv,drr='Omni',display=False,folder=folderout)
         # else:
         #     self._plot_cdfs(magnitude,display=False,folder=folderout)
+        #     if tp_optional in self.data: 
+        #        self._plot_contours(magnitude,rv,drr='Omni',display=False,folder=folderout)
+        
 
 
-        self._export_as_xls(magnitude,rv,folderout)
+        #self._export_as_xls(magnitude,rv,folderout)
         
     def _do_EVA_mag(self,mag,peak,rp,fitting,method):
         stat={}
         krP=calc_kRp(rp,len(peak),self.nyear,Hmp=False)
         phat,scale,shape=do_fitting(self.dfout[mag].values[peak],fitting,method)
-        magex=do_ext(krP,phat,'isf')
+        magex=phat.isf(kRp)
         stat['phat']=phat
         stat['scale']=scale
         stat['shape']=shape
@@ -168,7 +181,7 @@ class Extreme:
         krP=calc_kRp(rp,len(peak),self.nyear,Hmp=False)
 
         phat,scale,shape=do_fitting(hsfilt,fitting,method)
-        hsex=do_ext(krP,phat,'isf')
+        hsex=phat.isf(krP)
 
         phat_slp,scale_slp,shape_slp=do_fitting(slpfilt,slp_fitting,method,loc=slploc)
 
@@ -179,7 +192,7 @@ class Extreme:
         tppot=tpfilt.copy()
 
         #iFORM
-
+        
         beta=norm.ppf(1-krP) #wnorminv(1-kRp);
         theta=np.arange(0,2*np.pi+(np.pi/50),np.pi/50)
 
@@ -189,7 +202,7 @@ class Extreme:
         loc=np.nanmin(hsfilt)*.999
 
         if fitting.lower()=='weibull':
-            hsq=ws.weibull_min.ppf(cos_cdf,scale,shape)+loc
+            hsq=ws.weibull_min.ppf(cos_cdf,shape,scale=scale,loc=loc)
         elif fitting.lower()=='gumbel':
             hsq=ws.gumbel_r.ppf(cos_cdf,scale,shape)+loc
         elif fitting.lower()=='gpd':
@@ -197,12 +210,13 @@ class Extreme:
         elif fitting.lower()=='gev':
             hsq=ws.genextreme.ppf(cos_cdf,shape,scale=scale,loc=loc)
 
+        
         if slp_fitting.lower()=='weibull':
-            I1=ws.weibull_min.ppf(sin_cdf,scale_slp,shape_slp)+C[0]*hsq
-            I2=(ws.weibull_min.ppf(sin0_cdf,scale_slp,shape_slp)).T+C[0]*hsex
+            I1=ws.weibull_min.ppf(sin_cdf,shape_slp,scale=scale_slp,loc=slploc)+C[0]*hsq
+            I2=(ws.weibull_min.ppf(sin0_cdf,shape_slp,scale=scale_slp,loc=slploc)).T+C[0]*hsex
         elif slp_fitting.lower()=='gumbel':
-            I1=ws.gumbel_r.ppf(sin_cdf,scale_slp,shape_slp)+C[0]*hsq
-            I2=(ws.gumbel_r.ppf(sin0_cdf,scale_slp,shape_slp)).T+C[0]*hsex
+            I1=ws.gumbel_r.ppf(sin_cdf,shape_slp,scale=scale_slp,loc=slploc)+C[0]*hsq
+            I2=(ws.gumbel_r.ppf(sin0_cdf,shape_slp,scale=scale_slp,loc=slploc)).T+C[0]*hsex
                 
         #import pdb;pdb.set_trace()
         g=9.81
@@ -250,6 +264,7 @@ class Extreme:
         stat[hs_name]['scale'] = scale
         stat[hs_name]['shape'] = shape
         stat[hs_name]['hsq'] = hsq
+        stat[hs_name]['hspot'] = hspot
 
         stat['slp']={}
         stat['slp']['phat'] = phat_slp
@@ -262,6 +277,9 @@ class Extreme:
         stat['tmin']['magex'] = Tmin#[:,0]
         stat['tmax']['magex'] = Tmax#[:,0]
         stat['tp']['magex'] = tpex
+        stat['tp']['tpq'] = tpq
+        stat['tp']['tppot'] = tppot
+
 
        # import pdb;pdb.set_trace()
         return stat
@@ -271,9 +289,52 @@ class Extreme:
     def _do_EVA_hmp(self,mag,peak,rp,fitting,method):
         stat={}
 
-        krP=calc_kRp(rp,len(peak),self.nyear,Hmp=True)
+        kRp=calc_kRp(rp,len(peak),self.nyear,Hmp=True)
         phat,scale,shape=do_fitting(self.dfout[mag].values[peak],fitting,method)
-        magex=do_ext(krP,phat,'conv',self.dfout['LnN'].values[peak])
+        LnN=self.dfout['LnN'].values[peak]
+
+        loc=np.nanmin(phat.data)*.999
+        x=np.linspace(loc,np.max(phat.data),1000);
+        dx=x[1]-x[0]
+
+
+        if fitting.lower()=='weibull':
+            P_lt=ws.weibull_min.pdf(x-loc,shape,scale=scale)
+        elif fitting.lower()=='gumbel':
+            P_lt=ws.gumbel_r.pdf(x-loc,scale,shape)
+        elif fitting.lower()=='gpd':
+            P_lt=ws.genpareto.pdf(x-loc,-shape,scale=scale)
+        elif fitting.lower()=='gev':
+            P_lt=ws.genextreme.pdf(x-loc,shape,scale=scale)
+
+        P_lt[np.isinf(P_lt)]=0
+        LnN=np.nanmean(LnN);
+        
+        #convolution method p.390 of TROMANS and VANDERSCHUREN (1995)
+        h=np.linspace(0,30,3001) #;% 0.01 precision
+        
+        X=repmat(x,len(h),1)
+        P_LT=repmat(P_lt,len(h),1)
+        H=repmat(h,len(x),1).T
+        P=np.exp(-np.exp(-LnN * (((H/X)**2 -1 )) )) * P_LT 
+        
+        P=np.sum(P,1)*dx
+        P=P/np.max(P)
+        magex=np.ones((len(kRp),))*np.NaN
+        for i in range(0,len(kRp)):
+            P_poisson_process=P**kRp[i] #% p.390 of TROMANS and VANDERSCHUREN (1995)
+            id_last=(P_poisson_process<1/np.exp(1)).nonzero()[0]
+            hh=[]
+            if len(id_last)>0:
+                hh.append(h[id_last[-1]])
+
+            id_first=(P_poisson_process>1/np.exp(1)).nonzero()[0]
+            if len(id_first)>0:
+                hh.append(h[id_first[0]])
+
+            magex[i]=np.mean(hh)
+
+
         stat['phat']=phat
         stat['scale']=scale
         stat['shape']=shape
@@ -313,6 +374,77 @@ class Extreme:
 
             create_table(filename,month,mat)
         
+    def _plot_contours(self,mag,rp,drr='Omni',display=False,folder=os.getcwd()):
+
+
+        fig = plt.figure(figsize=(8.27, 11.69), dpi=100)
+        months=self.peaks_index.keys()
+        number_of_loops=len(months)
+        if number_of_loops==5: # seasons
+            gs1 = gridspec.GridSpec(3, 3)
+            maxx=1
+        elif number_of_loops>5: # monthly
+            gs1 = gridspec.GridSpec(6, 3)
+            maxx=5
+        else: # annual
+            gs1 = gridspec.GridSpec(1,1)
+            maxx=0
+
+        for j,month in enumerate(months):
+            if month== 'Annual':
+                ax = fig.add_subplot(gs1[int(np.floor((number_of_loops/2)/2)),-1])
+                y=0
+                x=0
+            else:
+                x=np.ceil(((j+1)/2))-1
+                y=(np.mod((j%2)+1,2)-1)*-1
+                ax = fig.add_subplot(gs1[int(x),int(y)])
+
+            tpq=self.eva_stats[month][drr]['tp']['tpq']
+            hsq=self.eva_stats[month][drr][mag]['hsq']
+            hsex=self.eva_stats[month][drr][mag]['magex']
+            tpex=self.eva_stats[month][drr]['tp']['magex']
+            tppot=self.eva_stats[month][drr]['tp']['tppot']
+            hspot=self.eva_stats[month][drr][mag]['hspot']
+
+            hsv = cm = plt.get_cmap('hsv') 
+            cNorm  = colors.Normalize(vmin=0, vmax=tpq.shape[0])
+            scalarMap = cmx.ScalarMappable(norm=cNorm, cmap=hsv)
+
+            for i in range (0,tpq.shape[0]):
+                x=np.concatenate((tpq[i,:],[tpq[i,0]]))
+                y=np.concatenate((hsq[i,:],[hsq[i,0]]))
+                ax.plot(x,y,label=rp[i],color = scalarMap.to_rgba(i))
+
+            ax.set_xlabel('Tp (s)')
+            ax.set_ylabel('Hs (m)')
+            
+            ax.plot(tppot,hspot,'.')
+            ax.set_xlim([np.nanmin(tpq)-.5,min(np.nanmax(tpq)+.5, 45)])
+            ax.set_ylim([np.nanmin(hsq)-.2,np.nanmax(hsq)+.2])
+            ax.plot(tpex[0,:],hsex,'kx')
+            if j==number_of_loops-1:
+                if number_of_loops>3 and number_of_loops<10:
+                    ax.legend(loc='best',bbox_to_anchor=(0.6, -0.4),ncol=len(dir_int))#bbox_to_anchor=(0.8,-1.0, 0.5, 0.5))
+                elif number_of_loops>10:
+                    ax.legend(loc='best',bbox_to_anchor=(0.6, -3.4),ncol=len(dir_int))#bbox_to_anchor=(0.8,-1.0, 0.5, 0.5))
+                else:
+                    ax.legend(loc='best')  
+
+        
+        fig.align_labels()
+        if number_of_loops>10:
+            plt.subplots_adjust(left=0.075,right=0.970,bottom=0.1,top=0.97,hspace=.5,wspace=0.415)            
+        elif number_of_loops>2 and number_of_loops<10:
+            plt.subplots_adjust(left=0.08,right=0.975,bottom=0.1,top=0.7,hspace=.5,wspace=0.3)
+        else:
+            plt.subplots_adjust(bottom=0.05,top=.95,hspace=.5)
+      
+        if display:
+            plt.show(block=~display)
+
+        plt.savefig(os.path.join(folder,'RPV_FORM_'+drr+'.png'))
+        plt.close()
 
     def _plot_cdfs(self,mag,drr='Omni',display=False,folder=os.getcwd()):
         fig = plt.figure(figsize=(8.27, 11.69), dpi=100)
@@ -341,6 +473,8 @@ class Extreme:
             stat=self.eva_stats[month][drr][mag]
             ws.probplot(stat['phat'].data, stat['phat'].par, dist=stat['phat'].dist.name, plot=ax)
             ax.set_title(month)
+
+
         fig.align_labels()
         if number_of_loops>10:
             plt.subplots_adjust(left=0.075,right=0.970,bottom=0.1,top=0.97,hspace=.5,wspace=0.415)            
@@ -508,7 +642,7 @@ class Extreme:
             self.dfout['LnN'][ind[i]]=np.log(len(index)*self.sint/np.nanmean(tm_storm))#TROMANS and VANDERSCHUREN (1995, page 388)
         
 
-
+        
         #References:
 
         #Forristall, G.Z., 1978. On the statistical distribution of wave heights 
@@ -539,6 +673,7 @@ class Extreme:
         number_of_loops,identifiers,month_identifier=get_number_of_loops(time_blocking)
         months=self.dfout.index.month
         idx=np.arange(0,len(months))
+
         for j in range(0,number_of_loops):
         #Pull out relevant indices for particular month/months
             index = np.in1d(months, month_identifier[j])
@@ -565,4 +700,3 @@ class Extreme:
                     loc=idx_values[index.values][pk_idx]
                     if len(loc)>min_peak:
                         self.peaks_index[identifiers[j]][dir_label]=loc
-
