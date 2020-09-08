@@ -13,6 +13,7 @@ from matplotlib import gridspec
 import matplotlib.dates as mdate
 from ._EVA_funct import *
 from scipy.stats import norm
+import copy
 
 @pd.api.extensions.register_dataframe_accessor("Extreme")
 
@@ -31,6 +32,92 @@ class Extreme:
         self.peaks_index= {}
         self.eva_stats= {}
         self.nyear=self.sint*len(self.dfout['Hmp'])/(24*365.25*3600) #; %length of time series in years
+
+    def extreme_water_elevation(self,tide='tide',surge='surge',
+        args={'Fitting distribution':{'Weibull':True,'Gumbel':False,'GPD':False,'GEV':False},
+         'Method':{'pkd':False,'pwm':False,'mom':False,'ml':True},
+         'Surge':{'Positive only':False,'Negative only':False,'Both (neg and pos)':True},
+         'Return period':[1,10,25,50,100],
+         'threshold type':{'percentile':True,'value':False},
+         'threshold value':95.0,
+         'Minimum number of peaks over threshold': 30,
+         'Minimum time interval between peaks (h)':24.0,
+         'Time blocking':{'Annual':True,'Seasonal (South hemisphere)':False,'Seasonal (North hemisphere)':False,'Monthly':False},
+         'Display peaks':{'On':True,'Off':False},
+         'Display CDFs':{'On':True,'Off':False},
+         'folder out':os.getcwd()
+         }):
+
+
+        '''%This function is used for extreme value analysis of total still water 
+        %elevation (surge + tide). Inputs must be surge and tide level (in the 
+        %same unit).
+        %The method complies with ISO recommendations: return period values are 
+        %estimated by fitting a distribution to the empirical distribution 
+        %obtained by combining the joint frequency distribution of tidal and surge 
+        %elevations.'''
+
+        self.dfout['positive_surge']=self.data[surge]
+        self.dfout['negative_surge']=self.data[surge]*-1.
+        self.dfout['positive_tide']=self.data[tide]
+        self.dfout['negative_tide']=self.data[tide]*-1.
+        folderout=os.path.join(args['folder out'])
+
+        ## Inputs
+        surge_mode=args['Surge']
+        if surge_mode=='Both (neg and pos)':
+            surges=['positive_','negative_']
+        elif surge_mode=='Positive only':
+            surges=['positive_','negative_']
+        elif surge_mode=='Negative only':            
+            surges=['negative_']
+
+
+        fitting=args['Fitting distribution']
+        method=args['Method']
+        min_peak=args['Minimum number of peaks over threshold']
+        rv=args['Return period']
+        if ~isinstance(rv,np.ndarray):
+            rv=np.array(rv)
+       
+
+        drr_interval=[0,360]   
+
+        time_blocking=args['Time blocking']
+        pks_opt={}
+        thresh=args['threshold value']
+
+        if args['threshold type']=='percentile':
+            sort_data=np.sort(np.abs(self.dfout[surge].values))
+            pks_opt['height']=sort_data[int(np.round(len(sort_data)*(thresh/100)))]
+        else:
+            pks_opt['height']=thresh
+
+        pks_opt['distance']=args['Minimum time interval between peaks (h)']*(self.sint/3600)
+        to_export=[]
+        for surge in surges:
+
+            self._get_peaks(surge+'surge',time_blocking=time_blocking,peaks_options=pks_opt,min_peak=min_peak)
+            if 'Omni' not in self.peaks_index['Annual']:
+                return 'No Peak found !!'
+            else:
+                self._clean_peak()
+
+            self._do_EVA_water(surge+'surge',surge+'tide',rv,fitting,method,time_blocking,pks_opt['height'])
+
+            if args['Display peaks']=='On':
+                self._plot_peaks(surge+'surge',display=True,folder=folderout)
+            else:
+                self._plot_peaks(surge+'surge',display=False,folder=folderout)
+
+            if args['Display CDFs']=='On':
+                self._plot_cdfs(surge+'surge',display=True,folder=folderout)
+            else:
+                self._plot_cdfs(surge+'surge',display=False,folder=folderout)
+
+            to_export.append(surge+'surge')
+
+        self._export_as_xls(to_export,rv,os.path.join(folderout,'EVA_water.xlsx'))
 
     def do_extreme(self,magnitude='magnitude',tp_optional='tp_optional',direction_optional='direction_optional',tm_optional='tm_optional',water_depth_optional='water_depth_optional',\
         args={'Fitting distribution':{'Weibull':True,'Gumbel':False,'GPD':False,'GEV':False},
@@ -104,11 +191,12 @@ class Extreme:
 
         pks_opt['distance']=args['Minimum time interval between peaks (h)']*(self.sint/3600)
 
-
         self._get_peaks(magnitude,drr=direction_optional,directional_interval=drr_interval,time_blocking=time_blocking,peaks_options=pks_opt,min_peak=min_peak)
-        
+
         if 'Omni' not in self.peaks_index['Annual']:
             return 'No Peak found !!'
+        else:
+            self._clean_peak()
 
         if tp_optional in self.data:
             self.dfout['slp']=calc_slp(self.data[magnitude],self.data[tp_optional],h=h)
@@ -116,24 +204,60 @@ class Extreme:
 
         self._do_EVA(magnitude,tp_optional,tm_optional,rv,fitting,slp_fitting,method,h,Hmax_RPV)
 
-        # if args['Display peaks']=='On':
-        #     self._plot_peaks(magnitude,display=True,folder=folderout)
-        # else:
-        #     self._plot_peaks(magnitude,display=False,folder=folderout)
+        if args['Display peaks']=='On':
+            self._plot_peaks(magnitude,display=True,folder=folderout)
+        else:
+            self._plot_peaks(magnitude,display=False,folder=folderout)
 
-        # if args['Display CDFs']=='On':
-        #     self._plot_cdfs(magnitude,display=True,folder=folderout)
-        #     if tp_optional in self.data: 
-        #        self._plot_contours(magnitude,rv,drr='Omni',display=False,folder=folderout)
-        # else:
-        #     self._plot_cdfs(magnitude,display=False,folder=folderout)
-        #     if tp_optional in self.data: 
-        #        self._plot_contours(magnitude,rv,drr='Omni',display=False,folder=folderout)
+        if args['Display CDFs']=='On':
+            self._plot_cdfs(magnitude,display=True,folder=folderout)
+            if tp_optional in self.data: 
+               self._plot_contours(magnitude,rv,drr='Omni',display=False,folder=folderout)
+        else:
+            self._plot_cdfs(magnitude,display=False,folder=folderout)
+            if tp_optional in self.data: 
+               self._plot_contours(magnitude,rv,drr='Omni',display=False,folder=folderout)
         
 
+        self._export_as_xls([magnitude,'tp','tmin','tmax','hmax','cmax'],rv,filename=os.path.join(folderout,'EVA.xlsx'))
 
-        #self._export_as_xls(magnitude,rv,folderout)
-        
+    def _clean_peak(self):
+        keys=list(self.peaks_index.keys())
+        for key in keys:
+            if len(self.peaks_index[key])==0:
+                self.peaks_index.pop(key)
+
+    def _do_EVA_water(self,mag,tide,rp,fitting,method,time_blocking,threshold):
+
+        el_res=self.dfout[mag]
+        et=self.dfout[tide].values
+
+        number_of_loops,identifiers,month_identifier=get_number_of_loops(time_blocking)
+        months=self.dfout.index.month
+        idx=np.arange(0,len(months))
+        mag_values=self.dfout[mag]
+        for j in range(0,number_of_loops):
+        #Pull out relevant indices for particular month/months
+            if identifiers[j] in self.peaks_index:
+                peak= self.peaks_index[identifiers[j]]['Omni']
+                index = np.in1d(months, month_identifier[j])
+                
+                self.eva_stats[identifiers[j]]={}
+                self.eva_stats[identifiers[j]]['Omni']={}
+                self.eva_stats[identifiers[j]]['Omni'][mag]={}
+
+                y=get_mag_for_water_elevation(self.dfout[mag][index].values,self.dfout[tide].values,threshold)
+                loc=min(y)-0.01;
+                krP=calc_kRp(rp,len(peak),self.nyear,Hmp=False)
+                phat,scale,shape=do_fitting(y,fitting,method,loc=loc)
+                magex=phat.isf(krP)
+                self.eva_stats[identifiers[j]]['Omni'][mag]['phat']=phat
+                self.eva_stats[identifiers[j]]['Omni'][mag]['scale']=scale
+                self.eva_stats[identifiers[j]]['Omni'][mag]['shape']=shape
+                self.eva_stats[identifiers[j]]['Omni'][mag]['magex']=magex
+
+
+
     def _do_EVA_mag(self,mag,peak,rp,fitting,method):
         stat={}
         krP=calc_kRp(rp,len(peak),self.nyear,Hmp=False)
@@ -215,8 +339,8 @@ class Extreme:
             I1=ws.weibull_min.ppf(sin_cdf,shape_slp,scale=scale_slp,loc=slploc)+C[0]*hsq
             I2=(ws.weibull_min.ppf(sin0_cdf,shape_slp,scale=scale_slp,loc=slploc)).T+C[0]*hsex
         elif slp_fitting.lower()=='gumbel':
-            I1=ws.gumbel_r.ppf(sin_cdf,shape_slp,scale=scale_slp,loc=slploc)+C[0]*hsq
-            I2=(ws.gumbel_r.ppf(sin0_cdf,shape_slp,scale=scale_slp,loc=slploc)).T+C[0]*hsex
+            I1=ws.gumbel_r.ppf(sin_cdf,shape_slp,scale=scale_slp)+slploc+C[0]*hsq
+            I2=(ws.gumbel_r.ppf(sin0_cdf,shape_slp,scale=scale_slp)+slploc).T+C[0]*hsex
                 
         #import pdb;pdb.set_trace()
         g=9.81
@@ -236,24 +360,25 @@ class Extreme:
         if ~np.all(np.isnan(hsex)):  
             for i in range(0,tpq.shape[0]):
                 A = PolyArea(np.concatenate((tpq[i,:],[tpq[i,0]])),np.concatenate((hsq[i,:],[hsq[i,0]])))
-                #find minimum period
-                B = 0
-                n=0
-                while B<0.05*A:
-                    ind=(tpq[i,:]<np.min(tpq[i,:])+(n+1)*0.1).nonzero()[0]
-                    B=PolyArea(np.concatenate((tpq[i,ind],[tpq[i,ind[0]]])),np.concatenate((hsq[i,ind],[hsq[i,ind[0]]])))
-                    n+=1
-                
-                Tmin[i] = np.max(tpq[i,ind])
-                #find mximum period
-                B = 0
-                n= 0
-                while B<0.05*A:
-                    ind=(tpq[i,:]>np.max(tpq[i,:])-(n+1)*0.1).nonzero()[0]
-                    B=PolyArea(np.concatenate((tpq[i,ind],[tpq[i,ind[0]]])),np.concatenate((hsq[i,ind],[hsq[i,ind[0]]])))
-                    n+=1
-                
-                Tmax[i] = np.min(tpq[i,ind])
+                if A>0:
+                    #find minimum period
+                    B = 0
+                    n=0
+                    while B<0.05*A:
+                        ind=(tpq[i,:]<np.nanmin(tpq[i,:])+(n+1)*0.1).nonzero()[0]
+                        B=PolyArea(np.concatenate((tpq[i,ind],[tpq[i,ind[0]]])),np.concatenate((hsq[i,ind],[hsq[i,ind[0]]])))
+                        n+=1
+
+                    Tmin[i] = np.max(tpq[i,ind])
+                    #find mximum period
+                    B = 0
+                    n= 0
+
+                    while B<0.05*A:
+                        ind=(tpq[i,:]>np.nanmax(tpq[i,:])-(n+1)*0.1).nonzero()[0]
+                        B=PolyArea(np.concatenate((tpq[i,ind],[tpq[i,ind[0]]])),np.concatenate((hsq[i,ind],[hsq[i,ind[0]]])))
+                        n+=1
+                    Tmax[i] = np.min(tpq[i,ind])
 
 
 
@@ -361,16 +486,17 @@ class Extreme:
                     self.eva_stats[month][d]['cmax']=self._do_EVA_hmp('Cmp',peak,rp,fitting,method)
 
 
-    def _export_as_xls(self,magnitude,rp,folder):
-        filename=os.path.join(folder,'EVA.xlsx')
+    def _export_as_xls(self,magnitudes,rp,filename):
+        
         months=self.eva_stats.keys()
-        all_var=['tp','tmin','tmax','hmax','cmax']
         for i,month in enumerate(months):
-            mat=sub_table(self.eva_stats[month],magnitude,rp)
-            for var in all_var:
+            for j,var in enumerate(magnitudes):
                 if var in self.eva_stats[month]['Omni']:
                     mat0=sub_table(self.eva_stats[month],var,rp)
-                    mat=np.concatenate((mat,mat0))
+                    if 'mat' not in locals():
+                        mat=copy.deepcopy(mat0)
+                    else:
+                        mat=np.concatenate((mat,mat0))
 
             create_table(filename,month,mat)
         
@@ -469,6 +595,7 @@ class Extreme:
                 x=np.ceil(((j+1)/2))-1
                 y=(np.mod((j%2)+1,2)-1)*-1
                 ax = fig.add_subplot(gs1[int(x),int(y)])
+
 
             stat=self.eva_stats[month][drr][mag]
             ws.probplot(stat['phat'].data, stat['phat'].par, dist=stat['phat'].dist.name, plot=ax)
@@ -670,33 +797,32 @@ class Extreme:
             drr='direction_optional'
             self.dfout['direction_optional']=np.ones((len(self.dfout[mag].values),))*20
 
+        
         number_of_loops,identifiers,month_identifier=get_number_of_loops(time_blocking)
         months=self.dfout.index.month
         idx=np.arange(0,len(months))
-
+        drr_values=self.dfout[drr]
+        mag_values=self.dfout[mag]
         for j in range(0,number_of_loops):
         #Pull out relevant indices for particular month/months
-            index = np.in1d(months, month_identifier[j])
+            index1 = np.in1d(months, month_identifier[j])
             self.peaks_index[identifiers[j]]={}
-
-            drr_values=self.dfout[drr][index]
-            mag_values=self.dfout[mag][index]
-            idx_values=idx[index]
 
             for jj in range(0,len(directional_interval)):
 
                 if jj==len(directional_interval)-1:
-                    index=drr_values>-1
+                    index2=drr_values>-1
                     dir_label='Omni'
                 else:
                     dir_label=degToCompass([directional_interval[jj],directional_interval[jj+1]])
                     if directional_interval[jj+1] <= directional_interval[jj]:
-                        index=(drr_values>directional_interval[jj]) | (drr_values<=directional_interval[jj+1])
+                        index2=(drr_values>directional_interval[jj]) | (drr_values<=directional_interval[jj+1])
                     else:
-                        index=(drr_values>directional_interval[jj]) & (drr_values<=directional_interval[jj+1])
-
+                        index2=(drr_values>directional_interval[jj]) & (drr_values<=directional_interval[jj+1])
+                index=np.logical_and(index1,index2)
                 if np.any(index):
-                    pk_idx=find_peaks(mag_values[index],**peaks_options)[0]
-                    loc=idx_values[index.values][pk_idx]
-                    if len(loc)>min_peak:
-                        self.peaks_index[identifiers[j]][dir_label]=loc
+                    tmp=mag_values.values.copy()
+                    tmp[~index]=0
+                    pk_idx=find_peaks(tmp,**peaks_options)[0]
+                    if len(pk_idx)>min_peak:
+                        self.peaks_index[identifiers[j]][dir_label]=pk_idx
