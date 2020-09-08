@@ -12,11 +12,17 @@ import totoView
 from toto.plugins.wave._do_ssh_to_wave import zero_crossing
 from toto.filters.bandpass_filter import bandpass_filter
 
-filename=r'_tests/txt_file/GSB.txt'
-tx=TXTfile([filename],colNamesLine=1,skiprows=1,unitNamesLine=0,time_col_name={'year':'year','month':'month','day':'day','hour':'hour','min':'Minute'})
+# filename=r'_tests/txt_file/GSB.txt'
+# tx=TXTfile([filename],colNamesLine=1,skiprows=1,unitNamesLine=0,time_col_name={'year':'year','month':'month','day':'day','hour':'hour','min':'Minute'})
+# tx.reads()
+# tx.read_time()
+# df=tx._toDataFrame()
+filename=r'../P1.txt'
+tx=TXTfile([filename],colNamesLine=1,skiprows=1,unitNamesLine=0,time_col_name={'Year':'year','Month':'month','Day':'day','H[UTC]':'hour','Min':'Minute'})
 tx.reads()
 tx.read_time()
 df=tx._toDataFrame()
+
 df[0].filename='sss'
 #filename=r'../ssh2.mat'
 #tx=MATfile(filename)
@@ -30,27 +36,32 @@ df[0].filename='sss'
 # mag=df[0]['ssh'].values
 
 #caca=zero_crossing(pd.DataFrame(),time[0],time,mag,False,30)
-
+df=df[0].StatPlots.joint_probability_plot(Hs='hs[m]',Tm02='t02[s]',args={\
+    'folder out':os.getcwd(),'X Min Res Max(optional)':[0,2],'Y Min Res Max(optional)':[0,2],\
+    'Time blocking':'Monthly','Probablity expressed in':'percent','Probablity expressed in':'per thoushand','display':'On'})
 
 #df=tf['test1']['dataframe'].Statistics.common_stats(mag='U',drr='drr')
 # # df=df[0].Statistics.joint_prob(speed='elev',direction='hvel_U_lev_3.0',period='Tp',args={'method':'Mag vs Dir',\
 # # 	'folder out':'/tmp/','X Min Res Max(optional)':[2,1,22],'Y Min Res Max(optional)':[0,0.5],'Direction binning':'centred',\
 # # 	'Direction interval': 45.,'Time blocking':'Monthly','Probablity expressed in':'percent'})
+
+
 # df[0].filename='test'
-df=df[0].Statistics.Directional_statistics(magnitude='Spd',direction='Dir',\
-        args={
-        'function':'Quantile',#{'Max':True, 'Mean':False, 'Median':False, 'Min':False, 'Percentile':False, 'Prod':False, 'Quantile':False, 'Std':False, 'Sum':False, 'Var':False},
-        'Percentile or Quantile': 0.1,
-        'folder out':os.getcwd(),
-        'Direction binning':'centered',
-        'Direction interval': 45.,
-        'Time blocking':'Monthly',#{'Annual':True,'Seasonal (South hemisphere)':False,'Seasonal (North hemisphere)':False,'Monthly':False},
-        })
+# df=df[0].Statistics.Directional_statistics(magnitude='Spd',direction='Dir',\
+#         args={
+#         'function':'Quantile',#{'Max':True, 'Mean':False, 'Median':False, 'Min':False, 'Percentile':False, 'Prod':False, 'Quantile':False, 'Std':False, 'Sum':False, 'Var':False},
+#         'Percentile or Quantile': 0.1,
+#         'folder out':os.getcwd(),
+#         'Direction binning':'centered',
+#         'Direction interval': 45.,
+#         'Time blocking':'Monthly',#{'Annual':True,'Seasonal (South hemisphere)':False,'Seasonal (North hemisphere)':False,'Monthly':False},
+#         })
 
 
 # df=df[0].Statistics.exc_prob(data='elev',args={'method':'exceedance persistence',\
 # 	'folder out':'','Exceedance bins: Min Res Max(optional)':[0,0.1],'Duration Min Res Max':[1,1,12],
 # 	'Time blocking':'Monthly','Probablity expressed in':'percent'})
+
 # df=df[0].Statistics.exc_coinc_prob(data='elev',coincident_nodir='hvel_U_lev_3.0',coincident_with_dir='coincident_with_dir',\
 #         args={'method':'exceedence',\
 #         'folder out':'',
@@ -157,17 +168,17 @@ df=df[0].Statistics.Directional_statistics(magnitude='Spd',direction='Dir',\
 #          'display':'On',#:True,'Off':False}
 #          })
 #bandpass_filter(df[0]['ssh'],args={'lower cut-off':3,'upper cut-off':25})
-df=df[0].WaveAnalysis.ssh_to_wave(sea_level='ssh',\
-        args={
-         'Windows': 3600.,
-         'Overlap':1800.,
-         'Nfft':3600.,
-         'Crossing':'Downcrossing', #:True,'linear':False,'constante':False},
-         'Wave period range (min and max) (in s)':[3, 25],
-         'Minimum number of waves per window for zero crossing analysis':30,
-         'Method':'zero-crossing',
-         'Detrend':'Off',
-         })
+# df=df[0].WaveAnalysis.ssh_to_wave(sea_level='ssh',\
+#         args={
+#          'Windows': 3600.,
+#          'Overlap':1800.,
+#          'Nfft':3600.,
+#          'Crossing':'Downcrossing', #:True,'linear':False,'constante':False},
+#          'Wave period range (min and max) (in s)':[3, 25],
+#          'Minimum number of waves per window for zero crossing analysis':30,
+#          'Method':'zero-crossing',
+#          'Detrend':'Off',
+#          })
 
 
 

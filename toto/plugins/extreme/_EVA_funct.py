@@ -1,7 +1,10 @@
 import numpy as np
 import sys
 try:
+    import wafo
+    wafo.plotbackend.plotbackend.interactive(False)
     import wafo.stats as ws
+
 except:
     print('')
     print('')

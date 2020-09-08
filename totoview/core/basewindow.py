@@ -26,14 +26,13 @@ class BaseWindow(QDialog):
         if logo:
         	self.setWindowIcon(QIcon(logo))
         else:
-        	
         	self.setWindowIcon(QIcon(os.path.join(ssDir,'toto.jpg')))    
        
         sshFile=os.path.join(ssDir,'TCobra.qss')
         with open(sshFile,"r") as fh:
             self.setStyleSheet(fh.read())
 
-
+        
         self.opt=[]
         # Main window
         layout = QHBoxLayout()
@@ -45,13 +44,15 @@ class BaseWindow(QDialog):
         # left pannel
         Left = QVBoxLayout()
         #Plotting Methods from Matplotlib
+
         self.figure = plt.figure()
+
         self.canvas = FigureCanvas(self.figure)
         self.canvas.setMaximumHeight(525)
         self.canvas.setMaximumHeight(725)
         self.toolbar = NavigationToolbar(self.canvas, self)
 
-
+        
        #Labels
         self.label = QLabel(self)
         self.label.setFont(font)

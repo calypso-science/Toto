@@ -6,6 +6,7 @@ import pandas as pd
 class SelectWindow(BaseWindow):
     def __init__(self,X, parent=None):
         super(SelectWindow, self).__init__(folder=toto.selections,title='Selection toolbox',parent=parent)
+
         self.X0=X[0].copy()
         self.X=X
         self.refresh_plot()

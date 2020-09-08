@@ -85,7 +85,7 @@ class Statistics:
         if analysis_method=='Mag vs Dir' or analysis_method=='Per Vs Dir':
             X_interval=dir_interval(args['Direction interval'],args['Direction binning'])
         else:
-            X_interval=get_increment(Xdata,ags['X Min Res Max(optional)'])
+            X_interval=get_increment(Xdata,args['X Min Res Max(optional)'])
         
 
         X_interval=np.append(X_interval,np.nan)

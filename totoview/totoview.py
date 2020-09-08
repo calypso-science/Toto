@@ -61,7 +61,6 @@ class TotoGUI(QMainWindow,FORM_CLASS):
 
     def __init__(self,data=TotoFrame()):
         super(TotoGUI,self).__init__()
-
         if isinstance(data,TotoFrame):
             self.load_tf(data)
 
@@ -284,6 +283,7 @@ class TotoGUI(QMainWindow,FORM_CLASS):
 
 
         main = SelectWindow(data_to_filter) 
+
         df=main.exec()
 
         self._update(checks_files,df)

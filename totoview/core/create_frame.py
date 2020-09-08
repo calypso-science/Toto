@@ -74,7 +74,7 @@ def get_layout_from_sig(sig):
             elif isinstance(args[arg],list):
                 wd.setText(' '.join([str(i) for i in args[arg]])) 
                
-            if isinstance(args[arg],str) and os.path.isdir('/tmp/'):
+            if isinstance(args[arg],str) and os.path.isdir(args[arg]):
                 container=QWidget()
                 ly=QHBoxLayout()
                 ly.addWidget(wd)

@@ -5,7 +5,8 @@ from ._do_bias_hist import do_bias_hist
 from ._do_density_diagramm import do_density_diagramm
 from ._do_qq_plot import qq_plot
 from ._do_perc_of_occurence import do_perc_of_occurence
-from ...core.toolbox import get_opt,dir_interval
+from toto.plugins.statistics._do_joint_prob import _do_joint_prob_plot
+from ...core.toolbox import get_opt,dir_interval,get_increment
 import numpy as np
 
 
@@ -148,3 +149,48 @@ class StatPlots:
 
 
 
+    def joint_probability_plot(self,X='X',Y='Y',\
+        args={    
+        'X Min Res Max(optional)':[2,1,22],
+        'Y Min Res Max(optional)':[0,0.5],
+        'X label':'',
+        'Y label':'',
+        'Time blocking':{'Annual':True,'Seasonal (South hemisphere)':False,'Seasonal (North hemisphere)':False,'Monthly':False},
+        'Probablity expressed in':{'percent':False,'per thoushand':True},
+        'display':{'On':True,'Off':False},
+        'folder out':os.getcwd(),
+        }):
+        ''' This function provides joint distribution tables for X and Y, i.e. the
+            probability of events defined in terms of both X and Y (per 1000)
+            It can be applied for magnitude-direction, magnitude-period or
+            period-direction'''
+        display=True
+        if args['display']=='Off':
+            display=False
+        Ydata=self.data[Y]
+        Xdata=self.data[X]
+
+        filename=os.path.join(args['folder out'],os.path.splitext(self.data.filename)[0]+'JP_wave_nrj.png')
+
+        if args['Probablity expressed in']=='percent':
+            multiplier=100.
+        else:
+            multiplier=1000.
+        Y_interval=get_increment(Ydata,args['Y Min Res Max(optional)'])
+        X_interval=get_increment(Xdata,args['X Min Res Max(optional)'])      
+
+        X_unit=get_opt(self.data[X],'units','')
+        X_short_name=get_opt(self.data[X],'short_name','')
+        if X_short_name=='':
+            xlabel=args['X label']
+        else:
+            xlabel=X_short_name+' ['+X_unit+']'
+
+        Y_unit=get_opt(self.data[Y],'units','')
+        Y_short_name=get_opt(self.data[Y],'short_name','')
+        if Y_short_name=='':
+            ylabel=args['Y label']
+        else:
+            ylabel=Y_short_name+' ['+Y_unit+']'
+
+        _do_joint_prob_plot(filename,self.data.index,Xdata,Ydata,X_interval,Y_interval,args['Time blocking'],display,xlabel,ylabel,multiplier)
