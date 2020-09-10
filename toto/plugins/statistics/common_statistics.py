@@ -181,14 +181,15 @@ class Statistics:
             analysis_method='Mag_Dir'
             X=self.data[coincident_with_dir]
             X_interval=dir_interval(args['Direction interval'],args['Direction binning'])
+            binning=args['Direction binning']
         else:
             analysis_method='Mag_Var'
             X=self.data[coincident_nodir]
             X_interval=get_increment(Y,args['Coincidence bins: Min Res Max(optional)'])
-
+            binning=''
             
 
-        do_exc_coinc_stats(filename,self.data.index,X,Y,Exc,X_interval,args['Time blocking'],analysis_method,analysis,args['Direction binning'])
+        do_exc_coinc_stats(filename,self.data.index,X,Y,Exc,X_interval,args['Time blocking'],analysis_method,analysis,binning)
 
 
     def workability(self,data1='data1',data2='data2',data3_optional='data3_optional',data4_optional='data4_optional',\

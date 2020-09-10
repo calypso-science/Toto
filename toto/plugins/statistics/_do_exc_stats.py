@@ -254,7 +254,7 @@ def persistent_percent_exceed(data0,thresh,duration,sint,choice='exceedence'):
                 peakend.append(j+elems)
             j+=elems
         peaklength=np.array(peaklength)
-        peaklength=peaklength+1
+        peaklength=peaklength
         valid_peaks=(peaklength>duration)
         
         peaklength=peaklength[valid_peaks]

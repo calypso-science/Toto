@@ -3,6 +3,7 @@ from ...core.toolbox import dir_interval,get_increment
 import os
 from toto.plugins.statistics._do_stats import do_stats
 from ._wood_joint_prob import do_joint_prob
+from ._wood_pers_prob import do_perc_stats
 import numpy as np
 
 @pd.api.extensions.register_dataframe_accessor("Woodside")
@@ -87,3 +88,26 @@ class Woodside:
         X_interval=np.append(X_interval,np.nan)
         Y_interval=np.append(Y_interval,np.nan)
         do_joint_prob(filename,self.data.index,Xdata,Ydata,X_interval,Y_interval,args['Time blocking'],binning,multiplier)
+
+
+
+    def persistence_probability(self,data='data',\
+        args={'method':{'exceedence':True,'non-exceedence':False},\
+        'folder out':os.getcwd(),
+        'Exceedance bins: Min Res Max(optional)':[2,1,22],
+        'Duration Min Res Max':[6,6,72],
+        'Time blocking':{'Annual':True,'Seasonal (South hemisphere)':False,'Seasonal (North hemisphere)':False,'Monthly':False},
+         }):
+
+        '''%This function calculates the frequency of occurrence of data:
+        %-exceeding specific values (exceedence)
+        %-non-exceeding specific values (non-exceedence)
+        %-exceeding specific values during a specific duration (persistence exceedence)
+        %-non-exceeding specific values during a specific duration (persistence non-exceedence)'''
+
+        analysis=args['method'] 
+        filename=os.path.join(args['folder out'],os.path.splitext(self.data.filename)[0]+'_Pers.xlsx')
+        Ydata=self.data[data]
+        Exc=get_increment(Ydata,args['Exceedance bins: Min Res Max(optional)'])
+        duration=get_increment(Ydata,args['Duration Min Res Max'])
+        do_perc_stats(filename,self.data.index,Ydata,args['Time blocking'],analysis,Exc,duration)

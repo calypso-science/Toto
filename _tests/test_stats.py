@@ -52,10 +52,13 @@ df[0].filename='sss'
 #                                                             })
 #df=tf['test1']['dataframe'].Statistics.common_stats(mag='U',drr='drr')
 
-df=df[0].Woodside.joint_probability(speed='hs[m]',direction='dpm[deg]',period='tp[s]',args={'method':'Mag vs Per',\
-	'folder out':os.getcwd(),'X Min Res Max(optional)':[2,2,20],'Y Min Res Max(optional)':[0,0.5],'Direction binning':'centred',\
-	'Direction interval': 45.,'Time blocking':'Annual','Probablity expressed in':'percent'})
+# df=df[0].Woodside.joint_probability(speed='hs[m]',direction='dpm[deg]',period='tp[s]',args={'method':'Mag vs Per',\
+# 	'folder out':os.getcwd(),'X Min Res Max(optional)':[2,2,20],'Y Min Res Max(optional)':[0,0.5],'Direction binning':'centred',\
+# 	'Direction interval': 45.,'Time blocking':'Annual','Probablity expressed in':'percent'})
 
+df=df[0].Woodside.persistence_probability(data='hs[m]',args={'method':'non-exceedance',\
+	'folder out':'','Exceedance bins: Min Res Max(optional)':[2,1],'Duration Min Res Max':[6,6,18],
+	'Time blocking':'Annual','Probablity expressed in':'percent'})
 
 # df[0].filename='test'
 # df=df[0].Statistics.Directional_statistics(magnitude='Spd',direction='Dir',\
