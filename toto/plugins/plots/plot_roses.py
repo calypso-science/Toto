@@ -160,10 +160,9 @@ class StatPlots:
         'display':{'On':True,'Off':False},
         'folder out':os.getcwd(),
         }):
-        ''' This function provides joint distribution tables for X and Y, i.e. the
+        ''' This function provides joint distribution graph for X and Y, i.e. the
             probability of events defined in terms of both X and Y (per 1000)
-            It can be applied for magnitude-direction, magnitude-period or
-            period-direction'''
+            '''
         display=True
         if args['display']=='Off':
             display=False

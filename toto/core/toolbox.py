@@ -73,7 +73,7 @@ def get_number_of_loops(time_blocking):
     elif 'seasonal' in time_blocking.lower():
         identidifers,month_identidier=get_seasons(time_blocking)
         number_of_loops=4+1
-        month_identidier.append([np.arange(1,13,1)])
+        month_identidier.append(np.arange(1,13,1))
         identidifers.append('Annual')
     elif 'monthly' in time_blocking.lower():
         identidifers=[]
@@ -83,7 +83,7 @@ def get_number_of_loops(time_blocking):
             month_identidier.append([m])
         identidifers.append('Annual')
         number_of_loops=12+1
-        month_identidier.append([np.arange(1,13,1)])
+        month_identidier.append(np.arange(1,13,1))
 
 
 

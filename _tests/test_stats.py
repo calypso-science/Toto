@@ -36,14 +36,25 @@ df[0].filename='sss'
 # mag=df[0]['ssh'].values
 
 #caca=zero_crossing(pd.DataFrame(),time[0],time,mag,False,30)
-df=df[0].StatPlots.joint_probability_plot(Hs='hs[m]',Tm02='t02[s]',args={\
-    'folder out':os.getcwd(),'X Min Res Max(optional)':[0,2],'Y Min Res Max(optional)':[0,2],\
-    'Time blocking':'Monthly','Probablity expressed in':'percent','Probablity expressed in':'per thoushand','display':'On'})
+# df=df[0].StatPlots.joint_probability_plot(Hs='hs[m]',Tm02='t02[s]',args={\
+#     'folder out':os.getcwd(),'X Min Res Max(optional)':[0,2],'Y Min Res Max(optional)':[0,2],\
+#     'Time blocking':'Monthly','Probablity expressed in':'percent','Probablity expressed in':'per thoushand','display':'On'})
 
+# df=df[0].Statistics.weather_window(data='hs[m]',args={'method':'exceedance non-persistence',\
+#   'folder out':'','Exceedance bins: Min Res Max(optional)':[0,0.5],'Duration Min Res Max':[6,6,12],
+#   'Time blocking':'Monthly'})
+# df=df[0].Statistics.weighted_direction(Hs='hs[m]',drr='dpm_sea8[deg]',args={'folder out':os.getcwd(),
+#                                                     'type':'South hemisphere(Summer/Winter)'
+#                                                             })
+
+# df=df[0].Statistics.modal_wave_period(Hs='hs[m]',Tp='tp[s]',args={'folder out':os.getcwd(),
+#                                                     'type':'South hemisphere(Summer/Winter)'
+#                                                             })
 #df=tf['test1']['dataframe'].Statistics.common_stats(mag='U',drr='drr')
-# # df=df[0].Statistics.joint_prob(speed='elev',direction='hvel_U_lev_3.0',period='Tp',args={'method':'Mag vs Dir',\
-# # 	'folder out':'/tmp/','X Min Res Max(optional)':[2,1,22],'Y Min Res Max(optional)':[0,0.5],'Direction binning':'centred',\
-# # 	'Direction interval': 45.,'Time blocking':'Monthly','Probablity expressed in':'percent'})
+
+df=df[0].Woodside.joint_probability(speed='hs[m]',direction='dpm[deg]',period='tp[s]',args={'method':'Mag vs Per',\
+	'folder out':os.getcwd(),'X Min Res Max(optional)':[2,2,20],'Y Min Res Max(optional)':[0,0.5],'Direction binning':'centred',\
+	'Direction interval': 45.,'Time blocking':'Annual','Probablity expressed in':'percent'})
 
 
 # df[0].filename='test'
@@ -58,9 +69,9 @@ df=df[0].StatPlots.joint_probability_plot(Hs='hs[m]',Tm02='t02[s]',args={\
 #         })
 
 
-# df=df[0].Statistics.exc_prob(data='elev',args={'method':'exceedance persistence',\
+# df=df[0].Statistics.exceedence_probability(data='hs[m]',args={'method':'exceedance persistence',\
 # 	'folder out':'','Exceedance bins: Min Res Max(optional)':[0,0.1],'Duration Min Res Max':[1,1,12],
-# 	'Time blocking':'Monthly','Probablity expressed in':'percent'})
+# 	'Time blocking':'Annual','Probablity expressed in':'percent'})
 
 # df=df[0].Statistics.exc_coinc_prob(data='elev',coincident_nodir='hvel_U_lev_3.0',coincident_with_dir='coincident_with_dir',\
 #         args={'method':'exceedence',\

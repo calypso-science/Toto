@@ -3,8 +3,8 @@ from ...core.toolbox import dir_interval,get_increment
 import os
 from ._do_comp_stats import do_comp_stats
 from ._do_joint_prob import do_joint_prob
-from ._do_stats import do_stats
-from ._do_exc_stats import do_exc_stats,do_exc_coinc_stats
+from ._do_stats import do_stats,do_modal_stat,do_weighted_direction
+from ._do_exc_stats import do_exc_stats,do_exc_coinc_stats,do_window_stats
 from ._do_workability import do_workability
 from ._do_wave_pop import do_wave_pop
 from ._do_dir_max import do_directional_stat
@@ -70,7 +70,7 @@ class Statistics:
             Ydata=self.data[period]
             Xdata=self.data[direction]
         elif analysis_method=='Mag vs Per':
-            Ydata=self.data[magnitude]
+            Ydata=self.data[speed]
             Xdata=self.data[period]
 
         filename=os.path.join(args['folder out'],os.path.splitext(self.data.filename)[0]+'JP.xlsx')
@@ -84,36 +84,15 @@ class Statistics:
 
         if analysis_method=='Mag vs Dir' or analysis_method=='Per Vs Dir':
             X_interval=dir_interval(args['Direction interval'],args['Direction binning'])
+            binning=args['Direction binning']
         else:
             X_interval=get_increment(Xdata,args['X Min Res Max(optional)'])
+            binning=''
         
 
         X_interval=np.append(X_interval,np.nan)
         Y_interval=np.append(Y_interval,np.nan)
-        do_joint_prob(filename,self.data.index,Xdata,Ydata,X_interval,Y_interval,args['Time blocking'],args['Direction binning'],multiplier)
-
-    def directional3_joint_occurence(magnitude1_basis='magnitude1_basis',magnitude2_X='magnitude2_X',magnitude3_Y='magnitude3_Y',\
-        direction1='direction1',direction2='direction2',direction3='direction3',\
-        args={
-        'folder out':os.getcwd(),
-        'Mag1 Min Res Max(optional)':[2,1,22],
-        'Mag2 Min Res Max(optional)':[2,1,22],
-        'Mag3 Min Res Max(optional)':[2,1,22],
-        'Direction binning 1':{'centered':True,'not-centered':False},
-        'Direction interval 1': 45.,
-        'Direction binning 2':{'centered':True,'not-centered':False},
-        'Direction interval 2': 45.,
-        'Direction binning 3':{'centered':True,'not-centered':False},
-        'Direction interval 3': 45.,
-        'Time blocking':{'Annual':True,'Seasonal (South hemisphere)':False,'Seasonal (North hemisphere)':False,'Monthly':False},
-        }):
-        '''
-        % This function provides joint distribution tables for X and Y, i.e. the
-        % probability of events defined in terms of both X and Y (per 1000)
-        % It can be applied for magnitude-direction, magnitude-period or
-        % period-direction'''
-
-        pass
+        do_joint_prob(filename,self.data.index,Xdata,Ydata,X_interval,Y_interval,args['Time blocking'],binning,multiplier)
 
     def comparison_statistics(self,measured='measured',hindcast='hindcast',args={'folder out':os.getcwd()}):
         '''function out=comparison_stat(varargin)
@@ -138,6 +117,26 @@ class Statistics:
         error_message=do_comp_stats(filename,hind,meas,self.data[hindcast].short_name)
         if isintance(error_message,str):
             return error_message
+
+    def weather_window(self,data='data',\
+        args={'method':{'persistence exceedence':False,'persistence non-exceedence':True},\
+        'folder out':os.getcwd(),
+        'Exceedance bins: Min Res Max(optional)':[2,1,22],
+        'Duration Min Res Max':[6,6,72],
+        'Time blocking':{'Annual':True,'Seasonal (South hemisphere)':False,'Seasonal (North hemisphere)':False,'Monthly':False},
+         }):
+        '''%This function calculates the frequency of occurrence of data:
+        %-exceeding specific values (exceedence)
+        %-non-exceeding specific values (non-exceedence)
+        %-exceeding specific values during a specific duration (persistence exceedence)
+        %-non-exceeding specific values during a specific duration (persistence non-exceedence)'''
+
+        analysis=args['method'] 
+        filename=os.path.join(args['folder out'],os.path.splitext(self.data.filename)[0]+'_WeatherWindow.xlsx')
+        Ydata=self.data[data]
+        Exc=get_increment(Ydata,args['Exceedance bins: Min Res Max(optional)'])
+        duration=get_increment(Ydata,args['Duration Min Res Max'])
+        do_window_stats(filename,self.data.index,Ydata,args['Time blocking'],analysis,Exc,duration)
 
     def exceedence_probability(self,data='data',\
         args={'method':{'persistence exceedence':True,'persistence non-exceedence':False,\
@@ -295,4 +294,36 @@ class Statistics:
         do_directional_stat(filename,funct,val,short_name,self.data.index,Xdata,Ydata,X_interval,args['Time blocking'],args['Direction binning'])
 
         
-        
+    def modal_wave_period(self,Hs='Hs',Tp='Tp',args={'folder out':os.getcwd(),
+                                                    'type':{'South hemisphere(Summer/Winter)':True,\
+                                                            'South hemisphere 4 seasons': False,
+                                                            'North hemishere(Summer/Winter)':False,
+                                                            'North hemisphere moosoon(SW,NE,Hot season)':False,
+                                                            'North hemisphere 4 seasons': False
+                                                            }}):
+
+    
+
+        hem=args['type']
+        filename=os.path.join(args['folder out'],os.path.splitext(self.data.filename)[0]+'modal_wave_period.xlsx')
+        hs=self.data[Hs]
+        tp=self.data[Tp];
+        time=self.data.index
+        do_modal_stat(time,hs,tp,hem,filename)     
+
+    def weighted_direction(self,Hs='Hs',drr='drr',args={'folder out':os.getcwd(),
+                                                    'type':{'South hemisphere(Summer/Winter)':True,\
+                                                            'South hemisphere 4 seasons': False,
+                                                            'North hemishere(Summer/Winter)':False,
+                                                            'North hemisphere moosoon(SW,NE,Hot season)':False,
+                                                            'North hemisphere 4 seasons': False
+                                                            }}):
+
+    
+
+        hem=args['type']
+        filename=os.path.join(args['folder out'],os.path.splitext(self.data.filename)[0]+'weighted_direction.xlsx')
+        hs=self.data[Hs]
+        drr=self.data[drr];
+        time=self.data.index
+        do_weighted_direction(time,hs,drr,hem,filename)   
