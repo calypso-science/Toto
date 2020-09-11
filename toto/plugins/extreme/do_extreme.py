@@ -262,7 +262,7 @@ class Extreme:
         stat={}
         krP=calc_kRp(rp,len(peak),self.nyear,Hmp=False)
         phat,scale,shape=do_fitting(self.dfout[mag].values[peak],fitting,method)
-        magex=phat.isf(kRp)
+        magex=phat.isf(krP)
         stat['phat']=phat
         stat['scale']=scale
         stat['shape']=shape
@@ -569,7 +569,7 @@ class Extreme:
         if display:
             plt.show(block=~display)
 
-        plt.savefig(os.path.join(folder,'RPV_FORM_'+drr+'.png'))
+        plt.savefig(os.path.join(folder,'RPV_FORM_'+mag+'_'+drr+'.png'))
         plt.close()
 
     def _plot_cdfs(self,mag,drr='Omni',display=False,folder=os.getcwd()):
@@ -613,7 +613,7 @@ class Extreme:
         if display:
             plt.show(block=~display)
 
-        plt.savefig(os.path.join(folder,'cdf_'+drr+'.png'))
+        plt.savefig(os.path.join(folder,'cdf_'+mag+'_'+drr+'.png'))
         plt.close()
 
     def _plot_peaks(self,mag,display=False,folder=os.getcwd()):
@@ -679,7 +679,7 @@ class Extreme:
         if display:
             plt.show(block=~display)
         
-        plt.savefig(os.path.join(folder,'peaks.png'))
+        plt.savefig(os.path.join(folder,mag+'_peaks.png'))
         plt.close()
 
     def _calc_Hmp(self,hs,ind,tm=None,depth=5000,max_storm_duration=48):

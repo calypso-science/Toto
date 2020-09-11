@@ -56,9 +56,24 @@ df[0].filename='sss'
 # 	'folder out':os.getcwd(),'X Min Res Max(optional)':[2,2,20],'Y Min Res Max(optional)':[0,0.5],'Direction binning':'centred',\
 # 	'Direction interval': 45.,'Time blocking':'Annual','Probablity expressed in':'percent'})
 
-df=df[0].Woodside.persistence_probability(data='hs[m]',args={'method':'non-exceedance',\
-	'folder out':'','Exceedance bins: Min Res Max(optional)':[2,1],'Duration Min Res Max':[6,6,18],
-	'Time blocking':'Annual','Probablity expressed in':'percent'})
+# df=df[0].Woodside.persistence_probability(data='hs[m]',args={'method':'non-exceedance',\
+# 	'folder out':'','Exceedance bins: Min Res Max(optional)':[2,1],'Duration Min Res Max':[6,6,18],
+# 	'Time blocking':'Annual','Probablity expressed in':'percent'})
+
+
+df[0].Woodside.extreme_analysis(wind_speed10='hs[m]',wind_drr='dpm[deg]',
+                          hs='hs[m]',tp='tp[s]',tm02='t02[s]',dpm='dpm[deg]',
+                          surface_current='hs[m]',surface_drr='dpm[deg]',
+                          midwater_current='hs[m]',midwater_drr='dpm[deg]',
+                          bottom_current='hs[m]',bottom_drr='dpm[deg]',
+                          args={'return_period': [1,5,10,20,50,100,200,500,1000],
+                          'Display':'On',
+                          'Water depth':5000.,
+                          'Directional switch':'On',
+                          'folder out':os.getcwd(),
+                           })
+
+
 
 # df[0].filename='test'
 # df=df[0].Statistics.Directional_statistics(magnitude='Spd',direction='Dir',\

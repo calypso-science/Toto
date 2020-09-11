@@ -116,12 +116,12 @@ def do_fitting(mag,fitting,method,loc=None):
         scale=phat.par[0]
         shape=phat.par[-1]
     elif fitting.lower() == 'gpd':
-        phat = phat.genpareto.fit2(mag,floc=loc,method=method.lower(),alpha=0.05)
+        phat = ws.genpareto.fit2(mag,floc=loc,method=method.lower(),alpha=0.05)
         scale=phat.par[-1]
         shape=phat.par[0]*-1
 
     elif fitting.lower() == 'gev':
-        phat = phat.genextreme.fit2(mag,floc=loc,method=method.lower(),alpha=0.05)
+        phat = ws.genextreme.fit2(mag,floc=loc,method=method.lower(),alpha=0.05)
         scale=phat.par[-1]
         shape=phat.par[0]
 

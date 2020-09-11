@@ -4,6 +4,7 @@ import os
 from toto.plugins.statistics._do_stats import do_stats
 from ._wood_joint_prob import do_joint_prob
 from ._wood_pers_prob import do_perc_stats
+from ._wood_extreme_stat import do_extrem_stats
 import numpy as np
 
 @pd.api.extensions.register_dataframe_accessor("Woodside")
@@ -111,3 +112,39 @@ class Woodside:
         Exc=get_increment(Ydata,args['Exceedance bins: Min Res Max(optional)'])
         duration=get_increment(Ydata,args['Duration Min Res Max'])
         do_perc_stats(filename,self.data.index,Ydata,args['Time blocking'],analysis,Exc,duration)
+
+
+    def extreme_analysis(self,wind_speed10='wind_speed10',wind_drr='wind_drr',
+                          hs='hs',tp='tp',tm02='tm02',dpm='dpm',
+                          surface_current='surface_current',surface_drr='surface_drr',
+                          midwater_current='midwater_current',midwater_drr='midwater_drr',
+                          bottom_current='bottom_current',bottom_drr='bottom_drr',
+                          args={'return_period': [1,5,10,20,50,100,200,500,1000],
+                          'Display':{'On':True,'Off':False},
+                          'Water depth':5000.,
+                          'Directional switch':{'On':True,'Off':False},
+                          'folder out':os.getcwd(),
+                           }):
+
+        if args['Directional switch']=='On':
+            drr_interval=dir_interval()
+        else:
+            drr_interval=[0,360]
+
+        rv=args['return_period']
+        if ~isinstance(rv,np.ndarray):
+            rv=np.array(rv)
+
+        display=False
+        if args['Display']=='On':
+            display=True
+        h=args['Water depth']
+        folderout=args['folder out']
+
+
+        do_extrem_stats(self.data[wind_speed10],self.data[wind_drr],
+            self.data[hs],self.data[tp],self.data[tm02],self.data[dpm],
+            self.data[surface_current],self.data[surface_drr],
+            self.data[midwater_current],self.data[midwater_drr],
+            self.data[bottom_current],self.data[bottom_drr],
+            drr_interval,rv,display,h,folderout)
