@@ -475,6 +475,10 @@ class TotoGUI(QMainWindow,FORM_CLASS):
             reader=mss.exec()
             if reader is None:
                 return
+            if len(reader)==0:
+                reader=[readername[0]]
+                
+
             gd_reader=reader[0].replace('file','').lower()
 
         if isinstance(gd_reader,list):
