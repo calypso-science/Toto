@@ -71,7 +71,7 @@ class MSLfile():
                     df0.append(df3d)
                   
             if len(D2_keys)>0:
-                import pdb;pdb.set_trace()
+                #import pdb;pdb.set_trace()
                 df2d=df[D2_keys].loc[(0,n)]
                 df2d.reset_index(inplace=True)
                 df2d.set_index('time',inplace=True)
