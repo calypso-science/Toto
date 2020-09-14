@@ -15,7 +15,7 @@ import copy
 
 from windrose import WindroseAxes
 
-from matplotlib.widgets import RectangleSelector
+from matplotlib.widgets import RectangleSelector,SpanSelector
 from matplotlib.axes import SubplotBase
 import matplotlib.pyplot as plt
 
@@ -32,6 +32,8 @@ from toto.core.toolbox import uv2spdir,spdir2uv
 from .CustomDialog import CalendarDialog,PeaksDialog
 
 import matplotlib.dates as mpld
+import six
+
 #mpld.set_epoch('0000-12-31T00:00:00')
                     
 class SelectFromCollection(object):
@@ -81,9 +83,75 @@ class SelectFromCollection(object):
             self.selector(peaks=values)
             self.canvas.draw_idle()
 
+        elif method == 'spanselector':
 
+            self.span = SpanSelector(
+                ax,
+                self.printspanselector,
+                "horizontal",
+                useblit=True,
+                rectprops=dict(alpha=0.5, facecolor="red"),
+            )
+            self.canvas.draw_idle()
 
         self.ind = []
+
+    def printspanselector(self, xmin, xmax):
+        for child in self.parent.plotCanvas.fig1.get_children():
+            if child.get_gid() == 'ax':
+                objs=child.get_children()
+
+        statf=['mean','min','max',[25,50,75]]
+        mat=[]
+        columnName=[]
+        for stat in statf:
+            if isinstance(stat,str):
+                columnName.append(stat)
+            elif isinstance(stat,list):
+                for p in stat:
+                    columnName.append('P'+str(p))
+
+
+        rowName=[]
+        color=[]
+        for i in range(0,len(self.x)):
+            gid=self.gid[i]
+            for obj in objs:
+                if hasattr(obj,'get_xydata') and obj.get_gid()==gid:
+                    color.append(obj.get_color())
+                    break
+
+            Y=self.y[i]
+            
+            rowName.append(gid)
+            row=[]
+            X=self.x[i]
+            if isinstance(X[0],np.datetime64):
+                X=date2num(X)
+
+            ind =np.nonzero(((X>=xmin) & (X<=xmax)))[0]
+            for stat in statf:
+                if isinstance(stat,str):
+                    fct=getattr(np, 'nan'+stat)
+                    row.append('%.2f'%fct(Y[ind]))
+                elif isinstance(stat,list):
+                    perc=list(np.percentile(Y[ind],stat))
+                    row+=['%.2f'%x for x in perc]                
+            
+            mat.append(row)
+
+        tb=self.ax.table(cellText=mat,rowLabels=rowName,colLabels=columnName,loc='top',cellLoc='center') 
+        for k, cell in six.iteritems(tb._cells):
+            cell.set_edgecolor('black')
+            if k[0] == 0 :
+                cell.set_text_props(weight='bold', color='w')
+                cell.set_facecolor(self.ax.get_facecolor())
+            else:
+                cell.set_text_props(color=color[k[0]-1])
+                cell.set_facecolor(self.ax.get_facecolor())
+
+        #tb._cells[(0, 0)].set_facecolor(self.ax.get_facecolor())
+        self.span.set_visible(False)
 
     def selector(self,lim=None, peaks=None):
         if lim:
@@ -142,6 +210,10 @@ class MyCustomToolbar(NavigationToolbar):
         self.c = self.addAction(QIcon(iconDir + "ic-activity.svg"),
             "Select by peaks", self.select_data('peaks'))
         self.c.setToolTip("Select data by peaks")
+
+        self.d = self.addAction(QIcon(iconDir + "table.svg"),
+            "Stats by slection", self.select_data('spanselector'))
+        self.d.setToolTip("Stats by slection")
 
 
     def remove_series(self,id='selected'):
