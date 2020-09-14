@@ -18,6 +18,11 @@ from windrose import WindroseAxes
 from matplotlib.widgets import RectangleSelector
 from matplotlib.axes import SubplotBase
 import matplotlib.pyplot as plt
+
+#plt.style.use("bmh")
+import mplcyberpunk
+plt.style.use("cyberpunk")
+
 from matplotlib.dates import date2num,num2date,DateFormatter,AutoDateFormatter,AutoDateLocator
 from datetime import datetime
 import pandas as pd
@@ -299,15 +304,15 @@ class Plotting(object):
                 else:
                     ax1f1.set_gid('ax')
                     plot_ft=getattr(ax1f1, plot_name)
-                    plot_ft(x,y,label=var,gid=file+';'+var)
+                    plot_ft(x,y,label=var,gid=file+';'+var,linewidth=0.8)
                     #ax1f1.set_xlim(x[0],x[-1])
-
+                    
                     self.add_metadata(ax1f1,data[file]['metadata'][index_name],data[file]['metadata'][var])
                     if index_name=='time':
                         self.sc.fig1.autofmt_xdate()
 
                     ax1f1.grid(True)
-
+                    #mplcyberpunk.add_glow_effects()
                 index_name0=copy.deepcopy(index_name)
 
 

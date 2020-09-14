@@ -71,10 +71,11 @@ class MSLfile():
                     df0.append(df3d)
                   
             if len(D2_keys)>0:
-                    df2d=df[D2_keys].loc[(0,n)]
-                    df2d.reset_index(inplace=True)
-                    df2d.set_index('time',inplace=True)
-                    df0.append(df2d)
+                import pdb;pdb.set_trace()
+                df2d=df[D2_keys].loc[(0,n)]
+                df2d.reset_index(inplace=True)
+                df2d.set_index('time',inplace=True)
+                df0.append(df2d)
 
             df0=pd.concat(df0,axis=1)
             df0.reset_index(inplace=True)
