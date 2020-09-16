@@ -122,7 +122,7 @@ class ImportGUI(QDialog):
         self.options['skipfooter']=strx(self.skipfooter.text())
         self.options['colNamesLine']=strx(self.colNamesLine.text())
         self.options['unitNamesLine']=strx(self.unitNamesLine.text())
-
+        self.options['miss_val']=self.miss_val.text()
         self.close()
 
         return self.options

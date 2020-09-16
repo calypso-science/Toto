@@ -175,7 +175,7 @@ def do_stats(time,statf,data,drr,hem,filename,sheetname):
                         fct=getattr(np, 'nan'+stat)
                         row.append('%.2f'%fct(data[idx]))
                     elif isinstance(stat,list):
-                        perc=list(np.percentile(data[idx],stat))
+                        perc=list(np.nanpercentile(data[idx],stat))
                         row+=['%.2f'%x for x in perc]
                     else:
                         if not isinstance(drr,str):
@@ -226,7 +226,7 @@ def do_stats(time,statf,data,drr,hem,filename,sheetname):
                         fct=getattr(np, 'nan'+stat)
                         row.append('%.2f'%fct(data[idx]))
                     elif isinstance(stat,list):
-                        perc=list(np.percentile(data[idx],stat))
+                        perc=list(np.nanpercentile(data[idx],stat))
                         row+=['%.2f'%x for x in perc]
                     else:
                         if not isinstance(drr,str):
@@ -245,7 +245,7 @@ def do_stats(time,statf,data,drr,hem,filename,sheetname):
                 fct=getattr(np, 'nan'+stat)
                 row.append('%.2f'%fct(data))
             elif isinstance(stat,list):
-                perc=list(np.percentile(data,stat))
+                perc=list(np.nanpercentile(data,stat))
                 row+=['%.2f'%x for x in perc]
             else:
                 if not isinstance(drr,str):

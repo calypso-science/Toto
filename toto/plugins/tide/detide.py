@@ -26,19 +26,25 @@ class TideAnalysis:
                 latitude=args['Latitude']
         else:
             latitude=args['Latitude']
-
+        if hasattr(self.data[mag],'short_name'):
+            short_name=self.data[mag].short_name
+        else:
+            short_name=mag
+            
         time=self.data.index
         dt=(time[2]-time[1]).total_seconds()/3600 # in hours
         stime=np.array(date2num(time))
         lat=latitude
-        outfile=os.path.join(args['folder out'],os.path.splitext(self.data.filename)[0]+'_'+self.data[mag].short_name+'_Conc.xlsx')
+        outfile=os.path.join(args['folder out'],os.path.splitext(self.data.filename)[0]+'_'+short_name+'_Conc.xlsx')
         ray=args['Minimum SNR']
-        demeaned = self.data[mag].values - self.data[mag].values.mean()
+        demeaned = self.data[mag].values - np.nanmean(self.data[mag].values)
+
         opts = dict(method='ols',conf_int='linear', Rayleigh_min=ray)
         coef = solve(stime,demeaned,lat= lat,**opts)
         ts_recon = reconstruct(stime, coef).h
-        self.dfout[self.data[mag].short_name+'t']=ts_recon
-        self.dfout[self.data[mag].short_name+'o']=demeaned-ts_recon
+
+        self.dfout[short_name+'t']=ts_recon
+        self.dfout[short_name+'o']=demeaned-ts_recon
         return self.dfout
 
     def predict(self,mag='mag',\
@@ -58,7 +64,7 @@ class TideAnalysis:
         stime=np.array(date2num(time))
         lat=latitude
         ray=args['Minimum SNR']
-        demeaned = self.data[mag].values - self.data[mag].values.mean()
+        demeaned = self.data[mag].values - np.nanmean(self.data[mag].values)
         opts = dict(method='ols',conf_int='linear', Rayleigh_min=ray)
         coef = solve(stime,demeaned,lat= lat,**opts)
 
@@ -105,7 +111,7 @@ class TideAnalysis:
         stime=np.array(date2num(time))
         lat=latitude
         ray=args['Minimum SNR']
-        demeaned = self.data[mag].values - self.data[mag].values.mean()
+        demeaned = self.data[mag].values - np.nanmean(self.data[mag].values)
         opts = dict(method='ols',conf_int='linear', Rayleigh_min=ray)
         coef = solve(stime,demeaned,lat= lat,**opts)
         m2=(coef.name=='M2').nonzero()[0][0]

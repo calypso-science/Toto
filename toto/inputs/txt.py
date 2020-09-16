@@ -3,7 +3,7 @@
 import glob,os,sys
 import pandas as pd
 import datetime as dt
-
+import numpy as np
 
 
 def matlab2datetime(matlab_datenum):
@@ -99,7 +99,7 @@ class TXTfile():
         # Column header
         line=readline(max(0,self.fileparam.colNamesLine-1))
         self.fileparam.colNames=split(str(line).strip())
-
+        
         # unit header
         if self.fileparam.unitNamesLine:
             line=readline(max(0,self.fileparam.unitNamesLine-1))
@@ -110,7 +110,6 @@ class TXTfile():
 
             self.fileparam.unitNames=unit
 
-
         
         try:
             with open(filename,'r',encoding=self.encoding) as f:
@@ -120,6 +119,10 @@ class TXTfile():
             raise WrongFormatError('CSV File {}: '.format(filename)+e.args[0])
 
 
+        keys=list(df.keys())
+        for key in keys:
+            if np.all(df[key].isna()):
+                del df[key] 
 
         self.data.append(df)
 
@@ -153,17 +156,24 @@ class TXTfile():
             self.data[i]=df
             self.data[i]['time']=time
             self.data[i].set_index('time',inplace=True,drop=False)
+            
 
-            self.add_unit()
-    
-    def add_unit(self):
+            self.add_unit(i)
+            keys=self.data[i].keys()
+            for key in keys:
+                self.data[i][key].long_name=key  
+    def add_unit(self,i):
 
-        keys=self.data[0].keys()
+        keys=self.data[i].keys()
         for key in keys:
             if key in self.fileparam.unitNames:
                 units=self.fileparam.unitNames[key]
-                for j in range(0,len(self.data)):
-                    self.data[j][key].units=units
+                self.data[i][key].units=units
+
+            elif '[' in key and ']' in key:
+                a,b=key.split('[')
+                self.data[i].rename(columns={key: a},inplace=True)
+                self.data[i][a].units=b.split(']')[0]
 
 
 

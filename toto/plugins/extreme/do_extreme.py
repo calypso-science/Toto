@@ -151,6 +151,16 @@ class Extreme:
         % directional POT and bi-variate extremes, Hs vs. Tp, estimated using the
         % FORM method for each selected directions)'''
 
+        # variabl check
+        if tp_optional not in self.data:
+            tp_optional=None
+        if direction_optional not in self.data:
+            direction_optional=None
+        if tm_optional not in self.data:
+            tm_optional=None
+        if water_depth_optional not in self.data:
+            water_depth_optional=None
+            
         folderout=os.path.join(args['folder out'])
 
         ## Inputs
@@ -793,7 +803,8 @@ class Extreme:
 
 
     def _get_peaks(self,mag,drr=None,time_blocking='Annual',directional_interval=[0,360],peaks_options={},min_peak=30):
-        if drr == None:
+
+        if drr == None or drr=='':
             drr='direction_optional'
             self.dfout['direction_optional']=np.ones((len(self.dfout[mag].values),))*20
 
