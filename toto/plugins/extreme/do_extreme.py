@@ -68,7 +68,7 @@ class Extreme:
         if surge_mode=='Both (neg and pos)':
             surges=['positive_','negative_']
         elif surge_mode=='Positive only':
-            surges=['positive_','negative_']
+            surges=['positive_']
         elif surge_mode=='Negative only':            
             surges=['negative_']
 
