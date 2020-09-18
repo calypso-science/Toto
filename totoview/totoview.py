@@ -241,8 +241,10 @@ class TotoGUI(QMainWindow,FORM_CLASS):
 
                     
                     self.list_file.populate_tree(self.data)
-                    checks_files,check_vars,checks_dataframe=self.list_file.get_all_items()
-                    self.plotting.refresh_plot(self.data,checks_files,check_vars)
+                    self.list_file.check_item(checks_dataframe)
+                    checks_files_after,check_vars_after,checks_dataframe_after=self.list_file.get_all_items()
+
+                    self.plotting.refresh_plot(self.data,checks_files_after,check_vars_after)
             else:
                 display_error('You need to select at least on file')
             self.list_file.blocker.unblock()

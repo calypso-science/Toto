@@ -205,3 +205,12 @@ class CustomTreeWidget(QTreeWidget):
 
 
         self.blocker.unblock()
+
+    def check_item(self,files):
+        self.blocker.reblock()
+        flag=Qt.Checked
+        for i in range(self.topLevelItemCount()):
+            top_item = self.topLevelItem(i)
+            if top_item.text(0) in files:
+                top_item.setCheckState(0, flag)
+        self.blocker.unblock()

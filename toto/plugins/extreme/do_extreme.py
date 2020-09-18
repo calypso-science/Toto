@@ -6,7 +6,7 @@ from ...core.make_table import create_table
 import numpy as np
 from scipy.signal import find_peaks
 from matplotlib import pyplot as plt
-#import matplotlib.figure as mpfig
+plt.style.use('bmh')
 import matplotlib.colors as colors
 import matplotlib.cm as cmx
 from matplotlib import gridspec
@@ -251,10 +251,12 @@ class Extreme:
             if identifiers[j] in self.peaks_index:
                 peak= self.peaks_index[identifiers[j]]['Omni']
                 index = np.in1d(months, month_identifier[j])
-                
-                self.eva_stats[identifiers[j]]={}
-                self.eva_stats[identifiers[j]]['Omni']={}
-                self.eva_stats[identifiers[j]]['Omni'][mag]={}
+                if identifiers[j] not in self.eva_stats:
+                    self.eva_stats[identifiers[j]]={}
+                    self.eva_stats[identifiers[j]]['Omni']={}
+
+                if mag not in self.eva_stats[identifiers[j]]['Omni']:
+                    self.eva_stats[identifiers[j]]['Omni'][mag]={}
 
                 y=get_mag_for_water_elevation(self.dfout[mag][index].values,self.dfout[tide].values,threshold)
                 loc=min(y)-0.01;
@@ -485,9 +487,9 @@ class Extreme:
                 peak=self.peaks_index[month][d]
                 self.eva_stats[month][d]={}
                 if 'slp' in self.dfout:
-                    self.eva_stats[month][d]=self. _do_EVA_hstp(mag,tp,peak,rp,fitting,slpfit,method,h)
+                    self.eva_stats[month][d][mag]=self. _do_EVA_hstp(mag,tp,peak,rp,fitting,slpfit,method,h)
                 else:
-                    self.eva_stats[month][d]=self._do_EVA_mag(mag,peak,rp,fitting,method)
+                    self.eva_stats[month][d][mag]=self._do_EVA_mag(mag,peak,rp,fitting,method)
                 
                 if Hmax_RPV:
                     ind=self.peaks_index[month][d]
@@ -497,7 +499,7 @@ class Extreme:
 
 
     def _export_as_xls(self,magnitudes,rp,filename):
-        
+
         months=self.eva_stats.keys()
         for i,month in enumerate(months):
             for j,var in enumerate(magnitudes):
@@ -620,14 +622,16 @@ class Extreme:
         else:
             plt.subplots_adjust(bottom=0.05,top=.95,hspace=.5)
       
-        if display:
-            plt.show(block=~display)
+
 
         plt.savefig(os.path.join(folder,'cdf_'+mag+'_'+drr+'.png'))
-        plt.close()
+        if display:
+            plt.show(block=False)
+        else:
+            plt.close()
 
     def _plot_peaks(self,mag,display=False,folder=os.getcwd()):
-
+        plt.style.use('bmh')
         fig = plt.figure(figsize=(8.27, 11.69), dpi=100)
         months=self.peaks_index.keys()
         number_of_loops=len(months)
@@ -651,13 +655,14 @@ class Extreme:
                 y=(np.mod((j%2)+1,2)-1)*-1
                 ax = fig.add_subplot(gs1[int(x),int(y)])
 
-            dir_int=self.peaks_index[month].keys()
+            dir_ints=self.peaks_index[month].keys()
             jet = cm = plt.get_cmap('jet') 
-            cNorm  = colors.Normalize(vmin=0, vmax=len(dir_int))
+            cNorm  = colors.Normalize(vmin=0, vmax=len(dir_ints))
             scalarMap = cmx.ScalarMappable(norm=cNorm, cmap=jet)
             plt.plot(self.dfout.index.values,self.dfout[mag].values,'k',linewidth=0.1)
-            for jj,dir_int in enumerate(dir_int):
-                if len(dir_int)==1 or dir_int!='Omni':
+
+            for jj,dir_int in enumerate(dir_ints):
+                if len(dir_ints)==1 or dir_int!='Omni':
                     pk=self.peaks_index[month][dir_int]
                     colorVal = scalarMap.to_rgba(jj)
                     plt.plot(self.dfout.index.values[pk],self.dfout[mag].values[pk],'+',color=colorVal,label=dir_int)
@@ -686,11 +691,12 @@ class Extreme:
         else:
             plt.subplots_adjust(bottom=0.05,top=.95,hspace=.5)
       
+       
+        plt.savefig(os.path.join(folder,mag+'_peaks.png'))
         if display:
             plt.show(block=~display)
-        
-        plt.savefig(os.path.join(folder,mag+'_peaks.png'))
-        plt.close()
+        else:
+            plt.close()
 
     def _calc_Hmp(self,hs,ind,tm=None,depth=5000,max_storm_duration=48):
 

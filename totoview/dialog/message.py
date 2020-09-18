@@ -101,7 +101,7 @@ class wrapper_plugins(QDialog):
         for df in self.dfs:
             self.var_list+=list(df.keys())
 
-        self.resize(400,600)
+        self.resize(600,600)
         self.setWindowTitle(fct.__name__)
         ssDir = os.path.join(HERE,"..","..", "_tools", "")
         self.setWindowIcon(QIcon(os.path.join(ssDir,'toto.jpg')))    
@@ -211,7 +211,7 @@ class wrapper_plugins(QDialog):
             df1.filename=self.tfs[i]['filename']
 
             F=getattr(getattr(df1, access),self.fct.__name__)
-            #dfout=F(args=opt)
+            dfout=F(args=opt)
 
             try:
                 dfout=F(args=opt)
