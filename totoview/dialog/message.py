@@ -9,6 +9,7 @@ from ..core.create_frame import get_layout_from_sig,extract_option_from_frame
 import pandas as pd
 from toto.core.totoframe import add_metadata_to_df
 import numpy as np
+from ..dialog.checkableComboBox import CheckableComboBox
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
@@ -155,34 +156,65 @@ class wrapper_plugins(QDialog):
         self.opt=opt
         self.varin=ly
     def _get_inputs_from_sig(self,sig):
-        return [x for x in sig.parameters if (x!='args') and (x!='self')]
+        xx=[]
+        for x in sig.parameters:
+            if (x!='args') and (x!='self'):
+                if isinstance(sig.parameters[x].default,list):
+                    xx.append([x])
+                else:
+                    xx.append(x)
+
+        return xx #[x for x in sig.parameters if (x!='args') and (x!='self')]
+
     def _create_input_frame(self,vars_in,var_list):
         var_list_lw=['none']
         var_list_lw+=[x.lower() for x in var_list]
         var_list=['none']+var_list
-
-        Vl = QFormLayout()
         layout={}
-        for Vars in vars_in:
-            box=QComboBox()
-            layout[Vars]=box
-            for var in var_list:
-                box.addItem(var)
+        Vl = QFormLayout()
 
-            if Vars.lower() in var_list_lw:
-                box.setCurrentIndex(var_list_lw.index(Vars.lower()))
-            else:
+        for Vars in vars_in:
+            if isinstance(Vars,list):
+                box=CheckableComboBox()
+                layout[Vars[0]]=box
+                for var in var_list:
+                    box.addItem(var)
+
                 box.setCurrentIndex(0)
-            Vl.addRow(Vars,box)
+                Vl.addRow(Vars[0],box)
+
+
+            else:
+                box=QComboBox()
+                layout[Vars]=box
+                for var in var_list:
+                    box.addItem(var)
+
+                if Vars.lower() in var_list_lw:
+                    box.setCurrentIndex(var_list_lw.index(Vars.lower()))
+                else:
+                    box.setCurrentIndex(0)
+                Vl.addRow(Vars,box)
+
+
+            
+
+
+
         return Vl,layout
     def get_variables(self):
         varin={}
         for var in self.varin:
             txt=self.varin[var].currentText()
             if txt!='none':
+                if ', ' in txt:
+                    txt=txt.split(', ')
                 varin[var]=txt
 
-        return  {v: k for k, v in varin.items()}
+        rename_dict={}
+        for k, v in varin.items():
+            rename_dict[v]=k
+        return  rename_dict#{v: k for k, v in varin.items()}
 
 
     def cancel(self):
@@ -198,6 +230,7 @@ class wrapper_plugins(QDialog):
 
         for i,df in enumerate(self.dfs):
             index_name=df.index.name
+
             df1=df.rename(columns=var)
             mets=self.mets[i].copy()
             for key in var:
@@ -211,7 +244,7 @@ class wrapper_plugins(QDialog):
             df1.filename=self.tfs[i]['filename']
 
             F=getattr(getattr(df1, access),self.fct.__name__)
-            dfout=F(args=opt)
+            #dfout=F(args=opt)
 
             try:
                 dfout=F(args=opt)
