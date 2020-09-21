@@ -178,7 +178,8 @@ class wrapper_plugins(QDialog):
                 box=CheckableComboBox()
                 layout[Vars[0]]=box
                 for var in var_list:
-                    box.addItem(var)
+                    if var != 'none':
+                        box.addItem(var)
 
                 box.setCurrentIndex(0)
                 Vl.addRow(Vars[0],box)
@@ -211,10 +212,10 @@ class wrapper_plugins(QDialog):
                     txt=txt.split(', ')
                 varin[var]=txt
 
-        rename_dict={}
-        for k, v in varin.items():
-            rename_dict[v]=k
-        return  rename_dict#{v: k for k, v in varin.items()}
+        # rename_dict={}
+        # for k, v in varin.items():
+        #     rename_dict[v]=k
+        return  varin #rename_dict#{v: k for k, v in varin.items()}
 
 
     def cancel(self):
@@ -225,29 +226,29 @@ class wrapper_plugins(QDialog):
     def go(self):
 
         opt=extract_option_from_frame(self.opt)
-        var=self.get_variables()
+        inp=self.get_variables()
         access=self.fct.__repr__().split(' ')[1].split('.')[0]
 
         for i,df in enumerate(self.dfs):
             index_name=df.index.name
 
-            df1=df.rename(columns=var)
+            # df1=df.rename(columns=var)
             mets=self.mets[i].copy()
-            for key in var:
-                mets[var[key]] = mets.pop(key)
+            # for key in inp:
+            #     mets[var[key]] = mets.pop(key)
 
-            ## add all metadata here so it is passed inside the function
-            ## Must be used before they disappear
-            df1=add_metadata_to_df(df1,mets)
-            df1.longitude=self.tfs[i]['longitude']
-            df1.latitude=self.tfs[i]['latitude']
-            df1.filename=self.tfs[i]['filename']
+            # ## add all metadata here so it is passed inside the function
+            # ## Must be used before they disappear
+            df=add_metadata_to_df(df,mets)
+            df.longitude=self.tfs[i]['longitude']
+            df.latitude=self.tfs[i]['latitude']
+            df.filename=self.tfs[i]['filename']
 
-            F=getattr(getattr(df1, access),self.fct.__name__)
-            #dfout=F(args=opt)
-
+            F=getattr(getattr(df, access),self.fct.__name__)
+            #dfout=F(**inp,args=opt)
+            
             try:
-                dfout=F(args=opt)
+                dfout=F(**inp,args=opt)
             except Exception as exc:
                 display_error("Cannot run {} function:\n{}".format(self.fct.__name__, exc))
                 self.close()
@@ -273,11 +274,15 @@ class wrapper_plugins(QDialog):
                     # df0.index.name='time'
                     dfout=dfout.reset_index(drop=False)
                     dfout=dfout.set_index('time',drop=False)
-                    self.dfs[i]=dfout #df0
+                    self.dfs[i]=dfout #add_metadata_to_df(dfout,mets) #df0
 
                 else:
                     del df[index_name]
+                    
                     self.dfs[i] = pd.merge_asof(df, dfout, on=index_name).set_index(index_name,drop=False)
+                    print(self.dfs[i])
+                    print(mets)
+                    self.dfs[i]=add_metadata_to_df(self.dfs[i],mets)
 
             elif isinstance(dfout,str):
                 display_error("Cannot run {} function:\n{}".format(self.fct.__name__, dfout))

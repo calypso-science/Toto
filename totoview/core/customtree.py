@@ -24,6 +24,7 @@ class CustomTreeWidget(QTreeWidget):
         self.setItemsExpandable(True)
         self.setAnimated(True)
         self.setDragEnabled(True)
+        self.setHeaderHidden(True)
         self.setDropIndicatorShown(True)
         self.setDragDropMode(QAbstractItemView.InternalMove)
         self.blocker = QtCore.QSignalBlocker(self)

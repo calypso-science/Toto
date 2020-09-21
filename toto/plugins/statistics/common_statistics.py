@@ -19,14 +19,8 @@ class Statistics:
         self.dfout = pd.DataFrame(index=self.data.index.copy())
 
 
-    def common_statistics(self,mag='mag',drr='drr',args={'folder out':os.getcwd(),
-                                                    'type':{'South hemisphere(Summer/Winter)':True,\
-                                                            'South hemisphere 4 seasons': False,
-                                                            'North hemishere(Summer/Winter)':False,
-                                                            'North hemisphere moosoon(SW,NE,Hot season)':False,
-                                                            'North hemisphere 4 seasons': False
-                                                            }}):
-
+    def common_statistics(self,mag=['mag'],drr='drr',args={'folder out':os.getcwd(),
+                                                            }):
 
         if drr not in self.data:
             drr='none'
@@ -38,12 +32,16 @@ class Statistics:
         else:
             statf=['min','max','mean','std',[1,5,10,50,80,90,95,98,99],np.nan]         
 
-        hem=args['type']
+        hem='yearly'
         filename=os.path.join(args['folder out'],os.path.splitext(self.data.filename)[0]+'stat.xlsx')
-        sheetname=self.data[mag].short_name
-        data=self.data[mag];
         time=self.data.index
-        do_stats(time,statf,data,drr,hem,filename,sheetname)
+
+        if isinstance(mag,str):
+            mag=[mag]
+
+        for ma in mag:
+            data=self.data[ma]
+            do_stats(time,statf,data,drr,hem,filename,ma)
 
     def joint_probability(self,speed='speed',direction='direction',period='period',\
         args={'method':{'Mag vs Dir':True,'Per Vs Dir':False,'Mag vs Per':False},\

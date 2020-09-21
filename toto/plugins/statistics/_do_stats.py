@@ -197,25 +197,32 @@ def do_stats(time,statf,data,drr,hem,filename,sheetname):
 
         elif hem=='South hemisphere 4 seasons':
             seas=[(month>=6) & (month <=8)]# winter
-            seas=[(month>=9) & (month <=11)]# spring
-            seas=[(month>=12) | (month<=2)]#summer
-            seas=[(month>=3) & (month<=5)]# autumn
+            seas.append((month>=9) & (month <=11))# spring
+            seas.append((month>=12) | (month<=2))#summer
+            seas.append((month>=3) & (month<=5))# autumn
             sea_names=['Winter','Spring','Summer','Autumn']
         elif hem =='North hemishere(Summer/Winter)':
             seas=[(month>=4) & (month<=9)]  # Winter: April to September
-            seas=[(month<=3) | (month>=10)] # Summer: October to March
+            seas.append((month<=3) | (month>=10)) # Summer: October to March
             sea_names=['Summer','Winter']
         elif hem=='North hemisphere moosoon(SW,NE,Hot season)':
             seas=[(month>=5) & (month<=10)] # SW: May to Oct
-            seas=[(month<=2) | (month>=11)] # SE: Nov to Feb
-            seas=[(month==3) | (month==4)] # Hot: March and April
+            seas.append((month<=2) | (month>=11)) # SE: Nov to Feb
+            seas.append((month==3) | (month==4)) # Hot: March and April
             sea_names=['SW monsoon','NE monsoon','Hot season']
         elif hem=='North hemisphere 4 seasons':
             seas=[(month>=12) | (month<=2)] # winter
-            seas=[(month>=3) & (month<=5)] # spring
-            seas=[(month>=6) & (month <=8)] # summer
-            seas=[(month>=9) & (month <=11)] # autumn
+            seas.append((month>=3) & (month<=5)) # spring
+            seas.append((month>=6) & (month <=8)) # summer
+            seas.append((month>=9) & (month <=11)) # autumn
             sea_names=['Winter','Spring','Summer','Autumn']
+        elif hem == 'yearly':
+            unique_year=np.unique(year)
+            seas=[]
+            sea_names=[]
+            for y in unique_year:
+                seas.append(year==y)
+                sea_names.append('%i' % y)
 
 
         for i,idx in enumerate(seas):
