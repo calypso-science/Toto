@@ -21,7 +21,7 @@ import matplotlib.pyplot as plt
 
 #plt.style.use("bmh")
 import mplcyberpunk
-plt.style.use("cyberpunk")
+
 
 from matplotlib.dates import date2num,num2date,DateFormatter,AutoDateFormatter,AutoDateLocator
 from datetime import datetime
@@ -279,113 +279,114 @@ class Plotting(object):
 
 
     def refresh_plot(self,data,File,Var):
+        with plt.style.context("cyberpunk"):
 
-        self.rmmpl()
-        self.addmpl()
+            self.rmmpl()
+            self.addmpl()
 
-        self.sc.fig1.clf()
+            self.sc.fig1.clf()
 
-        ax1f1 =self.sc.fig1.add_subplot(111)
-        index_name0=None
-        for i,file in enumerate(File):
-            for var in Var[i]:
-                scl_fac=data[file]['metadata'][var]['scale_factor']
-                add_offset=data[file]['metadata'][var]['add_offset']
-                index_name=data[file]['dataframe'].index.name
-                if index_name0:
-                    if index_name0!=index_name:
-                        display_warning('Variables doesn''t have the same index')
-                        continue
-
-
-
-                x=data[file]['dataframe'].index
+            ax1f1 =self.sc.fig1.add_subplot(111)
+            index_name0=None
+            for i,file in enumerate(File):
+                for var in Var[i]:
+                    scl_fac=data[file]['metadata'][var]['scale_factor']
+                    add_offset=data[file]['metadata'][var]['add_offset']
+                    index_name=data[file]['dataframe'].index.name
+                    if index_name0:
+                        if index_name0!=index_name:
+                            display_warning('Variables doesn''t have the same index')
+                            continue
 
 
 
-
-                y=((data[file]['dataframe'][var])*scl_fac)+add_offset
-
-                if hasattr(self.plot_name,'currentText'):
-                    plot_name=str(self.plot_name.currentText())
-                else:
-                    plot_name='plot'
-
-                if isinstance(x, pd.MultiIndex):
-                    plot_name='pcolor'
+                    x=data[file]['dataframe'].index
 
 
 
-                if 'hist'==plot_name:
-                    # the histogram of the data
-                    ax1f1.hist(y, density=1)
-                    self.add_metadata(ax1f1,Xmetadata=data[file]['metadata'][var],Ymetadata=None)
-                elif 'pcolor' == plot_name:
-                    indexes=data[file]['dataframe'].index.names
-                    X=data[file]['dataframe'].unstack()[indexes[0]]
-                    Y=data[file]['dataframe'].unstack()[indexes[1]].values
-                    Z=data[file]['dataframe'].unstack()[var].values
-                    ax1f1.set_gid('ax')
-                    cf=ax1f1.pcolormesh(date2num(X), Y, Z)
-                    locator = AutoDateLocator()
-                    date_format = AutoDateFormatter(locator)
-                    ax1f1.xaxis.set_major_formatter(date_format)
-                    self.sc.fig1.autofmt_xdate()
-                    self.sc.fig1.colorbar(cf,ax=ax1f1)
-                    self.add_metadata(ax1f1,Xmetadata=data[file]['metadata'][indexes[0]],
-                        Ymetadata=data[file]['metadata'][indexes[1]],
-                        legend=False)
-                elif 'progressif'==plot_name:
-                    if index_name=='time':
-                        display_error('Index can not be time')
-                        continue
-                    X=x.array
-                    Y=y.array
-                    innX = np.isnan(X)
-                    innY = np.isnan(Y)
-                    
-                    
-                    X[innX]=0
-                    Y[innY]=0
-                    
-                    posX = np.cumsum(X)
-                    posY = np.cumsum(Y)
-                    posX[innX] = np.NaN;  
-                    posY[innY] = np.NaN;
-                    ax1f1.quiver(posX, posY, X, Y)
- 
-                    self.add_metadata(ax1f1,data[file]['metadata'][index_name],data[file]['metadata'][var],legend=False)
-                elif 'rose'==plot_name:
-                    if index_name=='time':
-                        display_error('Index can not be time,must be direction or V')
-                        continue
+
+                    y=((data[file]['dataframe'][var])*scl_fac)+add_offset
+
+                    if hasattr(self.plot_name,'currentText'):
+                        plot_name=str(self.plot_name.currentText())
+                    else:
+                        plot_name='plot'
+
+                    if isinstance(x, pd.MultiIndex):
+                        plot_name='pcolor'
 
 
-                    self.sc.fig1.clf()
-                    ax = WindroseAxes.from_ax(fig=self.sc.fig1)
-                    gd_data=~np.isnan(y) | ~np.isnan(x)
-                    y=y[gd_data]
-                    x=x[gd_data]
 
-                    if any(x<0): # it is U and V
-                        y,x=uv2spdir(y.values,x.values)
-                    ax.bar(x, y, normed=True, opening=0.8, edgecolor='white')                   
-                    ax.set_legend(units=data[file]['metadata'][var]['units'])
-
-
-                else:
-                    ax1f1.set_gid('ax')
-                    plot_ft=getattr(ax1f1, plot_name)
-                    plot_ft(x,y,label=var,gid=file+';'+var,linewidth=0.8)
-                    #ax1f1.set_xlim(x[0],x[-1])
-                    
-                    self.add_metadata(ax1f1,data[file]['metadata'][index_name],data[file]['metadata'][var])
-                    if index_name=='time':
+                    if 'hist'==plot_name:
+                        # the histogram of the data
+                        ax1f1.hist(y, density=1)
+                        self.add_metadata(ax1f1,Xmetadata=data[file]['metadata'][var],Ymetadata=None)
+                    elif 'pcolor' == plot_name:
+                        indexes=data[file]['dataframe'].index.names
+                        X=data[file]['dataframe'].unstack()[indexes[0]]
+                        Y=data[file]['dataframe'].unstack()[indexes[1]].values
+                        Z=data[file]['dataframe'].unstack()[var].values
+                        ax1f1.set_gid('ax')
+                        cf=ax1f1.pcolormesh(date2num(X), Y, Z)
+                        locator = AutoDateLocator()
+                        date_format = AutoDateFormatter(locator)
+                        ax1f1.xaxis.set_major_formatter(date_format)
                         self.sc.fig1.autofmt_xdate()
+                        self.sc.fig1.colorbar(cf,ax=ax1f1)
+                        self.add_metadata(ax1f1,Xmetadata=data[file]['metadata'][indexes[0]],
+                            Ymetadata=data[file]['metadata'][indexes[1]],
+                            legend=False)
+                    elif 'progressif'==plot_name:
+                        if index_name=='time':
+                            display_error('Index can not be time')
+                            continue
+                        X=x.array
+                        Y=y.array
+                        innX = np.isnan(X)
+                        innY = np.isnan(Y)
+                        
+                        
+                        X[innX]=0
+                        Y[innY]=0
+                        
+                        posX = np.cumsum(X)
+                        posY = np.cumsum(Y)
+                        posX[innX] = np.NaN;  
+                        posY[innY] = np.NaN;
+                        ax1f1.quiver(posX, posY, X, Y)
+     
+                        self.add_metadata(ax1f1,data[file]['metadata'][index_name],data[file]['metadata'][var],legend=False)
+                    elif 'rose'==plot_name:
+                        if index_name=='time':
+                            display_error('Index can not be time,must be direction or V')
+                            continue
 
-                    ax1f1.grid(True)
-                    #mplcyberpunk.add_glow_effects()
-                index_name0=copy.deepcopy(index_name)
+
+                        self.sc.fig1.clf()
+                        ax = WindroseAxes.from_ax(fig=self.sc.fig1)
+                        gd_data=~np.isnan(y) | ~np.isnan(x)
+                        y=y[gd_data]
+                        x=x[gd_data]
+
+                        if any(x<0): # it is U and V
+                            y,x=uv2spdir(y.values,x.values)
+                        ax.bar(x, y, normed=True, opening=0.8, edgecolor='white')                   
+                        ax.set_legend(units=data[file]['metadata'][var]['units'])
+
+
+                    else:
+                        ax1f1.set_gid('ax')
+                        plot_ft=getattr(ax1f1, plot_name)
+                        plot_ft(x,y,label=var,gid=file+';'+var,linewidth=0.8)
+                        #ax1f1.set_xlim(x[0],x[-1])
+                        
+                        self.add_metadata(ax1f1,data[file]['metadata'][index_name],data[file]['metadata'][var])
+                        if index_name=='time':
+                            self.sc.fig1.autofmt_xdate()
+
+                        ax1f1.grid(True)
+                        #mplcyberpunk.add_glow_effects()
+                    index_name0=copy.deepcopy(index_name)
 
 
     def add_metadata(self,ax,Xmetadata=None,Ymetadata=None,legend=True):

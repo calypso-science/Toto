@@ -5,6 +5,7 @@ from matplotlib import pyplot as plt
 from matplotlib.figure import Figure
 import matplotlib.cm as cm
 from matplotlib import gridspec
+from grid_strategy import strategies
 
 def get_precentage(Ag,Ay,D,F,C,IncHiLow):
     E=np.zeros((int(len(Ay)-1),int(len(Ag)-1)))
@@ -28,6 +29,9 @@ def get_precentage(Ag,Ay,D,F,C,IncHiLow):
     return b
 
 def do_roses(time,spd,drr,units,title,spdedg,quadran,time_blocking,fileout,show=True):
+
+
+
     gd_data=~np.isnan(spd) | ~np.isnan(drr)
     spd=spd[gd_data]
     drr=drr[gd_data]
@@ -80,39 +84,36 @@ def do_roses(time,spd,drr,units,title,spdedg,quadran,time_blocking,fileout,show=
 
     number_of_real_loops=len(nj)
 
-
-    if number_of_real_loops==5: # seasons
-        gs1 = gridspec.GridSpec(3, 3)
-    elif number_of_real_loops>5: # monthly
-        gs1 = gridspec.GridSpec(6, 3)
-    else: # annual
-        gs1 = gridspec.GridSpec(1,1)
+    spec = strategies.SquareStrategy().get_grid(number_of_real_loops)
+    # if number_of_real_loops==5: # seasons
+    #     gs1 = gridspec.GridSpec(3, 3)
+    # elif number_of_real_loops>5: # monthly
+    #     gs1 = gridspec.GridSpec(6, 3)
+    # else: # annual
+    #     gs1 = gridspec.GridSpec(1,1)
 
     
-    for i,j in enumerate(nj):
-        # if j==number_of_loops-1:
-       # ax = fig.add_subplot(gs1[int(np.floor((number_of_loops/2)/2)),-1], projection="windrose",theta_labels=['E','NE',identifiers[j],'NW','W','SW','S','SE'])
-        # else:
-        x=np.ceil(((i+1)/3))-1
-        y=(np.mod((i%3)+1,2)-1)*-1
-        ax = fig.add_subplot(gs1[int(x),int(y)], projection="windrose",theta_labels=['E','NE',identifiers[j],'NW','W','SW','S','SE'])
+    for i,sub in enumerate(spec):
+        ax = fig.add_subplot(sub, projection="windrose",theta_labels=['E','NE',identifiers[nj[i]],'NW','W','SW','S','SE'])
+        
         #Pull out relevant indices for particular month/months
-        index = np.in1d(month, month_identifier[j])
+        index = np.in1d(month, month_identifier[nj[i]])
         #ax = WindroseAxes.from_ax(fig=fig)
 
         ax.bar(drr[index],spd[index], normed=True, bins=np.array(spdedg),opening=0.8, edgecolor='white')               
         ax.set_yticks(quadran)
         
-        if j==number_of_loops-1:
+        if i==number_of_real_loops-1:
             ax.set_yticklabels(quadran)
-            if number_of_loops==1:
+            if number_of_real_loops==1:
                 ax.set_legend(units=units,title=title,loc='lower right')
             else:
                 ax.set_legend(units=units,title=title,loc='best',bbox_to_anchor=(0.5,-1.0, 0.5, 0.5))
 
-    plt.subplots_adjust(bottom=0.02,top=.95,hspace=0.3)
-
-    plt.show(block=~show)
+    #plt.subplots_adjust(bottom=0.02,top=.95,hspace=0.3)
+    plt.show()
     plt.savefig(fileout)
+    # if show:
+    #     plt.show()
 
 
