@@ -4,6 +4,7 @@ from toto.core.make_table import create_table
 from matplotlib import pyplot as plt
 from matplotlib.figure import Figure
 from matplotlib import gridspec
+from grid_strategy import strategies
 
 def do_joint_prob(filename,time,Xdata,Ydata,X_interval,Y_interval,time_blocking,binning,multiplier=1000):
 
@@ -66,67 +67,64 @@ def do_joint_prob(filename,time,Xdata,Ydata,X_interval,Y_interval,time_blocking,
             create_table(filename,identifiers[j],mat)
 
 def plot_occurence(tm,hs,occurrence,show,fileout,identifiers,xlabel,ylabel):
-    fig = plt.figure(figsize=(8.27, 11.69), dpi=100)
+
     number_of_loops=occurrence.shape[0]
     tm_bin=tm[1]-tm[0]
     hs_bin=hs[1]-hs[0]
 
-    if number_of_loops==5: # seasons
-        gs1 = gridspec.GridSpec(3, 3)
-        maxx=1
-    elif number_of_loops>5: # monthly
-        gs1 = gridspec.GridSpec(6, 3)
-        maxx=5
-    else: # annual
-        gs1 = gridspec.GridSpec(1,1)
-        maxx=0
-
-
+    index=[]
+    nj=[]
     for j in range(0,number_of_loops):
-        if j==number_of_loops-1:
-            ax = fig.add_subplot(gs1[int(np.floor((number_of_loops/2)/2)),-1])
-            y=0
-            x=0
-        else:
-            x=np.ceil(((j+1)/2))-1
-            y=(np.mod((j%2)+1,2)-1)*-1
-            ax = fig.add_subplot(gs1[int(x),int(y)])
+        if ~np.all(np.isnan(occurrence[j])):
+            #index .append(tmp)
+            nj.append(j)
+
+    number_of_real_loops=len(nj)
+
+    spec = strategies.SquareStrategy().get_grid(number_of_real_loops)
+    fig = plt.gcf()
+    fig.set_dpi(100)
+    fig.constrained_layout=True
+    fig.set_figheight(11.69)
+    fig.set_figwidth(8.27)
 
 
-        plt.imshow(occurrence[j,:,:], origin = 'lower',  extent = [tm[0], tm[-1], hs[0], hs[-1]])
+    for j,sub in enumerate(spec):
+        ax = plt.subplot(sub)
+        plt.imshow(occurrence[nj[j],:,:], origin = 'lower',  extent = [tm[0], tm[-1], hs[0], hs[-1]],vmin=0,vmax=np.nanmax(occurrence))
         plt.colorbar()
 
         ax.set_xticks(tm)
         ax.set_yticks(hs)
         ax.grid()
-        if number_of_loops==1:
+        if number_of_real_loops==1:
             for i in range(0,len(tm)-1):
                 for m in range(0,len(hs)-1):
-                    if occurrence[j,m,i]>0:
-                        plt.text(tm[i]+tm_bin/2,hs[m]+hs_bin/2,str(occurrence[j,m,i]),va='center',ha='center',FontWeight='demi',FontSize=8);
+                    if occurrence[nj[j],m,i]>0:
+                        plt.text(tm[i]+tm_bin/2,hs[m]+hs_bin/2,str(occurrence[nj[j],m,i]),va='center',ha='center',FontWeight='demi',FontSize=8);
         
-        if identifiers[j].lower()=='annual':
-            ax.set_xlabel(xlabel)
-            ax.set_ylabel(ylabel)
-        ax.set_title(identifiers[j])
+        #if identifiers[nj[j]].lower()=='annual':
+        ax.set_xlabel(xlabel)
+        ax.set_ylabel(ylabel)
+        ax.set_title(identifiers[nj[j]])
 
 
 
     
 
-    if number_of_loops>10:
-        plt.subplots_adjust(left=0.075,right=0.970,bottom=0.075,top=0.97,hspace=.5,wspace=0.415)
+    # if number_of_loops>10:
+    #     plt.subplots_adjust(left=0.075,right=0.970,bottom=0.075,top=0.97,hspace=.5,wspace=0.415)
         
-    elif number_of_loops>2 and number_of_loops<10:
-        plt.subplots_adjust(left=0.08,right=0.975,bottom=0.05,top=0.7,hspace=.5,wspace=0.3)
+    # elif number_of_loops>2 and number_of_loops<10:
+    #     plt.subplots_adjust(left=0.08,right=0.975,bottom=0.05,top=0.7,hspace=.5,wspace=0.3)
 
-    else:
-        plt.subplots_adjust(bottom=0.05,top=.95,hspace=.5)
+    # else:
+    #     plt.subplots_adjust(bottom=0.05,top=.95,hspace=.5)
 
-
-    plt.savefig(fileout)
     if show:
         plt.show(block=~show)
+    plt.savefig(fileout)
+
 
 def _do_joint_prob_plot(filename,time,Xdata,Ydata,X_interval,Y_interval,time_blocking,show,xlabel,ylabel,multiplier=1000):
 

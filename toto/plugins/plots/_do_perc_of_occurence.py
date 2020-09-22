@@ -6,6 +6,7 @@ import matplotlib.colors as colors
 import matplotlib.cm as cmx
 from ...core.toolbox import get_number_of_loops,degToCompass
 from matplotlib import gridspec
+from grid_strategy import strategies
 
 def get_perc(s,SPD):
     perc=np.empty(shape=(len(s)-1,1))
@@ -45,30 +46,30 @@ def do_perc_of_occurence(time,mag,drr,mag_interval,xlabel,time_blocking,dir_int,
     number_of_loops,identifiers,month_identifier=get_number_of_loops(time_blocking)
 
 
-    fig = plt.figure(figsize=(8.27, 11.69), dpi=100)
-    if number_of_loops==5: # seasons
-        gs1 = gridspec.GridSpec(3, 3)
-        maxx=1
-    elif number_of_loops>5: # monthly
-        gs1 = gridspec.GridSpec(6, 3)
-        maxx=5
-    else: # annual
-        gs1 = gridspec.GridSpec(1,1)
-        maxx=0
-
-
+    index=[]
+    nj=[]
     for j in range(0,number_of_loops):
-        if j==number_of_loops-1:
-            ax = fig.add_subplot(gs1[int(np.floor((number_of_loops/2)/2)),-1])
-            y=0
-            x=0
-        else:
-            x=np.ceil(((j+1)/2))-1
-            y=(np.mod((j%2)+1,2)-1)*-1
-            ax = fig.add_subplot(gs1[int(x),int(y)])
+        tmp=np.in1d(month, month_identifier[j])
+        if np.any(tmp):
+            #index .append(tmp)
+            nj.append(j)
+
+    number_of_real_loops=len(nj)
+
+    spec = strategies.SquareStrategy().get_grid(number_of_real_loops)
+    fig = plt.gcf()
+    fig.set_dpi(100)
+    fig.constrained_layout=True
+    fig.set_figheight(11.69)
+    fig.set_figwidth(8.27)
+
+
+
+    for i,sub in enumerate(spec):
+        ax = plt.subplot(sub)
 
         #Pull out relevant indices for particular month/months
-        index = np.in1d(month, month_identifier[j])
+        index = np.in1d(month, month_identifier[nj[i]])
         big_length=len(index.nonzero()[0]);
         if big_length>0:           
             SPD = mag[index]      
@@ -91,37 +92,38 @@ def do_perc_of_occurence(time,mag,drr,mag_interval,xlabel,time_blocking,dir_int,
  
 
 
-        ax.set_title(identifiers[j])
+        ax.set_title(identifiers[nj[i]])
 
-        if j==number_of_loops-1 and len(dir_int)>2:
-            if number_of_loops>3 and number_of_loops<10:
-                ax.legend(loc='best',bbox_to_anchor=(0.6, -0.4),ncol=len(dir_int)-1)#bbox_to_anchor=(0.8,-1.0, 0.5, 0.5))
-            elif number_of_loops>10:
-                ax.legend(loc='best',bbox_to_anchor=(0.6, -3.4),ncol=len(dir_int)-1)#bbox_to_anchor=(0.8,-1.0, 0.5, 0.5))
-            else:
+        if i==number_of_real_loops-1 and len(dir_int)>2:
+            # if number_of_loops>3 and number_of_loops<10:
+            #     ax.legend(loc='best',bbox_to_anchor=(0.6, -0.4),ncol=len(dir_int)-1)#bbox_to_anchor=(0.8,-1.0, 0.5, 0.5))
+            # elif number_of_loops>10:
+            #     ax.legend(loc='best',bbox_to_anchor=(0.6, -3.4),ncol=len(dir_int)-1)#bbox_to_anchor=(0.8,-1.0, 0.5, 0.5))
+            # else:
                 ax.legend(loc='best')
 
          
 
-        if int(y)==0:
-            ax.set_ylabel('% Occurence')
+        #if int(y)==0:
+        ax.set_ylabel('% Occurence')
 
-        if int(x)==maxx :
-            ax.set_xlabel(xlabel)
+        #if int(x)==maxx :
+        ax.set_xlabel(xlabel)
 
     fig.align_labels()
 
-    if number_of_loops>10:
-        plt.subplots_adjust(left=0.075,right=0.970,bottom=0.075,top=0.97,hspace=.5,wspace=0.415)
-        ax.set_xlabel(xlabel)
+    # if number_of_loops>10:
+    #     plt.subplots_adjust(left=0.075,right=0.970,bottom=0.075,top=0.97,hspace=.5,wspace=0.415)
+    #     ax.set_xlabel(xlabel)
         
-    elif number_of_loops>2 and number_of_loops<10:
-        plt.subplots_adjust(left=0.08,right=0.975,bottom=0.05,top=0.7,hspace=.5,wspace=0.3)
-        ax.set_xlabel(xlabel)
-    else:
-        plt.subplots_adjust(bottom=0.05,top=.95,hspace=.5)
+    # elif number_of_loops>2 and number_of_loops<10:
+    #     plt.subplots_adjust(left=0.08,right=0.975,bottom=0.05,top=0.7,hspace=.5,wspace=0.3)
+    #     ax.set_xlabel(xlabel)
+    # else:
+    #     plt.subplots_adjust(bottom=0.05,top=.95,hspace=.5)
 
 
-    plt.show(block=~show)
+    if show:
+        plt.show(block=~show)
     plt.savefig(fileout)
 

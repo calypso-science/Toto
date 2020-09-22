@@ -14,6 +14,7 @@ import matplotlib.dates as mdate
 from ._EVA_funct import *
 from scipy.stats import norm
 import copy
+from grid_strategy import strategies
 
 @pd.api.extensions.register_dataframe_accessor("Extreme")
 
@@ -631,7 +632,7 @@ class Extreme:
             plt.close()
 
     def _plot_peaks(self,mag,display=False,folder=os.getcwd()):
-        plt.style.use('bmh')
+
         fig = plt.figure(figsize=(8.27, 11.69), dpi=100)
         months=self.peaks_index.keys()
         number_of_loops=len(months)

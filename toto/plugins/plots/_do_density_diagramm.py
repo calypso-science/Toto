@@ -29,5 +29,9 @@ def do_density_diagramm(X,Y,X_short_name,Y_short_name,X_unit,Y_unit,Xlim,Ylim,sh
     plt.pcolormesh(xi, yi, zi.reshape(xi.shape))
     plt.colorbar()
 
+
+    if show:
+        plt.show(block=~show)
+
     plt.savefig(fileout)
-    plt.show(block=~show)
+

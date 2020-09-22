@@ -27,6 +27,8 @@ def qq_plot(X,Y,pvec,X_short_name,Y_short_name,Xunit,Yunit,fileout,show=True):
     ylim=ax.get_ylim()
     ax.plot([0,0],[0,max(ylim)],'k--')
     
+    if show:
+        plt.show(block=~show)
     plt.savefig(fileout)
-    plt.show(block=~show)
+
 

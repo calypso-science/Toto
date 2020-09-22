@@ -180,5 +180,8 @@ def do_wavelet(time,mag,mother,period,dj,unit,filename,display):
     
     #fig.autofmt_xdate()
     plt.subplots_adjust(bottom=0.02)
-    plt.show(block=~display)
+
+
+    if display:
+        plt.show(block=~display)
     plt.savefig(filename)

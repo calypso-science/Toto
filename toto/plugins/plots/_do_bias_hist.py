@@ -23,8 +23,11 @@ def do_bias_hist(X,Y,unit,short_name,nbins,filename,show=True):
   ylim=ax.get_ylim()
   ax.plot([0,0],[0,max(ylim)],'k--')
   
+  if show:
+    plt.show(block=~show)
+
   plt.savefig(fileout)
-  plt.show(block=~show)
+
 
 
 

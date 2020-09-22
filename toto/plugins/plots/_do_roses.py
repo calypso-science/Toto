@@ -73,7 +73,7 @@ def do_roses(time,spd,drr,units,title,spdedg,quadran,time_blocking,fileout,show=
             quadran=np.arange(0,100+25,25)    
 
 
-    fig = plt.figure(figsize=(8.27, 11.69), dpi=100,constrained_layout=True)
+    
     index=[]
     nj=[]
     for j in range(0,number_of_loops):
@@ -85,16 +85,15 @@ def do_roses(time,spd,drr,units,title,spdedg,quadran,time_blocking,fileout,show=
     number_of_real_loops=len(nj)
 
     spec = strategies.SquareStrategy().get_grid(number_of_real_loops)
-    # if number_of_real_loops==5: # seasons
-    #     gs1 = gridspec.GridSpec(3, 3)
-    # elif number_of_real_loops>5: # monthly
-    #     gs1 = gridspec.GridSpec(6, 3)
-    # else: # annual
-    #     gs1 = gridspec.GridSpec(1,1)
+    fig = plt.gcf()
+    fig.set_dpi(100)
+    fig.constrained_layout=True
+    fig.set_figheight(11.69)
+    fig.set_figwidth(8.27)
 
     
     for i,sub in enumerate(spec):
-        ax = fig.add_subplot(sub, projection="windrose",theta_labels=['E','NE',identifiers[nj[i]],'NW','W','SW','S','SE'])
+        ax = plt.subplot(sub, projection="windrose",theta_labels=['E','NE',identifiers[nj[i]],'NW','W','SW','S','SE'])
         
         #Pull out relevant indices for particular month/months
         index = np.in1d(month, month_identifier[nj[i]])
@@ -111,9 +110,10 @@ def do_roses(time,spd,drr,units,title,spdedg,quadran,time_blocking,fileout,show=
                 ax.set_legend(units=units,title=title,loc='best',bbox_to_anchor=(0.5,-1.0, 0.5, 0.5))
 
     #plt.subplots_adjust(bottom=0.02,top=.95,hspace=0.3)
-    plt.show()
+    if show:
+        plt.show(block=~show)
+
     plt.savefig(fileout)
-    # if show:
-    #     plt.show()
+
 
 
