@@ -39,7 +39,8 @@ def filled_gap(df,missing_value=np.NaN):
 def add_metadata_to_df(df,metadata):
     for key in metadata:
         for subkey in metadata[key]:
-            setattr(df[key],subkey,metadata[key][subkey])
+            if key in df:
+                setattr(df[key],subkey,metadata[key][subkey])
     return df
 
 class TotoFrame(dict):

@@ -15,7 +15,7 @@ class Woodside:
         self.dfout = pd.DataFrame(index=self.data.index.copy())
 
 
-    def woodside_statistics(self,mag='mag',drr='drr',args={'folder out':os.getcwd(),
+    def woodside_statistics(self,mag=['mag'],drr='drr',args={'folder out':os.getcwd(),
                                                     'type':{'South hemisphere(Summer/Winter)':True,\
                                                             'South hemisphere 4 seasons': False,
                                                             'North hemishere(Summer/Winter)':False,
@@ -39,7 +39,14 @@ class Woodside:
         sheetname=self.data[mag].short_name
         data=self.data[mag];
         time=self.data.index
-        do_stats(time,statf,data,drr,hem,filename,sheetname)
+        if isinstance(mag,str):
+            mag=[mag]
+
+        for ma in mag:
+            data=self.data[ma]
+            do_stats(time,statf,data,drr,hem,filename,ma)
+
+
 
     def joint_probability(self,speed='speed',direction='direction',period='period',\
         args={'method':{'Mag vs Dir':True,'Per Vs Dir':False,'Mag vs Per':False},\
