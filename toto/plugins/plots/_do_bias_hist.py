@@ -22,8 +22,9 @@ def do_bias_hist(X,Y,unit,short_name,nbins,filename,show=True):
   ax.set_ylabel('Datapoints per bin')
   ylim=ax.get_ylim()
   ax.plot([0,0],[0,max(ylim)],'k--')
-  plt.show(block=~show)
+  
   plt.savefig(fileout)
+  plt.show(block=~show)
 
 
 

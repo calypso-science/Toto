@@ -69,26 +69,37 @@ def do_roses(time,spd,drr,units,title,spdedg,quadran,time_blocking,fileout,show=
             quadran=np.arange(0,100+25,25)    
 
 
-    fig = plt.figure(figsize=(8.27, 11.69), dpi=100)
-    if number_of_loops==5: # seasons
+    fig = plt.figure(figsize=(8.27, 11.69), dpi=100,constrained_layout=True)
+    index=[]
+    nj=[]
+    for j in range(0,number_of_loops):
+        tmp=np.in1d(month, month_identifier[j])
+        if np.any(tmp):
+            #index .append(tmp)
+            nj.append(j)
+
+    number_of_real_loops=len(nj)
+
+
+    if number_of_real_loops==5: # seasons
         gs1 = gridspec.GridSpec(3, 3)
-    elif number_of_loops>5: # monthly
+    elif number_of_real_loops>5: # monthly
         gs1 = gridspec.GridSpec(6, 3)
     else: # annual
         gs1 = gridspec.GridSpec(1,1)
 
-    #gs2 = gridspec.GridSpec(5, 1)
     
-    for j in range(0,number_of_loops):
-        if j==number_of_loops-1:
-            ax = fig.add_subplot(gs1[int(np.floor((number_of_loops/2)/2)),-1], projection="windrose",theta_labels=['E','NE',identifiers[j],'NW','W','SW','S','SE'])
-        else:
-            x=np.ceil(((j+1)/2))-1
-            y=(np.mod((j%2)+1,2)-1)*-1
-            ax = fig.add_subplot(gs1[int(x),int(y)], projection="windrose",theta_labels=['E','NE',identifiers[j],'NW','W','SW','','SE'])
+    for i,j in enumerate(nj):
+        # if j==number_of_loops-1:
+       # ax = fig.add_subplot(gs1[int(np.floor((number_of_loops/2)/2)),-1], projection="windrose",theta_labels=['E','NE',identifiers[j],'NW','W','SW','S','SE'])
+        # else:
+        x=np.ceil(((i+1)/3))-1
+        y=(np.mod((i%3)+1,2)-1)*-1
+        ax = fig.add_subplot(gs1[int(x),int(y)], projection="windrose",theta_labels=['E','NE',identifiers[j],'NW','W','SW','S','SE'])
         #Pull out relevant indices for particular month/months
         index = np.in1d(month, month_identifier[j])
         #ax = WindroseAxes.from_ax(fig=fig)
+
         ax.bar(drr[index],spd[index], normed=True, bins=np.array(spdedg),opening=0.8, edgecolor='white')               
         ax.set_yticks(quadran)
         
@@ -100,6 +111,7 @@ def do_roses(time,spd,drr,units,title,spdedg,quadran,time_blocking,fileout,show=
                 ax.set_legend(units=units,title=title,loc='best',bbox_to_anchor=(0.5,-1.0, 0.5, 0.5))
 
     plt.subplots_adjust(bottom=0.02,top=.95,hspace=0.3)
+
     plt.show(block=~show)
     plt.savefig(fileout)
 

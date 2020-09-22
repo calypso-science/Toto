@@ -26,7 +26,7 @@ def qq_plot(X,Y,pvec,X_short_name,Y_short_name,Xunit,Yunit,fileout,show=True):
     ax.set_ylabel('Modelled %s quantile [%s]'% (Y_short_name,Yunit))
     ylim=ax.get_ylim()
     ax.plot([0,0],[0,max(ylim)],'k--')
-    plt.show(block=~show)
+    
     plt.savefig(fileout)
-
+    plt.show(block=~show)
 

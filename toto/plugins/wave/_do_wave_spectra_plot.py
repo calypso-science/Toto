@@ -57,5 +57,6 @@ def do_wave_spectra_plot(time,mag,unit,nperseg,noverlap,nfft,detrend,period,plot
     else:
         ax.set_xlim(Tmin,1/Tmax)
 
-    plt.show(block=~display)
+
     plt.savefig(fileout)
+    plt.show(block=~display)
