@@ -36,8 +36,11 @@ class MSLfile():
 
     def _read_nc(self,filename):
        
-
-        ds = xr.open_dataset(filename)
+        try:
+            ds = xr.open_dataset(filename)
+        except:
+            ds = xr.open_dataset(filename, decode_times=False)
+            ds = xr.decode_cf(ds, use_cftime=True)
 
         D2_keys=[]
         D3_keys=[]

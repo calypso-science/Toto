@@ -7,7 +7,8 @@ from toto.core.totoframe import TotoFrame
 import toto
 from toto.inputs.txt import TXTfile
 from toto.inputs.mat import MATfile
-from toto.inputs.TRYAXIS import TRYAXISfile
+
+from toto.inputs.msl import MSLfile
 import totoView
 from toto.plugins.wave._do_ssh_to_wave import zero_crossing
 from toto.filters.bandpass_filter import bandpass_filter
@@ -17,12 +18,18 @@ from toto.filters.bandpass_filter import bandpass_filter
 # tx.reads()
 # tx.read_time()
 # df=tx._toDataFrame()
-filename=r'../P1.txt'
-tx=TXTfile([filename],colNamesLine=1,skiprows=1,unitNamesLine=0,time_col_name={'Year':'year','Month':'month','Day':'day','H[UTC]':'hour','Min':'Minute'})
-tx.reads()
-tx.read_time()
+# filename=r'../P1.txt'
+# tx=TXTfile([filename],colNamesLine=1,skiprows=1,unitNamesLine=0,time_col_name={'Year':'year','Month':'month','Day':'day','H[UTC]':'hour','Min':'Minute'})
+# tx.reads()
+# tx.read_time()
+# df=tx._toDataFrame()
+filename=r'_tests/nc_file/TB_current.nc'
+tx=MSLfile([filename])
 df=tx._toDataFrame()
-
+# tx=TXTfile([filename],colNamesLine=1,skiprows=1,unitNamesLine=0,time_col_name={'Year':'year','Month':'month','Day':'day','H[UTC]':'hour','Min':'Minute'})
+# tx.reads()
+# tx.read_time()
+# df=tx._toDataFrame()
 df[0].filename='sss'
 #filename=r'../ssh2.mat'
 #tx=MATfile(filename)
@@ -59,19 +66,26 @@ df[0].filename='sss'
 # df=df[0].Woodside.persistence_probability(data='hs[m]',args={'method':'non-exceedance',\
 # 	'folder out':'','Exceedance bins: Min Res Max(optional)':[2,1],'Duration Min Res Max':[6,6,18],
 # 	'Time blocking':'Annual','Probablity expressed in':'percent'})
-
-
-df[0].Woodside.extreme_analysis(wind_speed10='hs[m]',wind_drr='dpm[deg]',
-                          hs='hs[m]',tp='tp[s]',tm02='t02[s]',dpm='dpm[deg]',
-                          surface_current='hs[m]',surface_drr='dpm[deg]',
-                          midwater_current='hs[m]',midwater_drr='dpm[deg]',
-                          bottom_current='hs[m]',bottom_drr='dpm[deg]',
-                          args={'return_period': [1,5,10,20,50,100,200,500,1000],
-                          'Display':'On',
-                          'Water depth':5000.,
-                          'Directional switch':'On',
-                          'folder out':os.getcwd(),
-                           })
+print(df[0])
+df=df[0].StatPlots.Plot_thermocline(mag=['temp_lev_0','temp_lev_5','temp_lev_10'],\
+        args={'X label':'Current speed',\
+        'function':'Max',
+        'Percentile or Quantile': 0.1,
+        'Time blocking':'Monthly',
+        'display':'On',
+        'folder out':os.getcwd(),
+        })
+# df[0].Woodside.extreme_analysis(wind_speed10='hs[m]',wind_drr='dpm[deg]',
+#                           hs='hs[m]',tp='tp[s]',tm02='t02[s]',dpm='dpm[deg]',
+#                           surface_current='hs[m]',surface_drr='dpm[deg]',
+#                           midwater_current='hs[m]',midwater_drr='dpm[deg]',
+#                           bottom_current='hs[m]',bottom_drr='dpm[deg]',
+#                           args={'return_period': [1,5,10,20,50,100,200,500,1000],
+#                           'Display':'On',
+#                           'Water depth':5000.,
+#                           'Directional switch':'On',
+#                           'folder out':os.getcwd(),
+#                            })
 
 
 

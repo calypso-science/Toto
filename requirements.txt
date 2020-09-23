@@ -15,3 +15,5 @@ git+https://github.com/wesleybowman/UTide.git
 git+https://github.com/wafo-project/pywafo.git
 mplcyberpunk
 six
+netCDF4==1.5.3
+grid_strategy

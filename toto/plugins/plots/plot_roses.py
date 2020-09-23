@@ -5,6 +5,7 @@ from ._do_bias_hist import do_bias_hist
 from ._do_density_diagramm import do_density_diagramm
 from ._do_qq_plot import qq_plot
 from ._do_perc_of_occurence import do_perc_of_occurence
+from ._thermocline import thermocline
 from toto.plugins.statistics._do_joint_prob import _do_joint_prob_plot
 from ...core.toolbox import get_opt,dir_interval,get_increment
 import numpy as np
@@ -145,7 +146,38 @@ class StatPlots:
         drr_interval=dir_interval(args['Direction interval'],args['Direction binning'])
         do_perc_of_occurence(self.data.index,self.data[mag].values,drr,mag_inteval,xlabel,args['Time blocking'],drr_interval,filename,display)
 
+    def Plot_thermocline(self,mag=['mag'],args={
+                'function':{'Max':True, 'Mean':False, 'Median':False, 'Min':False, 'Percentile':False, 'Prod':False, 'Quantile':False, 'Std':False, 'Sum':False, 'Var':False},
+                'Percentile or Quantile': 0.1,
+                'X label':'Water temperature [degC]',
+                'Time blocking':{'Annual':True,'Seasonal (South hemisphere)':False,'Seasonal (North hemisphere)':False,'Monthly':False},
+                'display':{'On':True,'Off':False},
+                'folder out':os.getcwd()}):
 
+
+        if isinstance(mag,str):
+            return 'cannot be only one level,select multiple'
+
+        display=True
+        if args['display']=='Off':
+            display=False
+
+        X_unit=get_opt(self.data[mag[0]],'units','')
+        X_short_name=get_opt(self.data[mag[0]],'short_name','')
+        if X_short_name=='':
+            xlabel=args['X label']
+        else:
+            xlabel=X_short_name+' ['+X_unit+']'
+
+
+        funct=getattr(np,'nan'+args['function'].lower())
+        val=args['Percentile or Quantile']
+
+        table_filename=os.path.join(args['folder out'],os.path.splitext(self.data.filename)[0]+'_thermocline.xlsx')
+        figure_filename=os.path.join(args['folder out'],os.path.splitext(self.data.filename)[0]+'_thermocline.png')
+        th=thermocline(self.data[mag],time_blocking=args['Time blocking'],funct=funct,val=val)
+        th.output_table(table_filename)
+        th.output_fig(figure_filename,xlabel=xlabel,display=display)
 
 
 
