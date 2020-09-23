@@ -99,6 +99,7 @@ class Extreme:
         for surge in surges:
 
             self._get_peaks(surge+'surge',time_blocking=time_blocking,peaks_options=pks_opt,min_peak=min_peak)
+
             if 'Omni' not in self.peaks_index['Annual']:
                 return 'No Peak found !!'
             else:
@@ -223,7 +224,7 @@ class Extreme:
         if args['Display CDFs']=='On':
             self._plot_cdfs(magnitude,display=True,folder=folderout)
             if tp_optional in self.data: 
-               self._plot_contours(magnitude,rv,drr='Omni',display=False,folder=folderout)
+               self._plot_contours(magnitude,rv,drr='Omni',display=True,folder=folderout)
         else:
             self._plot_cdfs(magnitude,display=False,folder=folderout)
             if tp_optional in self.data: 
@@ -488,7 +489,7 @@ class Extreme:
                 peak=self.peaks_index[month][d]
                 self.eva_stats[month][d]={}
                 if 'slp' in self.dfout:
-                    self.eva_stats[month][d][mag]=self. _do_EVA_hstp(mag,tp,peak,rp,fitting,slpfit,method,h)
+                    self.eva_stats[month][d]=self. _do_EVA_hstp(mag,tp,peak,rp,fitting,slpfit,method,h)
                 else:
                     self.eva_stats[month][d][mag]=self._do_EVA_mag(mag,peak,rp,fitting,method)
                 
@@ -505,46 +506,42 @@ class Extreme:
         for i,month in enumerate(months):
             for j,var in enumerate(magnitudes):
                 if var in self.eva_stats[month]['Omni']:
+
                     mat0=sub_table(self.eva_stats[month],var,rp)
                     if 'mat' not in locals():
                         mat=copy.deepcopy(mat0)
                     else:
-                        mat=np.concatenate((mat,mat0))
+                        try:
+                            mat=np.concatenate((mat,mat0))
+                        except:
+                            import pdb;pdb.set_trace()
 
             create_table(filename,month,mat)
+            del mat
         
     def _plot_contours(self,mag,rp,drr='Omni',display=False,folder=os.getcwd()):
 
 
-        fig = plt.figure(figsize=(8.27, 11.69), dpi=100)
-        months=self.peaks_index.keys()
+        months=list(self.peaks_index.keys())
         number_of_loops=len(months)
-        if number_of_loops==5: # seasons
-            gs1 = gridspec.GridSpec(3, 3)
-            maxx=1
-        elif number_of_loops>5: # monthly
-            gs1 = gridspec.GridSpec(6, 3)
-            maxx=5
-        else: # annual
-            gs1 = gridspec.GridSpec(1,1)
-            maxx=0
+        
+        spec = strategies.SquareStrategy().get_grid(number_of_loops)
+        fig = plt.gcf()
+        fig.set_dpi(100)
+        fig.constrained_layout=True
+        fig.set_figheight(11.69)
+        fig.set_figwidth(8.27)
 
-        for j,month in enumerate(months):
-            if month== 'Annual':
-                ax = fig.add_subplot(gs1[int(np.floor((number_of_loops/2)/2)),-1])
-                y=0
-                x=0
-            else:
-                x=np.ceil(((j+1)/2))-1
-                y=(np.mod((j%2)+1,2)-1)*-1
-                ax = fig.add_subplot(gs1[int(x),int(y)])
+        for j,sub in enumerate(spec):
+            ax = plt.subplot(sub)
 
-            tpq=self.eva_stats[month][drr]['tp']['tpq']
-            hsq=self.eva_stats[month][drr][mag]['hsq']
-            hsex=self.eva_stats[month][drr][mag]['magex']
-            tpex=self.eva_stats[month][drr]['tp']['magex']
-            tppot=self.eva_stats[month][drr]['tp']['tppot']
-            hspot=self.eva_stats[month][drr][mag]['hspot']
+
+            tpq=self.eva_stats[months[j]][drr]['tp']['tpq']
+            hsq=self.eva_stats[months[j]][drr][mag]['hsq']
+            hsex=self.eva_stats[months[j]][drr][mag]['magex']
+            tpex=self.eva_stats[months[j]][drr]['tp']['magex']
+            tppot=self.eva_stats[months[j]][drr]['tp']['tppot']
+            hspot=self.eva_stats[months[j]][drr][mag]['hspot']
 
             hsv = cm = plt.get_cmap('hsv') 
             cNorm  = colors.Normalize(vmin=0, vmax=tpq.shape[0])
@@ -562,101 +559,74 @@ class Extreme:
             ax.set_xlim([np.nanmin(tpq)-.5,min(np.nanmax(tpq)+.5, 45)])
             ax.set_ylim([np.nanmin(hsq)-.2,np.nanmax(hsq)+.2])
             ax.plot(tpex[0,:],hsex,'kx')
+            ax.set_title(months[j])
             if j==number_of_loops-1:
-                if number_of_loops>3 and number_of_loops<10:
-                    ax.legend(loc='best',bbox_to_anchor=(0.6, -0.4),ncol=len(dir_int))#bbox_to_anchor=(0.8,-1.0, 0.5, 0.5))
-                elif number_of_loops>10:
-                    ax.legend(loc='best',bbox_to_anchor=(0.6, -3.4),ncol=len(dir_int))#bbox_to_anchor=(0.8,-1.0, 0.5, 0.5))
-                else:
-                    ax.legend(loc='best')  
+               ax.legend(loc='best')  
 
         
         fig.align_labels()
-        if number_of_loops>10:
-            plt.subplots_adjust(left=0.075,right=0.970,bottom=0.1,top=0.97,hspace=.5,wspace=0.415)            
-        elif number_of_loops>2 and number_of_loops<10:
-            plt.subplots_adjust(left=0.08,right=0.975,bottom=0.1,top=0.7,hspace=.5,wspace=0.3)
-        else:
-            plt.subplots_adjust(bottom=0.05,top=.95,hspace=.5)
+        # if number_of_loops>10:
+        #     plt.subplots_adjust(left=0.075,right=0.970,bottom=0.1,top=0.97,hspace=.5,wspace=0.415)            
+        # elif number_of_loops>2 and number_of_loops<10:
+        #     plt.subplots_adjust(left=0.08,right=0.975,bottom=0.1,top=0.7,hspace=.5,wspace=0.3)
+        # else:
+        #     plt.subplots_adjust(bottom=0.05,top=.95,hspace=.5)
       
         if display:
             plt.show(block=~display)
 
         plt.savefig(os.path.join(folder,'RPV_FORM_'+mag+'_'+drr+'.png'))
-        plt.close()
+        #plt.close()
 
     def _plot_cdfs(self,mag,drr='Omni',display=False,folder=os.getcwd()):
-        fig = plt.figure(figsize=(8.27, 11.69), dpi=100)
-        months=self.peaks_index.keys()
+
+        months=list(self.peaks_index.keys())
         number_of_loops=len(months)
-        if number_of_loops==5: # seasons
-            gs1 = gridspec.GridSpec(3, 3)
-            maxx=1
-        elif number_of_loops>5: # monthly
-            gs1 = gridspec.GridSpec(6, 3)
-            maxx=5
-        else: # annual
-            gs1 = gridspec.GridSpec(1,1)
-            maxx=0
+        spec = strategies.SquareStrategy().get_grid(number_of_loops)
+        fig = plt.gcf()
+        fig.set_dpi(100)
+        fig.constrained_layout=True
+        fig.set_figheight(11.69)
+        fig.set_figwidth(8.27)
 
-        for j,month in enumerate(months):
-            if month== 'Annual':
-                ax = fig.add_subplot(gs1[int(np.floor((number_of_loops/2)/2)),-1])
-                y=0
-                x=0
-            else:
-                x=np.ceil(((j+1)/2))-1
-                y=(np.mod((j%2)+1,2)-1)*-1
-                ax = fig.add_subplot(gs1[int(x),int(y)])
-
-
-            stat=self.eva_stats[month][drr][mag]
+        for j,sub in enumerate(spec):
+            ax = plt.subplot(sub)
+            stat=self.eva_stats[months[j]][drr][mag]
             ws.probplot(stat['phat'].data, stat['phat'].par, dist=stat['phat'].dist.name, plot=ax)
-            ax.set_title(month)
+            ax.set_title(months[j])
 
 
         fig.align_labels()
-        if number_of_loops>10:
-            plt.subplots_adjust(left=0.075,right=0.970,bottom=0.1,top=0.97,hspace=.5,wspace=0.415)            
-        elif number_of_loops>2 and number_of_loops<10:
-            plt.subplots_adjust(left=0.08,right=0.975,bottom=0.1,top=0.7,hspace=.5,wspace=0.3)
-        else:
-            plt.subplots_adjust(bottom=0.05,top=.95,hspace=.5)
+        # if number_of_loops>10:
+        #     plt.subplots_adjust(left=0.075,right=0.970,bottom=0.1,top=0.97,hspace=.5,wspace=0.415)            
+        # elif number_of_loops>2 and number_of_loops<10:
+        #     plt.subplots_adjust(left=0.08,right=0.975,bottom=0.1,top=0.7,hspace=.5,wspace=0.3)
+        # else:
+        #     plt.subplots_adjust(bottom=0.05,top=.95,hspace=.5)
       
-
-
-        plt.savefig(os.path.join(folder,'cdf_'+mag+'_'+drr+'.png'))
         if display:
             plt.show(block=False)
-        else:
-            plt.close()
+
+        plt.savefig(os.path.join(folder,'cdf_'+mag+'_'+drr+'.png'))
+
 
     def _plot_peaks(self,mag,display=False,folder=os.getcwd()):
-
-        fig = plt.figure(figsize=(8.27, 11.69), dpi=100)
-        months=self.peaks_index.keys()
+        months=list(self.peaks_index.keys())
         number_of_loops=len(months)
-        if number_of_loops==5: # seasons
-            gs1 = gridspec.GridSpec(3, 3)
-            maxx=1
-        elif number_of_loops>5: # monthly
-            gs1 = gridspec.GridSpec(6, 3)
-            maxx=5
-        else: # annual
-            gs1 = gridspec.GridSpec(1,1)
-            maxx=0
 
-        for j,month in enumerate(months):
-            if month== 'Annual':
-                ax = fig.add_subplot(gs1[int(np.floor((number_of_loops/2)/2)),-1])
-                y=0
-                x=0
-            else:
-                x=np.ceil(((j+1)/2))-1
-                y=(np.mod((j%2)+1,2)-1)*-1
-                ax = fig.add_subplot(gs1[int(x),int(y)])
 
-            dir_ints=self.peaks_index[month].keys()
+        spec = strategies.SquareStrategy().get_grid(number_of_loops)
+        fig = plt.gcf()
+        fig.set_dpi(100)
+        fig.constrained_layout=True
+        fig.set_figheight(11.69)
+        fig.set_figwidth(8.27)
+
+
+        for j,sub in enumerate(spec):
+            ax = plt.subplot(sub)
+
+            dir_ints=self.peaks_index[months[j]].keys()
             jet = cm = plt.get_cmap('jet') 
             cNorm  = colors.Normalize(vmin=0, vmax=len(dir_ints))
             scalarMap = cmx.ScalarMappable(norm=cNorm, cmap=jet)
@@ -664,33 +634,27 @@ class Extreme:
 
             for jj,dir_int in enumerate(dir_ints):
                 if len(dir_ints)==1 or dir_int!='Omni':
-                    pk=self.peaks_index[month][dir_int]
+                    pk=self.peaks_index[months[j]][dir_int]
                     colorVal = scalarMap.to_rgba(jj)
                     plt.plot(self.dfout.index.values[pk],self.dfout[mag].values[pk],'+',color=colorVal,label=dir_int)
             
             locator = mdate.YearLocator()
             ax.xaxis.set_major_locator(locator)
-            ax.set_title(month)
+            ax.set_title(months[j])
 
             if j==number_of_loops-1 and len(dir_int)>2:
-                if number_of_loops>3 and number_of_loops<10:
-                    ax.legend(loc='best',bbox_to_anchor=(0.6, -0.4),ncol=len(dir_int))#bbox_to_anchor=(0.8,-1.0, 0.5, 0.5))
-                elif number_of_loops>10:
-                    ax.legend(loc='best',bbox_to_anchor=(0.6, -3.4),ncol=len(dir_int))#bbox_to_anchor=(0.8,-1.0, 0.5, 0.5))
-                else:
-                    ax.legend(loc='best')    
+               ax.legend(loc='best')    
 
-            if int(y)==0:
-                ax.set_ylabel('%s'%mag)
+            ax.set_ylabel('%s'%mag)
 
         fig.align_labels()
 
-        if number_of_loops>10:
-            plt.subplots_adjust(left=0.075,right=0.970,bottom=0.1,top=0.97,hspace=.5,wspace=0.415)            
-        elif number_of_loops>2 and number_of_loops<10:
-            plt.subplots_adjust(left=0.08,right=0.975,bottom=0.1,top=0.7,hspace=.5,wspace=0.3)
-        else:
-            plt.subplots_adjust(bottom=0.05,top=.95,hspace=.5)
+        # if number_of_loops>10:
+        #     plt.subplots_adjust(left=0.075,right=0.970,bottom=0.1,top=0.97,hspace=.5,wspace=0.415)            
+        # elif number_of_loops>2 and number_of_loops<10:
+        #     plt.subplots_adjust(left=0.08,right=0.975,bottom=0.1,top=0.7,hspace=.5,wspace=0.3)
+        # else:
+        #     plt.subplots_adjust(bottom=0.05,top=.95,hspace=.5)
       
        
         plt.savefig(os.path.join(folder,mag+'_peaks.png'))
@@ -821,6 +785,7 @@ class Extreme:
         idx=np.arange(0,len(months))
         drr_values=self.dfout[drr]
         mag_values=self.dfout[mag]
+
         for j in range(0,number_of_loops):
         #Pull out relevant indices for particular month/months
             index1 = np.in1d(months, month_identifier[j])
