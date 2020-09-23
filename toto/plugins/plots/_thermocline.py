@@ -10,8 +10,10 @@ class thermocline():
         self.data = pandas_obj
         
         self.profile={}
+
         self.xp=[float(x.split('_lev_')[-1]) for x in self.data.columns]
-        self.x=np.linspace(np.min(self.xp),np.max(self.xp),20)
+        self.x=np.hstack((np.arange(0,51,5),np.arange(100,901,100),np.arange(1000,5001,1000)))
+        self.x=self.x[self.x<np.max(self.xp)]
         self.funct=funct
         self.val=val
         self.extract_thermocline(time_blocking)
@@ -62,6 +64,12 @@ class thermocline():
         fig.constrained_layout=True
         fig.set_figheight(11.69)
         fig.set_figwidth(8.27)
+        xmin=np.inf
+        xmax=-np.inf
+
+        for month in months:
+            xmin=min(xmin,np.nanmin(self.profile[month]))
+            xmax=max(xmax,np.nanmax(self.profile[month]))
 
         for j,sub in enumerate(spec):
             ax = plt.subplot(sub)
@@ -70,7 +78,7 @@ class thermocline():
             ax.set_xlabel(xlabel)
             ax.set_ylabel('Water depth (m)')
             ax.set_title(months[j])
-
+            ax.set_xlim(xmin,xmax)
         
         fig.align_labels()
       
