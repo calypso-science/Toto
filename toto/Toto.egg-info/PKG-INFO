@@ -1,0 +1,16 @@
+Metadata-Version: 2.1
+Name: Toto
+Version: 0.0.1
+Summary: A toolbox for processing timeseries'
+Home-page: https://github.com/calypso-science/Toto
+Author: Remy Zyngfogel
+Author-email: R.zyngfogel@calypso.science
+License: UNKNOWN
+Description: # Toto toolbox
+        
+        
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown

@@ -4,7 +4,7 @@ import glob,os,sys
 import pandas as pd
 import datetime as dt
 import numpy as np
-
+_NUMERIC_KINDS = set('buifc')
 
 def matlab2datetime(matlab_datenum):
     day = dt.datetime.fromordinal(int(matlab_datenum))
@@ -123,6 +123,11 @@ class TXTfile():
         for key in keys:
             if np.all(df[key].isna()):
                 del df[key] 
+
+            ### check if all numerics
+            if not np.asarray(df[key].values).dtype.kind in _NUMERIC_KINDS:
+                print('Warning %s: this key was deleted containes string' % key)
+                del df[key]
 
         self.data.append(df)
 

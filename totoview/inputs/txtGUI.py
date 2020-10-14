@@ -98,7 +98,7 @@ class ImportGUI(QDialog):
         # Vlayout.addLayout(Hlayout)
 
         self.setLayout(Vlayout)
-    
+
         self.center_window()
         self.setWindowTitle('Parse data')
     def exec(self):
@@ -202,9 +202,9 @@ class parse_time_GUI(QDialog):
         
        
         self.setLayout(mainVL)
-    
-        self.center_window()
         self.setFixedSize(400, 400)
+        self.center_window()
+        
         
 
         self.setWindowTitle('Parse time')

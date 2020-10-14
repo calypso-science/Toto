@@ -301,10 +301,6 @@ class Plotting(object):
 
 
                     x=data[file]['dataframe'].index
-
-
-
-
                     y=((data[file]['dataframe'][var])*scl_fac)+add_offset
 
                     if hasattr(self.plot_name,'currentText'):

@@ -2,9 +2,10 @@ import setuptools
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
+pck=setuptools.find_packages(exclude=("totoview","totoview.*","totoView.py","_tests","_tools"))
 
 setuptools.setup(
-    name="Toto",
+    name="toto",
     version="0.0.1",
     author="Remy Zyngfogel",
     author_email="R.zyngfogel@calypso.science",
@@ -12,7 +13,7 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/calypso-science/Toto",
-    packages=setuptools.find_packages(),
+    packages=pck,
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
