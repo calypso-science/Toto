@@ -25,15 +25,16 @@ except:
 
 from matplotlib.dates import num2date
 
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 #  GUI
 # import PyQt5
 # #from PyQt5 import Qtcore
 # Qt=PyQt5.Qtcore.Qt
-import PyQt5
-from PyQt5.QtCore import Qt
-from PyQt5 import uic
-from PyQt5 import QtGui
+#import PyQt5
+from PyQt5.Qt import *
+from PyQt5.uic import loadUiType
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow, QAction, QMenu,QMenuBar, QApplication,QProxyStyle,QStyle,QStyleFactory
 from .dialog.message import *
 from .dialog.plotting import Plotting
@@ -55,7 +56,7 @@ if op_sys == 'Darwin':
     from Foundation import NSURL
 
 here = os.path.dirname(os.path.abspath(__file__))
-FORM_CLASS, _ = uic.loadUiType(os.path.join(here,'_tools','mainwindow.ui'))
+FORM_CLASS, _ = loadUiType(os.path.join(here,'_tools','mainwindow.ui'))
 
 PLOT_TYPE=['scatter','plot','bar','hist','rose','progressif']
 
@@ -93,7 +94,7 @@ class TotoGUI(QMainWindow,FORM_CLASS):
         
         self.databackup=copy.deepcopy(data)
         self.setupUi(self)
-        self.setWindowIcon(QtGui.QIcon(os.path.join(here,'_tools','toto.jpg')))
+        self.setWindowIcon(QIcon(os.path.join(here,'_tools','toto.jpg')))
         
         # 
         self.plotting=Plotting(self.mplvl,self.plot_name)
@@ -121,7 +122,7 @@ class TotoGUI(QMainWindow,FORM_CLASS):
         self.unselect_all.clicked.connect(self.unslc_all)
 
         self.setAcceptDrops(True)
-        self.setFocusPolicy(Qt.StrongFocus)
+        self.setFocusPolicy(StrongFocus)
 
     def _get_file_list(self):
         return [metadata['filename'] for metadata in self.metadata]
@@ -405,7 +406,7 @@ class TotoGUI(QMainWindow,FORM_CLASS):
         :return:
         """
         if e.mimeData().hasUrls:
-            e.setDropAction(Qt.CopyAction)
+            e.setDropAction(CopyAction)
             e.accept()
             # Workaround for OSx dragging and dropping
             for url in e.mimeData().urls():
@@ -421,7 +422,7 @@ class TotoGUI(QMainWindow,FORM_CLASS):
 
     def keyPressEvent(self, event):
 
-        if event.key() == Qt.Key_Escape:
+        if event.key() == Key_Escape:
             self.close()
         if event.key() == 16777223: # delete key
             self.delete_selection()

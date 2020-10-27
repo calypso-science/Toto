@@ -1,8 +1,8 @@
 
 import os
-from PyQt5.QtWidgets import QWidget,QListWidgetItem,QListWidget,QScrollArea,QComboBox,QPushButton,QMessageBox,QFileDialog,QDialog,QTreeWidgetItem,QTreeWidget,QHBoxLayout,QVBoxLayout,QTextBrowser,QFormLayout
+from PyQt5.QtWidgets import QWidget,QListWidgetItem,QListWidget,QScrollArea,QComboBox,QPushButton,QMessageBox,QFileDialog,QDialog,QTreeWidgetItem,QTreeWidget,QHBoxLayout,QVBoxLayout,QTextBrowser,QFormLayout,QAbstractItemView
 from PyQt5.QtGui import QIcon
-from PyQt5 import QtCore,QtWidgets
+from PyQt5.QtCore import Qt
 import toto
 import inspect
 from ..core.create_frame import get_layout_from_sig,extract_option_from_frame
@@ -122,8 +122,8 @@ class wrapper_plugins(QDialog):
         qw=QWidget()
         qw.setLayout(top)
         scroll_top = QScrollArea()
-        scroll_top.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
-        scroll_top.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
+        scroll_top.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+        scroll_top.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
         scroll_top.setWidgetResizable(True)
         scroll_top.setWidget(qw)
 
@@ -132,8 +132,8 @@ class wrapper_plugins(QDialog):
         qw=QWidget()
         qw.setLayout(bottom)
         scroll_bot = QScrollArea()
-        scroll_bot.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
-        scroll_bot.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
+        scroll_bot.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+        scroll_bot.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
         scroll_bot.setWidgetResizable(True)
         scroll_bot.setWidget(qw)
 
@@ -380,7 +380,7 @@ class show_list_file(QDialog):
         self.list = QListWidget()
         if multiple:
             self.list.setSelectionMode(
-                QtWidgets.QAbstractItemView.ExtendedSelection
+                QAbstractItemView.ExtendedSelection
             )
         for filename in filenames:
             item=QListWidgetItem(filename)

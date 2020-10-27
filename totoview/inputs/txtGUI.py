@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import QApplication, QWidget, QPushButton,QHBoxLayout, QVBo
                              QCheckBox,QFileDialog,QMainWindow,QDialog
 
 from PyQt5.QtGui import QIntValidator
-from PyQt5 import QtCore
+from PyQt5.QtCore import Qt
 from toto.inputs.txt import TXTfile as reader
 def xstr(s):
     if s is None:
@@ -215,13 +215,13 @@ class parse_time_GUI(QDialog):
         return self.options
 
     def checkBoxAChangedAction(self,state):
-        if (QtCore.Qt.Checked == state):
+        if (Qt.Checked == state):
             self.checkBoxB.setChecked(False)
         else:
             self.checkBoxB.setChecked(True)
 
     def checkBoxBChangedAction(self,state):
-        if (QtCore.Qt.Checked == state):
+        if (Qt.Checked == state):
             self.checkBoxA.setChecked(False)
         else:
             self.checkBoxA.setChecked(True)

@@ -1,12 +1,12 @@
 import sys,os
 from .create_frame import get_layout_from_sig,extract_option_from_frame
 
-from PyQt5 import QtCore, QtGui
+from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDialog,QWidget,QFormLayout,QHBoxLayout,QStackedWidget,\
                             QVBoxLayout,QSpacerItem,QLabel,QPushButton,QApplication,QListWidget,QListWidgetItem,\
                             QLineEdit,QLabel,QGroupBox,QRadioButton,QButtonGroup,QScrollArea
 
-from PyQt5.QtGui import QIntValidator,QDoubleValidator,QIcon
+from PyQt5.QtGui import QIntValidator,QDoubleValidator,QIcon,QFont
 import numpy as np
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as    NavigationToolbar
@@ -37,7 +37,7 @@ class BaseWindow(QDialog):
         # Main window
         layout = QHBoxLayout()
         
-        font = QtGui.QFont()
+        font = QFont()
         font.setFamily("Rod")
         font.setPointSize(23)
 

@@ -1,7 +1,8 @@
 
-
+import setuptools
 from distutils.core import setup
 from distutils.sysconfig import get_python_lib
+import site
 import os
 from os.path import join, abspath, dirname
 import py2exe
@@ -22,11 +23,17 @@ for f in matplotlibdata:
     matplotlibdata_files.append((os.path.split(dirname)[0], [f]))
 
 totoviewdata_files=[]
-totoviewdata=glob('totoview\\_tools\\*.*')
-for f in totoviewdata:
+for f in glob('totoview\\_tools\\*.*'):
     dirname = os.path.join('totoview','_tools')
     totoviewdata_files.append((dirname, [f]))
 
+for f in glob('toto\\plugins\\*.*'):
+    dirname = os.path.join('toto','plugins')
+    totoviewdata_files.append((dirname, [f]))
+
+for f in glob('toto\\core\\*.yml'):
+    dirname = os.path.join('toto','core')
+    totoviewdata_files.append((dirname, [f]))
 
 def better_copy_files(self, destdir):
     """Overriden so that things can be included in the library.zip."""
@@ -66,12 +73,12 @@ py2exe.runtime.Runtime.copy_files = better_copy_files
 
 
 
-
 GDAL_DIR = "C:\\Program Files\\GDAL"
 MSVC_DIR = "C:\\Program Files (x86)\\Microsoft Visual Studio 9.0\\VC\\redist\\x86\\Microsoft.VC90.CRT"
 MSVC_DIR = "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\BuildTools\\VC\\Redist\\MSVC\\14.27.29016\\x86\\Microsoft.VC142.CRT"
-DEST_DIR = 'compiled64'
-PYTHON_SITEPACKAGES = get_python_lib()
+DEST_DIR = "compiled64"
+#PYTHON_SITEPACKAGES = get_python_lib()
+PYTHON_SITEPACKAGES = "C:\\Users\\papum\\Envs\\Toto3.7\\Lib\\site-packages"
 
 sys.path.extend([MSVC_DIR, GDAL_DIR])
 
@@ -134,8 +141,10 @@ options = {
                       'PyQt5', 'windrose','attrdict','ctypes', 'openpyxl',
                       'yaml', "numba","numdifftools","utide","wafo","netCDF4",
                       "encodings","mplcyberpunk","grid_strategy",
-                      "totoview","totoview.core","totoview.dialog","totoview.inputs"
-                      ],
+                      "totoview","totoview.core","totoview.dialog","totoview.inputs",
+                      "toto.plugins.extreme","toto.plugins.plots","toto.plugins.statistics",
+                      "toto.plugins.tide","toto.plugins.tide","toto.plugins.transformations",
+                      "toto.plugins.wave","toto.plugins.woodside"],
     }
 }
 
@@ -149,7 +158,8 @@ data_files = [
     ('totoview\\_tools', glob('totoview\\_tools\\*.*')),
     #('', glob('LICENSE.txt')),
     ("Microsoft.VC90.CRT", glob(os.path.join(MSVC_DIR, '*.*'))),
-    (r"platforms", glob(os.path.join(PYTHON_SITEPACKAGES,'PyQt5','Qt','plugins','platforms','qwindows.dll'))),
+    (r"platforms", glob(os.path.join(PYTHON_SITEPACKAGES, "PyQt5", "Qt", "plugins", "platforms","*.dll"))),
+    (r"", glob(os.path.join(PYTHON_SITEPACKAGES, "PyQt5", "Qt", "bin", "Qt*.dll"))),
     #(r"", glob(join(PYTHON_SITEPACKAGES, 'numpy','DLLs','*.dll'))),
     ]
 
