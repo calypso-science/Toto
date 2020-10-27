@@ -25,8 +25,12 @@ except:
 
 from matplotlib.dates import num2date
 
-from _tools import resource_rc
+
 #  GUI
+# import PyQt5
+# #from PyQt5 import Qtcore
+# Qt=PyQt5.Qtcore.Qt
+import PyQt5
 from PyQt5.QtCore import Qt
 from PyQt5 import uic
 from PyQt5 import QtGui
@@ -43,7 +47,7 @@ import toto
 from toto.core.totoframe import TotoFrame,add_metadata_to_df
 from toto.core.metadataframe import MetadataFrame
 import platform
-
+from ._tools import resource_rc
 
 # Use NSURL as a workaround to pyside/Qt4 behaviour for dragging and dropping on OSx
 op_sys = platform.system()
@@ -51,7 +55,7 @@ if op_sys == 'Darwin':
     from Foundation import NSURL
 
 here = os.path.dirname(os.path.abspath(__file__))
-FORM_CLASS, _ = uic.loadUiType(os.path.join(here,'..','_tools','mainwindow.ui'))
+FORM_CLASS, _ = uic.loadUiType(os.path.join(here,'_tools','mainwindow.ui'))
 
 PLOT_TYPE=['scatter','plot','bar','hist','rose','progressif']
 
@@ -79,7 +83,7 @@ class TotoGUI(QMainWindow,FORM_CLASS):
         if isinstance(data,str):
                 self.load_files(data)
 
-        ssDir = os.path.join(here,"..", "_tools", "")
+        ssDir = os.path.join(here, "_tools", "")
 
         sshFile=os.path.join(ssDir,'TCobra.qss')
         with open(sshFile,"r") as fh:
@@ -89,7 +93,7 @@ class TotoGUI(QMainWindow,FORM_CLASS):
         
         self.databackup=copy.deepcopy(data)
         self.setupUi(self)
-        self.setWindowIcon(QtGui.QIcon(os.path.join(here,'..','_tools','toto.jpg')))
+        self.setWindowIcon(QtGui.QIcon(os.path.join(here,'_tools','toto.jpg')))
         
         # 
         self.plotting=Plotting(self.mplvl,self.plot_name)

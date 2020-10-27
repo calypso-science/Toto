@@ -22,7 +22,7 @@ class BaseWindow(QDialog):
 
         self.resize(900,600)
         self.setWindowTitle(title)
-        ssDir = os.path.join(here,"..","..", "_tools", "")
+        ssDir = os.path.join(here,"..", "_tools", "")
         if logo:
         	self.setWindowIcon(QIcon(logo))
         else:

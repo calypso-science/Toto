@@ -104,7 +104,7 @@ class wrapper_plugins(QDialog):
 
         self.resize(600,600)
         self.setWindowTitle(fct.__name__)
-        ssDir = os.path.join(HERE,"..","..", "_tools", "")
+        ssDir = os.path.join(HERE,"..", "_tools", "")
         self.setWindowIcon(QIcon(os.path.join(ssDir,'toto.jpg')))    
            
         sshFile=os.path.join(ssDir,'TCobra.qss')
@@ -301,7 +301,7 @@ class show_help_browser(QDialog):
 
         self.resize(900,600)
         self.setWindowTitle('Functions help')
-        ssDir = os.path.join(HERE,"..","..", "_tools", "")
+        ssDir = os.path.join(HERE,"..", "_tools", "")
         self.setWindowIcon(QIcon(os.path.join(ssDir,'toto.jpg')))    
            
         sshFile=os.path.join(ssDir,'TCobra.qss')
@@ -368,7 +368,7 @@ class show_list_file(QDialog):
 
         self.resize(900,600)
         self.setWindowTitle(title)
-        ssDir = os.path.join(HERE,"..","..", "_tools", "")
+        ssDir = os.path.join(HERE,"..", "_tools", "")
         self.setWindowIcon(QIcon(os.path.join(ssDir,'toto.jpg')))    
            
         sshFile=os.path.join(ssDir,'TCobra.qss')

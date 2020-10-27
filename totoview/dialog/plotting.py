@@ -196,7 +196,7 @@ class MyCustomToolbar(NavigationToolbar):
     def __init__(self, plotCanvas,parent,coordinates):
         NavigationToolbar.__init__(self, plotCanvas,parent,coordinates)
         iconDir = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-            "..","..", "_tools", "")
+            "..", "_tools", "")
         self.plotCanvas=plotCanvas
         self.addSeparator()
         self.a = self.addAction(QIcon(iconDir + "select.png"),
