@@ -23,16 +23,17 @@ except:
     print('')
     sys.exit(-1)
 
+import matplotlib
+matplotlib.use('Qt5Agg')
 from matplotlib.dates import num2date
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+TOTO_PATH = os.getenv('TotoPath') #"C:\\Users\\remy\\Software\\Toto\\"
+sys.path.append(TOTO_PATH)
 
-#  GUI
-# import PyQt5
-# #from PyQt5 import Qtcore
-# Qt=PyQt5.Qtcore.Qt
-#import PyQt5
+
 from PyQt5.Qt import *
+
 from PyQt5.uic import loadUiType
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow, QAction, QMenu,QMenuBar, QApplication,QProxyStyle,QStyle,QStyleFactory
@@ -44,7 +45,10 @@ from .dialog.filtering import FiltWindow
 from .dialog.interpolating import InterpWindow
 from .dialog.selecting import SelectWindow
 # toto
+
 import toto
+import toto.inputs
+import toto.outputs
 from toto.core.totoframe import TotoFrame,add_metadata_to_df
 from toto.core.metadataframe import MetadataFrame
 import platform
@@ -56,7 +60,7 @@ if op_sys == 'Darwin':
     from Foundation import NSURL
 
 here = os.path.dirname(os.path.abspath(__file__))
-FORM_CLASS, _ = loadUiType(os.path.join(here,'_tools','mainwindow.ui'))
+FORM_CLASS, _ = loadUiType(os.path.join(here,'_tools','mainwindow.ui').replace('\\library.zip',''))
 
 PLOT_TYPE=['scatter','plot','bar','hist','rose','progressif']
 
@@ -86,7 +90,7 @@ class TotoGUI(QMainWindow,FORM_CLASS):
 
         ssDir = os.path.join(here, "_tools", "")
 
-        sshFile=os.path.join(ssDir,'TCobra.qss')
+        sshFile=os.path.join(ssDir,'TCobra.qss').replace('\\library.zip','')
         with open(sshFile,"r") as fh:
             self.setStyleSheet(fh.read())
 
@@ -94,7 +98,7 @@ class TotoGUI(QMainWindow,FORM_CLASS):
         
         self.databackup=copy.deepcopy(data)
         self.setupUi(self)
-        self.setWindowIcon(QIcon(os.path.join(here,'_tools','toto.jpg')))
+        self.setWindowIcon(QIcon(os.path.join(here,'_tools','toto.ico').replace('\\library.zip','')))
         
         # 
         self.plotting=Plotting(self.mplvl,self.plot_name)
@@ -122,7 +126,7 @@ class TotoGUI(QMainWindow,FORM_CLASS):
         self.unselect_all.clicked.connect(self.unslc_all)
 
         self.setAcceptDrops(True)
-        self.setFocusPolicy(StrongFocus)
+        self.setFocusPolicy(Qt.StrongFocus)
 
     def _get_file_list(self):
         return [metadata['filename'] for metadata in self.metadata]
@@ -406,7 +410,7 @@ class TotoGUI(QMainWindow,FORM_CLASS):
         :return:
         """
         if e.mimeData().hasUrls:
-            e.setDropAction(CopyAction)
+            e.setDropAction(Qt.CopyAction)
             e.accept()
             # Workaround for OSx dragging and dropping
             for url in e.mimeData().urls():
@@ -422,7 +426,7 @@ class TotoGUI(QMainWindow,FORM_CLASS):
 
     def keyPressEvent(self, event):
 
-        if event.key() == Key_Escape:
+        if event.key() == Qt.Key_Escape:
             self.close()
         if event.key() == 16777223: # delete key
             self.delete_selection()

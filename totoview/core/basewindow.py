@@ -11,11 +11,11 @@ import numpy as np
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as    NavigationToolbar
 import matplotlib.pyplot as plt
-
+import mplcyberpunk
 import inspect
 
 
-here = os.path.dirname(os.path.abspath(__file__))
+here = os.path.dirname(os.path.abspath(__file__)).replace('\\library.zip','')
 class BaseWindow(QDialog):
     def __init__(self,folder=None,title='',logo=None, parent=None):
         super(BaseWindow, self).__init__(parent)
@@ -26,7 +26,7 @@ class BaseWindow(QDialog):
         if logo:
         	self.setWindowIcon(QIcon(logo))
         else:
-        	self.setWindowIcon(QIcon(os.path.join(ssDir,'toto.jpg')))    
+        	self.setWindowIcon(QIcon(os.path.join(ssDir,'toto.ico')))    
        
         sshFile=os.path.join(ssDir,'TCobra.qss')
         with open(sshFile,"r") as fh:
@@ -44,13 +44,13 @@ class BaseWindow(QDialog):
         # left pannel
         Left = QVBoxLayout()
         #Plotting Methods from Matplotlib
+        with plt.style.context("cyberpunk"):
+            self.figure = plt.figure()
 
-        self.figure = plt.figure()
-
-        self.canvas = FigureCanvas(self.figure)
-        self.canvas.setMaximumHeight(525)
-        self.canvas.setMaximumHeight(725)
-        self.toolbar = NavigationToolbar(self.canvas, self)
+            self.canvas = FigureCanvas(self.figure)
+            self.canvas.setMaximumHeight(525)
+            self.canvas.setMaximumHeight(725)
+            self.toolbar = NavigationToolbar(self.canvas, self)
 
         
        #Labels
@@ -92,8 +92,8 @@ class BaseWindow(QDialog):
 
         ## Slider
         scroll = QScrollArea()
-        scroll.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
-        scroll.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
+        scroll.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+        scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
         scroll.setWidgetResizable(True)
         scroll.setWidget(self.method_options)
 
@@ -166,3 +166,14 @@ class BaseWindow(QDialog):
         return opt
 
 
+    def refresh_plot(self):
+        with plt.style.context("cyberpunk"):
+            self.figure.clf()
+            ax = self.figure.add_subplot(111)
+
+            ax.plot(self.X0[self.X[0].keys()[0]],label='original')
+            ax.plot(self.X[0][self.X[0].keys()[0]],label='interpolated')
+            plt.grid()
+            self.figure.autofmt_xdate()
+            ax.legend()
+            self.canvas.draw()

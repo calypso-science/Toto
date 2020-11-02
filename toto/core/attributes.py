@@ -6,7 +6,7 @@ import os
 import yaml
 from attrdict import AttrDict
 
-HERE = os.path.dirname(os.path.abspath(__file__))
+HERE = os.path.dirname(os.path.abspath(__file__)).replace('\\library.zip','')
 
 with open(os.path.join(HERE, "attributes.yml")) as stream:
     attrs = AttrDict(yaml.load(stream, yaml.SafeLoader))

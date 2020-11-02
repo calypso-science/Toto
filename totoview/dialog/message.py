@@ -11,7 +11,7 @@ from toto.core.totoframe import add_metadata_to_df
 import numpy as np
 from ..dialog.checkableComboBox import CheckableComboBox
 
-HERE = os.path.dirname(os.path.abspath(__file__))
+HERE = os.path.dirname(os.path.abspath(__file__)).replace('\\library.zip','')
 
 def display_warning(txt):
     msg = QMessageBox()
@@ -52,7 +52,8 @@ def yes_no_question(txt):
 def get_file(parent,ext):
     options = QFileDialog.Options()
     options |= QFileDialog.DontUseNativeDialog
-    filenames, _ = QFileDialog.getOpenFileNames(parent,"QFileDialog.getOpenFileName()", "",ext, options=options)
+
+    filenames, _ = QFileDialog.getOpenFileNames(parent,"Import file", "",ext, options=options)
     if filenames=='':
         return None
 
@@ -66,7 +67,7 @@ def get_file(parent,ext):
 def put_file(parent,ext,exs):
     options = QFileDialog.Options()
     options |= QFileDialog.DontUseNativeDialog
-    filenames, _ = QFileDialog.getSaveFileName(parent,"QFileDialog.getSaveFileName()", "",ext, options=options)
+    filenames, _ = QFileDialog.getSaveFileName(parent,"Save file", "",ext, options=options)
     if filenames=='':
         return None
     if not filenames:
@@ -105,7 +106,7 @@ class wrapper_plugins(QDialog):
         self.resize(600,600)
         self.setWindowTitle(fct.__name__)
         ssDir = os.path.join(HERE,"..", "_tools", "")
-        self.setWindowIcon(QIcon(os.path.join(ssDir,'toto.jpg')))    
+        self.setWindowIcon(QIcon(os.path.join(ssDir,'toto.ico')))    
            
         sshFile=os.path.join(ssDir,'TCobra.qss')
         with open(sshFile,"r") as fh:
@@ -302,7 +303,7 @@ class show_help_browser(QDialog):
         self.resize(900,600)
         self.setWindowTitle('Functions help')
         ssDir = os.path.join(HERE,"..", "_tools", "")
-        self.setWindowIcon(QIcon(os.path.join(ssDir,'toto.jpg')))    
+        self.setWindowIcon(QIcon(os.path.join(ssDir,'toto.ico')))    
            
         sshFile=os.path.join(ssDir,'TCobra.qss')
         with open(sshFile,"r") as fh:
@@ -369,7 +370,7 @@ class show_list_file(QDialog):
         self.resize(900,600)
         self.setWindowTitle(title)
         ssDir = os.path.join(HERE,"..", "_tools", "")
-        self.setWindowIcon(QIcon(os.path.join(ssDir,'toto.jpg')))    
+        self.setWindowIcon(QIcon(os.path.join(ssDir,'toto.ico')))    
            
         sshFile=os.path.join(ssDir,'TCobra.qss')
         with open(sshFile,"r") as fh:
