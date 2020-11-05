@@ -28,8 +28,9 @@ class StatPlots:
         'display':{'On':True,'Off':False}
         }):
 
-        '''% This function provides annual, seasonal or monthly rose plots for wind,
-        % wave, current or any direcional variable'''
+        ''' This function provides annual, seasonal or monthly rose plots for wind,
+          wave, current or any direcional variable'''
+
         display=True
         if args['display']=='Off':
             display=False
@@ -44,6 +45,11 @@ class StatPlots:
     
     def BIAS_histogramm(self,measured='measured',modelled='modelled',
         args={'Nb of bins':30,'Xlabel':'','units':'','display':{'On':True,'Off':False},'folder out':os.getcwd()}):
+
+
+        ''' This function provides a bias histogramm
+        between measured and predicted data for any variables'''
+
         display=True
         if args['display']=='Off':
             display=False        
@@ -67,8 +73,9 @@ class StatPlots:
 
 
         ''' This function provides density diagrams of parameter Y vs parameter X,
-        % i.e. similar to scatter plot but emphasing on region withg large number
-        % of data'''
+          i.e. similar to scatter plot but emphasing on region withg large number
+         of data'''
+
         display=True
         if args['display']=='Off':
             display=False
@@ -96,8 +103,9 @@ class StatPlots:
         'folder out':os.getcwd()}):
 
 
-        ''' % This function provides Quantile-Quantile plots (Q-Q plots) for comparison
-        % statistics'''
+        '''  This function provides Quantile-Quantile plots (Q-Q plots) for comparison
+          statistics'''
+
         display=True
         if args['display']=='Off':
             display=False
@@ -123,7 +131,10 @@ class StatPlots:
                 'Direction interval': 45.,
                 'display':{'On':True,'Off':False},
                 'folder out':os.getcwd()}):
-        
+
+        '''  This function provides percentage of occurnce from any variable.
+         plot are directional if direction is supplied'''
+
         display=True
         if args['display']=='Off':
             display=False
@@ -154,6 +165,9 @@ class StatPlots:
                 'display':{'On':True,'Off':False},
                 'folder out':os.getcwd()}):
 
+        '''  This function provides a plot of parameter versus water depth.
+            This function average the timeseries ( by mean, median ...)
+            variables mu be in the format *_lev_1,*_lev_2 etc.. '''
 
         if isinstance(mag,str):
             return 'cannot be only one level,select multiple'

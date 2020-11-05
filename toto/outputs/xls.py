@@ -1,4 +1,4 @@
-"""Write generic excel files.
+"""Output timeseries in Excel format.
 """
 import glob,os,sys
 import pandas as pd

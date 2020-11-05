@@ -19,6 +19,8 @@ class TideAnalysis:
         'folder out':os.getcwd(),
         }):
 
+        """ This function detide a timeseries.
+        Works if NaN are in the timeseries"""
 
         if hasattr(self.data,'latitude'):
             latitude=self.data.latitude
@@ -52,6 +54,9 @@ class TideAnalysis:
         'Latitude':-36.0,
         }):
 
+        """ This function predict the tide by first detiding a timeseries.
+        Works if NaN are in the timeseries"""
+
         if hasattr(self.data,'latitude'):
             latitude=self.data.latitude
             if not self.data.latitude:
@@ -73,10 +78,6 @@ class TideAnalysis:
         max_time=max(args['maximum time'],time[-1])
         min_dt=args['dt(s)']
 
-        # idx=pd.period_range(min_time,max_time,freq='%is'%min_dt)
-        # idx=idx.to_timestamp()
-        # self.dfout=pd.DataFrame(index=idx)
-        # self.dfout.index.name='time'
 
         idx = pd.period_range(args['minimum time'], args['maximum time'],freq='%is'%args['dt(s)'])
         idx=idx.to_timestamp()
@@ -97,7 +98,8 @@ class TideAnalysis:
         'folder out':os.getcwd(),
         }):
 
-        '''Function to extract the tide stats from a time series'''
+        '''Function to extract the tide stats from a time series
+            i.e HAT,LAT,MHWS,MLWS...'''
 
         if hasattr(self.data,'latitude'):
             latitude=self.data.latitude

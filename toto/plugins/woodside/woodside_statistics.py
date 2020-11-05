@@ -24,6 +24,8 @@ class Woodside:
                                                             }}):
 
 
+        """ output stats from timesereis)"""
+        
         if drr not in self.data:
             drr='none'
         else:
@@ -107,11 +109,11 @@ class Woodside:
         'Time blocking':{'Annual':True,'Seasonal (South hemisphere)':False,'Seasonal (North hemisphere)':False,'Monthly':False},
          }):
 
-        '''%This function calculates the frequency of occurrence of data:
-        %-exceeding specific values (exceedence)
-        %-non-exceeding specific values (non-exceedence)
-        %-exceeding specific values during a specific duration (persistence exceedence)
-        %-non-exceeding specific values during a specific duration (persistence non-exceedence)'''
+        ''' This function calculates the frequency of occurrence of data:
+            -exceeding specific values (exceedence)
+            -non-exceeding specific values (non-exceedence)
+            -exceeding specific values during a specific duration (persistence exceedence)
+            -non-exceeding specific values during a specific duration (persistence non-exceedence)'''
 
         analysis=args['method'] 
         filename=os.path.join(args['folder out'],os.path.splitext(self.data.filename)[0]+'_Pers.xlsx')
@@ -132,6 +134,8 @@ class Woodside:
                           'Directional switch':{'On':True,'Off':False},
                           'folder out':os.getcwd(),
                            }):
+        """This function is used for extreme value analysis of any type.
+        It generates return period values for Wind,Wave and Currents"""
 
         if args['Directional switch']=='On':
             drr_interval=dir_interval()

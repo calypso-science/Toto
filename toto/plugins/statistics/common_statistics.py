@@ -21,6 +21,7 @@ class Statistics:
 
     def common_statistics(self,mag=['mag'],drr='drr',args={'folder out':os.getcwd(),
                                                             }):
+        """ output stats from timesereis)"""
 
         if drr not in self.data:
             drr='none'
@@ -93,18 +94,8 @@ class Statistics:
         do_joint_prob(filename,self.data.index,Xdata,Ydata,X_interval,Y_interval,args['Time blocking'],binning,multiplier)
 
     def comparison_statistics(self,measured='measured',hindcast='hindcast',args={'folder out':os.getcwd()}):
-        '''function out=comparison_stat(varargin)
-                        % % Input:
-                        % %     Hindcast data
-                        % %     Measured data
-                        % %     Output:
-                        % % Function:
-                        % %     Do a comparison btw hindcast data and measured dta
-                        % % Output: 
-                        % %     MAE
-                        % %     RMSE
-                        % %     MRAE
-                        % %     BIAS'''
+        '''function to output comparison stat between measured and predicted data
+            i.e BIAS,MAE,RMSE,MRAE'''
 
             
         filename=os.path.join(args['folder out'],os.path.splitext(self.data.filename)[0]+'compstat.xlsx')
@@ -123,11 +114,11 @@ class Statistics:
         'Duration Min Res Max':[6,6,72],
         'Time blocking':{'Annual':True,'Seasonal (South hemisphere)':False,'Seasonal (North hemisphere)':False,'Monthly':False},
          }):
-        '''%This function calculates the frequency of occurrence of data:
-        %-exceeding specific values (exceedence)
-        %-non-exceeding specific values (non-exceedence)
-        %-exceeding specific values during a specific duration (persistence exceedence)
-        %-non-exceeding specific values during a specific duration (persistence non-exceedence)'''
+        """This function calculates the averaged number of full windows for data
+            -exceeding specific values during a specific duration (persistence exceedence)
+            -non-exceeding specific values during a specific duration (persistence non-exceedence)
+            Note: if a window overlaps to the next month/season/year, it is assumed to belong to the
+            month/season/year when the window starts."""
 
         analysis=args['method'] 
         filename=os.path.join(args['folder out'],os.path.splitext(self.data.filename)[0]+'_WeatherWindow.xlsx')
@@ -144,11 +135,11 @@ class Statistics:
         'Duration Min Res Max':[6,6,72],
         'Time blocking':{'Annual':True,'Seasonal (South hemisphere)':False,'Seasonal (North hemisphere)':False,'Monthly':False},
          }):
-        '''%This function calculates the frequency of occurrence of data:
-        %-exceeding specific values (exceedence)
-        %-non-exceeding specific values (non-exceedence)
-        %-exceeding specific values during a specific duration (persistence exceedence)
-        %-non-exceeding specific values during a specific duration (persistence non-exceedence)'''
+        '''This function calculates the frequency of occurrence of data:
+            -exceeding specific values (exceedence)
+            -non-exceeding specific values (non-exceedence)
+            -exceeding specific values during a specific duration (persistence exceedence)
+            -non-exceeding specific values during a specific duration (persistence non-exceedence)'''
 
         analysis=args['method'] 
         filename=os.path.join(args['folder out'],os.path.splitext(self.data.filename)[0]+'_Excstat.xlsx')
@@ -168,9 +159,11 @@ class Statistics:
         'Direction interval': 45.,
         'Time blocking':{'Annual':True,'Seasonal (South hemisphere)':False,'Seasonal (North hemisphere)':False,'Monthly':False},
          }):
-        '''% Exceedence and non-exceedence analysis co-incident with another
-        % parameter, similar to Joint-probability function but includes a
-        % cumulative sum to obtain exceedence or non-exceedence(in %).'''
+
+        '''Exceedence and non-exceedence analysis co-incident with another
+            parameter, similar to Joint-probability function but includes a
+            cumulative sum to obtain exceedence or non-exceedence(in %).'''
+
         analysis=args['method'] 
         filename=os.path.join(args['folder out'],os.path.splitext(self.data.filename)[0]+'_ExCoincstat.xlsx')
         Y=self.data[data]
@@ -198,9 +191,9 @@ class Statistics:
                'Time blocking':{'Annual':True,'Seasonal (South hemisphere)':False,'Seasonal (North hemisphere)':False,'Monthly':False},
         }):
 
-        '''% This function provides workability persistence (non-)exceedence tables, 
-        % i.e. the % of workable time based on 2 to 4 limiting
-        % paramters (e.g. Hs < 2m and Wind speed < 10 m/s)'''
+        '''This function provides workability persistence (non-)exceedence tables, 
+            i.e. the % of workable time based on 2 to 4 limiting
+            paramters (e.g. Hs < 2m and Wind speed < 10 m/s)'''
 
 
         analysis=args['method'] 
@@ -233,11 +226,12 @@ class Statistics:
             }):
 
 
-        '''% This function computes the wave population for fatigue analysis
-        % - Based on Rayleigh distribution if spectral width parameter (SW) is not
-        % specified.
-        % - Based on Longuet-Higgins Hs-Tp joint probability distribution if SW is
-        % specified'''
+        ''' This function computes the wave population for fatigue analysis
+            - Based on Rayleigh distribution if spectral width parameter (SW) is not
+              specified.
+            - Based on Longuet-Higgins Hs-Tp joint probability distribution if SW is
+              specified'''
+
         if args['Directional switch']=='On':
             drr_switch=True
         else:
@@ -276,6 +270,7 @@ class Statistics:
         'Time blocking':{'Annual':True,'Seasonal (South hemisphere)':False,'Seasonal (North hemisphere)':False,'Monthly':False},
         }):
 
+        """This function extract stats for each directional bins"""
  
 
         Ydata=self.data[magnitude]
@@ -302,7 +297,8 @@ class Statistics:
                                                             }}):
 
     
-
+        ''' This function computes the modal period for a set of hs/tp
+            The modal period is taken as the mean period of the top 5% of wave height'''
         hem=args['type']
         filename=os.path.join(args['folder out'],os.path.splitext(self.data.filename)[0]+'modal_wave_period.xlsx')
         hs=self.data[Hs]
@@ -319,6 +315,8 @@ class Statistics:
                                                             }}):
 
     
+        '''This function computes the energy weighted-dreiction based on 
+            input timeseries of Hs and Dir'''
 
         hem=args['type']
         filename=os.path.join(args['folder out'],os.path.splitext(self.data.filename)[0]+'weighted_direction.xlsx')

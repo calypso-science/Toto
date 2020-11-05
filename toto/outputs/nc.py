@@ -1,4 +1,4 @@
-"""Write generic txt files.
+"""Output timeseries in NetCDF format.
 """
 import glob,os,sys
 import pandas as pd

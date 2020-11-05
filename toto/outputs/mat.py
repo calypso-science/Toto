@@ -1,4 +1,4 @@
-"""Write generic mat files.
+"""Output timeseries in MAT format.
 """
 import glob,os,sys
 import pandas as pd

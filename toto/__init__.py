@@ -6,7 +6,7 @@
 __version__ = "1.0"
 __author__ = "Calypso Science"
 __contact__ = "r.zyngfogel@calypso.science"
-__url__ = ""
+__url__ = "calyps.science"
 __description__ = "Ocean timeSeries tools"
 __keywords__ = "ocean panda time-series statistics analysis"
 

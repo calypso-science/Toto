@@ -15,12 +15,10 @@ class DataTransformation:
         'Averaging period of input wind speed (in minutes)':10.,\
         'Output level (in meters)':10.,\
         'Output time averaging (in minutes)':10.}):
-        """%The function computes wind at user-input level and time averaging period
-        %based on an input wind field.
-        % based on the NPD spectrum 
-        % biblio : PDF file in 
-        %JIRA ENTRY : Include the updated API wind profile / gust equations into GIMP2 
-        % https://jira.metocean.co.nz/browse/MLB-7"""
+        """ The function computes wind at user-input level and time averaging period
+            based on an input wind field.
+            based on the NPD spectrum 
+        """
 
         opt={   'Level of input wind speed (in meters)':10.,\
                 'Averaging period of input wind speed (in minutes)':10.,\
@@ -63,6 +61,8 @@ class DataTransformation:
         return self.dfout
 
     def dav_to_layers(self,u='u',dp='dp',args={'z':0.,'z0':0.001}):
+        """ Change depth-average value to any depth"""
+
         opt={'z':0.,'z0':0.001}
         opt.update(args)      
 
@@ -81,6 +81,8 @@ class DataTransformation:
 
 
     def layers_to_dav(self,u='u',dp='dp',args={'z':0.,'z0':0.001}):
+        """Change from velocity at a specify l;ayer to depth-average value"""
+
         opt={'z':0.,'z0':0.001}
         opt.update(args)
 
@@ -98,12 +100,16 @@ class DataTransformation:
         return self.dfout
 
     def hs_sea(self,hs='hs',hs_swell='hs_swell',args={}):
+        """Calculate Hs Sea from Hs swell and Hs Total"""
+
         self.dfout['Hs_sea']=np.sqrt(self.data[hs]**2-self.data[hs_swell]**2)
         return self.dfout
 
 
 
     def Oribital_velocity(self,dp='dp',tp='tp',hs='hs',args={'z':0.}):
+        """Calculate the orbital velocity"""
+        
         z=args['z']
         Z=np.abs(z)
 

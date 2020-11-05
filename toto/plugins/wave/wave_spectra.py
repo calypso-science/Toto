@@ -26,7 +26,7 @@ class WaveAnalysis:
          'display':{'On':True,'Off':False}
          }):
 
-        '''%This function estimated the 1D wave spectrum (Power Spectral Density) and plot it'''
+        '''This function estimated the 1D wave spectrum (Power Spectral Density) and plot it'''
         unit=get_opt(self.data[sea_level],'units',args['units'])
         display=True
         if args['display']=='Off':
@@ -62,7 +62,10 @@ class WaveAnalysis:
          }):
         
 
-
+        """ This function transform a timeseries of elevation to Hs using:
+            -Spectra method
+            - zero-crossing method
+            """
         min_wave=args['Minimum number of waves per window for zero crossing analysis']
         period=args['Wave period range (min and max) (in s)']
         method=args['Method']
@@ -102,10 +105,11 @@ class WaveAnalysis:
          }):
         
 
-        '''%This function estimates the wavelet power spectrum of a time series, as
-        %well as the scaled-averaged wavelet power time series within a specific
-        %period band. The code is based on the wavelet toolbox from Torrence and
-        %Compo (http://paos.colorado.edu/research/wavelets/)'''
+        ''' This function estimates the wavelet power spectrum of a time series, as
+         well as the scaled-averaged wavelet power time series within a specific
+         period band. The code is based on the wavelet toolbox from Torrence and
+         Compo
+         See https://paos.colorado.edu/research/wavelets/software.html'''
 
         display=True
         if args['display']=='Off':

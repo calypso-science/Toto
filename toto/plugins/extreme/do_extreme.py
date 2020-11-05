@@ -50,13 +50,14 @@ class Extreme:
          }):
 
 
-        '''%This function is used for extreme value analysis of total still water 
-        %elevation (surge + tide). Inputs must be surge and tide level (in the 
-        %same unit).
-        %The method complies with ISO recommendations: return period values are 
-        %estimated by fitting a distribution to the empirical distribution 
-        %obtained by combining the joint frequency distribution of tidal and surge 
-        %elevations.'''
+        """This function is used for extreme value analysis of total still water 
+            elevation (surge + tide).
+            Inputs must be surge and tide level (in the same unit).
+            The method complies with ISO recommendations:
+            return period values are estimated by fitting a distribution
+            to the empirical distribution obtained by combining the
+            joint frequency distribution of tidal and surge elevations.
+        """
 
         self.dfout['positive_surge']=self.data[surge]
         self.dfout['negative_surge']=self.data[surge]*-1.
@@ -143,15 +144,16 @@ class Extreme:
          }):
     
 
-        '''%This function is used for extreme value analysis of any type. It generates
-        %return period values for any parameters. Inputs can be:
-        %-only magnitude (omni-directional extreme value ananlysis)
-        %-magnitute and direction (directional ARI with omni or directional POT)_
-        %-wave magnitude and period (omni-directional analysis and bi-variate,
-        % Hs vs. Tp, extremes, estimated using the FORM method)
-        %-wave magnitude, period and direction (directional ARI with omni or
-        % directional POT and bi-variate extremes, Hs vs. Tp, estimated using the
-        % FORM method for each selected directions)'''
+        """This function is used for extreme value analysis of any type.
+        It generates return period values for any parameters.
+        Inputs can be:
+         -only magnitude (omni-directional extreme value ananlysis)
+         -magnitute and direction (directional ARI with omni or directional POT)_
+         -wave magnitude and period (omni-directional analysis and bi-variate,
+          Hs vs. Tp, extremes, estimated using the FORM method)
+         -wave magnitude, period and direction (directional ARI with omni or
+          directional POT and bi-variate extremes, Hs vs. Tp, estimated using the
+          FORM method for each selected directions)"""
 
         # variabl check
         if tp_optional not in self.data:

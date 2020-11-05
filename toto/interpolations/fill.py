@@ -1,7 +1,15 @@
-
+"""	Replace NaN values
+	Methods:
+		- Backfill
+		- bfill
+		- pad
+		- ffill
+	See: https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.fillna.html
+	
+"""
 
 def fill(input_array,args={'value':float(),'limit':int(),'method':{"backfill": False,"bfill":False,\
-						"pad":False, "pad":False,"ffill":False,"None":True}}):
+						"pad":False, "ffill":False,"None":True}}):
 
 
     #method=[key for key in args['method'] if args['method'][key]][0]

@@ -1,4 +1,5 @@
-"""Read netcdf from MAT file.
+"""Read netcdf from MATLAB MAT file.
+Variable must include a time variable in matlab datenum format
 
 """
 import glob,os,sys

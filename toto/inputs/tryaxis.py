@@ -1,4 +1,7 @@
 """Read TRYAXIS files.
+Only reads:
+   - *.NONDIRSPEC
+   - *.DIRSPEC
 """
 import glob,os,sys
 import pandas as pd

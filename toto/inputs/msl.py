@@ -1,4 +1,4 @@
-"""Read netcdf from MSL.
+"""Read netcdf from MSL format.
 
 """
 import glob,os,sys

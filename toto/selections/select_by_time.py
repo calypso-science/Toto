@@ -1,4 +1,4 @@
-"""Extract a portion of as timeseries
+"""Extract a portion of time as timeseries
 
 """
 from datetime import datetime,date

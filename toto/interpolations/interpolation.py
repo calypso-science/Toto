@@ -1,4 +1,7 @@
-
+"""
+	Interpolate time series
+	See: https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.interpolate.html
+"""
 def interpolation(input_array,args={'limit':int(),'method':{"linear": True,"time":False,\
 						"index":False, "pad":False,"nearest":False,"zero":True,\
 						"slinear":False,"quadratic":False,"cubic":False,"spline":False,\

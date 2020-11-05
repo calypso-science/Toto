@@ -12,7 +12,14 @@ import numpy as np
 from ..dialog.checkableComboBox import CheckableComboBox
 
 HERE = os.path.dirname(os.path.abspath(__file__)).replace('\\library.zip','')
+def _str2html(stri):
+    if '.html' in stri:
+        link='http'+stri.split(' http')[-1].split('.html')[0]+'.html'
+        new_link='<a href="%s">%s</a>' % (link,link.split('/')[-1])
+        stri=stri.replace(link,new_link)
 
+    mms='<body>'+stri.replace('\n', '<br>')+'</body>'
+    return mms
 def display_warning(txt):
     msg = QMessageBox()
     msg.setIcon(QMessageBox.Warning)
@@ -315,6 +322,8 @@ class show_help_browser(QDialog):
         layout.addWidget(self.tree)
         
         self.message = QTextBrowser()
+        #self.message.setReadOnly(False)
+        self.message.setOpenExternalLinks(True)
         layout.addWidget(self.message)
 
         self.setLayout(layout)
@@ -357,7 +366,11 @@ class show_help_browser(QDialog):
                     f=getattr(getattr(getattr(toto,module0),module),fct)
                 else:
                     f=getattr(getattr(toto,module),fct)
-                mms=inspect.getdoc(f)
+                mms=_str2html(inspect.getdoc(f))
+
+
+                
+                
                 self.message.setText(mms)
 
 
