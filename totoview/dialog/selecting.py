@@ -11,16 +11,16 @@ class SelectWindow(BaseWindow):
         self.X=X
         self.refresh_plot()
 
-    def refresh_plot(self):
-        self.figure.clf()
-        ax = self.figure.add_subplot(111)
+    # def refresh_plot(self):
+    #     self.figure.clf()
+    #     ax = self.figure.add_subplot(111)
 
-        ax.plot(self.X0[self.X0.keys()[0]],label='original')
-        ax.plot(self.X[0][self.X[0].keys()[0]],label='selected')
-        plt.grid()
-        self.figure.autofmt_xdate()
-        ax.legend()
-        self.canvas.draw()
+    #     ax.plot(self.X0[self.X0.keys()[0]],label='original')
+    #     ax.plot(self.X[0][self.X[0].keys()[0]],label='selected')
+    #     plt.grid()
+    #     self.figure.autofmt_xdate()
+    #     ax.legend()
+    #     self.canvas.draw()
 
 
     def filter(self):

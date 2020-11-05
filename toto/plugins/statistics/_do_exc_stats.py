@@ -2,12 +2,11 @@
 import matplotlib.dates as mpld
 
 try:
-
     mpld.set_epoch('0000-12-31T00:00:00')
-
-
 except:
     pass
+    
+
 from matplotlib.dates import date2num,num2date
 import numpy as np
 from ...core.toolbox import dir_interval,get_increment,get_number_of_loops

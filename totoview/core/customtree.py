@@ -1,9 +1,8 @@
-from PyQt5.Qt import Qt
-from PyQt5 import QtCore
+from PyQt5.QtCore import Qt, QModelIndex, pyqtSignal, QSignalBlocker
 from PyQt5.QtWidgets import QMainWindow, QAction, QMenu, QApplication,QListWidget,QAbstractItemView,QTreeWidgetItem,QTreeWidget
 
 
-default=Qt.ItemIsSelectable|QtCore.Qt.ItemIsEnabled
+default=Qt.ItemIsSelectable|Qt.ItemIsEnabled
 drag=Qt.ItemIsDragEnabled
 drop=Qt.ItemIsDropEnabled
 SETTINGS={
@@ -11,12 +10,12 @@ SETTINGS={
     "children":(["family"],default|drag)
 }
 
-#itemDropped = QtCore.pyqtSignal()
+#itemDropped = pyqtSignal()
 
 class CustomTreeWidget(QTreeWidget):
-    itemDropped = QtCore.pyqtSignal(str,str,str)
-    editmetadata= QtCore.pyqtSignal(QtCore.QModelIndex,str,str)
-    editfile= QtCore.pyqtSignal(str)
+    itemDropped = pyqtSignal(str,str,str)
+    editmetadata= pyqtSignal(QModelIndex,str,str)
+    editfile= pyqtSignal(str)
     def __init__(self, parent=None):
         QTreeWidget.__init__(self, parent)
         
@@ -27,7 +26,7 @@ class CustomTreeWidget(QTreeWidget):
         self.setHeaderHidden(True)
         self.setDropIndicatorShown(True)
         self.setDragDropMode(QAbstractItemView.InternalMove)
-        self.blocker = QtCore.QSignalBlocker(self)
+        self.blocker = QSignalBlocker(self)
         self.blocker.unblock()
         
 
@@ -36,10 +35,10 @@ class CustomTreeWidget(QTreeWidget):
         self.settings=SETTINGS
 
         root=self.invisibleRootItem()
-        root.setData(0,QtCore.Qt.ToolTipRole,"root")
+        root.setData(0,Qt.ToolTipRole,"root")
         
     def mousePressEvent (self, event):
-        if event.button() == QtCore.Qt.RightButton:
+        if event.button() == Qt.RightButton:
             QTreeWidget.mousePressEvent(self, event)
             selModel = self.selectionModel()
             indices = selModel.selectedRows()
@@ -56,7 +55,7 @@ class CustomTreeWidget(QTreeWidget):
         QTreeWidget.mousePressEvent(self, event)
 
     def dragMoveEvent(self, event):
-        role=QtCore.Qt.ToolTipRole
+        role=Qt.ToolTipRole
         itemToDropIn = self.itemAt(event.pos())
         itemBeingDragged=self.currentItem()
         okList=self.settings[itemBeingDragged.data(0,role)][0]

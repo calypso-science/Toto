@@ -196,7 +196,7 @@ class MyCustomToolbar(NavigationToolbar):
     def __init__(self, plotCanvas,parent,coordinates):
         NavigationToolbar.__init__(self, plotCanvas,parent,coordinates)
         iconDir = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-            "..","..", "_tools", "")
+            "..", "_tools", "").replace('\\library.zip','')
         self.plotCanvas=plotCanvas
         self.addSeparator()
         self.a = self.addAction(QIcon(iconDir + "select.png"),
@@ -207,13 +207,13 @@ class MyCustomToolbar(NavigationToolbar):
             "Select data by dates", self.select_data('time'))
         self.b.setToolTip("Select data by dates")
 
-        self.c = self.addAction(QIcon(iconDir + "ic-activity.svg"),
+        self.c = self.addAction(QIcon(iconDir + "ic-activity.png"),
             "Select by peaks", self.select_data('peaks'))
         self.c.setToolTip("Select data by peaks")
 
-        self.d = self.addAction(QIcon(iconDir + "table.svg"),
-            "Stats by slection", self.select_data('spanselector'))
-        self.d.setToolTip("Stats by slection")
+        self.d = self.addAction(QIcon(iconDir + "table.png"),
+            "Stats by selection", self.select_data('spanselector'))
+        self.d.setToolTip("Stats by selection")
 
 
     def remove_series(self,id='selected'):
@@ -279,6 +279,7 @@ class Plotting(object):
 
 
     def refresh_plot(self,data,File,Var):
+
         with plt.style.context("cyberpunk"):
 
             self.rmmpl()
@@ -287,6 +288,7 @@ class Plotting(object):
             self.sc.fig1.clf()
 
             ax1f1 =self.sc.fig1.add_subplot(111)
+            
             index_name0=None
             for i,file in enumerate(File):
                 for var in Var[i]:

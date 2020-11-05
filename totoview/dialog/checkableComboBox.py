@@ -1,6 +1,5 @@
 from PyQt5.QtWidgets import QStyledItemDelegate,QWidget,QListWidgetItem,QListWidget,QScrollArea,QComboBox,QPushButton,QMessageBox,QFileDialog,QDialog,QTreeWidgetItem,QTreeWidget,QHBoxLayout,QVBoxLayout,QTextBrowser,QFormLayout
 from PyQt5.QtGui import QIcon,QStandardItem,QFontMetrics
-from PyQt5 import QtCore,QtWidgets
 from PyQt5.QtCore import QEvent,Qt
 
 

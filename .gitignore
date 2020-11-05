@@ -7,7 +7,14 @@
 *.o
 *.so
 *.pyc
+*.pyo
 
+# Directory #
+dist/
+build/
+compiled64/
+output/
+toto.egg-info/
 # Packages #
 ############
 # it's better to unpack these files and commit the raw source

@@ -23,13 +23,19 @@ except:
     print('')
     sys.exit(-1)
 
+import matplotlib
+matplotlib.use('Qt5Agg')
 from matplotlib.dates import num2date
 
-from _tools import resource_rc
-#  GUI
-from PyQt5.QtCore import Qt
-from PyQt5 import uic
-from PyQt5 import QtGui
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+TOTO_PATH = os.getenv('TotoPath') #"C:\\Users\\remy\\Software\\Toto\\"
+sys.path.append(TOTO_PATH)
+
+
+from PyQt5.Qt import *
+
+from PyQt5.uic import loadUiType
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow, QAction, QMenu,QMenuBar, QApplication,QProxyStyle,QStyle,QStyleFactory
 from .dialog.message import *
 from .dialog.plotting import Plotting
@@ -39,11 +45,14 @@ from .dialog.filtering import FiltWindow
 from .dialog.interpolating import InterpWindow
 from .dialog.selecting import SelectWindow
 # toto
+
 import toto
+import toto.inputs
+import toto.outputs
 from toto.core.totoframe import TotoFrame,add_metadata_to_df
 from toto.core.metadataframe import MetadataFrame
 import platform
-
+from ._tools import resource_rc
 
 # Use NSURL as a workaround to pyside/Qt4 behaviour for dragging and dropping on OSx
 op_sys = platform.system()
@@ -51,7 +60,7 @@ if op_sys == 'Darwin':
     from Foundation import NSURL
 
 here = os.path.dirname(os.path.abspath(__file__))
-FORM_CLASS, _ = uic.loadUiType(os.path.join(here,'..','_tools','mainwindow.ui'))
+FORM_CLASS, _ = loadUiType(os.path.join(here,'_tools','mainwindow.ui').replace('\\library.zip',''))
 
 PLOT_TYPE=['scatter','plot','bar','hist','rose','progressif']
 
@@ -79,9 +88,9 @@ class TotoGUI(QMainWindow,FORM_CLASS):
         if isinstance(data,str):
                 self.load_files(data)
 
-        ssDir = os.path.join(here,"..", "_tools", "")
+        ssDir = os.path.join(here, "_tools", "")
 
-        sshFile=os.path.join(ssDir,'TCobra.qss')
+        sshFile=os.path.join(ssDir,'TCobra.qss').replace('\\library.zip','')
         with open(sshFile,"r") as fh:
             self.setStyleSheet(fh.read())
 
@@ -89,7 +98,7 @@ class TotoGUI(QMainWindow,FORM_CLASS):
         
         self.databackup=copy.deepcopy(data)
         self.setupUi(self)
-        self.setWindowIcon(QtGui.QIcon(os.path.join(here,'..','_tools','toto.jpg')))
+        self.setWindowIcon(QIcon(os.path.join(here,'_tools','toto.ico').replace('\\library.zip','')))
         
         # 
         self.plotting=Plotting(self.mplvl,self.plot_name)

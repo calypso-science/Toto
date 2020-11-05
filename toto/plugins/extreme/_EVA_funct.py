@@ -1,5 +1,8 @@
 import numpy as np
 import sys
+import wafo
+wafo.plotbackend.plotbackend.interactive(False)
+import wafo.stats as ws
 try:
     import wafo
     wafo.plotbackend.plotbackend.interactive(False)

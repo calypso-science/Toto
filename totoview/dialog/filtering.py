@@ -3,6 +3,7 @@ from ..core.basewindow import BaseWindow
 import toto
 import matplotlib.pyplot as plt
 
+
 class FiltWindow(BaseWindow):
     def __init__(self,X,LonLat=[None],parent=None):
         super(FiltWindow, self).__init__(folder=toto.filters,title='Filtering toolbox',parent=parent)
@@ -11,16 +12,16 @@ class FiltWindow(BaseWindow):
         self.LonLat=LonLat
         self.refresh_plot()
 
-    def refresh_plot(self):
-        self.figure.clf()
-        ax = self.figure.add_subplot(111)
+    # def refresh_plot(self):
+    #     self.figure.clf()
+    #     ax = self.figure.add_subplot(111)
 
-        ax.plot(self.X0[self.X[0].keys()[0]],label='original')
-        ax.plot(self.X[0][self.X[0].keys()[0]],label='filter')
-        plt.grid()
-        self.figure.autofmt_xdate()
-        ax.legend()
-        self.canvas.draw()
+    #     ax.plot(self.X0[self.X[0].keys()[0]],label='original')
+    #     ax.plot(self.X[0][self.X[0].keys()[0]],label='filter')
+    #     plt.grid()
+    #     self.figure.autofmt_xdate()
+    #     ax.legend()
+    #     self.canvas.draw()
 
 
     def filter(self):

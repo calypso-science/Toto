@@ -93,7 +93,10 @@ def do_roses(time,spd,drr,units,title,spdedg,quadran,time_blocking,fileout,show=
 
     
     for i,sub in enumerate(spec):
-        ax = plt.subplot(sub, projection="windrose",theta_labels=['E','NE',identifiers[nj[i]],'NW','W','SW','S','SE'])
+        if len(spec)>1:
+            ax = plt.subplot(sub, projection="windrose",theta_labels=['E','NE',identifiers[nj[i]],'NW','W','SW','S','SE'])
+        else:
+            ax = plt.subplot(sub, projection="windrose",theta_labels=['E','NE','N','NW','W','SW','S','SE'])
         
         #Pull out relevant indices for particular month/months
         index = np.in1d(month, month_identifier[nj[i]])
@@ -110,10 +113,11 @@ def do_roses(time,spd,drr,units,title,spdedg,quadran,time_blocking,fileout,show=
                 ax.set_legend(units=units,title=title,loc='best',bbox_to_anchor=(0.5,-1.0, 0.5, 0.5))
 
     #plt.subplots_adjust(bottom=0.02,top=.95,hspace=0.3)
+    plt.savefig(fileout)
     if show:
         plt.show(block=~show)
 
-    plt.savefig(fileout)
+    
 
 
 

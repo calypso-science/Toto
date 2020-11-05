@@ -2,6 +2,7 @@ from ..core.basewindow import BaseWindow
 import toto
 import matplotlib.pyplot as plt
 
+
 class InterpWindow(BaseWindow):
     def __init__(self,X, parent=None):
         super(InterpWindow, self).__init__(folder=toto.interpolations,title='Interpolating toolbox',parent=parent)
@@ -9,16 +10,17 @@ class InterpWindow(BaseWindow):
         self.X=X
         self.refresh_plot()
 
-    def refresh_plot(self):
-        self.figure.clf()
-        ax = self.figure.add_subplot(111)
+    # def refresh_plot(self):
+    #     with plt.style.context("cyberpunk"):
+    #         self.figure.clf()
+    #         ax = self.figure.add_subplot(111)
 
-        ax.plot(self.X0[self.X[0].keys()[0]],label='original')
-        ax.plot(self.X[0][self.X[0].keys()[0]],label='interpolated')
-        plt.grid()
-        self.figure.autofmt_xdate()
-        ax.legend()
-        self.canvas.draw()
+    #         ax.plot(self.X0[self.X[0].keys()[0]],label='original')
+    #         ax.plot(self.X[0][self.X[0].keys()[0]],label='interpolated')
+    #         plt.grid()
+    #         self.figure.autofmt_xdate()
+    #         ax.legend()
+    #         self.canvas.draw()
 
 
     def filter(self):
