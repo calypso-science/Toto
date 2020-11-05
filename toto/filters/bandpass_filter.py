@@ -1,35 +1,17 @@
+"""Creates  Fourier low, high, or bandpass filter.
+
+- lower cut-off (s) is minimum period filter cutoff
+- upper cut-off (s) is maximum period filter cutoff
+
+lower cut-off set < (2*delt) for no cutoff at high freq end
+upper cut-off set > (length(data)*delt) for no cutoff at low freq end
+"""
 import numpy as np
 from scipy.fftpack import fft,ifft,rfft, irfft, fftfreq
 from toto.core.toolbox import dyadlength
 
 def bandpass_filter(input_array,args={'lower cut-off (s)':float(),'upper cut-off (s)':float()}):
-    '''%  FOURFILT  Fourier low, high, or bandpass filter.
-    %
-    %     [filtdat]=fourfilt(data,delt,tmax,tmin)
-    %
-    %     where:   data:      data series to be filtered
-    %              delt:   sampling interval
-    %              tmax:   maximum period filter cutoff
-    %              tmin:   minimum period filter cutoff
-    %
-    %     usage:  lowpassdata=fourfilt(data,0.5,2000,20)
-    %
-    %               gives lowpass filter with cutoff at 20.0 sec
-    %               tmax set > (length(data)*delt) for no cutoff at low freq end
-    %
-    %     usage:  highpassdata=fourfilt(data,0.5,20,0.9)
-    %
-    %               gives highpass filter with cutoff at 20.0 sec
-    %               tmin set < (2*delt) for no cutoff at high freq end
-    %
-    %     usage:  bandpassdata=fourfilt(data,0.5,20,10)
-    %
-    %               gives bandpass filter passing 10-20 sec. band
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    % Version 1.0  (12/4/96)  Jeff List (jlist@usgs.gov)
-    % Version 1.1  (1/8/97)  Rich Signell (rsignell@usgs.gov)
-    %     removed argument for number of points and add error trapping for matrices
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%'''
+
     
     output_array=input_array.copy()
     delt=(input_array.index[1]-input_array.index[0]).total_seconds()/3600 # in hours

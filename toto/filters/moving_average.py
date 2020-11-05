@@ -1,3 +1,12 @@
+""" Moving average
+    Methods (see https://numpy.org/doc/stable/reference/generated/numpy.convolve.html):
+        - Valid
+        - Same
+
+
+    Inputs:
+        - number of point to use
+"""
 import numpy as np
 
 

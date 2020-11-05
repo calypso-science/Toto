@@ -1,5 +1,17 @@
-import numpy as np
+"""Remove cyclone evnt from a timeseries based on its position.
+Needs:
+  - lon/lat
+  - NOAA Cyclone file (i.e IBTrACS.ALL.v04r00.nc)
 
+Inputs:
+  - radius of maximum wind
+  - minimun category (default: 1)
+  - mask radius from centre (default 500m)
+  - time to mask before and after a cyclone passage (default 0.5 day)
+
+"""
+
+import numpy as np
 from ..core.cyclone_mask import Cyclone
 
 def cyclone_filter(input_array,args={'Lon':float(),'Lat':float(),'cyclone file':'/tmp/IBTrACS.ALL.v04r00.nc',\

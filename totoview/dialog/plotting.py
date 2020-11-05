@@ -381,7 +381,6 @@ class Plotting(object):
                             self.sc.fig1.autofmt_xdate()
 
                         ax1f1.grid(True)
-                        #mplcyberpunk.add_glow_effects()
                     index_name0=copy.deepcopy(index_name)
 
 

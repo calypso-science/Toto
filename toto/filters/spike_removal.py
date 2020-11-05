@@ -1,3 +1,8 @@
+""" Remove spikes
+    Spikes can be found using find_peaks:
+    see https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.find_peaks.html
+"""
+
 import numpy as np
 from scipy.signal import find_peaks
 
