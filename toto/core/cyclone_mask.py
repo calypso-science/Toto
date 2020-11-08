@@ -6,8 +6,34 @@ import numpy as np
 from datetime import datetime,time
 from ..core.toolbox import sph2cart
 from matplotlib.dates import date2num
+import sys, site
 
 YEAR0=1950
+
+
+
+
+
+def binaries_directory():
+    """Return the installation directory, or None"""
+    if '--user' in sys.argv:
+        paths = (site.getusersitepackages(),)
+    else:
+        py_version = '%s.%s' % (sys.version_info[0], sys.version_info[1])
+        paths = (s % (py_version) for s in (
+            sys.prefix + '/lib/python%s/dist-packages/',
+            sys.prefix + '/lib/python%s/site-packages/',
+            sys.prefix + '/local/lib/python%s/dist-packages/',
+            sys.prefix + '/local/lib/python%s/site-packages/',
+            '/Library/Python/%s/site-packages/',
+        ))
+
+    for path in paths:
+        if os.path.exists(path):
+            return path
+    print('no installation path found', file=sys.stderr)
+    return None
+
 def sphere_dist(from_lonlat,to_lonlats,radius_of_sphere=6378.1):
 
     #find vector in spherical coordinates from longitude and latitudes
@@ -144,7 +170,7 @@ class Cyclone(object):
         T=T[mask]
 
         t=date2num(t)
-        mask=False
+        mask=t<0 # just to start with False array
         for i in range(0,len(T)):
             mask+=(t>=T[i]-self.mask_before) & (t<=T[i]+self.mask_after)
      

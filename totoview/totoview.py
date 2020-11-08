@@ -28,8 +28,7 @@ matplotlib.use('Qt5Agg')
 from matplotlib.dates import num2date
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-TOTO_PATH = os.getenv('TotoPath') #"C:\\Users\\remy\\Software\\Toto\\"
-sys.path.append(TOTO_PATH)
+
 
 
 from PyQt5.Qt import *
@@ -44,9 +43,24 @@ from .dialog.filemanip import EditFile,EditMetadata
 from .dialog.filtering import FiltWindow
 from .dialog.interpolating import InterpWindow
 from .dialog.selecting import SelectWindow
-# toto
 
-import toto
+# toto
+TOTO_PATH = os.getenv('TotoPath') #"C:\\Users\\remy\\Software\\Toto\\"
+sys.path.append(TOTO_PATH)
+try:
+    import toto
+except:
+    print('')
+    print('')
+    print('Error: problem loading toto package:')
+    print('  - Check if this package is installed ( e.g. type: `python setup_toto.py install`)')
+    print('Or')
+    print('  - Try setting up the toto path as environmental variable named: TotoPath ')
+    print('')
+    sys.exit(-1)
+
+
+
 import toto.inputs
 import toto.outputs
 from toto.core.totoframe import TotoFrame,add_metadata_to_df

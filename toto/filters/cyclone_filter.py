@@ -12,9 +12,11 @@ Inputs:
 """
 
 import numpy as np
-from ..core.cyclone_mask import Cyclone
+from ..core.cyclone_mask import Cyclone,binaries_directory
+import os
+CYCLONE_FILE=os.path.join(binaries_directory(),'IBTrACS.ALL.v04r00.nc')
 
-def cyclone_filter(input_array,args={'Lon':float(),'Lat':float(),'cyclone file':'/tmp/IBTrACS.ALL.v04r00.nc',\
+def cyclone_filter(input_array,args={'Lon':float(),'Lat':float(),'cyclone file':CYCLONE_FILE,\
                                        'minimun category':1,\
                                       'radius of maximum wind':float(),\
                                       'time to mask before a cyclone passage (in days)':0.5,\
@@ -24,13 +26,13 @@ def cyclone_filter(input_array,args={'Lon':float(),'Lat':float(),'cyclone file':
                                     'Mode':{"from centre": True, "from wind radius":False}}):
 
 
-
-
-    Lon=args['LonLat'][0]
-    Lat=args['LonLat'][1]
+    Lon=None
+    if 'LonLat' in args:
+        Lon=args['LonLat'][0]
+        Lat=args['LonLat'][1]
     if Lon == None:
-    	Lon=args['Lon']
-    	Lat=args['Lat']
+        Lon=args['Lon']
+        Lat=args['Lat']
 
     cy=Cyclone(cyclone_file=args['cyclone file'])
     cy.limit_categories_within_radius([Lon,Lat])
