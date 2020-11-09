@@ -20,6 +20,13 @@ except:
 
 from numpy.matlib import repmat
 
+def calculate_voyage_speed(hs,transport_speed,transport_dist,hs_limit):
+    #CALCULATION OF VOYAGE SPEED (section 6.7 of GL Noble Denton, 2010),
+    #ommiting the current influences
+    trans_spd=transport_speed*(1-(np.nanmean(hs)/hs_limit)**2)
+    trans_duration=(transport_dist*1000/trans_spd)/3600# in hours
+    trans_duration=trans_duration*1.25#contingency time of 25%
+    return trans_duration
 
 def get_mag_for_water_elevation(el_res,et,threshold):
         #for seasonal and monthly EVA, the JP tide/surge should account for any

@@ -19,27 +19,43 @@ df=tx._toDataFrame()
 # tx=MATfile(filename)
 # df=tx._toDataFrame()
 
-df[0].Extreme.do_extreme(magnitude='hs',tp_optional='tp',direction_optional='dpm',tm_optional='t02',water_depth_optional='',\
-        args={'Fitting distribution':'Weibull',
-         'Method':'ml',#{'pkd':False,'pwm':False,'mom':False,'ml':True},
-         'Slope fitting distribution':'Gumbel',#:True,'Gumbel':False},
-         'Slope treshold':0.005,
-         'Return period':[1,10,25,50,100],
-         'Estimate Hmax & Cmax RPVs':'On',#:False,'Off':True},
-         'threshold type':'value',#:True,'value':False},
-         'threshold value':6.0,
-         'Directional':'On',#:True,'Off':False},
-         'Minimum number of peaks over threshold': 10,
-         'Minimum time interval between peaks (h)':24.0,
-         'Direction binning':'centered',#:True,'not-centered':False},
-         'Direction interval': 45.,
+    
+
+df[0].Extreme.do_extreme_adjusted(hs='hs',wspd_optional='hs',\
+        args={'Fitting distributionfor Hs':'Weibull',
+         'Fitting distributionfor Wspd':'Weibull',
+         'Estimation method for Hs':'ml',#{'pkd':False,'pwm':False,'mom':False,'ml':True},
+         'Estimation method for Wspd':'ml',#{'pkd':False,'pwm':False,'mom':False,'ml':True},
+         'Risk level: e.g. 10%, 5%, 1%':[1,5,10],
+         'Max limiting Hs (typically 5 m for barge tow and 8 m for ships':5.0,
+         'Transport speed (m/s)':2.572,
+         'Transport distance (km)':1000.0,
          'Time blocking':'Monthly',#:True,'Seasonal (South hemisphere)':False,'Seasonal (North hemisphere)':False,'Monthly':False},
-         'Display peaks':'Off',#{'On':True,'Off':False},
-         'Display CDFs':'Off',#{'On':True,'Off':False},
-         'Water depth':-5000.0,
+         'Display CDFs':'On',#{'On':True,'Off':False},
          'folder out':os.getcwd()
          })
-# df[0].Extreme.extreme_water_elevation(tide='el_tide',surge='el_res',\
+
+# df[0].Extreme.do_extreme(magnitude='hs',tp_optional='tp',direction_optional='dpm',tm_optional='t02',water_depth_optional='',\
+#         args={'Fitting distribution':'Weibull',
+#          'Method':'ml',#{'pkd':False,'pwm':False,'mom':False,'ml':True},
+#          'Slope fitting distribution':'Gumbel',#:True,'Gumbel':False},
+#          'Slope treshold':0.005,
+#          'Return period':[1,10,25,50,100],
+#          'Estimate Hmax & Cmax RPVs':'On',#:False,'Off':True},
+#          'threshold type':'value',#:True,'value':False},
+#          'threshold value':6.0,
+#          'Directional':'On',#:True,'Off':False},
+#          'Minimum number of peaks over threshold': 10,
+#          'Minimum time interval between peaks (h)':24.0,
+#          'Direction binning':'centered',#:True,'not-centered':False},
+#          'Direction interval': 45.,
+#          'Time blocking':'Monthly',#:True,'Seasonal (South hemisphere)':False,'Seasonal (North hemisphere)':False,'Monthly':False},
+#          'Display peaks':'Off',#{'On':True,'Off':False},
+#          'Display CDFs':'Off',#{'On':True,'Off':False},
+#          'Water depth':-5000.0,
+#          'folder out':os.getcwd()
+#          })
+# # df[0].Extreme.extreme_water_elevation(tide='el_tide',surge='el_res',\
 #         args={'Fitting distribution':'Weibull',
 #          'Method':'ml',#{'pkd':False,'pwm':False,'mom':False,'ml':True},
 #          'Surge':'Both (neg and pos)',#{'Positive only':False,'Negative only':False,'Both (neg and pos)':True},

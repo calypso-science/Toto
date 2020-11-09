@@ -15,6 +15,7 @@ from ._EVA_funct import *
 from scipy.stats import norm
 import copy
 from grid_strategy import strategies
+from scipy.optimize import fsolve 
 
 @pd.api.extensions.register_dataframe_accessor("Extreme")
 
@@ -235,11 +236,108 @@ class Extreme:
 
         self._export_as_xls([magnitude,'tp','tmin','tmax','hmax','cmax'],rv,filename=os.path.join(folderout,'EVA.xlsx'))
 
+    def do_extreme_adjusted(self,hs='magnitude',wspd_optional='tp_optional',\
+        args={'Fitting distributionfor Hs':{'Weibull':True,'Gumbel':False,'GPD':False,'GEV':False},
+         'Fitting distributionfor Wspd':{'Weibull':True,'Gumbel':False,'GPD':False,'GEV':False},
+         'Estimation method for Hs':{'pkd':False,'pwm':False,'mom':False,'ml':True},
+         'Estimation method for Wspd':{'pkd':False,'pwm':False,'mom':False,'ml':True},
+         'Risk level: e.g. 10%, 5%, 1%':[10],
+         'Max limiting Hs (typically 5 m for barge tow and 8 m for ships': 5,
+         'Transport speed (m/s)':2.572,
+         'Transport distance (km)':1000.0,
+         'Time blocking':{'Annual':True,'Seasonal (South hemisphere)':False,'Seasonal (North hemisphere)':False,'Monthly':False},
+         'Display CDFs':{'On':True,'Off':False},
+         'folder out':os.getcwd()
+         }):
+    
+
+        """This function is used for adjusted extreme value analysis (Hs and wind speed)
+           accuonting for time of exposure (typically for transportation metocean extremes). It generates
+           return period values for Hs and Wspd. Inputs are: %Hs and Wsp (optional).
+           Reference: GL Noble Denton, 2010. TECHNICAL POLICY BOARD, GUIDELINES FOR
+           MARINE TRANSPORTATIONS. GL Noble Denton Group Ltd."""
+
+
+        fitting=[args['Fitting distributionfor Hs']]
+        method=[args['Estimation method for Hs']]
+        magnitude=[hs]
+        typ=['wave']
+
+
+        if wspd_optional in self.data:
+            magnitude.append(wspd_optional)
+            fitting.append(args['Fitting distributionfor Wspd'])
+            method.append(args['Estimation method for Wspd'])
+            typ.append('wind')
+
+        extreme_paramters=zip(magnitude,fitting,method,typ)
+
+        folderout=os.path.join(args['folder out'])
+
+        risk_level=args['Risk level: e.g. 10%, 5%, 1%']
+        hs_limit=args['Max limiting Hs (typically 5 m for barge tow and 8 m for ships']
+        transport_speed=args['Transport speed (m/s)']
+        transport_dist=args['Transport distance (km)']
+
+        time_blocking=args['Time blocking']
+   
+
+        for mag,fit,met,typ in extreme_paramters:
+            self._do_EVA_adjusted(mag,time_blocking,transport_speed,transport_dist,hs_limit,risk_level,fit,met,typ)
+            if args['Display CDFs']=='On':
+                self._plot_cdfs(mag,display=True,folder=folderout)
+            else:
+                self._plot_cdfs(mag,display=False,folder=folderout)
+
+        self._export_as_xls(magnitude,risk_level,filename=os.path.join(folderout,'EVA_adjusted.xlsx'))
+
     def _clean_peak(self):
         keys=list(self.peaks_index.keys())
         for key in keys:
             if len(self.peaks_index[key])==0:
                 self.peaks_index.pop(key)
+
+
+    def _do_EVA_adjusted(self,mag,time_blocking,transport_speed,transport_dist,hs_limit,risk_lev,fit,met,typ):
+               
+
+        mag_values=self.dfout[mag].values
+        number_of_loops,identifiers,month_identifier=get_number_of_loops(time_blocking)
+        all_months=self.dfout.index.month
+
+        for j in range(0,number_of_loops):
+            index = np.in1d(all_months, month_identifier[j])
+            if np.any(index):
+                if identifiers[j] not in self.eva_stats:
+                    self.eva_stats[identifiers[j]]={}
+                    self.eva_stats[identifiers[j]]['Omni']={}
+                    self.peaks_index[identifiers[j]]={}
+                    self.peaks_index[identifiers[j]]['Omni']=index
+
+
+                if mag not in self.eva_stats[identifiers[j]]['Omni']:
+                    self.eva_stats[identifiers[j]]['Omni'][mag]={}
+
+                trans_speed=calculate_voyage_speed(mag_values[index],transport_speed,transport_dist,hs_limit)
+                trans_speed=max(3*24,trans_speed) #minimum exposure time of 3 days is considered
+                if typ=='wave':
+                    trans_speed=trans_speed/3.
+
+                phat,scale,shape=do_fitting(mag_values[index],fit,met)
+                magex=np.ones((len(risk_lev),))*np.NaN
+                for i,rsk in enumerate(risk_lev):
+                    def func(x):
+                        return [1-0.01*rsk-phat.cdf(x[0])**trans_speed]
+
+                    magex[i]=fsolve(func,[6])
+
+
+                self.eva_stats[identifiers[j]]['Omni'][mag]['phat']=phat
+                self.eva_stats[identifiers[j]]['Omni'][mag]['scale']=scale
+                self.eva_stats[identifiers[j]]['Omni'][mag]['shape']=shape
+                self.eva_stats[identifiers[j]]['Omni'][mag]['magex']=magex
+
+
 
     def _do_EVA_water(self,mag,tide,rp,fitting,method,time_blocking,threshold):
 
@@ -574,12 +672,10 @@ class Extreme:
         # else:
         #     plt.subplots_adjust(bottom=0.05,top=.95,hspace=.5)
       
-        if display:
-            plt.show(block=~display)
 
         plt.savefig(os.path.join(folder,'RPV_FORM_'+mag+'_'+drr+'.png'))
-        #plt.close()
-
+        if display:
+            plt.show()
     def _plot_cdfs(self,mag,drr='Omni',display=False,folder=os.getcwd()):
 
         months=list(self.peaks_index.keys())
@@ -606,11 +702,11 @@ class Extreme:
         # else:
         #     plt.subplots_adjust(bottom=0.05,top=.95,hspace=.5)
       
-        if display:
-            plt.show(block=False)
+
 
         plt.savefig(os.path.join(folder,'cdf_'+mag+'_'+drr+'.png'))
-
+        if display:
+            plt.show()
 
     def _plot_peaks(self,mag,display=False,folder=os.getcwd()):
         months=list(self.peaks_index.keys())
@@ -661,9 +757,8 @@ class Extreme:
        
         plt.savefig(os.path.join(folder,mag+'_peaks.png'))
         if display:
-            plt.show(block=~display)
-        else:
-            plt.close()
+            plt.show()
+
 
     def _calc_Hmp(self,hs,ind,tm=None,depth=5000,max_storm_duration=48):
 
