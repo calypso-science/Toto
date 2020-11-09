@@ -1,0 +1,2 @@
+"""Tidal analysis plugin
+"""
