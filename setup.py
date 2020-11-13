@@ -23,7 +23,7 @@ def binaries_directory():
     print('no installation path found', file=sys.stderr)
     return None
 
-with open("README.md", "r") as fh:
+with open("README.rst", "r") as fh:
     long_description = fh.read()
 pck=setuptools.find_packages(exclude=("totoview","totoview.*","totoView.py","_tests","_tools"))
 
