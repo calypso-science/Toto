@@ -10,17 +10,16 @@ import sys, site
 
 YEAR0=1950
 
-
-
-
-
 def binaries_directory():
     """Return the installation directory, or None"""
+
+
     if '--user' in sys.argv:
         paths = (site.getusersitepackages(),)
     else:
         py_version = '%s.%s' % (sys.version_info[0], sys.version_info[1])
         paths = (s % (py_version) for s in (
+
             sys.prefix + '/lib/python%s/dist-packages/',
             sys.prefix + '/lib/python%s/site-packages/',
             sys.prefix + '/local/lib/python%s/dist-packages/',
@@ -28,9 +27,13 @@ def binaries_directory():
             '/Library/Python/%s/site-packages/',
         ))
 
+    windows_paths=[os.path.join(sys.prefix,'Lib\\site-packages')]
     for path in paths:
         if os.path.exists(path):
             return path
+    for path in windows_paths:
+        if os.path.exists(path):
+            return path        
     print('no installation path found', file=sys.stderr)
     return None
 
