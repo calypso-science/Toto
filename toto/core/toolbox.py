@@ -2,6 +2,22 @@ import numpy as np
 import datetime
 import xarray as xr
 
+
+def peaks(y):
+    """ return peaks and trough indx
+        from Nagi Hatoum peaks.m
+    copyright 2005"""
+
+    ds=np.diff(y)
+    ds = np.insert(ds, 0, ds[0], axis=0) #pad diff
+    fil=np.nonzero((ds[1:]==0))[0]+1 #find zeros
+    ds[fil]=ds[fil-1] #replace zeros
+    ds=np.sign(ds)
+    ds=np.diff(ds)
+    t=np.nonzero((ds>0))[0]
+    p=np.nonzero((ds<0))[0]
+
+    return p,t
 def PolyArea(x,y):
     bad=np.logical_or(np.isnan(x),np.isnan(y))
     x=x[~bad]
