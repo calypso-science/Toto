@@ -5,6 +5,7 @@ from ...core.make_table import create_table
 import numpy as np
 from matplotlib.dates import date2num,num2date 
 from datetime import datetime,date
+from ...core.make_table import create_table
 
 @pd.api.extensions.register_dataframe_accessor("TideAnalysis")
 class TideAnalysis:
@@ -12,6 +13,18 @@ class TideAnalysis:
 #        self._validate(pandas_obj)
         self.data = pandas_obj
         self.dfout = pd.DataFrame(index=self.data.index.copy())
+    def _export_cons(self,outfile,var,cons,amp,pha):
+
+        mat=[]
+        row=['Constituent','Amplitude [m]','Phase [deg]']
+        mat.append(row)
+        for i,con in enumerate(cons):
+            row=[con]
+            row.append('%.2f' %amp[i])
+            row.append('%.2f' %pha[i])
+            mat.append(row)
+
+        create_table(outfile,var,np.array(mat))
 
     def detide(self,mag='mag',\
         args={'Minimum SNR':2,\
@@ -37,7 +50,11 @@ class TideAnalysis:
         dt=(time[2]-time[1]).total_seconds()/3600 # in hours
         stime=np.array(date2num(time))
         lat=latitude
-        outfile=os.path.join(args['folder out'],os.path.splitext(self.data.filename)[0]+'_'+short_name+'_Conc.xlsx')
+        if hasattr(self.data,'filename'):
+            outfile=os.path.join(args['folder out'],os.path.splitext(self.data.filename)[0]+'_Conc.xlsx')
+        else:
+            outfile=os.path.join(args['folder out'],'Conc.xlsx')
+
         ray=args['Minimum SNR']
         demeaned = self.data[mag].values - np.nanmean(self.data[mag].values)
 
@@ -47,6 +64,9 @@ class TideAnalysis:
 
         self.dfout[short_name+'t']=ts_recon
         self.dfout[short_name+'o']=demeaned-ts_recon
+
+        self._export_cons(outfile,short_name,coef['name'],coef['A'],coef['g'])
+        
         return self.dfout
 
     def predict(self,mag='mag',\
