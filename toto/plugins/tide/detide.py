@@ -6,6 +6,8 @@ import numpy as np
 from matplotlib.dates import date2num,num2date 
 from datetime import datetime,date
 from ...core.make_table import create_table
+import copy
+from ...core.toolbox import peaks
 
 @pd.api.extensions.register_dataframe_accessor("TideAnalysis")
 class TideAnalysis:
@@ -182,3 +184,63 @@ class TideAnalysis:
 
         outfile=os.path.join(args['folder out'],os.path.splitext(self.data.filename)[0]+'_Concstats.xlsx')
         create_table(outfile,'stat',stats)
+
+    def skew_surge(self,mag='mag',args={'Minimum SNR':2,\
+        'Latitude':-36.0}):
+        #
+
+        """ This function calculate the skew surge :
+        see https://www.ntslf.org/storm-surges/skew-surges"""
+
+        if hasattr(self.data,'latitude'):
+            latitude=self.data.latitude
+            if not self.data.latitude:
+                latitude=args['Latitude']
+        else:
+            latitude=args['Latitude']
+
+        xobs=self.data.index
+        dt=(xobs[2]-xobs[1]).total_seconds()/3600. # in hours
+        stime=np.array(date2num(xobs))
+        lat=latitude
+        ray=args['Minimum SNR']
+        yobs = self.data[mag].values - np.nanmean(self.data[mag].values)
+        opts = dict(method='ols',conf_int='linear', Rayleigh_min=ray)
+        coef = solve(stime,yobs,lat= lat,**opts)
+
+
+        min_time=xobs[0]
+        max_time=xobs[-1]
+        min_dt=15*60
+
+
+        xpredi = pd.period_range(min_time, max_time,freq='%is'%min_dt)
+        xpredi=xpredi.to_timestamp()
+
+        if hasattr(self.data[mag],'short_name'):
+            short_name=self.data[mag].short_name
+        else:
+            short_name=mag
+
+        ypredi = reconstruct(np.array(date2num(xpredi)), coef).h
+
+
+        pe,tr=peaks(ypredi)
+
+        df_new=pd.DataFrame(index=xobs)
+        skew=copy.deepcopy(yobs)
+        skew[:]=np.nan
+                
+        for i in range(0,len(tr)-1):
+            idx_pred=np.logical_and(xpredi>xpredi[tr[i]],xpredi<xpredi[tr[i+1]])
+            idx_obs=np.logical_and(xobs>xpredi[tr[i]],xobs<xpredi[tr[i+1]])
+
+            max_pre=np.max(ypredi[idx_pred])
+            max_obs=np.max(yobs[idx_obs])
+            max_obs_idx=np.argmax(yobs[idx_obs])
+            skew[idx_obs.nonzero()[0][max_obs_idx]]=max_obs-max_pre
+
+        df_new['skew_surge']=skew
+
+
+        return df_new.dropna()
