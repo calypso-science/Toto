@@ -102,7 +102,13 @@ class TideAnalysis:
         idx = pd.period_range(args['minimum time'], args['maximum time'],freq='%is'%args['dt(s)'])
         idx=idx.to_timestamp()
         df_new=pd.DataFrame(index=idx)
-        df_new[self.data[mag].short_name+'t'] = reconstruct(np.array(date2num(df_new.index)), coef).h
+
+        if hasattr(self.data[mag],'short_name'):
+            short_name=self.data[mag].short_name
+        else:
+            short_name=mag
+
+        df_new[short_name+'t'] = reconstruct(np.array(date2num(df_new.index)), coef).h
         df_new.index.name='time'
         
         self.dfout=df_new#pd.merge_asof(self.dfout,df_new,on='time',direction='nearest', tolerance=pd.Timedelta("1s")).set_index('time')
