@@ -182,7 +182,10 @@ class TideAnalysis:
         stats[6,2]='%.2f' % (-M2-S2)
         stats[7,2]='%.2f' % (min(ts_recon))
 
-        outfile=os.path.join(args['folder out'],os.path.splitext(self.data.filename)[0]+'_Concstats.xlsx')
+        if hasattr(self.data,'filename'):
+            outfile=os.path.join(args['folder out'],os.path.splitext(self.data.filename)[0]+'_Concstats.xlsx')
+        else:
+            outfile=os.path.join(args['folder out'],'Concstats.xlsx')
         create_table(outfile,'stat',stats)
 
     def skew_surge(self,mag='mag',args={'Minimum SNR':2,\

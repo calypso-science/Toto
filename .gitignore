@@ -43,3 +43,5 @@ toto.egg-info/
 .Trashes
 ehthumbs.db
 Thumbs.db
+notebook/.ipynb_checkpoints/*.ipynb
+notebook/.ipynb_checkpoints/
