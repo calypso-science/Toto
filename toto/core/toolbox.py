@@ -2,7 +2,12 @@ import numpy as np
 import datetime
 import xarray as xr
 
-
+def display_message():
+    print('########################################################################')
+    print('This is a close source toolbox\n To get more information please email:\n\
+        r.zyngfogel@calypso.science or\n\
+        b.beamsley@metocean.co.nz')
+    print('########################################################################')
 def peaks(y):
     """ return peaks and trough indx
         from Nagi Hatoum peaks.m
