@@ -9,9 +9,14 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 from matplotlib import pyplot as plt
 
 def do_wavelet(time,mag,mother,period,dj,unit,filename,display):
+    bad=np.isnan(mag)
+    if np.any(bad):
+        mag[bad]=np.interp(time[bad],time[~bad],mag[~bad])
+
 
     dj=1/dj
     dt=(time[2]-time[1]).total_seconds()
+    dt=np.round(dt,3)
     Tmin=period[0]
     Tmax=period[1]
 
@@ -48,12 +53,12 @@ def do_wavelet(time,mag,mother,period,dj,unit,filename,display):
 
     # Wavelet transform:
     wave,period,scale,coi = wavelet(mag,dt,1,dj,s0,j1,mother.upper())
-    coi=coi[:-1]
+
 
     power = (np.abs(wave))**2         # compute wavelet power spectrum
 
     # Global wavelet spectrum 
-    global_ws = variance*(np.sum(power,axis=1)/n)#   % time-average over all times
+    global_ws = variance*(np.nansum(power,axis=1)/n)#   % time-average over all times
 
     # Scale-average between Tmin and Tmax
     avg = np.logical_and(period >= Tmin,period < Tmax)
@@ -110,23 +115,24 @@ def do_wavelet(time,mag,mother,period,dj,unit,filename,display):
     plt.xlabel('Time (year)')
     plt.ylabel('Elevation ['+unit+']')
     plt.title('Sea Surface elevation')
-    fig.autofmt_xdate()
+    
 
 
 
     # #increase the time interval if the contour is too dense
-    # if len(time)>10000
-    #     while len(time)>20000:
-    #         time=time(1:2:end);
-    #         scale_avg=mov_avg(scale_avg,2);
-    #         for i=1:size(power,1)
-    #        power(i,:)=mov_avg(power(i,:),2);
-    #         end
-    #         scale_avg=scale_avg(1:2:end);
-    #         power=power(:,1:2:end);
-    #         coi=coi(1:2:end);
-    #     end
-    # end
+    if len(time)>10000:
+        #import pdb;pdb.set_trace()
+        while len(time)>20000:
+            time=time[::2]
+            scale_avg=np.convolve(scale_avg, np.ones(2)/2, mode='same')
+            for i in range(0,power.shape[0]):
+                power[i,:]=np.convolve(power[i,:], np.ones(2)/2, mode='same')
+            
+            scale_avg=scale_avg[::2]
+            power=power[:,::2]
+            coi=coi[::2]
+        
+    
 
 
     plt3 = plt.subplot(gs[1, 0:3])
@@ -160,10 +166,10 @@ def do_wavelet(time,mag,mother,period,dj,unit,filename,display):
     plt.xlabel('Power ('+unit+'$^2$)')
     #plt.show()
     plt.title('Global Wavelet Spectrum')
-    plt.xlim([0, 1.25 * np.max(global_ws)])
+    plt.xlim([0, 1.25 * np.nanmax(global_ws)])
     # format y-scale
     plt4.set_yscale('log', basey=2, subsy=None)
-    plt.ylim([np.min(period), np.max(period)])
+    plt.ylim([np.min(period), np.nanmax(period)])
     ax = plt.gca().yaxis
     ax.set_major_formatter(ticker.ScalarFormatter())
     plt4.ticklabel_format(axis='y', style='plain')
@@ -180,7 +186,7 @@ def do_wavelet(time,mag,mother,period,dj,unit,filename,display):
     
     #fig.autofmt_xdate()
     plt.subplots_adjust(bottom=0.02)
-
+    fig.autofmt_xdate()
 
     if display:
         plt.show(block=~display)
