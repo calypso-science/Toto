@@ -87,9 +87,12 @@ class StatPlots:
         Xlim=args['X limits']
         Ylim=args['Y limits']
 
-        filename=os.path.join(args['folder out'],os.path.splitext(self.data.filename)[0]+'_density_diagramm.png')
+        if hasattr(self.data,'filename'):
+            filename=os.path.join(args['folder out'],os.path.splitext(self.data.filename)[0]+'_density_diagramm.png')
+        else:
+            filename=os.path.join(args['folder out'],'density_diagramm.png')
 
-        do_density_diagramm(self.data[X].values,self.data[Y].values,X_short_name,Y_short_name,X_unit,Y_unit,Xlim,Ylim,display)
+        do_density_diagramm(self.data[X].values,self.data[Y].values,X_short_name,Y_short_name,X_unit,Y_unit,Xlim,Ylim,filename,display)
 
 
     def QQ_plot(self,measured='measured',modelled='modelled',args={

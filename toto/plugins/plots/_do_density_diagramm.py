@@ -4,7 +4,7 @@ from matplotlib import pyplot as plt
 from matplotlib.figure import Figure
 from scipy.stats import kde
 
-def do_density_diagramm(X,Y,X_short_name,Y_short_name,X_unit,Y_unit,Xlim,Ylim,show=True):
+def do_density_diagramm(X,Y,X_short_name,Y_short_name,X_unit,Y_unit,Xlim,Ylim,fileout,show=True):
 
     fig = plt.figure(figsize=(8.27, 11.69), dpi=100)
     ax =fig.add_subplot(111)
