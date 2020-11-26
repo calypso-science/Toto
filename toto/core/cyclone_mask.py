@@ -28,14 +28,16 @@ def binaries_directory():
             '/Library/Python/%s/site-packages/',
         ))
 
-    windows_paths=[os.path.join(sys.prefix,'Lib\\site-packages'),os.path.join(os.getenv('TotoPath'),'..')]
+    
     for path in paths:
         if os.path.exists(path):
             return path
-    for path in windows_paths:
-        if os.path.exists(path):
-            return path  
-    print(sys.prefix)      
+    if os.name!='posix':
+        windows_paths=[os.path.join(sys.prefix,'Lib\\site-packages'),os.path.join(os.getenv('TotoPath'),'..')]
+        for path in windows_paths:
+            if os.path.exists(path):
+                return path  
+    
     print('no installation path found', file=sys.stderr)
     return None
 

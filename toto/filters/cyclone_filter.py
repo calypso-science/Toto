@@ -14,6 +14,7 @@ Inputs:
 import numpy as np
 from ..core.cyclone_mask import Cyclone,binaries_directory
 import os
+
 CYCLONE_FILE=os.path.join(binaries_directory(),'IBTrACS.ALL.v04r00.nc')
 
 def cyclone_filter(input_array,args={'Lon':float(),'Lat':float(),'cyclone file':CYCLONE_FILE,\
