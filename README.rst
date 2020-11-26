@@ -36,15 +36,6 @@ Then install toto:
 
    python setup.py install
 
- 
-Windows installation:
-~~~~~~~~~~~~~~~~~~~~
-For totoView to work you need to set the path where toto has been installed
-
-.. code:: bash
-
-   set TotoPath=c:\Python\
-
 
 Data requirements:
 ------------------
