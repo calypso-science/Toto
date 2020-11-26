@@ -10,6 +10,14 @@ class DataTransformation:
         self.data = pandas_obj
         self.dfout = pd.DataFrame(index=self.data.index.copy())
 
+    def rotation(self,wd='wd',args={'rotate by': 180}):
+        """ this function will rotate direction
+        usefull for changing wind coming from to going to"""
+        ang=args['rotate by']
+        u=self.data[wd]
+        self.dfout[wd+'_%.f' % ang]=np.mod(u+ang,360)
+        return self.dfout
+
     def wind_profile(self,ws='ws',args={
         'Level of input wind speed (in meters)':10.,\
         'Averaging period of input wind speed (in minutes)':10.,\
