@@ -6,7 +6,7 @@ import numpy as np
 from datetime import datetime,time
 from ..core.toolbox import sph2cart
 from matplotlib.dates import date2num
-import sys, site
+import sys
 
 YEAR0=1950
 
@@ -15,6 +15,7 @@ def binaries_directory():
 
 
     if '--user' in sys.argv:
+        import site
         paths = (site.getusersitepackages(),)
     else:
         py_version = '%s.%s' % (sys.version_info[0], sys.version_info[1])
@@ -27,13 +28,14 @@ def binaries_directory():
             '/Library/Python/%s/site-packages/',
         ))
 
-    windows_paths=[os.path.join(sys.prefix,'Lib\\site-packages')]
+    windows_paths=[os.path.join(sys.prefix,'Lib\\site-packages'),os.path.join(os.getenv('TotoPath'),'..')]
     for path in paths:
         if os.path.exists(path):
             return path
     for path in windows_paths:
         if os.path.exists(path):
-            return path        
+            return path  
+    print(sys.prefix)      
     print('no installation path found', file=sys.stderr)
     return None
 
