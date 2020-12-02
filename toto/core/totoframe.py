@@ -126,6 +126,11 @@ class TotoFrame(dict):
         self[fTo]['metadata'][var]=self[fFrom]['metadata'].pop(var)
         return fTo,fFrom
 
+    def copy_metadata(self,fTo,fFrom,var,new_var):
+        self[fTo]['metadata'][new_var]=self[fFrom]['metadata'][var]
+        self[fTo]['metadata'][new_var]['short_name']=new_var
+        return fTo,fFrom
+
     def move_var(self,fTo,fFrom,var,methods='nearest'):
         df=copy.deepcopy(self[fFrom]['dataframe'])
         tmp=df.reindex(self[fTo]['dataframe'].index,method=methods)
@@ -150,6 +155,26 @@ class TotoFrame(dict):
 
         
         self[filename]['dataframe'].loc[mask,varname]=np.NaN
+
+    def copy_data(self,filename,varnames,new_filename):
+        df=copy.deepcopy(self[filename]['dataframe'])
+        tmp=df.reindex(self[new_filename]['dataframe'].index,method='nearest')
+        if varnames==None:
+            varnames=list(tmp.keys())
+            varnames.remove('time')
+
+        if isinstance(varnames,str):
+            varnames=[varnames]
+
+        for varname in varnames:
+            if varname in self[new_filename]['dataframe']:
+                new_varname='copy_'+varname
+            else:
+                new_varname=copy.deepcopy(varname)
+            self[new_filename]['dataframe'][new_varname]=tmp[varname]
+            self.copy_metadata(new_filename,filename,varname,new_varname)
+
+
 
 
     def reset(self,filename,varname=None):
