@@ -20,6 +20,12 @@ def spike_removal(input_array,args={'height':float(),
         args.pop('LonLat')
 
     y=input_array.to_numpy(copy=True)
+    keys=list(args.keys())
+    for key in keys:
+        if args[key]==0:
+            args.pop(key)
+
+
     ind = find_peaks(y,**args)[0]
     
     y[ind]=np.nan
