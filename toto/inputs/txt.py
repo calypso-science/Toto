@@ -142,7 +142,7 @@ class TXTfile():
                     time=pd.to_datetime(df[self.fileparam.time_col_name])
                 elif self.fileparam.unit == 'matlab':
                     time=[matlab2datetime(tval) for tval in df['time']]
-                elif self.fileparam.unit == 's' or self.unit == 'D':
+                elif self.fileparam.unit == 's' or self.fileparam.unit == 'D':
                     time=pd.to_datetime(df[self.fileparam.time_col_name],unit=self.fileparam.unit)
                 elif self.fileparam.unit == 'custom':
                     time=pd.to_datetime(df[self.fileparam.time_col_name],format=self.fileparam.customUnit)
