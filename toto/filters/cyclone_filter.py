@@ -35,6 +35,10 @@ def cyclone_filter(input_array,args={'Lon':float(),'Lat':float(),'cyclone file':
         Lon=args['Lon']
         Lat=args['Lat']
 
+    if isinstance(Lon,np.ndarray):
+      Lon=Lon[0]
+      Lat=Lat[0]
+
     cy=Cyclone(cyclone_file=args['cyclone file'])
     cy.limit_categories_within_radius([Lon,Lat])
     msk=cy.remove_cyclones(input_array.index,[Lon,Lat])

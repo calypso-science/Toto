@@ -22,7 +22,7 @@ def _import_functions(pkgname="inputs",name='read'):
     import glob
     from importlib import import_module
 
-    here = os.path.dirname(os.path.abspath(__file__))
+    here = os.path.dirname(os.path.abspath(__file__)).replace('\\library.zip','')
     for filename in glob.glob1(os.path.join(here, pkgname), "*.py"):
         module = os.path.splitext(filename)[0]
         if module == "__init__":
@@ -41,7 +41,7 @@ def _import_plugins(pkgname="inputs",name='read'):
     import sys
     import glob
     from importlib import import_module
-    here = os.path.dirname(os.path.abspath(__file__))
+    here = os.path.dirname(os.path.abspath(__file__)).replace('\\library.zip','')
     for dirs in os.listdir(os.path.join(here, pkgname)):
         if os.path.isdir(os.path.join(here, pkgname,dirs)):
             for filename in glob.glob1(os.path.join(here, pkgname,dirs), "*.py"):

@@ -28,12 +28,19 @@ def binaries_directory():
             '/Library/Python/%s/site-packages/',
         ))
 
-    
+
     for path in paths:
         if os.path.exists(path):
             return path
     if os.name!='posix':
-        windows_paths=[os.path.join(sys.prefix,'Lib\\site-packages'),os.path.join(os.getenv('TotoPath'),'..')]
+
+        HERE = os.path.dirname(os.path.abspath(__file__)).replace('\\library.zip','')
+
+        windows_paths=[os.path.join(sys.prefix,'Lib\\site-packages'),\
+                       os.path.join(HERE,'..','cyclone')]
+
+        if os.getenv('TotoPath'):
+            windows_paths.append(os.path.join(os.getenv('TotoPath'),'..'))
         for path in windows_paths:
             if os.path.exists(path):
                 return path  
@@ -154,7 +161,6 @@ class Cyclone(object):
             self.cyclones['MaxCat_AustBOMPressure']=np.max(self.cyclones['Cat_AustBOMPressure'],1)
 
     def limit_categories_within_radius(self,pos):
-    
         dist=sphere_dist(pos,[self.cyclones['Longitude'],self.cyclones['Latitude']]); #radius of earth in kilometers     
         within_radius=(dist<self.radius) & (self.cyclones['Cat_AustBOMWindSpeed']>self.min_cat)
         self.mask+=within_radius

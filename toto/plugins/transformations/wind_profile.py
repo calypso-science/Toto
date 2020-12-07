@@ -110,7 +110,7 @@ class DataTransformation:
     def hs_sea(self,hs='hs',hs_swell='hs_swell',args={}):
         """Calculate Hs Sea from Hs swell and Hs Total"""
 
-        self.dfout['Hs_sea']=np.sqrt(self.data[hs]**2-self.data[hs_swell]**2)
+        self.dfout['Hs_sea']=np.sqrt(np.abs(self.data[hs]**2-self.data[hs_swell]**2))
         return self.dfout
 
 
