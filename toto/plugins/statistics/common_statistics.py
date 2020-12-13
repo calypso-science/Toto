@@ -20,7 +20,12 @@ class Statistics:
 
 
     def common_statistics(self,mag=['mag'],drr='drr',args={'folder out':os.getcwd(),
-        'Time blocking':{'Yearly':True,'Seasonal (South hemisphere)':False,'Seasonal (North hemisphere)':False,'Monthly':False},
+        'Time blocking':{'Yearly':True,
+        'South hemisphere(Summer/Winter)':False,
+        'South hemisphere 4 seasons':False,
+        'North hemishere(Summer/Winter)':False,
+        'North hemisphere 4 seasons':False,        
+        'North hemisphere moosoon(SW,NE,Hot season)':False},
                                                             }):
         """ output stats from timesereis)"""
 
