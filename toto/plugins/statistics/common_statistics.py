@@ -20,6 +20,7 @@ class Statistics:
 
 
     def common_statistics(self,mag=['mag'],drr='drr',args={'folder out':os.getcwd(),
+        'Time blocking':{'Yearly':True,'Seasonal (South hemisphere)':False,'Seasonal (North hemisphere)':False,'Monthly':False},
                                                             }):
         """ output stats from timesereis)"""
 
@@ -33,7 +34,7 @@ class Statistics:
         else:
             statf=['min','max','mean','std',[1,5,10,50,80,90,95,98,99],np.nan]         
 
-        hem='yearly'
+        hem=args['Time blocking']
         filename=os.path.join(args['folder out'],os.path.splitext(self.data.filename)[0]+'stat.xlsx')
         time=self.data.index
 
