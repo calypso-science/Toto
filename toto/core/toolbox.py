@@ -35,16 +35,17 @@ def do_occurence(dpm,min_occ):
     occ=np.ones((len(dir_int)-1))
     for j in range(0,len(dir_int)-1):
         if dir_int[j+1] <= dir_int[j]:
-            D=((np.mod(dpm,360)>dir_int[j]) | (np.mod(dpm,360)<=dir_int[j+1]))
+            D=((np.mod(dpm,360)>dir_int[j]) | (np.mod(dpm,360)<=dir_int[j+1])).nonzero()[0]
         else:
-            D=((np.mod(dpm,360)>dir_int[j]) & (np.mod(dpm,360)<=dir_int[j+1]))
+            D=((np.mod(dpm,360)>dir_int[j]) & (np.mod(dpm,360)<=dir_int[j+1])).nonzero()[0]
         
         occ[j]=(len(D)/len(dpm[~np.isnan(dpm)]))*100;
     
 
     Occ=dir_int_name[np.where(occ>=min_occ)]
+
     return Occ
-    
+
 def dyadlength(x):
     '''% dyadlength -- Find length and dyadic length of array
     %  Usage

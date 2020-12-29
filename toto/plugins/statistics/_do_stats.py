@@ -39,7 +39,7 @@ def do_stats(time,statf,data,drr,hem,filename,sheetname,min_occ):
                     else:
                         if not isinstance(drr,str):
                             #for min_occ in [15,10,5,1]:
-                            occ=do_occurence(drr[idx],min_occ)
+                            occ=do_occurence(drr[idx].values,min_occ)
                             #    if len(occ)>0:
                             #        break
                             row.append(', '.join(occ))
@@ -97,7 +97,7 @@ def do_stats(time,statf,data,drr,hem,filename,sheetname,min_occ):
                     else:
                         if not isinstance(drr,str):
                             #for min_occ in [15,10,5,1]:
-                            occ=do_occurence(drr[idx],min_occ)
+                            occ=do_occurence(drr[idx].values,min_occ)
                             #    if len(occ)>0:
                             #        break
                             row.append(', '.join(occ))
@@ -116,7 +116,7 @@ def do_stats(time,statf,data,drr,hem,filename,sheetname,min_occ):
             else:
                 if not isinstance(drr,str):
                     #for min_occ in [15,10,5,1]:
-                    occ=do_occurence(drr,min_occ)
+                    occ=do_occurence(drr.values,min_occ)
                     #    if len(occ)>0:
                     #        break
                     row.append(', '.join(occ))
