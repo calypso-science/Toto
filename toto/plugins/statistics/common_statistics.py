@@ -3,7 +3,8 @@ from ...core.toolbox import dir_interval,get_increment
 import os
 from ._do_comp_stats import do_comp_stats
 from ._do_joint_prob import do_joint_prob
-from ._do_stats import do_stats,do_modal_stat,do_weighted_direction
+from ._do_stats import do_stats
+from ._do_stats2 import do_modal_stat,do_weighted_direction
 from ._do_exc_stats import do_exc_stats,do_exc_coinc_stats,do_window_stats
 from ._do_workability import do_workability
 from ._do_wave_pop import do_wave_pop

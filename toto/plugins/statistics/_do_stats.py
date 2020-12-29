@@ -1,39 +1,10 @@
 import numpy as np
 import datetime
-from ...core.toolbox import dir_interval,get_increment,get_number_of_loops
+from ...core.toolbox import dir_interval,get_increment,get_number_of_loops,do_occurence
 from ...core.make_table import create_table
 from ...core.toolbox import display_message
 
-def modal_tm(h,t,p=95):
-    display_message()
-def nrj_weighted(h,drr):
-    display_message()
-
-def do_occurence(dpm,min_occ):
-    dir_int=dir_interval(45,'centred')
-    dir_int_name=np.array(['N','NE','E','SE','S','SW','W','NW'])
-    occ=np.ones((len(dir_int)-1))
-    for j in range(0,len(dir_int)-1):
-        if dir_int[j+1] <= dir_int[j]:
-            D=((np.mod(dpm,360)>dir_int[j]) | (np.mod(dpm,360)<=dir_int[j+1]))
-        else:
-            D=((np.mod(dpm,360)>dir_int[j]) & (np.mod(dpm,360)<=dir_int[j+1]))
-        
-        occ[j]=(len(D)/len(dpm[~np.isnan(dpm)]))*100;
-    
-
-    Occ=dir_int_name[np.where(occ>=min_occ)]
-    return Occ
-
-
-def do_weighted_direction(time,hs,drr,hem,filename):
-    display_message()
-
-def do_modal_stat(time,hs,tp,hem,filename):
-    display_message()
-
 def do_stats(time,statf,data,drr,hem,filename,sheetname):
-
 
         year=time.year
         month=time.month
