@@ -83,9 +83,14 @@ def do_roses(time,spd,drr,units,title,spdedg,quadran,time_blocking,fileout,show=
             nj.append(j)
 
     number_of_real_loops=len(nj)
-
-    spec = strategies.SquareStrategy().get_grid(number_of_real_loops)
     fig = plt.gcf()
+
+    if number_of_real_loops==5:
+        spec = gridspec.GridSpec(ncols=2, nrows=3, figure=fig)
+    else:
+        spec = strategies.SquareStrategy().get_grid(number_of_real_loops)
+    
+    
     fig.set_dpi(100)
     fig.constrained_layout=True
     fig.set_figheight(11.69)
@@ -93,24 +98,27 @@ def do_roses(time,spd,drr,units,title,spdedg,quadran,time_blocking,fileout,show=
 
     
     for i,sub in enumerate(spec):
-        if len(spec)>1:
-            ax = plt.subplot(sub, projection="windrose",theta_labels=['E','NE',identifiers[nj[i]],'NW','W','SW','S','SE'])
-        else:
-            ax = plt.subplot(sub, projection="windrose",theta_labels=['E','NE','N','NW','W','SW','S','SE'])
-        
-        #Pull out relevant indices for particular month/months
-        index = np.in1d(month, month_identifier[nj[i]])
-        #ax = WindroseAxes.from_ax(fig=fig)
-
-        ax.bar(drr[index],spd[index], normed=True, bins=np.array(spdedg),opening=0.8, edgecolor='white')               
-        ax.set_yticks(quadran)
-        
-        if i==number_of_real_loops-1:
-            ax.set_yticklabels(quadran)
-            if number_of_real_loops==1:
-                ax.set_legend(units=units,title=title,loc='lower right')
+        if i<number_of_real_loops:
+            if number_of_real_loops>1:
+                ax = plt.subplot(sub, projection="windrose",theta_labels=['E','NE',identifiers[nj[i]],'NW','W','SW','','SE'])
             else:
-                ax.set_legend(units=units,title=title,loc='best',bbox_to_anchor=(0.5,-1.0, 0.5, 0.5))
+                ax = plt.subplot(sub, projection="windrose",theta_labels=['E','NE','N','NW','W','SW','S','SE'])
+            
+            #Pull out relevant indices for particular month/months
+            index = np.in1d(month, month_identifier[nj[i]])
+            #ax = WindroseAxes.from_ax(fig=fig)
+
+            ax.bar(drr[index],spd[index], normed=True, bins=np.array(spdedg),opening=0.8, edgecolor='white')               
+            ax.set_yticks(quadran)
+            
+            if i==number_of_real_loops-1:
+                ax.set_yticklabels(quadran)
+                if number_of_real_loops==1:
+                    ax.set_legend(units=units,title=title,loc='lower right')
+                elif np.logical_and(number_of_loops==5,i==number_of_loops-1):
+                    ax.set_legend(units=units,title=title,bbox_to_anchor=(1.75,0.5), loc="center left", borderaxespad=0)
+                else:
+                    ax.set_legend(units=units,title=title,loc='best',bbox_to_anchor=(0.5,-1.0, 0.5, 0.5))
 
     #plt.subplots_adjust(bottom=0.02,top=.95,hspace=0.3)
     plt.savefig(fileout)
