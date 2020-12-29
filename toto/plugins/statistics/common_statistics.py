@@ -20,7 +20,7 @@ class Statistics:
         self.dfout = pd.DataFrame(index=self.data.index.copy())
 
 
-    def common_statistics(self,mag=['mag'],drr='drr',args={'folder out':os.getcwd(),
+    def common_statistics(self,mag=['mag'],drr='drr',args={'Minimum occurrence (main direction) [%]':15,'folder out':os.getcwd(),
         'Time blocking':{'Yearly':True,
         'South hemisphere(Summer/Winter)':False,
         'South hemisphere 4 seasons':False,
@@ -34,6 +34,8 @@ class Statistics:
             drr='none'
         else:
             drr=self.data[drr]
+
+        min_occ=args['Minimum occurrence (main direction) [%]']
 
         if isinstance(drr,str):
             statf=['min','max','mean','std',[1,5,10,50,80,90,95,98,99]]
@@ -49,7 +51,7 @@ class Statistics:
 
         for ma in mag:
             data=self.data[ma]
-            do_stats(time,statf,data,drr,hem,filename,ma)
+            do_stats(time,statf,data,drr,hem,filename,ma,min_occ)
     
     def comparison_statistics(self,measured='measured',hindcast='hindcast',args={'folder out':os.getcwd()}):
         '''function to output comparison stat between measured and predicted data

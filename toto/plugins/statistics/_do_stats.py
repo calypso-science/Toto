@@ -4,7 +4,7 @@ from ...core.toolbox import dir_interval,get_increment,get_number_of_loops,do_oc
 from ...core.make_table import create_table
 from ...core.toolbox import display_message
 
-def do_stats(time,statf,data,drr,hem,filename,sheetname):
+def do_stats(time,statf,data,drr,hem,filename,sheetname,min_occ):
 
         year=time.year
         month=time.month
@@ -38,10 +38,10 @@ def do_stats(time,statf,data,drr,hem,filename,sheetname):
                         row+=['%.2f'%x for x in perc]
                     else:
                         if not isinstance(drr,str):
-                            for min_occ in [15,10,5,1]:
-                                occ=do_occurence(drr[idx],min_occ)
-                                if len(occ)>0:
-                                    break
+                            #for min_occ in [15,10,5,1]:
+                            occ=do_occurence(drr[idx],min_occ)
+                            #    if len(occ)>0:
+                            #        break
                             row.append(', '.join(occ))
 
                 mat.append(row)
@@ -96,10 +96,10 @@ def do_stats(time,statf,data,drr,hem,filename,sheetname):
                         row+=['%.2f'%x for x in perc]
                     else:
                         if not isinstance(drr,str):
-                            for min_occ in [15,10,5,1]:
-                                occ=do_occurence(drr[idx],min_occ)
-                                if len(occ)>0:
-                                    break
+                            #for min_occ in [15,10,5,1]:
+                            occ=do_occurence(drr[idx],min_occ)
+                            #    if len(occ)>0:
+                            #        break
                             row.append(', '.join(occ))
 
                 mat.append(row)
@@ -115,10 +115,10 @@ def do_stats(time,statf,data,drr,hem,filename,sheetname):
                 row+=['%.2f'%x for x in perc]
             else:
                 if not isinstance(drr,str):
-                    for min_occ in [15,10,5,1]:
-                        occ=do_occurence(drr,min_occ)
-                        if len(occ)>0:
-                            break
+                    #for min_occ in [15,10,5,1]:
+                    occ=do_occurence(drr,min_occ)
+                    #    if len(occ)>0:
+                    #        break
                     row.append(', '.join(occ))
 
         mat.append(row)
