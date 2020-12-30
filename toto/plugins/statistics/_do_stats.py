@@ -75,7 +75,7 @@ def do_stats(time,statf,data,drr,hem,filename,sheetname,min_occ):
             seas.append((month>=6) & (month <=8)) # summer
             seas.append((month>=9) & (month <=11)) # autumn
             sea_names=['Winter','Spring','Summer','Autumn']
-        elif hem == 'yearly':
+        elif hem == 'Yearly':
             unique_year=np.unique(year)
             seas=[]
             sea_names=[]
