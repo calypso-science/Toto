@@ -6,6 +6,43 @@ import pandas as pd
 import xarray as xr
 import numpy as np
 
+
+def read_quality(inqual,quality_group):
+
+    if ~isinstance(inqual,int):
+        Q1=np.int32(inqual);
+    else:
+        Q1=inqual
+
+
+    if quality_group>15:
+        quality_group=quality_group-16
+
+    qual=np.int32(np.zeros((len(Q1),1)))
+
+    shift=2**(2*quality_group)
+    hibit=np.zeros((len(Q1),1))
+    hibit[Q1<0]=1
+    Q1[Q1<0]=Q1[Q1<0]+2**31
+    qual=np.mod(np.floor(np.double(Q1)/np.double(shift)),4)
+    if quality_group==15:
+        qual[hibit==1]=qual[hibit==1]+2
+
+
+    # for s in range(0,len(Q1)):
+    #     hibit=0
+    #     if (Q1[s]<0):
+    #         Q1[s]=Q1[s]+2**31
+    #         hibit=1
+        
+    #     qual[s]=np.mod(np.floor(np.double(Q1[s])/np.double(shift)),4)
+    #     if np.logical_and(quality_group==15,hibit==1):
+    #         qual[s]=qual[s]+2
+
+    
+
+    return np.double(qual)
+
 class MOETfile():
 
     @staticmethod
@@ -21,6 +58,7 @@ class MOETfile():
         self.data=[]
         # READ 
         self._reads_nc()
+
 
     def _reads_nc(self):
         for file in self.filenames:
@@ -91,11 +129,24 @@ class MOETfile():
                 continue
             else:
                 Col=col
+
+            if hasattr(ds[Col],'quality_group'):
+                quality_group=getattr(ds[Col],'quality_group')
+                if quality_group<16:
+                    qual=read_quality(ds['Qual1'][:],quality_group)
+                    del df0['Qual1']
+                else:
+                    qual=read_quality(ds['Qual2'][:],quality_group)
+                    del df0['Qual2']
+                                    
+                df0['mask']=qual
+                df0=df0.mask(df0['mask']>2)
+                del df0['mask']
+                
             if hasattr(ds[Col],'units'):
                 setattr(df0[col],'units',ds[Col].units)
             if hasattr(ds[Col],'long_name'):
                 setattr(df0[col],'long_name',ds[Col].long_name)
-
 
         if 'Longitude' in ds:
             setattr(df0,'longitude',ds['Longitude'].values)
@@ -113,4 +164,4 @@ class MOETfile():
 
 
 if __name__ == '__main__':
-    MOETfile('/home/remy/Downloads/dep1/77686_October_77686.nc')
+    MOETfile('/home/remy/Downloads/dep2/77689_RAW_February_Geraldton.nc')
