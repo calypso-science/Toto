@@ -16,3 +16,4 @@ six
 netCDF4
 grid_strategy
 xlwt
+xlrd

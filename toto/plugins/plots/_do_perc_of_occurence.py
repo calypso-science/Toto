@@ -82,7 +82,7 @@ def do_perc_of_occurence(time,mag,drr,mag_interval,xlabel,time_blocking,dir_int,
 
             for jj in range(0,len(dir_int)-1):
                 if dir_int[jj+1] <= dir_int[jj]:
-                    D=(np.mod(DIR,360)>dir_int[jj]) | (np.mod(DIR,360)<=dir_int[jj+1]);
+                    D=np.logical_or(np.mod(DIR,360)>dir_int[jj],np.mod(DIR,360)<=dir_int[jj+1]);
                 else:
                     D=(np.mod(DIR,360)>dir_int[jj]) & (np.mod(DIR,360)<=dir_int[jj+1]);
                 

@@ -35,7 +35,7 @@ class StatPlots:
             display=False
         unit=get_opt(self.data[mag],'units',args['units'])
         
-        filename=os.path.join(args['folder out'],os.path.splitext(self.data.filename)[0]+'_rose.png')
+        filename=os.path.join(args['folder out'],os.path.splitext(self.data.filename)[0]+'_rose_'+mag+'.png')
         do_roses(self.data.index,self.data[mag],self.data[drr],unit,args['Title'],
             args['Speed bins (optional)'],args['% quadran (optional)'],args['Time blocking'],filename,display)
 
@@ -88,7 +88,7 @@ class StatPlots:
         Ylim=args['Y limits']
 
         if hasattr(self.data,'filename'):
-            filename=os.path.join(args['folder out'],os.path.splitext(self.data.filename)[0]+'_density_diagramm.png')
+            filename=os.path.join(args['folder out'],os.path.splitext(self.data.filename)[0]+'_'+X+'_'+Y+'_density_diagramm.png')
         else:
             filename=os.path.join(args['folder out'],'density_diagramm.png')
 

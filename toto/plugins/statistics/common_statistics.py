@@ -38,7 +38,8 @@ class Statistics:
         min_occ=args['Minimum occurrence (main direction) [%]']
 
         if isinstance(drr,str):
-            statf=['min','max','mean','std',[1,5,10,50,80,90,95,98,99]]
+            statf=['min','max','mean','std',[90,95,99]]
+            #statf=['min','max','mean','std',[1,5,10,50,80,90,95,98,99]]
         else:
             statf=['min','max','mean','std',[1,5,10,50,80,90,95,98,99],np.nan]         
 
@@ -143,7 +144,7 @@ class Statistics:
 
         X_interval=np.append(X_interval,np.nan)
         Y_interval=np.append(Y_interval,np.nan)
-        do_joint_prob(filename,self.data.index,Xdata,Ydata,X_interval,Y_interval,args['Time blocking'],binning,multiplier)
+        do_joint_prob(filename,self.data.index,Xdata,Ydata,X_interval,Y_interval,args['Time blocking'],binning,multiplier,speed)
 
 
 
@@ -182,11 +183,11 @@ class Statistics:
             -non-exceeding specific values during a specific duration (persistence non-exceedence)'''
 
         analysis=args['method'] 
-        filename=os.path.join(args['folder out'],os.path.splitext(self.data.filename)[0]+'_Excstat.xlsx')
+        filename=os.path.join(args['folder out'],os.path.splitext(self.data.filename)[0]+'_'+analysis.replace(' ','_').replace('-','')+'_stat.xlsx')
         Ydata=self.data[data]
         Exc=get_increment(Ydata,args['Exceedance bins: Min Res Max(optional)'])
         duration=get_increment(Ydata,args['Duration Min Res Max'])
-        do_exc_stats(filename,self.data.index,Ydata,args['Time blocking'],analysis,Exc,duration)
+        do_exc_stats(filename,self.data.index,Ydata,args['Time blocking'],analysis,Exc,duration,data)
 
 
     def excedence_coincidence_probability(self,data='data',coincident_nodir='coincident_nodir',coincident_with_dir='coincident_with_dir',\

@@ -20,7 +20,7 @@ def select_by_direction(input_array,args={'From':float,'To':float,'dir swath':fl
 	for k in range(0,len(interval)-1):
             if k==1 and method != 'Custom':
                 if method == 'centred':
-                    mask=(input_array.index >= interval[k]) | (input_array.index <= interval[k+1])
+                    mask=np.logical_or(input_array.index >= interval[k],input_array.index <= interval[k+1])
                 else:
                     mask=(input_array.index >= interval[k]) & (input_array.index <= interval[k+1])
                 
