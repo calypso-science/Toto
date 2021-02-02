@@ -83,19 +83,20 @@ def do_roses(time,spd,drr,units,title,spdedg,quadran,time_blocking,fileout,show=
             nj.append(j)
 
     number_of_real_loops=len(nj)
-    fig = plt.gcf()
+    
 
     if number_of_real_loops==5:
+        fig = plt.gcf()
         spec = gridspec.GridSpec(ncols=2, nrows=3, figure=fig)
     else:
         spec = strategies.SquareStrategy().get_grid(number_of_real_loops)
-    
+        fig = plt.gcf()
     
     fig.set_dpi(100)
     fig.constrained_layout=True
     fig.set_figheight(11.69)
     fig.set_figwidth(8.27)
-
+    
     
     for i,sub in enumerate(spec):
         if i<number_of_real_loops:
