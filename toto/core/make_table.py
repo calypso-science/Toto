@@ -4,6 +4,17 @@ import numpy as np
 from openpyxl.styles import Font
 from openpyxl.styles import Alignment
 
+
+
+def nice_rounding(matrix,fmt):
+    mat=np.empty((matrix.shape[0],matrix.shape[1]),dtype = "object")
+    [a,b]=np.shape(matrix)
+
+    for n in range(0,a):
+        for m in range(0,b):
+            mat[n,m]=format(matrix[n,m],fmt)
+
+    return mat
 def create_table(dest_filename,sheetname,mat):
 
     try: # try loading existing excel file
@@ -21,9 +32,9 @@ def create_table(dest_filename,sheetname,mat):
         wb.remove_sheet(std)
  
     ##get Font for the title
-    font_title = Font(name='Open Sans',size=10,bold=True)
+    font_title = Font(name='Arial',size=10,bold=True)
     Al=Alignment(horizontal='center',vertical='center')
-    reste_title = Font(name='Open Sans',size=10)
+    reste_title = Font(name='Arial',size=10)
 
     # Write title.
     for a in range(0,mat.shape[1]):
