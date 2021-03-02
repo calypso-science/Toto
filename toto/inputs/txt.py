@@ -119,15 +119,7 @@ class TXTfile():
             raise WrongFormatError('CSV File {}: '.format(filename)+e.args[0])
 
 
-        keys=list(df.keys())
-        for key in keys:
-            if np.all(df[key].isna()):
-                del df[key] 
 
-            ### check if all numerics
-            if not np.asarray(df[key].values).dtype.kind in _NUMERIC_KINDS:
-                print('Warning %s: this key was deleted containes string' % key)
-                del df[key]
 
         self.data.append(df)
 
@@ -167,6 +159,19 @@ class TXTfile():
             keys=self.data[i].keys()
             for key in keys:
                 self.data[i][key].long_name=key  
+
+
+
+            # keys=list(df.keys())
+            # for key in keys:
+            #     if np.all(df[key].isna()):
+            #         del df[key] 
+
+            #     ### check if all numerics
+            #     if not np.asarray(df[key].values).dtype.kind in _NUMERIC_KINDS:
+            #         print('Warning %s: this key was deleted containes string' % key)
+            #         del df[key]
+
     def add_unit(self,i):
 
         keys=self.data[i].keys()

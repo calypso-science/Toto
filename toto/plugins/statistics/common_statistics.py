@@ -38,10 +38,10 @@ class Statistics:
         min_occ=args['Minimum occurrence (main direction) [%]']
 
         if isinstance(drr,str):
-            statf=['min','max','mean','std',[90,95,99]]
-            #statf=['min','max','mean','std',[1,5,10,50,80,90,95,98,99]]
+            #statf=['min','max','mean','std',[90,95,99]]
+            statf=['min','max','mean','std',[1,5,10,50,90,95,99]] 
         else:
-            statf=['min','max','mean','std',[1,5,10,50,80,90,95,98,99],np.nan]         
+            statf=['min','max','mean','std',[1,5,10,50,90,95,99],np.nan]         
 
         hem=args['Time blocking']
         filename=os.path.join(args['folder out'],os.path.splitext(self.data.filename)[0]+'stat.xlsx')
