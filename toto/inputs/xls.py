@@ -85,7 +85,7 @@ class XLSfile():
             try:
                 df=pd.read_excel(filename,sheet_name=sheet,skiprows=self.fileparam.skiprows,\
                         header=None,names=colname,skipfooter=self.fileparam.skipfooter,\
-                        na_values=self.fileparam.miss_val)
+                        na_values=self.fileparam.miss_val,engine='openpyxl')
             except pd.errors.ParserError as e:
                 raise WrongFormatError('XLS File {}: '.format(filename)+e.args[0])
 

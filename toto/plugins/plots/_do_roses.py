@@ -92,6 +92,7 @@ def do_roses(time,spd,drr,units,title,spdedg,quadran,time_blocking,fileout,show=
         spec = strategies.SquareStrategy().get_grid(number_of_real_loops)
         fig = plt.gcf()
     
+
     fig.set_dpi(100)
     fig.constrained_layout=True
     fig.set_figheight(11.69)
