@@ -15,7 +15,8 @@ class Woodside:
         self.dfout = pd.DataFrame(index=self.data.index.copy())
 
 
-    def woodside_statistics(self,mag=['mag'],drr='drr',args={'folder out':os.getcwd(),
+    def woodside_statistics(self,mag=['mag'],drr='drr',args={'Minimum occurrence (main direction) [%]':15,
+                                                    'folder out':os.getcwd(),
                                                     'type':{'South hemisphere(Summer/Winter)':True,\
                                                             'South hemisphere 4 seasons': False,
                                                             'North hemishere(Summer/Winter)':False,
@@ -36,6 +37,7 @@ class Woodside:
         else:
             statf=['min','max','mean','std',[1,5,10,50,80,90,95,98,99],np.nan]         
 
+        min_occ=args['Minimum occurrence (main direction) [%]']
         hem=args['type']
         filename=os.path.join(args['folder out'],os.path.splitext(self.data.filename)[0]+'stat.xlsx')
         sheetname=self.data[mag].short_name
@@ -46,7 +48,7 @@ class Woodside:
 
         for ma in mag:
             data=self.data[ma]
-            do_stats(time,statf,data,drr,hem,filename,ma)
+            do_stats(time,statf,data,drr,hem,filename,ma,min_occ)
 
 
 
