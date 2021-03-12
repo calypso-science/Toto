@@ -92,7 +92,7 @@ class TideAnalysis:
         lat=latitude
         ray=args['Minimum SNR']
         demeaned = self.data[mag].values - np.nanmean(self.data[mag].values)
-        opts = dict(method='ols',conf_int='linear', Rayleigh_min=ray)
+        opts = dict(method='ols',conf_int='linear', trend=False, Rayleigh_min=ray)
         coef = solve(stime,demeaned,lat= lat,**opts)
 
 
