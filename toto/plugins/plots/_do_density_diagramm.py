@@ -39,7 +39,7 @@ def do_density_diagramm(X,Y,X_short_name,Y_short_name,X_unit,Y_unit,Xlim,Ylim,fi
 
     zi = k(np.vstack([xi.flatten(), yi.flatten()]))
     zi[zi<0.001]=np.nan
-    print(zi)
+
     # Make the plot
     plt.pcolormesh(xi, yi, zi.reshape(xi.shape))
     plt.colorbar()
