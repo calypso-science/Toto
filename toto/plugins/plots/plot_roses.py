@@ -65,8 +65,8 @@ class StatPlots:
         'X name':'',
         'Y unit':'',
         'X unit':'',
-        'X limits':[0,np.inf],
         'Y limits':[0,np.inf],
+        'X limits':[0,np.inf],
         'display':{'On':True,'Off':False},
         'folder out':os.getcwd()}):
 

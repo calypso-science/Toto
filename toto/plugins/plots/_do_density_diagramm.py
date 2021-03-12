@@ -29,7 +29,7 @@ def do_density_diagramm(X,Y,X_short_name,Y_short_name,X_unit,Y_unit,Xlim,Ylim,fi
     ymin=Ylim[0]
     xmin=Xlim[0]
     # Evaluate a gaussian kde on a regular grid of nbins x nbins over data extents
-    nbins=100
+    nbins=50
     
     bad = np.logical_or(np.isnan(X),np.isnan(Y))
     X=X[~bad]
@@ -38,7 +38,8 @@ def do_density_diagramm(X,Y,X_short_name,Y_short_name,X_unit,Y_unit,Xlim,Ylim,fi
     xi, yi = np.mgrid[xmin:xmax:nbins*1j, ymin:ymax:nbins*1j]
 
     zi = k(np.vstack([xi.flatten(), yi.flatten()]))
- 
+    zi[zi<0.001]=np.nan
+    print(zi)
     # Make the plot
     plt.pcolormesh(xi, yi, zi.reshape(xi.shape))
     plt.colorbar()
