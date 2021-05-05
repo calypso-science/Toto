@@ -104,7 +104,7 @@ class DataTransformation:
 
 
         fac=((np.log(h/z0)-1)/np.log(z/z0))
-        self.dfout[self.data[u].short_name+'m']=U*fac
+        self.dfout[u+'m']=U*fac
         return self.dfout
 
     def hs_sea(self,hs='hs',hs_swell='hs_swell',args={}):
