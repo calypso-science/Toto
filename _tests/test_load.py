@@ -1,11 +1,11 @@
 import os,sys
 import numpy as np
 import pandas as pd
-from toto.inputs.xls import XLSfile
+from toto.inputs.txt import TXTfile
 
 
-filename=r'../Raglan1.csv'
-tx=TXTfile([filename],colNamesLine=1,miss_val='GAP',sep=',',skiprows=1,unitNamesLine=0,time_col_name={'2008':'year','7':'month','1':'day','13':'hour','5':'Minute','0':'second'})
+filename=r'test.csv'
+tx=TXTfile([filename],colNamesLine=1,miss_val='NaN',sep=',',skiprows=1,unit='custom',time_col_name='time',unitNamesLine=0,single_column=True,customUnit='%d/%m/%Y %H:%M')
 tx.reads()
 tx.read_time()
 df=tx._toDataFrame()
