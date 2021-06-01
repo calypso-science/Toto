@@ -30,7 +30,10 @@ def do_stats(time,statf,data,drr,hem,filename,sheetname,min_occ):
             if any(idx):
                 row=[datetime.date(1900, mo, 1).strftime('%B')]
                 for stat in statf:
-                    if isinstance(stat,str):
+                    if stat=='n':
+                        tmp=data[idx]
+                        row.append('%.2f'%len(tmp[~np.isnan(tmp)]))
+                    elif isinstance(stat,str):
                         fct=getattr(np, 'nan'+stat)
                         row.append('%.2f'%fct(data[idx]))
                     elif isinstance(stat,list):
@@ -88,7 +91,10 @@ def do_stats(time,statf,data,drr,hem,filename,sheetname,min_occ):
             if any(idx):
                 row=[sea_names[i]]
                 for stat in statf:
-                    if isinstance(stat,str):
+                    if stat=='n':
+                        tmp=data[idx]
+                        row.append('%.2f'%len(tmp[~np.isnan(tmp)]))
+                    elif isinstance(stat,str):
                         fct=getattr(np, 'nan'+stat)
                         row.append('%.2f'%fct(data[idx]))
                     elif isinstance(stat,list):
@@ -107,7 +113,10 @@ def do_stats(time,statf,data,drr,hem,filename,sheetname,min_occ):
         # %% Do total
         row=['Total']
         for stat in statf:
-            if isinstance(stat,str):
+            if stat=='n':
+                tmp=data[idx]
+                row.append('%.2f'%len(tmp[~np.isnan(tmp)]))
+            elif isinstance(stat,str):
                 fct=getattr(np, 'nan'+stat)
                 row.append('%.2f'%fct(data))
             elif isinstance(stat,list):
