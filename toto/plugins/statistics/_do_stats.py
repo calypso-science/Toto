@@ -114,8 +114,7 @@ def do_stats(time,statf,data,drr,hem,filename,sheetname,min_occ):
         row=['Total']
         for stat in statf:
             if stat=='n':
-                tmp=data[idx]
-                row.append('%.2f'%len(tmp[~np.isnan(tmp)]))
+                row.append('%.2f'%len(data[~np.isnan(data)]))
             elif isinstance(stat,str):
                 fct=getattr(np, 'nan'+stat)
                 row.append('%.2f'%fct(data))
