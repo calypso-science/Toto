@@ -33,7 +33,7 @@ def despike_phasespace3d( input_array,args={}) :
 
         # step 2: estimate angle between f and f_tt axis
         if n_loop==1:
-          theta = np.arctan2( np.sum(f*f_tt), np.sum(f**2) )
+          theta = np.arctan2( np.nansum(f*f_tt), np.nansum(f**2) )
         
 
         #step 3: checking outlier in the 3D phase space
