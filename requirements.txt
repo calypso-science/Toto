@@ -18,3 +18,4 @@ grid_strategy
 xlwt
 xlrd
 requests
+oceans
