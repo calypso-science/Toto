@@ -1,3 +1,7 @@
+"""
+Apply a low pass 1st or 2nd order lanczos filter
+"""
+
 from scipy.signal import butter, filtfilt, detrend
 from oceans.filters import lanc
 import numpy as np

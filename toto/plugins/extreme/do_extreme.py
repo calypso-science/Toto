@@ -1,13 +1,91 @@
 import pandas as pd
 import os
-from ...core.toolbox import display_message
+from ...core.toolbox import display_message,dir_interval
+from ._extreme_tools import ExtremeBase
+import numpy as np
 
 @pd.api.extensions.register_dataframe_accessor("Extreme")
-
-class Extreme:
+class Extreme(ExtremeBase):
     def __init__(self, pandas_obj):
-        self.data = pandas_obj
-        self.dfout = self.data.copy()
+         super(Extreme, self).__init__(pandas_obj)
+
+
+    def distribution_shape(self,magnitude='magnitude',direction_optional='direction_optional',\
+        args={'Fitting distribution':{'Weibull':True,'Gumbel':False,'GPD':False,'GEV':False},
+         'Method':{'pkd':False,'pwm':False,'mom':False,'ml':True},
+         'threshold type':{'percentile':True,'value':False},
+         'threshold value':95.0,
+         'Directional':{'On':True,'Off':False},
+         'Minimum number of peaks over threshold': 30,
+         'Minimum time interval between peaks (h)':24.0,
+         'Direction binning':{'centered':True,'not-centered':False},
+         'Direction interval': 45.,
+         'Time blocking':{'Annual':True,'Seasonal (South hemisphere)':False,'Seasonal (North hemisphere)':False,'Monthly':False},
+         'Display peaks':{'On':True,'Off':False},
+         'Display CDFs':{'On':True,'Off':False},
+         'folder out':os.getcwd()
+         }):
+
+        """This function is used for distribution analysis of any type.
+        It generates return the shape and scale of a distribution.
+        Inputs can be:
+         -only magnitude (omni-directional extreme value ananlysis)
+         -magnitute and direction (directional ARI with omni or directional POT)_
+        """
+
+        # variabl check
+        if direction_optional not in self.data:
+            direction_optional=None
+
+        folderout=os.path.join(args['folder out'])
+
+        ## Inputs
+        fitting=args['Fitting distribution']
+        method=args['Method']
+        min_peak=args['Minimum number of peaks over threshold']      
+
+        if args['Directional']=='On':
+            drr_interval=dir_interval(args['Direction interval'],args['Direction binning'])
+        else:
+            drr_interval=[0,360]
+
+        time_blocking=args['Time blocking']
+        pks_opt={}
+        thresh=args['threshold value']
+        if args['threshold type']=='percentile':
+            sort_data=np.sort(self.dfout[magnitude].values)
+            pks_opt['height']=sort_data[int(np.round(len(sort_data)*(thresh/100)))]
+        else:
+            pks_opt['height']=thresh
+
+        pks_opt['distance']=args['Minimum time interval between peaks (h)']*(self.sint/3600)
+
+        self._get_peaks(magnitude,drr=direction_optional,directional_interval=drr_interval,time_blocking=time_blocking,peaks_options=pks_opt,min_peak=min_peak)
+
+        if 'Omni' not in self.peaks_index['Annual']:
+            print('No Peak found !!')
+            return 'No Peak found !!'
+        else:
+            self._clean_peak()
+
+        self._get_shape(magnitude,fitting,method,time_blocking,)
+
+        if args['Display peaks']=='On':
+            self._plot_peaks(magnitude,display=True,folder=folderout)
+        else:
+            self._plot_peaks(magnitude,display=False,folder=folderout)
+
+        all_dirs=list(self.peaks_index['Annual'].keys())
+        if args['Display CDFs']=='On':
+            display=True
+        else:
+            display=False
+
+        for all_dir in all_dirs:
+            self._plot_cdfs(magnitude,drr=all_dir,display=display,folder=folderout)
+
+        self._export_shape_as_xls([magnitude],fitting,filename=os.path.join(folderout,self.file+'Shape.xlsx'))
+
 
     def extreme_water_elevation(self,tide='tide',surge='surge',
         args={'Fitting distribution':{'Weibull':True,'Gumbel':False,'GPD':False,'GEV':False},
