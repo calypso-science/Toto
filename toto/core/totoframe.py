@@ -29,7 +29,8 @@ def filled_gap(df,missing_value=np.NaN):
 
     df0=pd.DataFrame(index=idx)
     df0.index.name='time'
-    del df['time']
+    if 'time' in df:
+        del df['time']
     tol=int(dt*2)
     df=pd.merge_asof(df0,df,on='time',direction='nearest', tolerance=pd.Timedelta("%ims"%tol)).set_index('time',drop=False)
 
