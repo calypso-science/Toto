@@ -58,15 +58,17 @@ class Statistics:
         '''function to output comparison stat between measured and predicted data
             i.e BIAS,MAE,RMSE,MRAE'''
 
-            
+        if not hasattr(self.data,'filename'):
+            self.data.filename=''
+
         filename=os.path.join(args['folder out'],os.path.splitext(self.data.filename)[0]+'compstat.xlsx')
         hind=self.data[hindcast].values
         meas=self.data[measured].values
 
         
-        error_message=do_comp_stats(filename,hind,meas,self.data[hindcast].short_name)
-        if isintance(error_message,str):
-            return error_message
+        do_comp_stats(filename,hind,meas,hindcast)
+        # if isinstance(error_message,str):
+        #     return error_message
 
 
     def Directional_statistics(self,magnitude='magnitude',direction='direction',\
