@@ -38,8 +38,8 @@ class TideAnalysis:
         Works if NaN are in the timeseries"""
 
         if hasattr(self.data,'latitude'):
-            latitude=self.data.latitude
-            if not self.data.latitude:
+            latitude=self.data.latitude[0]
+            if not latitude:
                 latitude=args['Latitude']
         else:
             latitude=args['Latitude']
