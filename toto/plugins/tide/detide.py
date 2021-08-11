@@ -1,13 +1,14 @@
-from utide import solve,reconstruct
+from utide import solve,reconstruct,ut_constants,utilities
 import pandas as pd
 import os
 from ...core.make_table import create_table
 import numpy as np
 from matplotlib.dates import date2num,num2date 
-from datetime import datetime,date
+from datetime import datetime,date,timedelta
 from ...core.make_table import create_table
 import copy
 from ...core.toolbox import peaks
+
 
 @pd.api.extensions.register_dataframe_accessor("TideAnalysis")
 class TideAnalysis:
@@ -71,6 +72,66 @@ class TideAnalysis:
         
         return self.dfout
 
+    def recreate(self,\
+        args={'cons file':os.path.join(os.getcwd(),'cons_list.txt'),\
+        'column cons': 'cons',
+        'column amp': 'amp',
+        'column pha': 'pha',
+        'minimum time':datetime.now(),'maximum time':datetime.now()+timedelta(days=7),'dt(s)':3600,
+        'Latitude':-36.0,
+        }):
+
+        # if not os.pagth.isfile(args['cons file']):
+        #     print('Can''t find file: %s' % args['cons file'])
+
+        # try:
+        df = pd.read_csv(args['cons file'])
+        # except:
+        #     print('Can''t read file with pandas.read_csv')
+        #     return
+
+        # if (args['column cons'] or args['column amp'] or args['column pha']) not in df:
+        #     print('Can''t find the columns')
+        #     return       
+
+        constituents=df[args['column cons']].values
+        amplitudes=df[args['column amp']].values
+        phases=df[args['column pha']].values
+
+
+        latitude=args['Latitude']
+
+        min_time=args['minimum time']
+        max_time=args['maximum time']
+        min_dt=args['dt(s)']
+
+
+        idx = pd.period_range(args['minimum time'], args['maximum time'],freq='%is'%args['dt(s)'])
+        idx=idx.to_timestamp()
+        df_new=pd.DataFrame(index=idx)
+
+        const_idx = np.asarray([ut_constants['const']['name'].tolist().index(i) for i in constituents])
+        frq = ut_constants['const']['freq'][const_idx]
+
+        coef = utilities.Bunch(name=constituents, mean=0, slope=0)
+        coef['aux'] = utilities.Bunch(reftime=729572.47916666674, lind=const_idx, frq=frq)
+        coef['aux']['opt'] = utilities.Bunch(twodim=False, nodsatlint=False, nodsatnone=False,nodiagn=True,
+                                   gwchlint=False, gwchnone=False, notrend=True, prefilt=[])
+
+        # Prepare the time data for predicting the time series. UTide needs MATLAB times.
+        times = date2num(df_new.index)
+
+
+        coef['aux']['lat'] = latitude  # float
+        coef['A'] = amplitudes
+        coef['g'] = phases
+        coef['A_ci'] = np.zeros(amplitudes.shape)
+        coef['g_ci'] = np.zeros(phases.shape)
+        df_new['tide'] = reconstruct(times, coef, verbose=True).h
+
+        self.dfout=df_new#pd.merge_asof(self.dfout,df_new,on='time',direction='nearest', tolerance=pd.Timedelta("1s")).set_index('time')
+        self.dfout.index.name='time' 
+        return self.dfout
     def predict(self,mag='mag',\
         args={'minimum time':datetime,'maximum time':datetime,'dt(s)':60,'Minimum SNR':2,\
         'Latitude':-36.0,
@@ -80,7 +141,7 @@ class TideAnalysis:
         Works if NaN are in the timeseries"""
 
         if hasattr(self.data,'latitude'):
-            latitude=self.data.latitude
+            latitude=self.data.latitude[0]
             if not self.data.latitude:
                 latitude=args['Latitude']
         else:
