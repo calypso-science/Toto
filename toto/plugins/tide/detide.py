@@ -10,12 +10,41 @@ import copy
 from ...core.toolbox import peaks
 
 
+
 @pd.api.extensions.register_dataframe_accessor("TideAnalysis")
 class TideAnalysis:
     def __init__(self, pandas_obj):
 #        self._validate(pandas_obj)
         self.data = pandas_obj
         self.dfout = pd.DataFrame(index=self.data.index.copy())
+
+    def _cons2ts(min_time,max_time,dt,constituents,amplitudes,phases,latitude):
+        
+        idx = pd.period_range(min_time, max_time,freq='%is'%dt)
+        idx=idx.to_timestamp()
+        df_new=pd.DataFrame(index=idx)
+
+        const_idx = np.asarray([ut_constants['const']['name'].tolist().index(i) for i in constituents])
+        frq = ut_constants['const']['freq'][const_idx]
+
+        coef = utilities.Bunch(name=constituents, mean=0, slope=0)
+        coef['aux'] = utilities.Bunch(reftime=729572.47916666674, lind=const_idx, frq=frq)
+        coef['aux']['opt'] = utilities.Bunch(twodim=False, nodsatlint=False, nodsatnone=False,nodiagn=True,
+                                   gwchlint=False, gwchnone=False, notrend=True, prefilt=[])
+
+        # Prepare the time data for predicting the time series. UTide needs MATLAB times.
+        times = date2num(df_new.index)
+
+
+        coef['aux']['lat'] = latitude  # float
+        coef['A'] = amplitudes
+        coef['g'] = phases
+        coef['A_ci'] = np.zeros(amplitudes.shape)
+        coef['g_ci'] = np.zeros(phases.shape)
+        df_new['tide'] = reconstruct(times, coef, verbose=True).h
+
+        return df_new
+
     def _export_cons(self,outfile,var,cons,amp,pha):
 
         mat=[]
@@ -103,31 +132,12 @@ class TideAnalysis:
 
         min_time=args['minimum time']
         max_time=args['maximum time']
-        min_dt=args['dt(s)']
+        dt=args['dt(s)']
 
 
-        idx = pd.period_range(args['minimum time'], args['maximum time'],freq='%is'%args['dt(s)'])
-        idx=idx.to_timestamp()
-        df_new=pd.DataFrame(index=idx)
-
-        const_idx = np.asarray([ut_constants['const']['name'].tolist().index(i) for i in constituents])
-        frq = ut_constants['const']['freq'][const_idx]
-
-        coef = utilities.Bunch(name=constituents, mean=0, slope=0)
-        coef['aux'] = utilities.Bunch(reftime=729572.47916666674, lind=const_idx, frq=frq)
-        coef['aux']['opt'] = utilities.Bunch(twodim=False, nodsatlint=False, nodsatnone=False,nodiagn=True,
-                                   gwchlint=False, gwchnone=False, notrend=True, prefilt=[])
-
-        # Prepare the time data for predicting the time series. UTide needs MATLAB times.
-        times = date2num(df_new.index)
+        df_new=cons2ts(min_time,max_time,dt,constituents,amplitudes,phase,latitude)
 
 
-        coef['aux']['lat'] = latitude  # float
-        coef['A'] = amplitudes
-        coef['g'] = phases
-        coef['A_ci'] = np.zeros(amplitudes.shape)
-        coef['g_ci'] = np.zeros(phases.shape)
-        df_new['tide'] = reconstruct(times, coef, verbose=True).h
 
         self.dfout=df_new#pd.merge_asof(self.dfout,df_new,on='time',direction='nearest', tolerance=pd.Timedelta("1s")).set_index('time')
         self.dfout.index.name='time' 
