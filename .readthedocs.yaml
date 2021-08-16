@@ -15,3 +15,9 @@ python:
   install:
     - requirements: requirements1.txt
     - requirements: requirements2.txt
+    - method: pip
+      path: .
+      extra_requirements:
+        - docs
+    - method: setuptools
+      path: .
