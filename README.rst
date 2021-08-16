@@ -2,6 +2,13 @@ Toto
 ===========
 Python library for ocean timeseries analysis spectra.
 
+.. image:: https://readthedocs.org/projects/totodoc/badge/?version=latest
+    :target: https://totodoc.readthedocs.io/en/latest/?badge=latest
+    :alt: Documentation Status
+
+Documentation:
+--------------
+The documentation is hosted on ReadTheDocs at https://totodoc.readthedocs.io/.
 
 Main contents:
 --------------
