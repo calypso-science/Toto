@@ -14,7 +14,7 @@ with open(os.path.join(HERE, "attributes.yml")) as stream:
 
 def set_metadata_attributes(Metadata):
     """
-    Standarise CF attributes in specarray variables
+    Standarise CF attributes in Toto variables
     """
     for varname, varattrs in attrs.ATTRS.items():
         try:

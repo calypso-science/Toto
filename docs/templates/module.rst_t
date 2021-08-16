@@ -1,0 +1,15 @@
+.. image:: ../_static/calypso.png
+   :width: 150 px
+   :align: right
+
+{{-"\n" }}
+
+{%- if show_headings %}
+{{- basename | e | heading }}
+
+{% endif -%}
+.. automodule:: {{ qualname }}
+{%- for option in automodule_options %}
+   :{{ option }}:
+{%- endfor %}
+

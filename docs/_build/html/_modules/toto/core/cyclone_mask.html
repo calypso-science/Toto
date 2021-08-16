@@ -1,0 +1,311 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>toto.core.cyclone_mask &#8212; Toto 0.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css" />
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for toto.core.cyclone_mask</h1><div class="highlight"><pre>
+<span></span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">urllib.request</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span><span class="n">time</span>
+<span class="kn">from</span> <span class="nn">..core.toolbox</span> <span class="kn">import</span> <span class="n">sph2cart</span>
+<span class="kn">from</span> <span class="nn">matplotlib.dates</span> <span class="kn">import</span> <span class="n">date2num</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="n">YEAR0</span><span class="o">=</span><span class="mi">1950</span>
+
+<div class="viewcode-block" id="binaries_directory"><a class="viewcode-back" href="../../../source/toto.core.html#toto.core.cyclone_mask.binaries_directory">[docs]</a><span class="k">def</span> <span class="nf">binaries_directory</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Return the installation directory, or None&quot;&quot;&quot;</span>
+
+
+    <span class="k">if</span> <span class="s1">&#39;--user&#39;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">:</span>
+        <span class="kn">import</span> <span class="nn">site</span>
+        <span class="n">paths</span> <span class="o">=</span> <span class="p">(</span><span class="n">site</span><span class="o">.</span><span class="n">getusersitepackages</span><span class="p">(),)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">py_version</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">.</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">paths</span> <span class="o">=</span> <span class="p">(</span><span class="n">s</span> <span class="o">%</span> <span class="p">(</span><span class="n">py_version</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="p">(</span>
+
+            <span class="n">sys</span><span class="o">.</span><span class="n">prefix</span> <span class="o">+</span> <span class="s1">&#39;/lib/python</span><span class="si">%s</span><span class="s1">/dist-packages/&#39;</span><span class="p">,</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">prefix</span> <span class="o">+</span> <span class="s1">&#39;/lib/python</span><span class="si">%s</span><span class="s1">/site-packages/&#39;</span><span class="p">,</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">prefix</span> <span class="o">+</span> <span class="s1">&#39;/local/lib/python</span><span class="si">%s</span><span class="s1">/dist-packages/&#39;</span><span class="p">,</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">prefix</span> <span class="o">+</span> <span class="s1">&#39;/local/lib/python</span><span class="si">%s</span><span class="s1">/site-packages/&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;/Library/Python/</span><span class="si">%s</span><span class="s1">/site-packages/&#39;</span><span class="p">,</span>
+        <span class="p">))</span>
+
+
+    <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">paths</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">path</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span><span class="o">!=</span><span class="s1">&#39;posix&#39;</span><span class="p">:</span>
+
+        <span class="n">HERE</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">library.zip&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+        <span class="n">windows_paths</span><span class="o">=</span><span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">prefix</span><span class="p">,</span><span class="s1">&#39;Lib</span><span class="se">\\</span><span class="s1">site-packages&#39;</span><span class="p">),</span>\
+                       <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">HERE</span><span class="p">,</span><span class="s1">&#39;..&#39;</span><span class="p">,</span><span class="s1">&#39;cyclone&#39;</span><span class="p">)]</span>
+
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;TotoPath&#39;</span><span class="p">):</span>
+            <span class="n">windows_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;TotoPath&#39;</span><span class="p">),</span><span class="s1">&#39;..&#39;</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">windows_paths</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">path</span>  
+    
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;no installation path found&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="sphere_dist"><a class="viewcode-back" href="../../../source/toto.core.html#toto.core.cyclone_mask.sphere_dist">[docs]</a><span class="k">def</span> <span class="nf">sphere_dist</span><span class="p">(</span><span class="n">from_lonlat</span><span class="p">,</span><span class="n">to_lonlats</span><span class="p">,</span><span class="n">radius_of_sphere</span><span class="o">=</span><span class="mf">6378.1</span><span class="p">):</span>
+
+    <span class="c1">#find vector in spherical coordinates from longitude and latitudes</span>
+
+    <span class="n">fx</span><span class="p">,</span><span class="n">fy</span><span class="p">,</span><span class="n">fz</span> <span class="o">=</span> <span class="n">sph2cart</span><span class="p">(</span><span class="n">from_lonlat</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">180</span><span class="p">,</span><span class="n">from_lonlat</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">180</span><span class="p">,</span><span class="n">radius_of_sphere</span><span class="p">)</span>
+    <span class="n">tx</span><span class="p">,</span><span class="n">ty</span><span class="p">,</span><span class="n">tz</span> <span class="o">=</span> <span class="n">sph2cart</span><span class="p">(</span><span class="n">to_lonlats</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">180</span><span class="p">,</span><span class="n">to_lonlats</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">180</span><span class="p">,</span><span class="n">radius_of_sphere</span><span class="p">)</span>
+    <span class="n">from_point</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">fx</span><span class="p">,</span><span class="n">fy</span><span class="p">,</span><span class="n">fz</span><span class="p">])</span>
+    <span class="n">to_points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">tx</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span><span class="n">ty</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span><span class="n">tz</span><span class="o">.</span><span class="n">flatten</span><span class="p">()])</span><span class="o">.</span><span class="n">T</span>
+
+
+
+    <span class="n">from_point_m</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">from_point</span><span class="p">,[</span><span class="n">to_points</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">dot_prod</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">from_point_m</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">*</span><span class="n">to_points</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+
+    <span class="n">abs_from_point_m</span><span class="o">=</span><span class="p">(</span><span class="n">from_point_m</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">from_point_m</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">from_point_m</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mf">0.5</span><span class="p">;</span>
+    <span class="n">abs_to_points</span><span class="o">=</span><span class="p">(</span><span class="n">to_points</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">to_points</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">to_points</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mf">0.5</span>
+
+    <span class="n">phi</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">dot_prod</span><span class="o">/</span><span class="p">(</span><span class="n">abs_from_point_m</span><span class="o">*</span><span class="n">abs_to_points</span><span class="p">));</span>
+    <span class="n">dist</span><span class="o">=</span><span class="n">radius_of_sphere</span><span class="o">*</span><span class="n">phi</span>
+    <span class="k">return</span> <span class="n">dist</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">to_lonlats</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Cyclone"><a class="viewcode-back" href="../../../source/toto.core.html#toto.core.cyclone_mask.Cyclone">[docs]</a><span class="k">class</span> <span class="nc">Cyclone</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">output_directory</span><span class="o">=</span><span class="s1">&#39;/tmp/&#39;</span><span class="p">,</span>
+                    <span class="n">url</span><span class="o">=</span><span class="s1">&#39;https://www.ncei.noaa.gov/data/international-best-track-archive-for-climate-stewardship-ibtracs/v04r00/access/netcdf/IBTrACS.ALL.v04r00.nc&#39;</span><span class="p">,</span>
+                    <span class="n">cyclone_file</span><span class="o">=</span><span class="s1">&#39;/tmp/IBTrACS.ALL.v04r00.nc&#39;</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">cyclone_file</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">download_cyclone</span><span class="p">(</span><span class="n">output_directory</span><span class="p">,</span><span class="n">url</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">default</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">read_cyclone</span><span class="p">(</span><span class="n">cyclone_file</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_categories</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="Cyclone.default"><a class="viewcode-back" href="../../../source/toto.core.html#toto.core.cyclone_mask.Cyclone.default">[docs]</a>    <span class="k">def</span> <span class="nf">default</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min_cat</span><span class="o">=</span><span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;from centre&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rmw</span><span class="o">=</span><span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mask_before</span><span class="o">=</span><span class="mi">12</span><span class="o">/</span><span class="mf">24.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mask_after</span><span class="o">=</span><span class="mi">12</span><span class="o">/</span><span class="mf">24.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">radius</span><span class="o">=</span><span class="mi">500</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="o">=</span><span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="Cyclone.download_cyclone"><a class="viewcode-back" href="../../../source/toto.core.html#toto.core.cyclone_mask.Cyclone.download_cyclone">[docs]</a>    <span class="k">def</span> <span class="nf">download_cyclone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">output_directory</span><span class="p">,</span><span class="n">url</span><span class="p">):</span>
+        <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlretrieve</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_directory</span><span class="p">,</span><span class="s1">&#39;IBTrACS.ALL.v04r00.nc&#39;</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="Cyclone.read_cyclone"><a class="viewcode-back" href="../../../source/toto.core.html#toto.core.cyclone_mask.Cyclone.read_cyclone">[docs]</a>    <span class="k">def</span> <span class="nf">read_cyclone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">filename</span><span class="p">):</span>
+        <span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">storm_ids</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">name</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">))</span>
+                     <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">ds</span><span class="p">[</span><span class="s1">&#39;sid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">]</span>
+        <span class="n">sel_tracks</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">years</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">int</span><span class="p">(</span><span class="n">iso_name</span><span class="p">[:</span><span class="mi">4</span><span class="p">])</span> <span class="k">for</span> <span class="n">iso_name</span> <span class="ow">in</span> <span class="n">storm_ids</span><span class="p">])</span>
+        <span class="n">ind</span><span class="o">=</span><span class="n">years</span><span class="o">&gt;</span><span class="n">YEAR0</span><span class="p">;</span>
+        <span class="n">storm_ids</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">storm_ids</span><span class="p">)</span>
+
+        <span class="n">storm_ids</span><span class="o">=</span><span class="n">storm_ids</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span>
+        <span class="n">name</span><span class="o">=</span><span class="n">ds</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">][</span><span class="n">ind</span><span class="p">]</span>
+        <span class="n">lon</span><span class="o">=</span><span class="n">ds</span><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">][</span><span class="n">ind</span><span class="p">]</span>
+        <span class="n">lat</span><span class="o">=</span><span class="n">ds</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">][</span><span class="n">ind</span><span class="p">]</span>
+
+        <span class="n">t</span><span class="o">=</span><span class="n">ds</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">][</span><span class="n">ind</span><span class="p">,:]</span>
+
+        <span class="c1">#Maximum Sustained Wind (MSW)provided by the US agencies</span>
+        <span class="n">Wmax</span><span class="o">=</span><span class="n">ds</span><span class="p">[</span><span class="s1">&#39;usa_wind&#39;</span><span class="p">][</span><span class="n">ind</span><span class="p">,:]</span><span class="o">*</span><span class="mf">0.514444</span> <span class="c1">#from knots to m/s</span>
+
+        <span class="c1">#Minimum Central Pressure (MCP) provided by the US agencies</span>
+        <span class="n">Press</span><span class="o">=</span><span class="n">ds</span><span class="p">[</span><span class="s1">&#39;usa_pres&#39;</span><span class="p">][</span><span class="n">ind</span><span class="p">,:]</span><span class="c1">#in mb or hPa</span>
+
+
+        <span class="c1">#radius_of_tropical_cyclone_maximum_sustained_wind_speed provided by the US agencies</span>
+        <span class="n">RMW</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s1">&#39;usa_wind&#39;</span><span class="p">][</span><span class="n">ind</span><span class="p">,:];</span>
+
+        <span class="c1">#Saffir-Simpson Hurricane Wind Scale Category</span>
+        <span class="n">category</span><span class="o">=</span><span class="n">ds</span><span class="p">[</span><span class="s1">&#39;usa_sshs&#39;</span><span class="p">][</span><span class="n">ind</span><span class="p">,:];</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cyclones</span><span class="o">=</span><span class="p">{}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cyclones</span><span class="p">[</span><span class="s1">&#39;Name&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">name</span><span class="o">.</span><span class="n">values</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cyclones</span><span class="p">[</span><span class="s1">&#39;Longitude&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cyclones</span><span class="p">[</span><span class="s1">&#39;Latitude&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cyclones</span><span class="p">[</span><span class="s1">&#39;Radius&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">RMW</span><span class="o">.</span><span class="n">values</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cyclones</span><span class="p">[</span><span class="s1">&#39;sDate&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">ds</span><span class="o">.</span><span class="n">time</span><span class="p">[</span><span class="n">ind</span><span class="p">,:]</span><span class="o">.</span><span class="n">values</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cyclones</span><span class="p">[</span><span class="s1">&#39;Pressure&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">Press</span><span class="o">.</span><span class="n">values</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cyclones</span><span class="p">[</span><span class="s1">&#39;MaximumWindSpeed&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">Wmax</span><span class="o">.</span><span class="n">values</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cyclones</span><span class="p">[</span><span class="s1">&#39;Category&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">category</span><span class="o">.</span><span class="n">values</span></div>
+
+
+
+<div class="viewcode-block" id="Cyclone.add_categories"><a class="viewcode-back" href="../../../source/toto.core.html#toto.core.cyclone_mask.Cyclone.add_categories">[docs]</a>    <span class="k">def</span> <span class="nf">add_categories</span><span class="p">(</span><span class="bp">self</span><span class="p">,):</span>
+        
+        <span class="c1"># print(&#39;.... Note: cyclone_track_functions: running &#39;&#39;add_categories&#39;&#39;&#39;);</span>
+            
+        <span class="k">if</span> <span class="s1">&#39;MaximumWindSpeed&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cyclones</span><span class="p">:</span>
+            
+            <span class="n">AustBOMWindSpeed_Limits</span><span class="o">=</span><span class="p">[</span><span class="mi">33</span><span class="p">,</span> <span class="mi">43</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">58</span><span class="p">,</span> <span class="mi">70</span><span class="p">]</span>
+            <span class="n">MaximumWindSpeed_m</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cyclones</span><span class="p">[</span><span class="s1">&#39;MaximumWindSpeed&#39;</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">AustBOMWindSpeed_Limits_m</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">AustBOMWindSpeed_Limits</span><span class="p">),</span> <span class="p">[</span><span class="n">MaximumWindSpeed_m</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="n">MaximumWindSpeed_m</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>
+            
+            <span class="bp">self</span><span class="o">.</span><span class="n">cyclones</span><span class="p">[</span><span class="s1">&#39;Cat_AustBOMWindSpeed&#39;</span><span class="p">]</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">MaximumWindSpeed_m</span><span class="o">&gt;=</span><span class="n">AustBOMWindSpeed_Limits_m</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cyclones</span><span class="p">[</span><span class="s1">&#39;MaxCat_AustBOMWindSpeed&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cyclones</span><span class="p">[</span><span class="s1">&#39;Cat_AustBOMWindSpeed&#39;</span><span class="p">],</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s1">&#39;Pressure&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cyclones</span><span class="p">:</span>
+            <span class="n">AustBOMPressure_Limits</span><span class="o">=</span><span class="p">[</span><span class="mi">1100</span><span class="p">,</span> <span class="mi">985</span><span class="p">,</span> <span class="mi">970</span><span class="p">,</span> <span class="mi">950</span><span class="p">,</span> <span class="mi">930</span><span class="p">];</span>
+            <span class="n">Pressure_m</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cyclones</span><span class="p">[</span><span class="s1">&#39;Pressure&#39;</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">AustBOMPressure_Limits_m</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">AustBOMPressure_Limits</span><span class="p">),</span> <span class="p">[</span><span class="n">Pressure_m</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="n">Pressure_m</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cyclones</span><span class="p">[</span><span class="s1">&#39;Cat_AustBOMPressure&#39;</span><span class="p">]</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">Pressure_m</span><span class="o">&gt;=</span><span class="n">AustBOMPressure_Limits_m</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cyclones</span><span class="p">[</span><span class="s1">&#39;MaxCat_AustBOMPressure&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cyclones</span><span class="p">[</span><span class="s1">&#39;Cat_AustBOMPressure&#39;</span><span class="p">],</span><span class="mi">1</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Cyclone.limit_categories_within_radius"><a class="viewcode-back" href="../../../source/toto.core.html#toto.core.cyclone_mask.Cyclone.limit_categories_within_radius">[docs]</a>    <span class="k">def</span> <span class="nf">limit_categories_within_radius</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">pos</span><span class="p">):</span>
+        <span class="n">dist</span><span class="o">=</span><span class="n">sphere_dist</span><span class="p">(</span><span class="n">pos</span><span class="p">,[</span><span class="bp">self</span><span class="o">.</span><span class="n">cyclones</span><span class="p">[</span><span class="s1">&#39;Longitude&#39;</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">cyclones</span><span class="p">[</span><span class="s1">&#39;Latitude&#39;</span><span class="p">]]);</span> <span class="c1">#radius of earth in kilometers     </span>
+        <span class="n">within_radius</span><span class="o">=</span><span class="p">(</span><span class="n">dist</span><span class="o">&lt;</span><span class="bp">self</span><span class="o">.</span><span class="n">radius</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cyclones</span><span class="p">[</span><span class="s1">&#39;Cat_AustBOMWindSpeed&#39;</span><span class="p">]</span><span class="o">&gt;</span><span class="bp">self</span><span class="o">.</span><span class="n">min_cat</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="o">+=</span><span class="n">within_radius</span></div>
+
+
+<div class="viewcode-block" id="Cyclone.remove_cyclones"><a class="viewcode-back" href="../../../source/toto.core.html#toto.core.cyclone_mask.Cyclone.remove_cyclones">[docs]</a>    <span class="k">def</span> <span class="nf">remove_cyclones</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">t</span><span class="p">,</span><span class="n">pos</span><span class="p">):</span>  
+        <span class="c1">#Calculate distance from location to cyclone track locations</span>
+        <span class="n">dist</span><span class="o">=</span><span class="n">sphere_dist</span><span class="p">(</span><span class="n">pos</span><span class="p">,[</span><span class="bp">self</span><span class="o">.</span><span class="n">cyclones</span><span class="p">[</span><span class="s1">&#39;Longitude&#39;</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">cyclones</span><span class="p">[</span><span class="s1">&#39;Latitude&#39;</span><span class="p">]])</span> <span class="c1">#radius of earth in kilometers</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rmw</span><span class="p">:</span>
+            <span class="n">within_radius</span><span class="o">=</span><span class="n">dist</span><span class="o">&lt;</span><span class="bp">self</span><span class="o">.</span><span class="n">cyclones</span><span class="p">[</span><span class="s1">&#39;Radius&#39;</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">rmw</span><span class="p">;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">within_radius</span><span class="o">=</span><span class="n">dist</span><span class="o">&lt;</span><span class="bp">self</span><span class="o">.</span><span class="n">radius</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="o">+=</span><span class="n">within_radius</span>
+
+        <span class="n">mask</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+        <span class="n">T</span><span class="o">=</span><span class="n">date2num</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cyclones</span><span class="p">[</span><span class="s1">&#39;sDate&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+        <span class="n">T</span><span class="o">=</span><span class="n">T</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
+
+        <span class="n">t</span><span class="o">=</span><span class="n">date2num</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+        <span class="n">mask</span><span class="o">=</span><span class="n">t</span><span class="o">&lt;</span><span class="mi">0</span> <span class="c1"># just to start with False array</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">T</span><span class="p">)):</span>
+            <span class="n">mask</span><span class="o">+=</span><span class="p">(</span><span class="n">t</span><span class="o">&gt;=</span><span class="n">T</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">mask_before</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">t</span><span class="o">&lt;=</span><span class="n">T</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">mask_after</span><span class="p">)</span>
+     
+
+        <span class="k">return</span> <span class="n">mask</span></div></div>
+        
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">cy</span><span class="o">=</span><span class="n">Cyclone</span><span class="p">(</span><span class="n">cyclone_file</span><span class="o">=</span><span class="s1">&#39;/tmp/IBTrACS.ALL.v04r00.nc&#39;</span><span class="p">)</span>
+    <span class="n">cy</span><span class="o">.</span><span class="n">limit_categories_within_radius</span><span class="p">([</span><span class="mf">94.6</span><span class="p">,</span><span class="mf">10.6</span><span class="p">])</span>
+    <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+    <span class="n">dates</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="s1">&#39;1/1/2000&#39;</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+    <span class="n">msk</span><span class="o">=</span><span class="n">cy</span><span class="o">.</span><span class="n">remove_cyclones</span><span class="p">(</span><span class="n">dates</span><span class="p">,[</span><span class="mf">94.6</span><span class="p">,</span><span class="mf">10.6</span><span class="p">])</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">Toto</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html"> How to install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../input.html"> Inputs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../openfunct.html"> Open-source functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../closefunct.html"> Close-source functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../customize.html"> Customization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../support.html"> support</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API documentation:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/modules.html">Toto open-source</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Calypso Science.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

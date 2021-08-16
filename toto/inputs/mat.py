@@ -1,6 +1,22 @@
-"""Read netcdf from MATLAB MAT file.
-Variable must include a time variable in matlab datenum format
+"""Read MATLAB file
+    This import mat file. This class returns a Panda Dataframe with some extra attributes such as Latitude,Longitude,Units.
+    
+    Parameters
+    ~~~~~~~~~~
 
+    filename : (files,) str or list_like
+        A list of filename to process.
+
+    Notes
+    -----
+
+    The file MUST contain a variable called `time`, `t` or `timestamp` with matlab datenum time steps
+
+    Examples
+    ~~~~~~~~
+
+    >>> from toto.inputs.mat import MATfile
+    >>> nc=MATfile('filename.mat')._toDataFrame()
 """
 import glob,os,sys
 import pandas as pd

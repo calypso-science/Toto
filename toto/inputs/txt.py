@@ -1,5 +1,65 @@
-"""Read generic txt files.
+"""Read txt,csv file
+    This import text file. The function uses the read_csv function from panda <https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_csv.html>_.
+    This class returns a Panda Dataframe with some extra attributes such as Latitude,Longitude,Units.
+    
+    Parameters
+    ~~~~~~~~~~
+
+    filename : (files,) str or list_like
+        A list of filename to process.
+    sep : str, default {_default_sep}
+        Delimiter to use. If sep is None, the C engine cannot automatically detect
+        the separator, but the Python parsing engine can, meaning the latter will
+        be used and automatically detect the separator by Python's builtin sniffer
+        tool, ``csv.Sniffer``. In addition, separators longer than 1 character and
+        different from ``'\s+'`` will be interpreted as regular expressions and
+        will also force the use of the Python parsing engine. Note that regex
+        delimiters are prone to ignoring quoted data. Regex example: ``'\r\t'``.
+    skiprows : list-like, int or callable, optional
+        Line numbers to skip (0-indexed) or number of lines to skip (int)
+        at the start of the file.
+        If callable, the callable function will be evaluated against the row
+        indices, returning True if the row should be skipped and False otherwise.
+        An example of a valid callable argument would be ``lambda x: x in [0, 2]``.
+    skipfooter : int, default 0
+        Number of lines at bottom of file to skip (Unsupported with engine='c').
+    miss_val : scalar, str, list-like, or dict, optional
+        Additional strings to recognize as NA/NaN. If dict passed, specific
+        per-column NA values.  
+    colNamesLine : int, default 1
+        Line number where the header are defined
+    unitNamesLine : int, default 1
+        Line number where the units are defined        
+    single_column : bool, default False
+        The time is represented in a single column
+    customUnit : str, default '%d-%m-%Y %H:%M:%S'
+        String reprensenting the time format
+    unit : str default 's', can be 'auto','custom','matlab' or 's' and 'D'
+        unit of the single column time. Only matter if `single_column` is True
+    time_col_name: dict, default {'Year':'year','Month':'month','Day':'day','Hour':'hour','Min':'Minute','Sec':'Second'}
+        Dictonary for renaming the each column, so Panda can interprate the time. Only matter if `single_column` is False
+    colNames : List, default []
+        List of column names to use.
+    unitNames : List, default []
+        List of unit to use. 
+
+    Notes
+    -----
+
+    Whe openning the TOTOVIEW gui this function will be called with :py:class:`totoview.inputs.txtGUI`
+
+    Examples
+    ~~~~~~~~
+
+    >>> from toto.inputs.txt import TXTfile 
+    >>> tx=TXTfile([filename],colNamesLine=1,miss_val='NaN',\
+    sep=',',skiprows=1,unit='custom',time_col_name='time',unitNamesLine=0,\
+    single_column=True,customUnit='%d/%m/%Y %H:%M')
+    >>> tx.reads()
+    >>> tx.read_time()
+    >>> df=tx._toDataFrame()
 """
+
 import glob,os,sys
 import pandas as pd
 import datetime as dt

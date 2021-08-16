@@ -1,0 +1,222 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>toto.inputs.cons &#8212; Toto 0.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="toto.inputs.linz" href="toto.inputs.linz.html" />
+    <link rel="prev" title="toto.inputs package" href="toto.inputs.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <a class="reference internal image-reference" href="../_images/calypso.png"><img alt="../_images/calypso.png" class="align-right" src="../_images/calypso.png" style="width: 150px;" /></a>
+<div class="section" id="module-toto.inputs.cons">
+<span id="toto-inputs-cons"></span><h1>toto.inputs.cons<a class="headerlink" href="#module-toto.inputs.cons" title="Permalink to this headline">¶</a></h1>
+<p>Read constituens file
+This import file containing amplitude and phase for each tidal constituents. The function uses the read_csv function from panda &lt;<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_csv.html">https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_csv.html</a>&gt;_ to read three columns:</p>
+<ul class="simple">
+<li><p>Constituents name</p></li>
+<li><p>Constituents phase</p></li>
+<li><p>Constituents amplitudes</p></li>
+</ul>
+<p>This class returns a Panda Dataframe with some extra attributes such as Latitude,Longitude,Units.</p>
+<p>This uses the module Utide. &lt;<a class="reference external" href="https://github.com/wesleybowman/UTide">https://github.com/wesleybowman/UTide</a>&gt;_</p>
+<div class="section" id="parameters">
+<h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt>filename<span class="classifier">(files,) str or list_like</span></dt><dd><p>A list of filename to process.</p>
+</dd>
+<dt>sep<span class="classifier">str, default {_default_sep}</span></dt><dd><p>Delimiter to use. If sep is None, the C engine cannot automatically detect
+the separator, but the Python parsing engine can, meaning the latter will
+be used and automatically detect the separator by Python’s builtin sniffer
+tool, <code class="docutils literal notranslate"><span class="pre">csv.Sniffer</span></code>. In addition, separators longer than 1 character and
+different from <code class="docutils literal notranslate"><span class="pre">'\s+'</span></code> will be interpreted as regular expressions and
+will also force the use of the Python parsing engine. Note that regex
+delimiters are prone to ignoring quoted data. Regex example: <code class="docutils literal notranslate"><span class="pre">'</span>
+<span class="pre">'</span></code>.</p>
+</dd>
+<dt>skiprows<span class="classifier">list-like, int or callable, optional</span></dt><dd><p>Line numbers to skip (0-indexed) or number of lines to skip (int)
+at the start of the file.
+If callable, the callable function will be evaluated against the row
+indices, returning True if the row should be skipped and False otherwise.
+An example of a valid callable argument would be <code class="docutils literal notranslate"><span class="pre">lambda</span> <span class="pre">x:</span> <span class="pre">x</span> <span class="pre">in</span> <span class="pre">[0,</span> <span class="pre">2]</span></code>.</p>
+</dd>
+<dt>skipfooter<span class="classifier">int, default 0</span></dt><dd><p>Number of lines at bottom of file to skip (Unsupported with engine=’c’).</p>
+</dd>
+<dt>colNamesLine<span class="classifier">int, default 1</span></dt><dd><p>Line number where the header are defined</p>
+</dd>
+<dt>unit<span class="classifier">str default ‘degrees’, can be ‘radians’</span></dt><dd><p>unit of the phases</p>
+</dd>
+<dt>min_date<span class="classifier">datetime, default datetime.datetime(2020,1,1)</span></dt><dd><p>Start time of the timeseries</p>
+</dd>
+<dt>max_date<span class="classifier">datetime, default datetime.datetime(2020,1,1)</span></dt><dd><p>End time of the timeseries</p>
+</dd>
+<dt>dt<span class="classifier">int, default 3600</span></dt><dd><p>Time step in seconds to use when creating the timeserie</p>
+</dd>
+<dt>latitude<span class="classifier">int, default -40</span></dt><dd><p>Latitude use to calculate the timeserie</p>
+</dd>
+</dl>
+<div class="section" id="notes">
+<h3>Notes<a class="headerlink" href="#notes" title="Permalink to this headline">¶</a></h3>
+<p>Whe openning the TOTOVIEW gui this function will be called with <code class="xref py py-class docutils literal notranslate"><span class="pre">totoview.inputs.consGUI</span></code></p>
+</div>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">toto.inputs.cons</span> <span class="kn">import</span> <span class="n">CONSfile</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nc</span><span class="o">=</span><span class="n">CONSfile</span><span class="p">([</span><span class="s1">&#39;cons_list.csv&#39;</span><span class="p">],</span><span class="n">sep</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span>                               <span class="n">colNames</span><span class="o">=</span><span class="p">[],</span>                               <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;degrees&#39;</span><span class="p">,</span>                               <span class="n">miss_val</span><span class="o">=</span><span class="s1">&#39;NaN&#39;</span><span class="p">,</span>                               <span class="n">colNamesLine</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>                               <span class="n">skiprows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>                               <span class="n">skipfooter</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>                               <span class="n">col_name</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;cons&#39;</span><span class="p">:</span><span class="s1">&#39;Cons&#39;</span><span class="p">,</span><span class="s1">&#39;amp&#39;</span><span class="p">:</span><span class="s1">&#39;Amplitude&#39;</span><span class="p">,</span><span class="s1">&#39;pha&#39;</span><span class="p">:</span><span class="s1">&#39;Phase&#39;</span><span class="p">},</span>                               <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nc</span><span class="o">.</span><span class="n">reads</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nc</span><span class="o">.</span><span class="n">read_cons</span><span class="p">()</span> 
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">=</span><span class="n">nc</span><span class="o">.</span><span class="n">_toDataFrame</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="toto.inputs.cons.CONSfile">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">toto.inputs.cons.</span></span><span class="sig-name descname"><span class="pre">CONSfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'\t'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colNames</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'degrees'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">miss_val</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'NaN'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colNamesLine</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skiprows</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skipfooter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'Amplitude':</span> <span class="pre">'amp',</span> <span class="pre">'Cons':</span> <span class="pre">'cons',</span> <span class="pre">'Phase':</span> <span class="pre">'pha'}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_date</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">datetime.datetime(2020,</span> <span class="pre">1,</span> <span class="pre">1,</span> <span class="pre">0,</span> <span class="pre">0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_date</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">datetime.datetime(2020,</span> <span class="pre">1,</span> <span class="pre">9,</span> <span class="pre">0,</span> <span class="pre">0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3600</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">latitude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">40</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/inputs/cons.html#CONSfile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.inputs.cons.CONSfile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="toto.inputs.cons.CONSfile.defaultExtensions">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">defaultExtensions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/inputs/cons.html#CONSfile.defaultExtensions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.inputs.cons.CONSfile.defaultExtensions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="toto.inputs.cons.CONSfile.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/inputs/cons.html#CONSfile.read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.inputs.cons.CONSfile.read" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="toto.inputs.cons.CONSfile.read_cons">
+<span class="sig-name descname"><span class="pre">read_cons</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/inputs/cons.html#CONSfile.read_cons"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.inputs.cons.CONSfile.read_cons" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="toto.inputs.cons.CONSfile.reads">
+<span class="sig-name descname"><span class="pre">reads</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/inputs/cons.html#CONSfile.reads"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.inputs.cons.CONSfile.reads" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Toto</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html"> How to install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../input.html"> Inputs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="toto.filters.html"> Filter functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="toto.interpolations.html"> Interpolation functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="toto.selections.html"> Selection functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../customize.html"> Customization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../support.html"> support</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API documentation:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Toto open-source</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="toto.html">toto package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="toto.core.html">toto.core package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="toto.filters.html">toto.filters package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="toto.inputs.html">toto.inputs package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="toto.interpolations.html">toto.interpolations package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="toto.outputs.html">toto.outputs package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="toto.plugins.html">toto.plugins package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="toto.selections.html">toto.selections package</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">toto</a><ul>
+  <li><a href="toto.html">toto package</a><ul>
+  <li><a href="toto.inputs.html">toto.inputs package</a><ul>
+      <li>Previous: <a href="toto.inputs.html" title="previous chapter">toto.inputs package</a></li>
+      <li>Next: <a href="toto.inputs.linz.html" title="next chapter">toto.inputs.linz</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Calypso Science.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/source/toto.inputs.cons.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

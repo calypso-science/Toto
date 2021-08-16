@@ -1,0 +1,198 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>toto.inputs.mat &#8212; Toto 0.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css" />
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for toto.inputs.mat</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Read MATLAB file</span>
+<span class="sd">    This import mat file. This class returns a Panda Dataframe with some extra attributes such as Latitude,Longitude,Units.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ~~~~~~~~~~</span>
+
+<span class="sd">    filename : (files,) str or list_like</span>
+<span class="sd">        A list of filename to process.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+
+<span class="sd">    The file MUST contain a variable called `time`, `t` or `timestamp` with matlab datenum time steps</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    ~~~~~~~~</span>
+
+<span class="sd">    &gt;&gt;&gt; from toto.inputs.mat import MATfile</span>
+<span class="sd">    &gt;&gt;&gt; nc=MATfile(&#39;filename.mat&#39;)._toDataFrame()</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">glob</span><span class="o">,</span><span class="nn">os</span><span class="o">,</span><span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="kn">from</span> <span class="nn">scipy.io</span> <span class="kn">import</span> <span class="n">loadmat</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">datetime</span> <span class="k">as</span> <span class="nn">dt</span>
+
+<span class="n">TIMES</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;t&#39;</span><span class="p">,</span><span class="s1">&#39;time&#39;</span><span class="p">,</span><span class="s1">&#39;timestamp&#39;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="matlab2datetime"><a class="viewcode-back" href="../../../source/toto.inputs.html#toto.inputs.mat.matlab2datetime">[docs]</a><span class="k">def</span> <span class="nf">matlab2datetime</span><span class="p">(</span><span class="n">matlab_datenum</span><span class="p">):</span>
+    <span class="n">day</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromordinal</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">matlab_datenum</span><span class="p">))</span>
+    <span class="n">dayfrac</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="n">matlab_datenum</span><span class="o">%</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">dt</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span> <span class="o">=</span> <span class="mi">366</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">day</span> <span class="o">+</span> <span class="n">dayfrac</span></div>
+
+<div class="viewcode-block" id="MATfile"><a class="viewcode-back" href="../../../source/toto.inputs.html#toto.inputs.mat.MATfile">[docs]</a><span class="k">class</span> <span class="nc">MATfile</span><span class="p">():</span>
+
+<div class="viewcode-block" id="MATfile.defaultExtensions"><a class="viewcode-back" href="../../../source/toto.inputs.html#toto.inputs.mat.MATfile.defaultExtensions">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">defaultExtensions</span><span class="p">():</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s1">&#39;.mat&#39;</span><span class="p">]</span></div>
+
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">filenames</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">filenames</span><span class="p">,</span><span class="nb">str</span><span class="p">):</span>
+            <span class="n">filenames</span><span class="o">=</span><span class="p">[</span><span class="n">filenames</span><span class="p">]</span>
+
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">filenames</span><span class="o">=</span><span class="n">filenames</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">=</span><span class="p">[]</span>
+
+        <span class="c1"># READ </span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_reads_mat</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_reads_mat</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">filenames</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_read_mat</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">_read_mat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">filename</span><span class="p">):</span>
+       
+        <span class="n">mat</span> <span class="o">=</span> <span class="n">loadmat</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>  <span class="c1"># load mat-file</span>
+        <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mat</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)]</span>
+        <span class="n">columns_lower</span><span class="o">=</span><span class="p">[</span><span class="n">col</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">]</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">mat</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">])</span><span class="o">.</span><span class="n">T</span><span class="p">,</span><span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span>
+        <span class="n">time_col_name</span><span class="o">=</span><span class="kc">False</span>
+        <span class="k">for</span> <span class="n">time_name</span> <span class="ow">in</span> <span class="n">TIMES</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">time_name</span> <span class="ow">in</span> <span class="n">columns_lower</span><span class="p">:</span>
+                <span class="n">time_col_name</span><span class="o">=</span><span class="n">columns</span><span class="p">[</span><span class="n">columns_lower</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">time_name</span><span class="p">)]</span>
+                <span class="k">continue</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">time_col_name</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Time variable could not be found&#39;</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="n">time_col_name</span><span class="p">:</span><span class="s1">&#39;time&#39;</span><span class="p">},</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">time</span><span class="o">=</span><span class="p">[</span><span class="n">matlab2datetime</span><span class="p">(</span><span class="n">tval</span><span class="p">)</span> <span class="k">for</span> <span class="n">tval</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]]</span>
+        <span class="n">df</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">time</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">,</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">drop</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_toDataFrame</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">MATfile</span><span class="p">(</span><span class="s1">&#39;../../../test/test.mat&#39;</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">Toto</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html"> How to install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../input.html"> Inputs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../openfunct.html"> Open-source functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../closefunct.html"> Close-source functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../customize.html"> Customization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../support.html"> support</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API documentation:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/modules.html">Toto open-source</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Calypso Science.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

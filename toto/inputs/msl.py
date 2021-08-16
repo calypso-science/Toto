@@ -1,4 +1,20 @@
-"""Read netcdf from MSL format.
+"""Read MSL netcdf file
+    This import function works with NetCDF files created by MetOcean Solution Ltd.
+    This NetCDF file have been extracted by the UDS. 
+    This class returns a Panda Dataframe with some extra attributes such as 
+    Latitude,Longitude,Units.
+    
+    Parameters
+    ~~~~~~~~~~
+
+    filename : (files,) str or list_like
+        A list of filename to process.
+
+    Examples
+    ~~~~~~~~
+
+    >>> from toto.inputs.msl import MSLfile
+    >>> nc=MSLfile('filename.nc')._toDataFrame()
 
 """
 import glob,os,sys

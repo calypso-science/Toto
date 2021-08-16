@@ -1,0 +1,218 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>toto.core.totoframe &#8212; Toto 0.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="toto.core.waveletFunctions" href="toto.core.waveletFunctions.html" />
+    <link rel="prev" title="toto.core.toolbox" href="toto.core.toolbox.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <a class="reference internal image-reference" href="../_images/calypso.png"><img alt="../_images/calypso.png" class="align-right" src="../_images/calypso.png" style="width: 150px;" /></a>
+<div class="section" id="module-toto.core.totoframe">
+<span id="toto-core-totoframe"></span><h1>toto.core.totoframe<a class="headerlink" href="#module-toto.core.totoframe" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="toto.core.totoframe.TotoFrame">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">toto.core.totoframe.</span></span><span class="sig-name descname"><span class="pre">TotoFrame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataframe</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/core/totoframe.html#TotoFrame"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.core.totoframe.TotoFrame" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="toto.core.totoframe.TotoFrame.add_dataframe">
+<span class="sig-name descname"><span class="pre">add_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">dataframe</span></em>, <em class="sig-param"><span class="pre">filename</span></em>, <em class="sig-param"><span class="pre">metadataframe=&lt;class</span> <span class="pre">'toto.core.metadataframe.MetadataFrame'&gt;</span></em>, <em class="sig-param"><span class="pre">change_name=True</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/core/totoframe.html#TotoFrame.add_dataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.core.totoframe.TotoFrame.add_dataframe" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="toto.core.totoframe.TotoFrame.combine_dataframe">
+<span class="sig-name descname"><span class="pre">combine_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filenames</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/core/totoframe.html#TotoFrame.combine_dataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.core.totoframe.TotoFrame.combine_dataframe" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="toto.core.totoframe.TotoFrame.copy_data">
+<span class="sig-name descname"><span class="pre">copy_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">varnames</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/core/totoframe.html#TotoFrame.copy_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.core.totoframe.TotoFrame.copy_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="toto.core.totoframe.TotoFrame.copy_metadata">
+<span class="sig-name descname"><span class="pre">copy_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fTo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fFrom</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">var</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_var</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/core/totoframe.html#TotoFrame.copy_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.core.totoframe.TotoFrame.copy_metadata" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="toto.core.totoframe.TotoFrame.del_file">
+<span class="sig-name descname"><span class="pre">del_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/core/totoframe.html#TotoFrame.del_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.core.totoframe.TotoFrame.del_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="toto.core.totoframe.TotoFrame.del_var">
+<span class="sig-name descname"><span class="pre">del_var</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delete_metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/core/totoframe.html#TotoFrame.del_var"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.core.totoframe.TotoFrame.del_var" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="toto.core.totoframe.TotoFrame.delete_data">
+<span class="sig-name descname"><span class="pre">delete_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">varname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/core/totoframe.html#TotoFrame.delete_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.core.totoframe.TotoFrame.delete_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="toto.core.totoframe.TotoFrame.move_metadata">
+<span class="sig-name descname"><span class="pre">move_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fTo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fFrom</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">var</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/core/totoframe.html#TotoFrame.move_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.core.totoframe.TotoFrame.move_metadata" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="toto.core.totoframe.TotoFrame.move_var">
+<span class="sig-name descname"><span class="pre">move_var</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fTo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fFrom</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">var</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">methods</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'nearest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/core/totoframe.html#TotoFrame.move_var"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.core.totoframe.TotoFrame.move_var" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="toto.core.totoframe.TotoFrame.replace_dataframe">
+<span class="sig-name descname"><span class="pre">replace_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataframe</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/core/totoframe.html#TotoFrame.replace_dataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.core.totoframe.TotoFrame.replace_dataframe" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="toto.core.totoframe.TotoFrame.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">varname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/core/totoframe.html#TotoFrame.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.core.totoframe.TotoFrame.reset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="toto.core.totoframe.add_metadata_to_df">
+<span class="sig-prename descclassname"><span class="pre">toto.core.totoframe.</span></span><span class="sig-name descname"><span class="pre">add_metadata_to_df</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/core/totoframe.html#add_metadata_to_df"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.core.totoframe.add_metadata_to_df" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="toto.core.totoframe.filled_gap">
+<span class="sig-prename descclassname"><span class="pre">toto.core.totoframe.</span></span><span class="sig-name descname"><span class="pre">filled_gap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">missing_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">nan</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/core/totoframe.html#filled_gap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.core.totoframe.filled_gap" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="toto.core.totoframe.get_freq">
+<span class="sig-prename descclassname"><span class="pre">toto.core.totoframe.</span></span><span class="sig-name descname"><span class="pre">get_freq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/core/totoframe.html#get_freq"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.core.totoframe.get_freq" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="toto.core.totoframe.sort_dataset">
+<span class="sig-prename descclassname"><span class="pre">toto.core.totoframe.</span></span><span class="sig-name descname"><span class="pre">sort_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/core/totoframe.html#sort_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.core.totoframe.sort_dataset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Toto</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html"> How to install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../input.html"> Inputs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="toto.filters.html"> Filter functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="toto.interpolations.html"> Interpolation functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="toto.selections.html"> Selection functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../customize.html"> Customization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../support.html"> support</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API documentation:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Toto open-source</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="toto.html">toto package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="toto.core.html">toto.core package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="toto.filters.html">toto.filters package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="toto.inputs.html">toto.inputs package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="toto.interpolations.html">toto.interpolations package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="toto.outputs.html">toto.outputs package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="toto.plugins.html">toto.plugins package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="toto.selections.html">toto.selections package</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">toto</a><ul>
+  <li><a href="toto.html">toto package</a><ul>
+  <li><a href="toto.core.html">toto.core package</a><ul>
+      <li>Previous: <a href="toto.core.toolbox.html" title="previous chapter">toto.core.toolbox</a></li>
+      <li>Next: <a href="toto.core.waveletFunctions.html" title="next chapter">toto.core.waveletFunctions</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Calypso Science.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/source/toto.core.totoframe.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,4 +1,21 @@
-"""Read generic netcdf file
+"""Read LINZ netcdf file
+    This import function works with NetCDF files created from tidal gauge from LINZ.
+    It reads both sensors as welll as the README file which should be in the same
+    directory.
+    This class returns a Panda Dataframe with some extra attributes such as 
+    Latitude,Longitude,Units.
+    
+    Parameters
+    ~~~~~~~~~~
+
+    filename : (files,) str or list_like
+        A list of filename to process.
+
+    Examples
+    ~~~~~~~~
+
+    >>> from toto.inputs.linz import LINZfile
+    >>> nc=LINZfile('filename.nc')._toDataFrame()
 
 """
 import glob,os,sys

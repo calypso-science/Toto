@@ -1,0 +1,63 @@
+.. image:: _static/calypso.png
+   :width: 150 px
+   :align: right
+   
+====================
+Filters function
+====================
+
+toto.filters.bandpass\_filter module
+------------------------------------
+
+.. automodule:: toto.filters.bandpass_filter
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+toto.filters.cyclone\_filter module
+-----------------------------------
+
+.. automodule:: toto.filters.cyclone_filter
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+toto.filters.despike\_phasespace3d module
+-----------------------------------------
+
+.. automodule:: toto.filters.despike_phasespace3d
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+toto.filters.detrend module
+---------------------------
+
+.. automodule:: toto.filters.detrend
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+toto.filters.lanczos\_filter module
+-----------------------------------
+
+.. automodule:: toto.filters.lanczos_filter
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+toto.filters.moving\_average module
+-----------------------------------
+
+.. automodule:: toto.filters.moving_average
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+toto.filters.spike\_removal module
+----------------------------------
+
+.. automodule:: toto.filters.spike_removal
+   :members:
+   :undoc-members:
+   :show-inheritance:

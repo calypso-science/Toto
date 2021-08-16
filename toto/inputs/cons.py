@@ -1,4 +1,70 @@
-"""Read generic txt files.
+"""Read constituens file
+    This import file containing amplitude and phase for each tidal constituents. The function uses the read_csv function from panda <https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_csv.html>_ to read three columns:
+    
+    * Constituents name
+    * Constituents phase
+    * Constituents amplitudes
+
+    This class returns a Panda Dataframe with some extra attributes such as Latitude,Longitude,Units.
+
+    This uses the module Utide. <https://github.com/wesleybowman/UTide>_
+    
+    Parameters
+    ~~~~~~~~~~
+
+    filename : (files,) str or list_like
+        A list of filename to process.
+    sep : str, default {_default_sep}
+        Delimiter to use. If sep is None, the C engine cannot automatically detect
+        the separator, but the Python parsing engine can, meaning the latter will
+        be used and automatically detect the separator by Python's builtin sniffer
+        tool, ``csv.Sniffer``. In addition, separators longer than 1 character and
+        different from ``'\s+'`` will be interpreted as regular expressions and
+        will also force the use of the Python parsing engine. Note that regex
+        delimiters are prone to ignoring quoted data. Regex example: ``'\r\t'``.
+    skiprows : list-like, int or callable, optional
+        Line numbers to skip (0-indexed) or number of lines to skip (int)
+        at the start of the file.
+        If callable, the callable function will be evaluated against the row
+        indices, returning True if the row should be skipped and False otherwise.
+        An example of a valid callable argument would be ``lambda x: x in [0, 2]``.
+    skipfooter : int, default 0
+        Number of lines at bottom of file to skip (Unsupported with engine='c').
+    colNamesLine : int, default 1
+        Line number where the header are defined
+    unit : str default 'degrees', can be 'radians'
+        unit of the phases
+    min_date : datetime, default datetime.datetime(2020,1,1)
+        Start time of the timeseries 
+    max_date : datetime, default datetime.datetime(2020,1,1)
+        End time of the timeseries 
+    dt : int, default 3600
+        Time step in seconds to use when creating the timeserie
+    latitude : int, default -40
+        Latitude use to calculate the timeserie
+
+    Notes
+    -----
+
+    Whe openning the TOTOVIEW gui this function will be called with :py:class:`totoview.inputs.consGUI`
+
+    Examples
+    ~~~~~~~~
+    
+    >>> from toto.inputs.cons import CONSfile
+    >>> nc=CONSfile(['cons_list.csv'],sep=',',\
+                               colNames=[],\
+                               unit='degrees',\
+                               miss_val='NaN',\
+                               colNamesLine=1,\
+                               skiprows=1,\
+                               skipfooter=0,\
+                               col_name={'cons':'Cons','amp':'Amplitude','pha':'Phase'},\
+                               )
+    >>> nc.reads()
+    >>> nc.read_cons() 
+    >>> df=nc._toDataFrame()
+
 """
 import glob,os,sys
 import pandas as pd

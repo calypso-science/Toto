@@ -1,5 +1,17 @@
 """Read generic netcdf file
+    This import function works well is NetCDF files created by `XARRAY`. This class returns a Panda Dataframe with some extra attributes such as Latitude,Longitude,Units.
+    
+    Parameters
+    ~~~~~~~~~~
 
+    filename : (files,) str or list_like
+        A list of filename to process.
+
+    Examples
+    ~~~~~~~~
+
+    >>> from toto.inputs.nc import NCfile
+    >>> nc=NCfile('filename.nc')._toDataFrame()
 """
 import glob,os,sys
 import pandas as pd
@@ -89,3 +101,4 @@ class NCfile():
     def _toDataFrame(self):
        #print(self.data)
         return self.data
+

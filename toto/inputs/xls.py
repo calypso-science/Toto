@@ -1,4 +1,65 @@
-"""Read generic xls files.
+"""Read xls,xlsx file
+    This import Excel type file. The function uses the read_excel function from panda <https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_excel.html>_.
+    This class returns a Panda Dataframe with some extra attributes such as Latitude,Longitude,Units.
+    
+    Parameters
+    ~~~~~~~~~~
+
+    filename : (files,) str or list_like
+        A list of filename to process.
+    sheet_name : str, int, list, or None, default 0
+        Strings are used for sheet names. Integers are used in zero-indexed
+        sheet positions. Lists of strings/integers are used to request
+        multiple sheets. Specify None to get all sheets.
+
+        Available cases:
+
+        * Defaults to ``0``: 1st sheet as a `DataFrame`
+        * ``1``: 2nd sheet as a `DataFrame`
+        * ``"Sheet1"``: Load sheet with name "Sheet1"
+        * ``[0, 1, "Sheet5"]``: Load first, second and sheet named "Sheet5"
+          as a dict of `DataFrame`
+        * None: All sheets.
+    colNames : List, default []
+        List of column names to use.
+    unitNames : List, default []
+        List of unit to use. 
+    miss_val : scalar, str, list-like, or dict, optional
+        Additional strings to recognize as NA/NaN. If dict passed, specific
+        per-column NA values. 
+    colNamesLine : int, default 1
+        Line number where the header are defined
+    skiprows : list-like, int or callable, optional
+        Line numbers to skip (0-indexed) or number of lines to skip (int)
+        at the start of the file.
+        If callable, the callable function will be evaluated against the row
+        indices, returning True if the row should be skipped and False otherwise.
+        An example of a valid callable argument would be ``lambda x: x in [0, 2]``.
+    skipfooter : int, default 0
+        Number of lines at bottom of file to skip (Unsupported with engine='c').
+    unitNamesLine : int, default 1
+        Line number where the units are defined 
+    single_column : bool, default False
+        The time is represented in a single column
+    customUnit : str, default '%d-%m-%Y %H:%M:%S'
+        String reprensenting the time format
+    unit : str default 's', can be 'auto','custom','matlab' or 's' and 'D'
+        unit of the single column time. Only matter if `single_column` is True
+    time_col_name: dict, default {'Year':'year','Month':'month','Day':'day','Hour':'hour','Min':'Minute','Sec':'Second'}
+        Dictonary for renaming the each column, so Panda can interprate the time. Only matter if `single_column` is False
+    
+
+    Examples
+    ~~~~~~~~
+    
+    >>> from toto.inputs.xls import XLSfile
+    >>> tx=XLSfile([filename],sheetnames='test3', colNames= [], unitNames= [],miss_val='NaN', colNamesLine= 1, skiprows= 2, unitNamesLine= 0,\
+    skipfooter= 0, single_column= True, unit= 's',\
+    customUnit= '%d-%m-%Y %H:%M:%S', time_col_name= {})
+    >>> tx.reads()
+    >>> tx.read_time()
+    >>> df=tx._toDataFrame()
+
 """
 import glob,os,sys
 import pandas as pd

@@ -1,0 +1,175 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>toto.plugins.woodside.woodside_statistics &#8212; Toto 0.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="toto.plugins.woodside package" href="toto.plugins.woodside.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <a class="reference internal image-reference" href="../_images/calypso.png"><img alt="../_images/calypso.png" class="align-right" src="../_images/calypso.png" style="width: 150px;" /></a>
+<div class="section" id="module-toto.plugins.woodside.woodside_statistics">
+<span id="toto-plugins-woodside-woodside-statistics"></span><h1>toto.plugins.woodside.woodside_statistics<a class="headerlink" href="#module-toto.plugins.woodside.woodside_statistics" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="toto.plugins.woodside.woodside_statistics.Woodside">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">toto.plugins.woodside.woodside_statistics.</span></span><span class="sig-name descname"><span class="pre">Woodside</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pandas_obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/plugins/woodside/woodside_statistics.html#Woodside"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.plugins.woodside.woodside_statistics.Woodside" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="toto.plugins.woodside.woodside_statistics.Woodside.extreme_analysis">
+<span class="sig-name descname"><span class="pre">extreme_analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wind_speed10</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'wind_speed10'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wind_drr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'wind_drr'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'hs'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'tp'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tm02</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'tm02'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dpm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'dpm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">surface_current</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'surface_current'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">surface_drr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'surface_drr'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">midwater_current</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'midwater_current'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">midwater_drr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'midwater_drr'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bottom_current</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'bottom_current'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bottom_drr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'bottom_drr'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'Directional</span> <span class="pre">switch':</span> <span class="pre">{'Off':</span> <span class="pre">False,</span> <span class="pre">'On':</span> <span class="pre">True},</span> <span class="pre">'Display':</span> <span class="pre">{'Off':</span> <span class="pre">False,</span> <span class="pre">'On':</span> <span class="pre">True},</span> <span class="pre">'Water</span> <span class="pre">depth':</span> <span class="pre">5000.0,</span> <span class="pre">'folder</span> <span class="pre">out':</span> <span class="pre">'/home/remy/software/TOTO/Toto/docs',</span> <span class="pre">'return_period':</span> <span class="pre">[1,</span> <span class="pre">5,</span> <span class="pre">10,</span> <span class="pre">20,</span> <span class="pre">50,</span> <span class="pre">100,</span> <span class="pre">200,</span> <span class="pre">500,</span> <span class="pre">1000]}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/plugins/woodside/woodside_statistics.html#Woodside.extreme_analysis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.plugins.woodside.woodside_statistics.Woodside.extreme_analysis" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function is used for extreme value analysis of any type.
+It generates return period values for Wind,Wave and Currents</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="toto.plugins.woodside.woodside_statistics.Woodside.joint_probability">
+<span class="sig-name descname"><span class="pre">joint_probability</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">speed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'speed'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'direction'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">period</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'period'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'Direction</span> <span class="pre">binning':</span> <span class="pre">{'centered':</span> <span class="pre">True,</span> <span class="pre">'not-centered':</span> <span class="pre">False},</span> <span class="pre">'Direction</span> <span class="pre">interval':</span> <span class="pre">45.0,</span> <span class="pre">'Probablity</span> <span class="pre">expressed</span> <span class="pre">in':</span> <span class="pre">{'per</span> <span class="pre">thoushand':</span> <span class="pre">True,</span> <span class="pre">'percent':</span> <span class="pre">False},</span> <span class="pre">'Time</span> <span class="pre">blocking':</span> <span class="pre">{'Annual':</span> <span class="pre">True,</span> <span class="pre">'Monthly':</span> <span class="pre">False,</span> <span class="pre">'Seasonal</span> <span class="pre">(North</span> <span class="pre">hemisphere)':</span> <span class="pre">False,</span> <span class="pre">'Seasonal</span> <span class="pre">(South</span> <span class="pre">hemisphere)':</span> <span class="pre">False},</span> <span class="pre">'X</span> <span class="pre">Min</span> <span class="pre">Res</span> <span class="pre">Max(optional)':</span> <span class="pre">[2,</span> <span class="pre">1,</span> <span class="pre">22],</span> <span class="pre">'Y</span> <span class="pre">Min</span> <span class="pre">Res</span> <span class="pre">Max(optional)':</span> <span class="pre">[0,</span> <span class="pre">0.5],</span> <span class="pre">'folder</span> <span class="pre">out':</span> <span class="pre">'/home/remy/software/TOTO/Toto/docs',</span> <span class="pre">'method':</span> <span class="pre">{'Mag</span> <span class="pre">vs</span> <span class="pre">Dir':</span> <span class="pre">True,</span> <span class="pre">'Mag</span> <span class="pre">vs</span> <span class="pre">Per':</span> <span class="pre">False,</span> <span class="pre">'Per</span> <span class="pre">Vs</span> <span class="pre">Dir':</span> <span class="pre">False}}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/plugins/woodside/woodside_statistics.html#Woodside.joint_probability"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.plugins.woodside.woodside_statistics.Woodside.joint_probability" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function provides joint distribution tables for X and Y, i.e. the
+probability of events defined in terms of both X and Y (per 1000)
+It can be applied for magnitude-direction, magnitude-period or
+period-direction</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="toto.plugins.woodside.woodside_statistics.Woodside.persistence_probability">
+<span class="sig-name descname"><span class="pre">persistence_probability</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'data'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'Duration</span> <span class="pre">Min</span> <span class="pre">Res</span> <span class="pre">Max':</span> <span class="pre">[6,</span> <span class="pre">6,</span> <span class="pre">72],</span> <span class="pre">'Exceedance</span> <span class="pre">bins:</span> <span class="pre">Min</span> <span class="pre">Res</span> <span class="pre">Max(optional)':</span> <span class="pre">[2,</span> <span class="pre">1,</span> <span class="pre">22],</span> <span class="pre">'Time</span> <span class="pre">blocking':</span> <span class="pre">{'Annual':</span> <span class="pre">True,</span> <span class="pre">'Monthly':</span> <span class="pre">False,</span> <span class="pre">'Seasonal</span> <span class="pre">(North</span> <span class="pre">hemisphere)':</span> <span class="pre">False,</span> <span class="pre">'Seasonal</span> <span class="pre">(South</span> <span class="pre">hemisphere)':</span> <span class="pre">False},</span> <span class="pre">'folder</span> <span class="pre">out':</span> <span class="pre">'/home/remy/software/TOTO/Toto/docs',</span> <span class="pre">'method':</span> <span class="pre">{'exceedence':</span> <span class="pre">True,</span> <span class="pre">'non-exceedence':</span> <span class="pre">False}}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/plugins/woodside/woodside_statistics.html#Woodside.persistence_probability"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.plugins.woodside.woodside_statistics.Woodside.persistence_probability" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function calculates the frequency of occurrence of data:
+-exceeding specific values (exceedence)
+-non-exceeding specific values (non-exceedence)
+-exceeding specific values during a specific duration (persistence exceedence)
+-non-exceeding specific values during a specific duration (persistence non-exceedence)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="toto.plugins.woodside.woodside_statistics.Woodside.woodside_statistics">
+<span class="sig-name descname"><span class="pre">woodside_statistics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['mag']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'drr'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'Minimum</span> <span class="pre">occurrence</span> <span class="pre">(main</span> <span class="pre">direction)</span> <span class="pre">[%]':</span> <span class="pre">15,</span> <span class="pre">'folder</span> <span class="pre">out':</span> <span class="pre">'/home/remy/software/TOTO/Toto/docs',</span> <span class="pre">'type':</span> <span class="pre">{'North</span> <span class="pre">hemishere(Summer/Winter)':</span> <span class="pre">False,</span> <span class="pre">'North</span> <span class="pre">hemisphere</span> <span class="pre">4</span> <span class="pre">seasons':</span> <span class="pre">False,</span> <span class="pre">'North</span> <span class="pre">hemisphere</span> <span class="pre">moosoon(SW,NE,Hot</span> <span class="pre">season)':</span> <span class="pre">False,</span> <span class="pre">'South</span> <span class="pre">hemisphere</span> <span class="pre">4</span> <span class="pre">seasons':</span> <span class="pre">False,</span> <span class="pre">'South</span> <span class="pre">hemisphere(Summer/Winter)':</span> <span class="pre">True}}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/plugins/woodside/woodside_statistics.html#Woodside.woodside_statistics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.plugins.woodside.woodside_statistics.Woodside.woodside_statistics" title="Permalink to this definition">¶</a></dt>
+<dd><p>output stats from timesereis)</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Toto</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html"> How to install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../input.html"> Inputs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="toto.filters.html"> Filter functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="toto.interpolations.html"> Interpolation functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="toto.selections.html"> Selection functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../customize.html"> Customization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../support.html"> support</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API documentation:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Toto open-source</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="toto.html">toto package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="toto.core.html">toto.core package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="toto.filters.html">toto.filters package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="toto.inputs.html">toto.inputs package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="toto.interpolations.html">toto.interpolations package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="toto.outputs.html">toto.outputs package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="toto.plugins.html">toto.plugins package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="toto.selections.html">toto.selections package</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">toto</a><ul>
+  <li><a href="toto.html">toto package</a><ul>
+  <li><a href="toto.plugins.html">toto.plugins package</a><ul>
+  <li><a href="toto.plugins.woodside.html">toto.plugins.woodside package</a><ul>
+      <li>Previous: <a href="toto.plugins.woodside.html" title="previous chapter">toto.plugins.woodside package</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Calypso Science.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/source/toto.plugins.woodside.woodside_statistics.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

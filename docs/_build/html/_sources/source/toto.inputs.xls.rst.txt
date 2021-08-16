@@ -1,0 +1,10 @@
+.. image:: ../_static/calypso.png
+   :width: 150 px
+   :align: right
+toto.inputs.xls
+===============
+
+.. automodule:: toto.inputs.xls
+   :members:
+   :undoc-members:
+   :show-inheritance:

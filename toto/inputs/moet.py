@@ -1,4 +1,20 @@
-"""Read generic netcdf file
+"""Read MOET netcdf file
+    This import function works with NetCDF files created by MetOcean Solution Ltd.
+    This NetCDF file have a special format to be read by the MOET software. 
+    This class returns a Panda Dataframe with some extra attributes such as 
+    Latitude,Longitude,Units.
+    
+    Parameters
+    ~~~~~~~~~~
+
+    filename : (files,) str or list_like
+        A list of filename to process.
+
+    Examples
+    ~~~~~~~~
+
+    >>> from toto.inputs.moet import MOETfile
+    >>> nc=MOETfile('filename.nc')._toDataFrame()
 
 """
 import glob,os,sys

@@ -1,8 +1,27 @@
-"""Read TRYAXIS files.
-Only reads:
-   - *.NONDIRSPEC
-   - *.DIRSPEC
+"""Read TRYAXIS file
+    This import raw file for a TRYAXIS wave Buoy.
+    This class returns a Panda Dataframe with some extra attributes such as Latitude,Longitude,Units.
+    
+    Parameters
+    ~~~~~~~~~~
+
+    filename : (files,) str or list_like
+        A list of filename to process.
+
+    Notes
+    -----
+
+    The function only works with the NONDIRSPEC and DIRSPEC files
+
+    Examples
+    ~~~~~~~~
+
+    >>> from toto.inputs.tryaxis import TRYAXISfile
+    >>> nc=TRYAXISfile('filename.NONDIRSPEC')._toDataFrame()
 """
+
+
+
 import glob,os,sys
 import pandas as pd
 import datetime as dt
