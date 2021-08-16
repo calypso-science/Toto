@@ -23,8 +23,8 @@ except:
     print('Error: problem loading wafo package:')
     print('  - Check if this package is installed ( e.g. type: `pip install pywafo`)')
     print('')
-    print('')
-    sys.exit(-1)
+    print('This module is likely to no work')
+    #sys.exit(-1)
 
 
 def sub_table(stats,varname,rp):
