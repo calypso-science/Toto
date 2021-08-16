@@ -42,7 +42,7 @@ package_data = {
 
 setuptools.setup(
     name="toto",
-    version="0.0.1",
+    version="1.0.0",
     author="Remy Zyngfogel",
     author_email="R.zyngfogel@calypso.science",
     description="A toolbox for processing timeseries'",
