@@ -11,7 +11,7 @@ build:
     - gfortran
 
 python:
-  version: 3.7
+  version: 3.8.10
   install:
     - requirements: requirements1.txt
     - requirements: requirements2.txt
