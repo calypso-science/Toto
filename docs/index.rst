@@ -27,19 +27,22 @@ TOTO extends panda’s `DataFrame`_ with methods to manipulate, filter and calcu
    :caption: Contents:
 
     How to install <install>
+    Conventions <convention>
     Inputs <input>
     Filter functions <source/toto.filters>
     Interpolation functions <source/toto.interpolations>
     Selection functions <source/toto.selections>
     Plugins <source/toto.plugins>
     Customization <customize>
+    Gallery <gallery/index>
     support <support>
 
 .. toctree::
-    :maxdepth: 3
+    :maxdepth: 2
     :caption: API documentation:
 
     Toto open-source <source/modules>
+
 
 Indices and tables
 ==================

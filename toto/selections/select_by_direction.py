@@ -1,4 +1,34 @@
-"""Extract a portion of timeseries by direction
+"""Extract a timeseries by direction
+
+    Parameters
+    ~~~~~~~~~~
+
+    input_array : (Panda Obj)
+        The Panda dataframe.
+    method: {"Custom","centred","not-centred"}
+        If ``method == 'Custom'``,
+            The selected timeseries will be between the ``From`` and ``To``
+            direction
+        If ``method == 'centered'``
+            the selected timeseries will be between split into directional
+            bins centered over the North direction, with directional bins of ``dir swath``
+        If ``method == 'not-centred'``,
+            the selected timeseries will be between split into directional
+            bins centered started at 0 deg, with directional bins of ``dir swath``
+    From : float
+        The minimum angle direction
+    To : float
+        The maximum angle direction
+    dir swath : float
+        The intervals for each directional bins
+
+    Examples:
+    ~~~~~~~~~
+
+    >>> df['selected']=select_by_direction.select_by_direction(df['signal'].copy(),
+                       args={'From':10,'To':30,'dir swath':45,'method':'centred'})
+    >>> 
+
 
 """
 

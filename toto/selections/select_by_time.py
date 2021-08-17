@@ -1,4 +1,40 @@
-"""Extract a portion of time as timeseries
+"""Extract a timeseries by selected a time interval
+
+    Parameters
+    ~~~~~~~~~~
+
+    input_array : (Panda Obj)
+        The Panda dataframe.
+    method: {"min/max time","Annual","Monthly","Seasonal","Custom"}
+        If ``method == 'min/max time'``,
+            the selected timeseries will be between the ``minimum time``
+            and ``maximum time``
+        If ``method == 'Annual'``,
+            The selected timeseries will be between split between each years
+        If ``method == 'Monthly'``,
+            The selected timeseries will be between split between each months
+        If ``method == 'Seasonal'``,
+            The selected timeseries will be between split between each seasons
+        If ``method == 'Custom'``,
+            The selected timeseries will be between split between each selected months
+            from the list ``month(s)``.
+    minimum time : datetime
+        The minimum timestamp
+    maximum time : datetime
+        The maximum timestamp
+    month(s) : list
+        list of the month to extract
+
+    Examples:
+    ~~~~~~~~~
+
+    >>> df['selected']=select_by_time.select_by_time(df['signal'].copy(),
+    args={'minimum time':datetime.datetime(2020,1,1),
+        'maximum time':datetime.datetime(2020,2,1),
+        'month(s)':[1,2],
+        'method':'Annual',
+        })
+    >>> 
 
 """
 from datetime import datetime,date

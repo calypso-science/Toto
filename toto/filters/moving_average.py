@@ -1,11 +1,26 @@
-""" Moving average
-    Methods (see https://numpy.org/doc/stable/reference/generated/numpy.convolve.html):
-        - Valid
-        - Same
+""" Run a moving average
 
+    Parameters
+    ~~~~~~~~~~
+    input_array : Panda Obj
+        The Panda dataframe.
+    N-Points filter : int,
+        Number of point to use.
+    mode : {'valid', 'same'}, optional
+        'same':
+          Mode 'same' returns output of length ``max(M, N)``.  Boundary
+          effects are still visible.
+        'valid':
+          Mode 'valid' returns output of length
+          ``max(M, N) - min(M, N) + 1``.  The convolution product is only given
+          for points where the signals overlap completely.  Values outside
+          the signal boundary have no effect.
 
-    Inputs:
-        - number of point to use
+    Note
+    ~~~~
+
+    see <https://numpy.org/doc/stable/reference/generated/numpy.convolve.html>_
+
 """
 import numpy as np
 

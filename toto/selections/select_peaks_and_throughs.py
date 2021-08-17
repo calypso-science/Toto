@@ -1,4 +1,17 @@
-""" finds peaks and throughs
+"""Extract all the peaks and throughs from a timeseries.
+
+    Parameters
+    ~~~~~~~~~~
+
+    input_array : (Panda Obj)
+        The Panda dataframe.
+
+    Examples:
+    ~~~~~~~~~
+
+    >>> df['selected']=select_peaks_and_throughs.select_peaks_and_throughs(
+    df['signal'].copy())
+    >>> 
 """
 
 from ..core.toolbox import peaks

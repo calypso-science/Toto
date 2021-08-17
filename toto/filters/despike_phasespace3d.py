@@ -1,7 +1,23 @@
-""" This subroutine excludes spike noise from Acoustic Doppler 
-Velocimetry (ADV) data using phase-space method, using 
-modified Goring and Nikora (2002) method by Nobuhito Mori (2005).
-Further modified by Joseph Ulanowski to remove offset in output (2014). 
+""" Removes spike noise from Acoustic Doppler 
+
+    Velocimetry (ADV) data using phase-space method, using modified Goring and Nikora (2002) method by Nobuhito Mori (2005).
+    Further modified by Joseph Ulanowski to remove offset in output (2014).
+
+    Parameters
+    ~~~~~~~~~~
+
+    input_array : Panda Obj
+        The Panda dataframe.
+
+
+    Examples:
+    ~~~~~~~~~
+
+    >>> df['phasespace3d']=despike_phasespace3d.despike_phasespace3d(df['signal'].copy())
+    >>> 
+
+
+ 
 """
 import numpy as np
 def despike_phasespace3d( input_array,args={}) :

@@ -1,3 +1,18 @@
+""" Convenience method for frequency conversion and resampling of time series
+
+
+    Parameters
+    ~~~~~~~~~~
+
+    input_array : (Panda Obj)
+        The Panda dataframe.
+
+    Note
+    ~~~~
+    https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.resample.html?highlight=resample#pandas.DataFrame.resample
+
+"""
+
 def resampler(input_array,args={'value':'1H',\
 	'method':{"asfreq":False,"bfill":False,"ffill":False,\
 	"pad":True,"sum":False,"mean":False,"max":False,"min":False,"nearest": True}}):

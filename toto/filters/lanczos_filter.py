@@ -1,5 +1,15 @@
-"""
-Apply a low pass 1st or 2nd order lanczos filter
+""" Apply a low pass 1st or 2nd order lanczos filter
+   
+    Parameters
+    ~~~~~~~~~~
+
+    input_array : panda obj
+        The input data.
+    window : int
+        window in hour, a good window is 40 h window of hourly data
+    Type : {'lanczos lowpas 1st order', 'lanczos lowpas 2nd order'}, optional
+        The type of lowpass filter, first or second order
+
 """
 
 from scipy.signal import butter, filtfilt, detrend
@@ -77,7 +87,7 @@ def lanczos_lowpass_filter_coeffs(cf,m,normalize=True):
     """return the convolution coefficients for low pass lanczos filter.
       
     Parameters
-    -----------
+    ~~~~~~~~~~
     
     Cf: float
       Cutoff frequency expressed as a ratio of a Nyquist frequency.
@@ -86,8 +96,7 @@ def lanczos_lowpass_filter_coeffs(cf,m,normalize=True):
       Size of filtering window size.
         
     Returns
-    --------
-    pdb.set_trace()
+    ~~~~~~~
     Results: list
            Coefficients of filtering window.
     

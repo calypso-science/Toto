@@ -1,8 +1,20 @@
-"""Detrending a signal
-Methods:
- - Linear (default)
- - Constant
-see https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.detrend.html for more info
+""" Remove linear trend along axis from data.
+   
+    Parameters
+    ~~~~~~~~~~
+    input_array : panda obj
+        The input data.
+    Type : {'linear', 'constant'}, optional
+        The type of detrending.
+        If ``type == 'linear'`` (default),
+            The result of a linear least-squares fit to `data` is subtracted
+            from `data`.
+        If ``type == 'constant'``,
+            only the mean of `data` is subtracted.
+
+	Note
+	~~~~
+    see <https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.detrend.html>_ for more info
 """
 from scipy import signal
 

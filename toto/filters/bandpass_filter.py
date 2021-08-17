@@ -1,11 +1,35 @@
 """Creates  Fourier low, high, or bandpass filter.
 
-- lower cut-off (s) is minimum period filter cutoff
-- upper cut-off (s) is maximum period filter cutoff
+    Parameters
+    ~~~~~~~~~~
 
-lower cut-off set < (2*delt) for no cutoff at high freq end
-upper cut-off set > (length(data)*delt) for no cutoff at low freq end
+    input_array : (Panda Obj)
+        The Panda dataframe.
+    lower cut-off (s) : float
+        The minimum period filter cutoff
+    upper cut-off (s) : float
+        The maximum period filter cutoff
+
+
+    Notes
+    ~~~~~
+    
+        * lower cut-off set < (2*delt) for no cutoff at high freq end
+        * upper cut-off set > (length(data)*delt) for no cutoff at low freq end
+
+    Examples:
+    ~~~~~~~~~
+
+    >>> df['bandpass']=bandpass_filter.bandpass_filter(df['signal'].copy(),\
+    args={'lower cut-off (s)':3600*30,'upper cut-off (s)':24*3600*30})
+    >>> 
+
+
 """
+
+
+
+
 import numpy as np
 from scipy.fftpack import fft,ifft,rfft, irfft, fftfreq
 from toto.core.toolbox import dyadlength

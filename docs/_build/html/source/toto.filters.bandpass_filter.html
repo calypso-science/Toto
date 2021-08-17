@@ -5,13 +5,18 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>toto.filters.bandpass_filter &#8212; Toto 0.1.0 documentation</title>
+    <title>toto.filters.bandpass_filter &#8212; Toto 1.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery-rendered-html.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="toto.filters.cyclone_filter" href="toto.filters.cyclone_filter.html" />
@@ -36,17 +41,38 @@
 <div class="section" id="module-toto.filters.bandpass_filter">
 <span id="toto-filters-bandpass-filter"></span><h1>toto.filters.bandpass_filter<a class="headerlink" href="#module-toto.filters.bandpass_filter" title="Permalink to this headline">¶</a></h1>
 <p>Creates  Fourier low, high, or bandpass filter.</p>
-<ul class="simple">
-<li><p>lower cut-off (s) is minimum period filter cutoff</p></li>
-<li><p>upper cut-off (s) is maximum period filter cutoff</p></li>
+<div class="section" id="parameters">
+<h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt>input_array<span class="classifier">(Panda Obj)</span></dt><dd><p>The Panda dataframe.</p>
+</dd>
+<dt>lower cut-off (s)<span class="classifier">float</span></dt><dd><p>The minimum period filter cutoff</p>
+</dd>
+<dt>upper cut-off (s)<span class="classifier">float</span></dt><dd><p>The maximum period filter cutoff</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="notes">
+<h2>Notes<a class="headerlink" href="#notes" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p>lower cut-off set &lt; (2*delt) for no cutoff at high freq end</p></li>
+<li><p>upper cut-off set &gt; (length(data)*delt) for no cutoff at low freq end</p></li>
 </ul>
-<p>lower cut-off set &lt; (2*delt) for no cutoff at high freq end
-upper cut-off set &gt; (length(data)*delt) for no cutoff at low freq end</p>
+</div></blockquote>
+</div>
+<div class="section" id="examples">
+<h2>Examples:<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;bandpass&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">bandpass_filter</span><span class="o">.</span><span class="n">bandpass_filter</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;signal&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span>    <span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;lower cut-off (s)&#39;</span><span class="p">:</span><span class="mi">3600</span><span class="o">*</span><span class="mi">30</span><span class="p">,</span><span class="s1">&#39;upper cut-off (s)&#39;</span><span class="p">:</span><span class="mi">24</span><span class="o">*</span><span class="mi">3600</span><span class="o">*</span><span class="mi">30</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span>
+</pre></div>
+</div>
 <dl class="py function">
 <dt class="sig sig-object py" id="toto.filters.bandpass_filter.bandpass_filter">
 <span class="sig-prename descclassname"><span class="pre">toto.filters.bandpass_filter.</span></span><span class="sig-name descname"><span class="pre">bandpass_filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'lower</span> <span class="pre">cut-off</span> <span class="pre">(s)':</span> <span class="pre">0.0,</span> <span class="pre">'upper</span> <span class="pre">cut-off</span> <span class="pre">(s)':</span> <span class="pre">0.0}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/filters/bandpass_filter.html#bandpass_filter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.filters.bandpass_filter.bandpass_filter" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+</div>
 </div>
 
 
@@ -69,8 +95,10 @@ upper cut-off set &gt; (length(data)*delt) for no cutoff at low freq end</p>
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../install.html"> How to install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../convention.html"> Conventions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../input.html"> Inputs</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="toto.filters.html"> Filter functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="toto.filters.html#notebook">Notebook</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">toto.filters.bandpass_filter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="toto.filters.cyclone_filter.html">toto.filters.cyclone_filter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="toto.filters.despike_phasespace3d.html">toto.filters.despike_phasespace3d</a></li>
@@ -82,22 +110,15 @@ upper cut-off set &gt; (length(data)*delt) for no cutoff at low freq end</p>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="toto.interpolations.html"> Interpolation functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="toto.selections.html"> Selection functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="toto.plugins.html"> Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../customize.html"> Customization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gallery/index.html"> Gallery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../support.html"> support</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API documentation:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html">Toto open-source</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="toto.html">toto package</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="toto.core.html">toto.core package</a></li>
-<li class="toctree-l3 current"><a class="reference internal" href="toto.filters.html">toto.filters package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="toto.inputs.html">toto.inputs package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="toto.interpolations.html">toto.interpolations package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="toto.outputs.html">toto.outputs package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="toto.plugins.html">toto.plugins package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="toto.selections.html">toto.selections package</a></li>
-</ul>
-</li>
+<li class="toctree-l2 current"><a class="reference internal" href="toto.html">toto package</a></li>
 </ul>
 </li>
 </ul>

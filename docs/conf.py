@@ -17,8 +17,10 @@
 
 # -- Project information -----------------------------------------------------
 import os,sys
-
-sys.path.insert(0, os.path.abspath('../Toto'))
+sys.path.append('.')
+from links.link import *
+from links import *
+#sys.path.insert(0, os.path.abspath('../Toto'))
 import toto
 import scipy
 
@@ -27,7 +29,7 @@ copyright = '2021, Calypso Science'
 author = 'Calypso Science'
 
 # The full version, including alpha/beta/rc tags
-release = '0.1.0'
+release = toto.__version__
 
 
 # -- General configuration ---------------------------------------------------
@@ -43,8 +45,19 @@ extensions = [
     "sphinx.ext.viewcode",
     "sphinx.ext.autosectionlabel",
     "sphinx.ext.githubpages",
+    "nbsphinx",
+    "sphinx_gallery.gen_gallery"
 ]
 
+sphinx_gallery_conf = {
+     'examples_dirs': '../examples/',   # path to your example scripts
+     'gallery_dirs': './gallery',  # path to where to save gallery generated output,
+     # #'filename_pattern': '/example_(?!long_)',
+     # 'backreferences_dir': None,
+     # 'capture_repr': ('_repr_html_', '__repr__'),
+     # 'abort_on_example_error': False,
+     # 'thumbnail_size': (300, 300)
+}
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
