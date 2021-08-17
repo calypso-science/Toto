@@ -52,13 +52,13 @@
     ~~~~~~~~
     
     >>> from toto.inputs.cons import CONSfile
-    >>> nc=CONSfile(['cons_list.csv'],sep=',',\
-                               colNames=[],\
-                               unit='degrees',\
-                               miss_val='NaN',\
-                               colNamesLine=1,\
-                               skiprows=1,\
-                               skipfooter=0,\
+    >>> nc=CONSfile(['cons_list.csv'],sep=',',
+                               colNames=[],
+                               unit='degrees',
+                               miss_val='NaN',
+                               colNamesLine=1,
+                               skiprows=1,
+                               skipfooter=0,
                                col_name={'cons':'Cons','amp':'Amplitude','pha':'Phase'},\
                                )
     >>> nc.reads()
