@@ -15,6 +15,7 @@ python:
   install:
     - requirements: requirements1.txt
     - requirements: requirements2.txt
+    - requirements: requirements3.txt
     - method: pip
       path: .
       extra_requirements:
