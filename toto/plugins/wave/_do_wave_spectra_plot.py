@@ -63,7 +63,8 @@ def do_wave_spectra_plot(time,mag,unit,nperseg,noverlap,nfft,detrend,period,plot
         y=psd[np.logical_and(X>Tmin,X<Tmax)]
         ax.set_ylim(y.min(),y.max())
 
-    if display:
-        plt.show(block=~display)
-
     plt.savefig(fileout)
+    if display:
+        plt.show()
+
+    
