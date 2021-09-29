@@ -11,7 +11,7 @@ toto.selections package
 
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
 
    toto.selections.select_by_direction
    toto.selections.select_by_time

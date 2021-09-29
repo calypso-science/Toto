@@ -19,7 +19,7 @@ toto.inputs package
    toto.inputs.moet
    toto.inputs.msl
    toto.inputs.nc
+   toto.inputs.rsk
    toto.inputs.tryaxis
    toto.inputs.txt
    toto.inputs.xls
-   toto.inputs.rsk
