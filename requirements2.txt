@@ -18,4 +18,3 @@ xlwt
 xlrd
 requests
 oceans
-sqlite3
