@@ -9,7 +9,6 @@ from toto.inputs.txt import TXTfile
 from toto.inputs.mat import MATfile
 
 from toto.inputs.msl import MSLfile
-import totoView
 from toto.plugins.wave._do_ssh_to_wave import zero_crossing
 from toto.filters.bandpass_filter import bandpass_filter
 
@@ -23,22 +22,22 @@ from toto.filters.bandpass_filter import bandpass_filter
 # tx.reads()
 # tx.read_time()
 # df=tx._toDataFrame()
-filename=r'_tests/nc_file/TB_current.nc'
-tx=MSLfile([filename])
-df=tx._toDataFrame()
+# filename=r'_tests/nc_file/TB_current.nc'
+# tx=MSLfile([filename])
+# df=tx._toDataFrame()
 # tx=TXTfile([filename],colNamesLine=1,skiprows=1,unitNamesLine=0,time_col_name={'Year':'year','Month':'month','Day':'day','H[UTC]':'hour','Min':'Minute'})
 # tx.reads()
 # tx.read_time()
 # df=tx._toDataFrame()
-df[0].filename='sss'
-#filename=r'../ssh2.mat'
-#tx=MATfile(filename)
+#df[0].filename='sss'
+filename=r'mat_file/F3.mat'
+tx=MATfile(filename)
 # tx=TXTfile([filename],colNamesLine=1,skiprows=1,unitNamesLine=0,time_col_name={'year':'year','month':'month','day':'day','hour':'hour','min':'Minute'})
 # tx.reads()
 # tx.read_time()
-#df=tx._toDataFrame()
-#df[0].filename='sss'
-
+df=tx._toDataFrame()
+df[0].filename='sss'
+print(df)
 # time=df[0].index
 # mag=df[0]['ssh'].values
 
@@ -47,9 +46,10 @@ df[0].filename='sss'
 #     'folder out':os.getcwd(),'X Min Res Max(optional)':[0,2],'Y Min Res Max(optional)':[0,2],\
 #     'Time blocking':'Monthly','Probablity expressed in':'percent','Probablity expressed in':'per thoushand','display':'On'})
 
-# df=df[0].Statistics.weather_window(data='hs[m]',args={'method':'exceedance non-persistence',\
-#   'folder out':'','Exceedance bins: Min Res Max(optional)':[0,0.5],'Duration Min Res Max':[6,6,12],
-#   'Time blocking':'Monthly'})
+df2=df[0].Statistics.weather_window(data='spd',args={'method':'exceedance non-persistence',\
+  'folder out':'','Exceedance bins: Min Res Max(optional)':[0,0.5],'Duration Min Res Max':[6,6,12],
+  'Time blocking':'Monthly'})
+import pdb;pdb.set_trace()
 # df=df[0].Statistics.weighted_direction(Hs='hs[m]',drr='dpm_sea8[deg]',args={'folder out':os.getcwd(),
 #                                                     'type':'South hemisphere(Summer/Winter)'
 #                                                             })
@@ -66,15 +66,15 @@ df[0].filename='sss'
 # df=df[0].Woodside.persistence_probability(data='hs[m]',args={'method':'non-exceedance',\
 # 	'folder out':'','Exceedance bins: Min Res Max(optional)':[2,1],'Duration Min Res Max':[6,6,18],
 # 	'Time blocking':'Annual','Probablity expressed in':'percent'})
-print(df[0])
-df=df[0].StatPlots.Plot_thermocline(mag=['temp_lev_0','temp_lev_5','temp_lev_10'],\
-        args={'X label':'Current speed',\
-        'function':'Max',
-        'Percentile or Quantile': 0.1,
-        'Time blocking':'Monthly',
-        'display':'On',
-        'folder out':os.getcwd(),
-        })
+# print(df[0])
+# df=df[0].StatPlots.Plot_thermocline(mag=['temp_lev_0','temp_lev_5','temp_lev_10'],\
+#         args={'X label':'Current speed',\
+#         'function':'Max',
+#         'Percentile or Quantile': 0.1,
+#         'Time blocking':'Monthly',
+#         'display':'On',
+#         'folder out':os.getcwd(),
+#         })
 # df[0].Woodside.extreme_analysis(wind_speed10='hs[m]',wind_drr='dpm[deg]',
 #                           hs='hs[m]',tp='tp[s]',tm02='t02[s]',dpm='dpm[deg]',
 #                           surface_current='hs[m]',surface_drr='dpm[deg]',
@@ -224,8 +224,6 @@ df=df[0].StatPlots.Plot_thermocline(mag=['temp_lev_0','temp_lev_5','temp_lev_10'
 #          })
 
 
-
-import pdb;pdb.set_trace()
 sys.exit(-1)
 
 

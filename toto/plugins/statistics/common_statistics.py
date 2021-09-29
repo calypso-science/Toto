@@ -20,7 +20,9 @@ class Statistics:
         self.dfout = pd.DataFrame(index=self.data.index.copy())
 
 
-    def common_statistics(self,mag=['mag'],drr='drr',args={'Minimum occurrence (main direction) [%]':15,'folder out':os.getcwd(),
+    def common_statistics(self,mag=['mag'],drr='drr',
+        args={'Minimum occurrence (main direction) [%]':15,
+        'folder out':os.getcwd(),
         'Time blocking':{'Yearly':True,
         'South hemisphere(Summer/Winter)':False,
         'South hemisphere 4 seasons':False,
@@ -28,7 +30,97 @@ class Statistics:
         'North hemisphere 4 seasons':False,        
         'North hemisphere moosoon(SW,NE,Hot season)':False},
                                                             }):
-        """ output stats from timesereis)"""
+        """Extract statistics from a Panda dataframe column
+
+            Parameters
+            ~~~~~~~~~~
+
+            mag : str
+                Name of the column from which to get stats.
+                Can be a list for extracting stats from multilple columns.
+            drr : str, optional
+                Column name representing the directions.
+            args: dict
+                Dictionnary with the folowing keys:
+
+                    Minimum occurrence (main direction) [%]: int
+                        Use to calculate the main direction. Main direction is when
+                        occurence>= Minimum occurrence. Default is 15
+                    folder out: str
+                        Path to save the output
+                    Time blocking: str
+                         if ``Time blocking=='Yearly'``,
+                            Statistics will be calculated for the whole timeserie
+                         if ``Time blocking=='South hemisphere(Summer/Winter)'``,
+                            Statistics will be calculated for South hemisphere summer and winter seasons
+                         if ``Time blocking=='South hemisphere 4 seasons'``,
+                            Statistics will be calculated for each South hemisphere seasons
+                         if ``Time blocking=='North hemishere(Summer/Winter)'``,
+                            Statistics will be calculated for North hemisphere summer and winter seasons
+                         if ``Time blocking=='North hemisphere 4 seasons'``,
+                            Statistics will be calculated for each North hemisphere seasons
+                         if ``Time blocking=='North hemisphere moosoon(SW,NE,Hot season)'``,
+                            Statistics will be calculated for the North hemisphere moonsoon seasons
+
+            Examples:
+            ~~~~~~~~~
+            >>> df=tf['test1']['dataframe'].Statistics.common_stats(mag='U',drr='drr',args={'Time blocking':'Yearly'})
+            >>> 
+            
+            Outputs:
+            ~~~~~~~~
+            .. list-table:: Common statistics example
+               :widths: 25 25 25 25 25 25 25 25 25
+               :header-rows: 1
+
+               * - 
+                 - N
+                 - min
+                 - max
+                 - mean
+                 - std
+                 - P1
+                 - P90
+                 - Main Direction
+
+               * - June
+                 - 
+                 - 
+                 - 
+                 - 
+                 - 
+                 - 
+                 - 
+                 -
+               * - July
+                 - 
+                 - 
+                 - 
+                 - 
+                 - 
+                 - 
+                 - 
+                 -
+               * - Winter
+                 - 
+                 - 
+                 - 
+                 - 
+                 - 
+                 - 
+                 - 
+                 -
+               * - Total
+                 - 
+                 - 
+                 - 
+                 - 
+                 - 
+                 - 
+                 - 
+                 -
+
+        """
 
         if drr not in self.data:
             drr='none'
@@ -55,8 +147,51 @@ class Statistics:
             do_stats(time,statf,data,drr,hem,filename,ma,min_occ)
     
     def comparison_statistics(self,measured='measured',hindcast='hindcast',args={'folder out':os.getcwd()}):
-        '''function to output comparison stat between measured and predicted data
-            i.e BIAS,MAE,RMSE,MRAE'''
+        """Extract comparions statistics such as BIAS,MAE,RMSE,MRAE
+
+        Parameters
+        ~~~~~~~~~~
+
+        measured : str
+            Name of the column representing the measure data.
+        hindcast : str
+            Name of the column representing the hindcast data.
+        args: dict
+            Dictionnary with the folowing keys:
+                folder out: str
+                    Path to save the output
+
+
+        Examples:
+        ~~~~~~~~~
+        >>> df=tf['test1']['dataframe'].Statistics.comparison_statistics(measured='U',hindcast='u',args={'folder out':'/tmp'})
+        >>> 
+
+        Outputs:
+        ~~~~~~~~
+        .. list-table:: Comparison statistics example
+           :widths: 25 25 25
+           :header-rows: 1
+
+           * - MAE
+             - Mean Absolute Error
+             - 
+           * - RMSE
+             - Root Mean Square Error
+             - 
+           * - MRAE
+             - Mean Relative Absolute Error
+             - 
+           * - BIAS
+             - BIAS
+             -              
+           * - SI
+             - Scatter Index
+             -    
+           * - IOA
+             - Index of Agreement
+             -  
+        """
 
         if not hasattr(self.data,'filename'):
             self.data.filename=''
@@ -71,7 +206,7 @@ class Statistics:
         #     return error_message
 
 
-    def Directional_statistics(self,magnitude='magnitude',direction='direction',\
+    def Directional_statistics(self,mag='mag',drr='drr',\
         args={
         'function':{'Max':True, 'Mean':False, 'Median':False, 'Min':False, 'Percentile':False, 'Prod':False, 'Quantile':False, 'Std':False, 'Sum':False, 'Var':False},
         'Percentile or Quantile': 0.1,
@@ -81,25 +216,96 @@ class Statistics:
         'Time blocking':{'Annual':True,'Seasonal (South hemisphere)':False,'Seasonal (North hemisphere)':False,'Monthly':False},
         }):
 
-        """This function extract stats for each directional bins"""
- 
+        """Extract statistics for the selected directionnal bins
 
-        Ydata=self.data[magnitude]
-        Xdata=self.data[direction]
+            Parameters
+            ~~~~~~~~~~
+
+            mag : str
+                Name of the column from which to get stats.
+                Can be a list for extracting stats from multilple columns.
+            drr : str
+                Column name representing the directions.
+            args: dict
+                Dictionnary with the folowing keys:
+                    function: str
+                        Name of the function to use, can be `Max`, `Mean`, `Median`, `Min`, `Percentile`
+                        `Prod`, `Quantile`, `Std`, `Sum`, `Var`
+                    Percentile or Quantile: float
+                        Percentile or Quantile value depending on the function
+                    Direction binning: str
+                        Can be `centered` or `not-centered` depending if the directionnal are centered over 0
+                    Direction interval: int
+                        Dirctionnal interval for the bins in degrees
+                    folder out: str
+                        Path to save the output
+                    Time blocking: str
+                         if ``Time blocking=='Yearly'``,
+                            Statistics will be calculated for the whole timeserie
+                         if ``Time blocking=='South hemisphere(Summer/Winter)'``,
+                            Statistics will be calculated for South hemisphere summer and winter seasons
+                         if ``Time blocking=='South hemisphere 4 seasons'``,
+                            Statistics will be calculated for each South hemisphere seasons
+                         if ``Time blocking=='North hemishere(Summer/Winter)'``,
+                            Statistics will be calculated for North hemisphere summer and winter seasons
+                         if ``Time blocking=='North hemisphere 4 seasons'``,
+                            Statistics will be calculated for each North hemisphere seasons
+                         if ``Time blocking=='North hemisphere moosoon(SW,NE,Hot season)'``,
+                            Statistics will be calculated for the North hemisphere moonsoon seasons
+
+            Examples:
+            ~~~~~~~~~
+            >>> df=tf['test1']['dataframe'].Statistics.Directional_statistics(mag='U',drr='drr',args={'Direction interval':45,Time blocking':'Yearly'})
+            >>> 
+
+            Outputs:
+            ~~~~~~~~
+            .. list-table:: Directionnal statistics example
+               :widths: 25 25 25 25 25 25
+               :header-rows: 1
+
+               * - MEAN
+                 - N
+                 - S
+                 - E
+                 - W
+                 - Total
+               * - January
+                 - 
+                 - 
+                 -
+                 -
+                 -
+               * - February
+                 - 
+                 - 
+                 -
+                 -
+                 -
+               * - Annual
+                 - 
+                 - 
+                 -
+                 -
+                 -
+        """
+
+        Ydata=self.data[mag]
+        Xdata=self.data[drr]
 
         filename=os.path.join(args['folder out'],os.path.splitext(self.data.filename)[0]+'directional_max.xlsx')
 
         X_interval=dir_interval(args['Direction interval'],args['Direction binning'])
         funct=getattr(np,'nan'+args['function'].lower())
         val=args['Percentile or Quantile']
-        if hasattr(self.data[magnitude],'short_name'):
-            short_name=self.data[magnitude].short_name
+        if hasattr(self.data[mag],'short_name'):
+            short_name=self.data[mag].short_name
         else:
-            short_name=magnitude
+            short_name=mag
         do_directional_stat(filename,funct,val,short_name,self.data.index,Xdata,Ydata,X_interval,args['Time blocking'],args['Direction binning'])
 
 
-    def joint_probability(self,speed='speed',direction='direction',period='period',\
+    def joint_probability(self,mag='speed',drr='direction',period='period',\
         args={'method':{'Mag vs Dir':True,'Per Vs Dir':False,'Mag vs Per':False},\
         'folder out':os.getcwd(),
         'X Min Res Max(optional)':[2,1,22],
@@ -109,22 +315,103 @@ class Statistics:
         'Time blocking':{'Annual':True,'Seasonal (South hemisphere)':False,'Seasonal (North hemisphere)':False,'Monthly':False},
         'Probablity expressed in':{'percent':False,'per thoushand':True}
         }):
-        ''' This function provides joint distribution tables for X and Y, i.e. the
+        """This function provides joint distribution tables for X and Y, i.e. the
             probability of events defined in terms of both X and Y (per 1000)
             It can be applied for magnitude-direction, magnitude-period or
-            period-direction'''
+            period-direction
 
+            Parameters
+            ~~~~~~~~~~
+
+            mag : str
+                Name of the column from which to get stats.
+                Can be a list for extracting stats from multilple columns.
+            drr : str
+                Column name representing the directions. If method is `Per Vs Dir` or `Mag vs Dir`
+            period : str
+                Column name representing the directions. If method is `Per Vs Dir` or `Mag vs Per`
+            args: dict
+                Dictionnary with the folowing keys:
+                    method: str
+                        Name of the method to use, can be:
+                        `Mag vs Dir`: Plot Maginitude Versus Direction
+                        `Per Vs Dir`: Plot Period Versus Direction
+                        `Mag vs Per`: Plot Maginitude Versus Period
+                    Direction binning: str
+                        Can be `centered` or `not-centered` depending if the directionnal are centered over 0
+                    Direction interval: int
+                        Dirctionnal interval for the bins in degrees
+                    folder out: str
+                        Path to save the output
+                    Probablity expressed in: str
+                        This can be `percent` or `per thoushand`
+                    X Min Res Max(optional): list
+                        Minimum, resolution and maximum value of X axis use in the join probability
+                    Y Min Res Max(optional): list
+                        Minimum, resolution and maximum value of Y axis use in the join probability
+                    Time blocking: str
+                         if ``Time blocking=='Annual'``,
+                            Statistics will be calculated for the whole timeserie
+                         if ``Time blocking=='Seasonal (South hemisphere)'``,
+                            Statistics will be calculated for each South hemisphere seasons
+                         if ``Time blocking=='Seasonal (North hemisphere)'``,
+                            Statistics will be calculated for each North hemisphere seasons
+                         if ``Time blocking=='Monthly'``,
+                            Statistics will be calculated for each month
+
+            Examples:
+            ~~~~~~~~~
+            >>> df=tf['test1']['dataframe'].Statistics.joint_probability(mag='U',drr='drr',args={'Direction interval':45,Time blocking':'Yearly'})
+            >>> 
+
+            Outputs:
+            ~~~~~~~~
+            .. list-table:: Joint probability example
+               :widths: 25 25 25 25 25 25
+               :header-rows: 1
+
+               * - January
+                 - 0
+                 - 1
+                 - 2
+                 - 3
+                 - Total
+               * - 0
+                 - 
+                 - 
+                 -
+                 -
+                 - 
+               * - 1
+                 - 
+                 - 
+                 -
+                 -
+                 -
+               * - 2
+                 - 
+                 - 
+                 -
+                 -
+                 -
+               * - Total
+                 - 
+                 - 
+                 -
+                 -
+                 - 100
+        """
         analysis_method=args['method']
 
         if analysis_method=='Mag vs Dir':
-            Ydata=self.data[speed]
-            Xdata=self.data[direction]
+            Ydata=self.data[mag]
+            Xdata=self.data[drr]
 
         elif analysis_method=='Per Vs Dir':
             Ydata=self.data[period]
-            Xdata=self.data[direction]
+            Xdata=self.data[drr]
         elif analysis_method=='Mag vs Per':
-            Ydata=self.data[speed]
+            Ydata=self.data[mag]
             Xdata=self.data[period]
 
         filename=os.path.join(args['folder out'],os.path.splitext(self.data.filename)[0]+'JP.xlsx')
@@ -146,7 +433,7 @@ class Statistics:
 
         X_interval=np.append(X_interval,np.nan)
         Y_interval=np.append(Y_interval,np.nan)
-        do_joint_prob(filename,self.data.index,Xdata,Ydata,X_interval,Y_interval,args['Time blocking'],binning,multiplier,speed)
+        do_joint_prob(filename,self.data.index,Xdata,Ydata,X_interval,Y_interval,args['Time blocking'],binning,multiplier,mag)
 
 
 
