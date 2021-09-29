@@ -29,10 +29,10 @@ TOTO extends panda’s `DataFrame`_ with methods to manipulate, filter and calcu
     How to install <install>
     Conventions <convention>
     Inputs <input>
-    Filter functions <source/toto.filters>
+    Filter functions <filters>
     Interpolation functions <source/toto.interpolations>
     Selection functions <source/toto.selections>
-    Plugins <source/toto.plugins>
+    Plugins functions <plugins>
     Customization <customize>
     Gallery <gallery/index>
     support <support>

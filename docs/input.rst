@@ -10,7 +10,7 @@ Input
 Functions to read time series from file into
 :py:class:`~toto.core.totoframe`.
 
-The input functions allow abstracting away the format the wave spectra data are
+The input functions allow abstracting away the format the data are
 stored on disk and loading them into a standard Panda DataFrame object. The methods
 adds attribute to the dataframe such as unit, latitude,longitude.
 
@@ -80,4 +80,10 @@ EXCEL FILE
 ----------
 
 .. automodule:: toto.inputs.xls
+   :noindex:
+
+RSK FILE
+----------
+
+.. automodule:: toto.inputs.rsk
    :noindex:

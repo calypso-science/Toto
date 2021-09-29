@@ -19,7 +19,7 @@
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="toto.filters package" href="source/toto.filters.html" />
+    <link rel="next" title="Filters" href="filters.html" />
     <link rel="prev" title="Conventions" href="convention.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -42,7 +42,7 @@
 <span id="input"></span><h1>Input<a class="headerlink" href="#module-toto.input" title="Permalink to this headline">¶</a></h1>
 <p>Functions to read time series from file into
 <a class="reference internal" href="source/toto.core.totoframe.html#module-toto.core.totoframe" title="toto.core.totoframe"><code class="xref py py-class docutils literal notranslate"><span class="pre">totoframe</span></code></a>.</p>
-<p>The input functions allow abstracting away the format the wave spectra data are
+<p>The input functions allow abstracting away the format the data are
 stored on disk and loading them into a standard Panda DataFrame object. The methods
 adds attribute to the dataframe such as unit, latitude,longitude.</p>
 <p>Reading functions are defined in modules within
@@ -310,7 +310,14 @@ An example of a valid callable argument would be <code class="docutils literal n
 <div class="section" id="id17">
 <h3>Examples<a class="headerlink" href="#id17" title="Permalink to this headline">¶</a></h3>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">toto.inputs.cons</span> <span class="kn">import</span> <span class="n">CONSfile</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">nc</span><span class="o">=</span><span class="n">CONSfile</span><span class="p">([</span><span class="s1">&#39;cons_list.csv&#39;</span><span class="p">],</span><span class="n">sep</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span>                               <span class="n">colNames</span><span class="o">=</span><span class="p">[],</span>                               <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;degrees&#39;</span><span class="p">,</span>                               <span class="n">miss_val</span><span class="o">=</span><span class="s1">&#39;NaN&#39;</span><span class="p">,</span>                               <span class="n">colNamesLine</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>                               <span class="n">skiprows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>                               <span class="n">skipfooter</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>                               <span class="n">col_name</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;cons&#39;</span><span class="p">:</span><span class="s1">&#39;Cons&#39;</span><span class="p">,</span><span class="s1">&#39;amp&#39;</span><span class="p">:</span><span class="s1">&#39;Amplitude&#39;</span><span class="p">,</span><span class="s1">&#39;pha&#39;</span><span class="p">:</span><span class="s1">&#39;Phase&#39;</span><span class="p">},</span>                               <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nc</span><span class="o">=</span><span class="n">CONSfile</span><span class="p">([</span><span class="s1">&#39;cons_list.csv&#39;</span><span class="p">],</span><span class="n">sep</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span>
+<span class="go">                           colNames=[],</span>
+<span class="go">                           unit=&#39;degrees&#39;,</span>
+<span class="go">                           miss_val=&#39;NaN&#39;,</span>
+<span class="go">                           colNamesLine=1,</span>
+<span class="go">                           skiprows=1,</span>
+<span class="go">                           skipfooter=0,</span>
+<span class="go">                           col_name={&#39;cons&#39;:&#39;Cons&#39;,&#39;amp&#39;:&#39;Amplitude&#39;,&#39;pha&#39;:&#39;Phase&#39;},                               )</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">nc</span><span class="o">.</span><span class="n">reads</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">nc</span><span class="o">.</span><span class="n">read_cons</span><span class="p">()</span> 
 <span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">=</span><span class="n">nc</span><span class="o">.</span><span class="n">_toDataFrame</span><span class="p">()</span>
@@ -381,6 +388,26 @@ An example of a valid callable argument would be <code class="docutils literal n
 </div>
 </div>
 </div>
+<div class="section" id="rsk-file">
+<h2>RSK FILE<a class="headerlink" href="#rsk-file" title="Permalink to this headline">¶</a></h2>
+<p>Read RSK file from RBR Ltd
+This import raw file for a RBR pressure sensor.
+This class returns a Panda Dataframe.</p>
+<div class="section" id="id20">
+<h3>Parameters<a class="headerlink" href="#id20" title="Permalink to this headline">¶</a></h3>
+<dl class="simple">
+<dt>filename<span class="classifier">(files,) str or list_like</span></dt><dd><p>A list of filename to process.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="id21">
+<h3>Examples<a class="headerlink" href="#id21" title="Permalink to this headline">¶</a></h3>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">toto.inputs.rsk</span> <span class="kn">import</span> <span class="n">RSKfile</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nc</span><span class="o">=</span><span class="n">RSKfile</span><span class="p">(</span><span class="s1">&#39;filename.rsk&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">_toDataFrame</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
 </div>
 
 
@@ -414,12 +441,13 @@ An example of a valid callable argument would be <code class="docutils literal n
 <li class="toctree-l2"><a class="reference internal" href="#text">TEXT</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#constituents-file">CONSTITUENTS FILE</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#excel-file">EXCEL FILE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#rsk-file">RSK FILE</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="source/toto.filters.html"> Filter functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filters.html"> Filter functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="source/toto.interpolations.html"> Interpolation functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="source/toto.selections.html"> Selection functions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="source/toto.plugins.html"> Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugins.html"> Plugins functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="customize.html"> Customization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gallery/index.html"> Gallery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="support.html"> support</a></li>
@@ -434,7 +462,7 @@ An example of a valid callable argument would be <code class="docutils literal n
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
       <li>Previous: <a href="convention.html" title="previous chapter">Conventions</a></li>
-      <li>Next: <a href="source/toto.filters.html" title="next chapter">toto.filters package</a></li>
+      <li>Next: <a href="filters.html" title="next chapter">Filters</a></li>
   </ul></li>
 </ul>
 </div>

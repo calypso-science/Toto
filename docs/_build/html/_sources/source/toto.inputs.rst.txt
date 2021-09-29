@@ -22,3 +22,4 @@ toto.inputs package
    toto.inputs.tryaxis
    toto.inputs.txt
    toto.inputs.xls
+   toto.inputs.rsk

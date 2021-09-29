@@ -11,7 +11,7 @@ toto.interpolations package
 
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
    toto.interpolations.fill
    toto.interpolations.interpolation

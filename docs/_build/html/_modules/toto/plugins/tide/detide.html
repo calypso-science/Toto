@@ -128,7 +128,7 @@
         <span class="n">ray</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Minimum SNR&#39;</span><span class="p">]</span>
         <span class="n">demeaned</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">mag</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">mag</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
 
-        <span class="n">opts</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;ols&#39;</span><span class="p">,</span><span class="n">conf_int</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">Rayleigh_min</span><span class="o">=</span><span class="n">ray</span><span class="p">)</span>
+        <span class="n">opts</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;ols&#39;</span><span class="p">,</span><span class="n">conf_int</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span><span class="n">trend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">Rayleigh_min</span><span class="o">=</span><span class="n">ray</span><span class="p">)</span>
         <span class="n">coef</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span><span class="n">stime</span><span class="p">,</span><span class="n">demeaned</span><span class="p">,</span><span class="n">lat</span><span class="o">=</span> <span class="n">lat</span><span class="p">,</span><span class="o">**</span><span class="n">opts</span><span class="p">)</span>
         <span class="n">ts_recon</span> <span class="o">=</span> <span class="n">reconstruct</span><span class="p">(</span><span class="n">stime</span><span class="p">,</span> <span class="n">coef</span><span class="p">)</span><span class="o">.</span><span class="n">h</span>
 
@@ -379,10 +379,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../install.html"> How to install</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../convention.html"> Conventions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../input.html"> Inputs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../source/toto.filters.html"> Filter functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../filters.html"> Filter functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../source/toto.interpolations.html"> Interpolation functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../source/toto.selections.html"> Selection functions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../source/toto.plugins.html"> Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../plugins.html"> Plugins functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../customize.html"> Customization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../gallery/index.html"> Gallery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../support.html"> support</a></li>

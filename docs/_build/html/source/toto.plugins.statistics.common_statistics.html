@@ -46,21 +46,265 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="toto.plugins.statistics.common_statistics.Statistics.Directional_statistics">
-<span class="sig-name descname"><span class="pre">Directional_statistics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">magnitude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'magnitude'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'direction'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'Direction</span> <span class="pre">binning':</span> <span class="pre">{'centered':</span> <span class="pre">True,</span> <span class="pre">'not-centered':</span> <span class="pre">False},</span> <span class="pre">'Direction</span> <span class="pre">interval':</span> <span class="pre">45.0,</span> <span class="pre">'Percentile</span> <span class="pre">or</span> <span class="pre">Quantile':</span> <span class="pre">0.1,</span> <span class="pre">'Time</span> <span class="pre">blocking':</span> <span class="pre">{'Annual':</span> <span class="pre">True,</span> <span class="pre">'Monthly':</span> <span class="pre">False,</span> <span class="pre">'Seasonal</span> <span class="pre">(North</span> <span class="pre">hemisphere)':</span> <span class="pre">False,</span> <span class="pre">'Seasonal</span> <span class="pre">(South</span> <span class="pre">hemisphere)':</span> <span class="pre">False},</span> <span class="pre">'folder</span> <span class="pre">out':</span> <span class="pre">'/home/remy/software/TOTO/Toto/docs',</span> <span class="pre">'function':</span> <span class="pre">{'Max':</span> <span class="pre">True,</span> <span class="pre">'Mean':</span> <span class="pre">False,</span> <span class="pre">'Median':</span> <span class="pre">False,</span> <span class="pre">'Min':</span> <span class="pre">False,</span> <span class="pre">'Percentile':</span> <span class="pre">False,</span> <span class="pre">'Prod':</span> <span class="pre">False,</span> <span class="pre">'Quantile':</span> <span class="pre">False,</span> <span class="pre">'Std':</span> <span class="pre">False,</span> <span class="pre">'Sum':</span> <span class="pre">False,</span> <span class="pre">'Var':</span> <span class="pre">False}}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/plugins/statistics/common_statistics.html#Statistics.Directional_statistics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.plugins.statistics.common_statistics.Statistics.Directional_statistics" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function extract stats for each directional bins</p>
+<span class="sig-name descname"><span class="pre">Directional_statistics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mag'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'drr'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'Direction</span> <span class="pre">binning':</span> <span class="pre">{'centered':</span> <span class="pre">True,</span> <span class="pre">'not-centered':</span> <span class="pre">False},</span> <span class="pre">'Direction</span> <span class="pre">interval':</span> <span class="pre">45.0,</span> <span class="pre">'Percentile</span> <span class="pre">or</span> <span class="pre">Quantile':</span> <span class="pre">0.1,</span> <span class="pre">'Time</span> <span class="pre">blocking':</span> <span class="pre">{'Annual':</span> <span class="pre">True,</span> <span class="pre">'Monthly':</span> <span class="pre">False,</span> <span class="pre">'Seasonal</span> <span class="pre">(North</span> <span class="pre">hemisphere)':</span> <span class="pre">False,</span> <span class="pre">'Seasonal</span> <span class="pre">(South</span> <span class="pre">hemisphere)':</span> <span class="pre">False},</span> <span class="pre">'folder</span> <span class="pre">out':</span> <span class="pre">'/home/remy/software/TOTO/Toto/docs',</span> <span class="pre">'function':</span> <span class="pre">{'Max':</span> <span class="pre">True,</span> <span class="pre">'Mean':</span> <span class="pre">False,</span> <span class="pre">'Median':</span> <span class="pre">False,</span> <span class="pre">'Min':</span> <span class="pre">False,</span> <span class="pre">'Percentile':</span> <span class="pre">False,</span> <span class="pre">'Prod':</span> <span class="pre">False,</span> <span class="pre">'Quantile':</span> <span class="pre">False,</span> <span class="pre">'Std':</span> <span class="pre">False,</span> <span class="pre">'Sum':</span> <span class="pre">False,</span> <span class="pre">'Var':</span> <span class="pre">False}}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/plugins/statistics/common_statistics.html#Statistics.Directional_statistics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.plugins.statistics.common_statistics.Statistics.Directional_statistics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract statistics for the selected directionnal bins</p>
+<dl class="simple">
+<dt>mag<span class="classifier">str</span></dt><dd><p>Name of the column from which to get stats.
+Can be a list for extracting stats from multilple columns.</p>
+</dd>
+<dt>drr<span class="classifier">str</span></dt><dd><p>Column name representing the directions.</p>
+</dd>
+<dt>args: dict</dt><dd><dl class="simple">
+<dt>Dictionnary with the folowing keys:</dt><dd><dl class="simple">
+<dt>function: str</dt><dd><p>Name of the function to use, can be <cite>Max</cite>, <cite>Mean</cite>, <cite>Median</cite>, <cite>Min</cite>, <cite>Percentile</cite>
+<cite>Prod</cite>, <cite>Quantile</cite>, <cite>Std</cite>, <cite>Sum</cite>, <cite>Var</cite></p>
+</dd>
+<dt>Percentile or Quantile: float</dt><dd><p>Percentile or Quantile value depending on the function</p>
+</dd>
+<dt>Direction binning: str</dt><dd><p>Can be <cite>centered</cite> or <cite>not-centered</cite> depending if the directionnal are centered over 0</p>
+</dd>
+<dt>Direction interval: int</dt><dd><p>Dirctionnal interval for the bins in degrees</p>
+</dd>
+<dt>folder out: str</dt><dd><p>Path to save the output</p>
+</dd>
+<dt>Time blocking: str</dt><dd><dl class="simple">
+<dt>if <code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">blocking=='Yearly'</span></code>,</dt><dd><p>Statistics will be calculated for the whole timeserie</p>
+</dd>
+<dt>if <code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">blocking=='South</span> <span class="pre">hemisphere(Summer/Winter)'</span></code>,</dt><dd><p>Statistics will be calculated for South hemisphere summer and winter seasons</p>
+</dd>
+<dt>if <code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">blocking=='South</span> <span class="pre">hemisphere</span> <span class="pre">4</span> <span class="pre">seasons'</span></code>,</dt><dd><p>Statistics will be calculated for each South hemisphere seasons</p>
+</dd>
+<dt>if <code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">blocking=='North</span> <span class="pre">hemishere(Summer/Winter)'</span></code>,</dt><dd><p>Statistics will be calculated for North hemisphere summer and winter seasons</p>
+</dd>
+<dt>if <code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">blocking=='North</span> <span class="pre">hemisphere</span> <span class="pre">4</span> <span class="pre">seasons'</span></code>,</dt><dd><p>Statistics will be calculated for each North hemisphere seasons</p>
+</dd>
+<dt>if <code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">blocking=='North</span> <span class="pre">hemisphere</span> <span class="pre">moosoon(SW,NE,Hot</span> <span class="pre">season)'</span></code>,</dt><dd><p>Statistics will be calculated for the North hemisphere moonsoon seasons</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">=</span><span class="n">tf</span><span class="p">[</span><span class="s1">&#39;test1&#39;</span><span class="p">][</span><span class="s1">&#39;dataframe&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">Statistics</span><span class="o">.</span><span class="n">Directional_statistics</span><span class="p">(</span><span class="n">mag</span><span class="o">=</span><span class="s1">&#39;U&#39;</span><span class="p">,</span><span class="n">drr</span><span class="o">=</span><span class="s1">&#39;drr&#39;</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Direction interval&#39;</span><span class="p">:</span><span class="mi">45</span><span class="p">,</span><span class="n">Time</span> <span class="n">blocking</span><span class="s1">&#39;:&#39;</span><span class="n">Yearly</span><span class="s1">&#39;})</span>
+<span class="gp">&gt;&gt;&gt; </span>
+</pre></div>
+</div>
+<table class="colwidths-given docutils align-default" id="id1">
+<caption><span class="caption-text">Directionnal statistics example</span><a class="headerlink" href="#id1" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>MEAN</p></th>
+<th class="head"><p>N</p></th>
+<th class="head"><p>S</p></th>
+<th class="head"><p>E</p></th>
+<th class="head"><p>W</p></th>
+<th class="head"><p>Total</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>January</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>February</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Annual</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="toto.plugins.statistics.common_statistics.Statistics.common_statistics">
 <span class="sig-name descname"><span class="pre">common_statistics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['mag']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'drr'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'Minimum</span> <span class="pre">occurrence</span> <span class="pre">(main</span> <span class="pre">direction)</span> <span class="pre">[%]':</span> <span class="pre">15,</span> <span class="pre">'Time</span> <span class="pre">blocking':</span> <span class="pre">{'North</span> <span class="pre">hemishere(Summer/Winter)':</span> <span class="pre">False,</span> <span class="pre">'North</span> <span class="pre">hemisphere</span> <span class="pre">4</span> <span class="pre">seasons':</span> <span class="pre">False,</span> <span class="pre">'North</span> <span class="pre">hemisphere</span> <span class="pre">moosoon(SW,NE,Hot</span> <span class="pre">season)':</span> <span class="pre">False,</span> <span class="pre">'South</span> <span class="pre">hemisphere</span> <span class="pre">4</span> <span class="pre">seasons':</span> <span class="pre">False,</span> <span class="pre">'South</span> <span class="pre">hemisphere(Summer/Winter)':</span> <span class="pre">False,</span> <span class="pre">'Yearly':</span> <span class="pre">True},</span> <span class="pre">'folder</span> <span class="pre">out':</span> <span class="pre">'/home/remy/software/TOTO/Toto/docs'}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/plugins/statistics/common_statistics.html#Statistics.common_statistics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.plugins.statistics.common_statistics.Statistics.common_statistics" title="Permalink to this definition">¶</a></dt>
-<dd><p>output stats from timesereis)</p>
+<dd><p>Extract statistics from a Panda dataframe column</p>
+<dl>
+<dt>mag<span class="classifier">str</span></dt><dd><p>Name of the column from which to get stats.
+Can be a list for extracting stats from multilple columns.</p>
+</dd>
+<dt>drr<span class="classifier">str, optional</span></dt><dd><p>Column name representing the directions.</p>
+</dd>
+<dt>args: dict</dt><dd><p>Dictionnary with the folowing keys:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>Minimum occurrence (main direction) [%]: int</dt><dd><p>Use to calculate the main direction. Main direction is when
+occurence&gt;= Minimum occurrence. Default is 15</p>
+</dd>
+<dt>folder out: str</dt><dd><p>Path to save the output</p>
+</dd>
+<dt>Time blocking: str</dt><dd><dl class="simple">
+<dt>if <code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">blocking=='Yearly'</span></code>,</dt><dd><p>Statistics will be calculated for the whole timeserie</p>
+</dd>
+<dt>if <code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">blocking=='South</span> <span class="pre">hemisphere(Summer/Winter)'</span></code>,</dt><dd><p>Statistics will be calculated for South hemisphere summer and winter seasons</p>
+</dd>
+<dt>if <code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">blocking=='South</span> <span class="pre">hemisphere</span> <span class="pre">4</span> <span class="pre">seasons'</span></code>,</dt><dd><p>Statistics will be calculated for each South hemisphere seasons</p>
+</dd>
+<dt>if <code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">blocking=='North</span> <span class="pre">hemishere(Summer/Winter)'</span></code>,</dt><dd><p>Statistics will be calculated for North hemisphere summer and winter seasons</p>
+</dd>
+<dt>if <code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">blocking=='North</span> <span class="pre">hemisphere</span> <span class="pre">4</span> <span class="pre">seasons'</span></code>,</dt><dd><p>Statistics will be calculated for each North hemisphere seasons</p>
+</dd>
+<dt>if <code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">blocking=='North</span> <span class="pre">hemisphere</span> <span class="pre">moosoon(SW,NE,Hot</span> <span class="pre">season)'</span></code>,</dt><dd><p>Statistics will be calculated for the North hemisphere moonsoon seasons</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</div></blockquote>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">=</span><span class="n">tf</span><span class="p">[</span><span class="s1">&#39;test1&#39;</span><span class="p">][</span><span class="s1">&#39;dataframe&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">Statistics</span><span class="o">.</span><span class="n">common_stats</span><span class="p">(</span><span class="n">mag</span><span class="o">=</span><span class="s1">&#39;U&#39;</span><span class="p">,</span><span class="n">drr</span><span class="o">=</span><span class="s1">&#39;drr&#39;</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Time blocking&#39;</span><span class="p">:</span><span class="s1">&#39;Yearly&#39;</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span>
+</pre></div>
+</div>
+<table class="colwidths-given docutils align-default" id="id2">
+<caption><span class="caption-text">Common statistics example</span><a class="headerlink" href="#id2" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"></th>
+<th class="head"><p>N</p></th>
+<th class="head"><p>min</p></th>
+<th class="head"><p>max</p></th>
+<th class="head"><p>mean</p></th>
+<th class="head"><p>std</p></th>
+<th class="head"><p>P1</p></th>
+<th class="head"><p>P90</p></th>
+<th class="head"><p>Main Direction</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>June</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>July</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Winter</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Total</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="toto.plugins.statistics.common_statistics.Statistics.comparison_statistics">
 <span class="sig-name descname"><span class="pre">comparison_statistics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">measured</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'measured'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hindcast</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'hindcast'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'folder</span> <span class="pre">out':</span> <span class="pre">'/home/remy/software/TOTO/Toto/docs'}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/plugins/statistics/common_statistics.html#Statistics.comparison_statistics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.plugins.statistics.common_statistics.Statistics.comparison_statistics" title="Permalink to this definition">¶</a></dt>
-<dd><p>function to output comparison stat between measured and predicted data
-i.e BIAS,MAE,RMSE,MRAE</p>
+<dd><p>Extract comparions statistics such as BIAS,MAE,RMSE,MRAE</p>
+<dl class="simple">
+<dt>measured<span class="classifier">str</span></dt><dd><p>Name of the column representing the measure data.</p>
+</dd>
+<dt>hindcast<span class="classifier">str</span></dt><dd><p>Name of the column representing the hindcast data.</p>
+</dd>
+<dt>args: dict</dt><dd><dl class="simple">
+<dt>Dictionnary with the folowing keys:</dt><dd><dl class="simple">
+<dt>folder out: str</dt><dd><p>Path to save the output</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">=</span><span class="n">tf</span><span class="p">[</span><span class="s1">&#39;test1&#39;</span><span class="p">][</span><span class="s1">&#39;dataframe&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">Statistics</span><span class="o">.</span><span class="n">comparison_statistics</span><span class="p">(</span><span class="n">measured</span><span class="o">=</span><span class="s1">&#39;U&#39;</span><span class="p">,</span><span class="n">hindcast</span><span class="o">=</span><span class="s1">&#39;u&#39;</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;folder out&#39;</span><span class="p">:</span><span class="s1">&#39;/tmp&#39;</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span>
+</pre></div>
+</div>
+<table class="colwidths-given docutils align-default" id="id3">
+<caption><span class="caption-text">Comparison statistics example</span><a class="headerlink" href="#id3" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>MAE</p></th>
+<th class="head"><p>Mean Absolute Error</p></th>
+<th class="head"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>RMSE</p></td>
+<td><p>Root Mean Square Error</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>MRAE</p></td>
+<td><p>Mean Relative Absolute Error</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>BIAS</p></td>
+<td><p>BIAS</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>SI</p></td>
+<td><p>Scatter Index</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>IOA</p></td>
+<td><p>Index of Agreement</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="py method">
@@ -83,11 +327,108 @@ cumulative sum to obtain exceedence or non-exceedence(in %).</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="toto.plugins.statistics.common_statistics.Statistics.joint_probability">
-<span class="sig-name descname"><span class="pre">joint_probability</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">speed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'speed'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'direction'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">period</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'period'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'Direction</span> <span class="pre">binning':</span> <span class="pre">{'centered':</span> <span class="pre">True,</span> <span class="pre">'not-centered':</span> <span class="pre">False},</span> <span class="pre">'Direction</span> <span class="pre">interval':</span> <span class="pre">45.0,</span> <span class="pre">'Probablity</span> <span class="pre">expressed</span> <span class="pre">in':</span> <span class="pre">{'per</span> <span class="pre">thoushand':</span> <span class="pre">True,</span> <span class="pre">'percent':</span> <span class="pre">False},</span> <span class="pre">'Time</span> <span class="pre">blocking':</span> <span class="pre">{'Annual':</span> <span class="pre">True,</span> <span class="pre">'Monthly':</span> <span class="pre">False,</span> <span class="pre">'Seasonal</span> <span class="pre">(North</span> <span class="pre">hemisphere)':</span> <span class="pre">False,</span> <span class="pre">'Seasonal</span> <span class="pre">(South</span> <span class="pre">hemisphere)':</span> <span class="pre">False},</span> <span class="pre">'X</span> <span class="pre">Min</span> <span class="pre">Res</span> <span class="pre">Max(optional)':</span> <span class="pre">[2,</span> <span class="pre">1,</span> <span class="pre">22],</span> <span class="pre">'Y</span> <span class="pre">Min</span> <span class="pre">Res</span> <span class="pre">Max(optional)':</span> <span class="pre">[0,</span> <span class="pre">0.5],</span> <span class="pre">'folder</span> <span class="pre">out':</span> <span class="pre">'/home/remy/software/TOTO/Toto/docs',</span> <span class="pre">'method':</span> <span class="pre">{'Mag</span> <span class="pre">vs</span> <span class="pre">Dir':</span> <span class="pre">True,</span> <span class="pre">'Mag</span> <span class="pre">vs</span> <span class="pre">Per':</span> <span class="pre">False,</span> <span class="pre">'Per</span> <span class="pre">Vs</span> <span class="pre">Dir':</span> <span class="pre">False}}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/plugins/statistics/common_statistics.html#Statistics.joint_probability"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.plugins.statistics.common_statistics.Statistics.joint_probability" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">joint_probability</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'speed'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'direction'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">period</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'period'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'Direction</span> <span class="pre">binning':</span> <span class="pre">{'centered':</span> <span class="pre">True,</span> <span class="pre">'not-centered':</span> <span class="pre">False},</span> <span class="pre">'Direction</span> <span class="pre">interval':</span> <span class="pre">45.0,</span> <span class="pre">'Probablity</span> <span class="pre">expressed</span> <span class="pre">in':</span> <span class="pre">{'per</span> <span class="pre">thoushand':</span> <span class="pre">True,</span> <span class="pre">'percent':</span> <span class="pre">False},</span> <span class="pre">'Time</span> <span class="pre">blocking':</span> <span class="pre">{'Annual':</span> <span class="pre">True,</span> <span class="pre">'Monthly':</span> <span class="pre">False,</span> <span class="pre">'Seasonal</span> <span class="pre">(North</span> <span class="pre">hemisphere)':</span> <span class="pre">False,</span> <span class="pre">'Seasonal</span> <span class="pre">(South</span> <span class="pre">hemisphere)':</span> <span class="pre">False},</span> <span class="pre">'X</span> <span class="pre">Min</span> <span class="pre">Res</span> <span class="pre">Max(optional)':</span> <span class="pre">[2,</span> <span class="pre">1,</span> <span class="pre">22],</span> <span class="pre">'Y</span> <span class="pre">Min</span> <span class="pre">Res</span> <span class="pre">Max(optional)':</span> <span class="pre">[0,</span> <span class="pre">0.5],</span> <span class="pre">'folder</span> <span class="pre">out':</span> <span class="pre">'/home/remy/software/TOTO/Toto/docs',</span> <span class="pre">'method':</span> <span class="pre">{'Mag</span> <span class="pre">vs</span> <span class="pre">Dir':</span> <span class="pre">True,</span> <span class="pre">'Mag</span> <span class="pre">vs</span> <span class="pre">Per':</span> <span class="pre">False,</span> <span class="pre">'Per</span> <span class="pre">Vs</span> <span class="pre">Dir':</span> <span class="pre">False}}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/plugins/statistics/common_statistics.html#Statistics.joint_probability"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.plugins.statistics.common_statistics.Statistics.joint_probability" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function provides joint distribution tables for X and Y, i.e. the
 probability of events defined in terms of both X and Y (per 1000)
 It can be applied for magnitude-direction, magnitude-period or
 period-direction</p>
+<dl class="simple">
+<dt>mag<span class="classifier">str</span></dt><dd><p>Name of the column from which to get stats.
+Can be a list for extracting stats from multilple columns.</p>
+</dd>
+<dt>drr<span class="classifier">str</span></dt><dd><p>Column name representing the directions. If method is <cite>Per Vs Dir</cite> or <cite>Mag vs Dir</cite></p>
+</dd>
+<dt>period<span class="classifier">str</span></dt><dd><p>Column name representing the directions. If method is <cite>Per Vs Dir</cite> or <cite>Mag vs Per</cite></p>
+</dd>
+<dt>args: dict</dt><dd><dl class="simple">
+<dt>Dictionnary with the folowing keys:</dt><dd><dl class="simple">
+<dt>method: str</dt><dd><p>Name of the method to use, can be:
+<cite>Mag vs Dir</cite>: Plot Maginitude Versus Direction
+<cite>Per Vs Dir</cite>: Plot Period Versus Direction
+<cite>Mag vs Per</cite>: Plot Maginitude Versus Period</p>
+</dd>
+<dt>Direction binning: str</dt><dd><p>Can be <cite>centered</cite> or <cite>not-centered</cite> depending if the directionnal are centered over 0</p>
+</dd>
+<dt>Direction interval: int</dt><dd><p>Dirctionnal interval for the bins in degrees</p>
+</dd>
+<dt>folder out: str</dt><dd><p>Path to save the output</p>
+</dd>
+<dt>Probablity expressed in: str</dt><dd><p>This can be <cite>percent</cite> or <cite>per thoushand</cite></p>
+</dd>
+<dt>X Min Res Max(optional): list</dt><dd><p>Minimum, resolution and maximum value of X axis use in the join probability</p>
+</dd>
+<dt>Y Min Res Max(optional): list</dt><dd><p>Minimum, resolution and maximum value of Y axis use in the join probability</p>
+</dd>
+<dt>Time blocking: str</dt><dd><dl class="simple">
+<dt>if <code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">blocking=='Annual'</span></code>,</dt><dd><p>Statistics will be calculated for the whole timeserie</p>
+</dd>
+<dt>if <code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">blocking=='Seasonal</span> <span class="pre">(South</span> <span class="pre">hemisphere)'</span></code>,</dt><dd><p>Statistics will be calculated for each South hemisphere seasons</p>
+</dd>
+<dt>if <code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">blocking=='Seasonal</span> <span class="pre">(North</span> <span class="pre">hemisphere)'</span></code>,</dt><dd><p>Statistics will be calculated for each North hemisphere seasons</p>
+</dd>
+<dt>if <code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">blocking=='Monthly'</span></code>,</dt><dd><p>Statistics will be calculated for each month</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">=</span><span class="n">tf</span><span class="p">[</span><span class="s1">&#39;test1&#39;</span><span class="p">][</span><span class="s1">&#39;dataframe&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">Statistics</span><span class="o">.</span><span class="n">joint_probability</span><span class="p">(</span><span class="n">mag</span><span class="o">=</span><span class="s1">&#39;U&#39;</span><span class="p">,</span><span class="n">drr</span><span class="o">=</span><span class="s1">&#39;drr&#39;</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Direction interval&#39;</span><span class="p">:</span><span class="mi">45</span><span class="p">,</span><span class="n">Time</span> <span class="n">blocking</span><span class="s1">&#39;:&#39;</span><span class="n">Yearly</span><span class="s1">&#39;})</span>
+<span class="gp">&gt;&gt;&gt; </span>
+</pre></div>
+</div>
+<table class="colwidths-given docutils align-default" id="id4">
+<caption><span class="caption-text">Joint probability example</span><a class="headerlink" href="#id4" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>January</p></th>
+<th class="head"><p>0</p></th>
+<th class="head"><p>1</p></th>
+<th class="head"><p>2</p></th>
+<th class="head"><p>3</p></th>
+<th class="head"><p>Total</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Total</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>100</p></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="py method">
@@ -158,23 +499,14 @@ paramters (e.g. Hs &lt; 2m and Wind speed &lt; 10 m/s)</p>
 
 <h3>Navigation</h3>
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul class="current">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../install.html"> How to install</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../convention.html"> Conventions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../input.html"> Inputs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="toto.filters.html"> Filter functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../filters.html"> Filter functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="toto.interpolations.html"> Interpolation functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="toto.selections.html"> Selection functions</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="toto.plugins.html"> Plugins</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="toto.plugins.extreme.html">toto.plugins.extreme package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="toto.plugins.plots.html">toto.plugins.plots package</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="toto.plugins.statistics.html">toto.plugins.statistics package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="toto.plugins.tide.html">toto.plugins.tide package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="toto.plugins.transformations.html">toto.plugins.transformations package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="toto.plugins.wave.html">toto.plugins.wave package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="toto.plugins.woodside.html">toto.plugins.woodside package</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins.html"> Plugins functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../customize.html"> Customization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gallery/index.html"> Gallery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../support.html"> support</a></li>
@@ -191,10 +523,14 @@ paramters (e.g. Hs &lt; 2m and Wind speed &lt; 10 m/s)</p>
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">toto</a><ul>
+  <li><a href="toto.html">toto package</a><ul>
   <li><a href="toto.plugins.html">toto.plugins package</a><ul>
   <li><a href="toto.plugins.statistics.html">toto.plugins.statistics package</a><ul>
       <li>Previous: <a href="toto.plugins.statistics.html" title="previous chapter">toto.plugins.statistics package</a></li>
       <li>Next: <a href="toto.plugins.tide.html" title="next chapter">toto.plugins.tide package</a></li>
+  </ul></li>
+  </ul></li>
   </ul></li>
   </ul></li>
   </ul></li>

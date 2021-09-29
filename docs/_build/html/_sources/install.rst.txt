@@ -63,7 +63,6 @@ Then you will be able to access the extra module repo via github
 To install them naviguate the toto_plugins folder and type:
 
 .. code:: bash
-
    python add_module.py
 
 .. _`PyWafo`: https://github.com/wafo-project/pywafo

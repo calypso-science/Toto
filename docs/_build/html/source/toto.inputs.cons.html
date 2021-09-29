@@ -92,7 +92,14 @@ An example of a valid callable argument would be <code class="docutils literal n
 <div class="section" id="examples">
 <h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">toto.inputs.cons</span> <span class="kn">import</span> <span class="n">CONSfile</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">nc</span><span class="o">=</span><span class="n">CONSfile</span><span class="p">([</span><span class="s1">&#39;cons_list.csv&#39;</span><span class="p">],</span><span class="n">sep</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span>                               <span class="n">colNames</span><span class="o">=</span><span class="p">[],</span>                               <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;degrees&#39;</span><span class="p">,</span>                               <span class="n">miss_val</span><span class="o">=</span><span class="s1">&#39;NaN&#39;</span><span class="p">,</span>                               <span class="n">colNamesLine</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>                               <span class="n">skiprows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>                               <span class="n">skipfooter</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>                               <span class="n">col_name</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;cons&#39;</span><span class="p">:</span><span class="s1">&#39;Cons&#39;</span><span class="p">,</span><span class="s1">&#39;amp&#39;</span><span class="p">:</span><span class="s1">&#39;Amplitude&#39;</span><span class="p">,</span><span class="s1">&#39;pha&#39;</span><span class="p">:</span><span class="s1">&#39;Phase&#39;</span><span class="p">},</span>                               <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nc</span><span class="o">=</span><span class="n">CONSfile</span><span class="p">([</span><span class="s1">&#39;cons_list.csv&#39;</span><span class="p">],</span><span class="n">sep</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span>
+<span class="go">                           colNames=[],</span>
+<span class="go">                           unit=&#39;degrees&#39;,</span>
+<span class="go">                           miss_val=&#39;NaN&#39;,</span>
+<span class="go">                           colNamesLine=1,</span>
+<span class="go">                           skiprows=1,</span>
+<span class="go">                           skipfooter=0,</span>
+<span class="go">                           col_name={&#39;cons&#39;:&#39;Cons&#39;,&#39;amp&#39;:&#39;Amplitude&#39;,&#39;pha&#39;:&#39;Phase&#39;},                               )</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">nc</span><span class="o">.</span><span class="n">reads</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">nc</span><span class="o">.</span><span class="n">read_cons</span><span class="p">()</span> 
 <span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">=</span><span class="n">nc</span><span class="o">.</span><span class="n">_toDataFrame</span><span class="p">()</span>
@@ -149,10 +156,10 @@ An example of a valid callable argument would be <code class="docutils literal n
 <li class="toctree-l1"><a class="reference internal" href="../install.html"> How to install</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../convention.html"> Conventions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../input.html"> Inputs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="toto.filters.html"> Filter functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../filters.html"> Filter functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="toto.interpolations.html"> Interpolation functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="toto.selections.html"> Selection functions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="toto.plugins.html"> Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins.html"> Plugins functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../customize.html"> Customization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gallery/index.html"> Gallery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../support.html"> support</a></li>
