@@ -17,62 +17,62 @@ Those plugins are freely available and can be access directly from `TOTO`
 Statistics
 ~~~~~~~~~~
 
-•	:doc:`Common statistics <source/common_statistics>`
+•	:doc:`Common statistics <common_statistics>`
 
-•	:doc:`Comparison statistics <source/comparison_stats>`
+•	:doc:`Comparison statistics <comparison_stats>`
 
-•	:doc:`Directionnal statistics <source/direction_stats>`
+•	:doc:`Directionnal statistics <direction_stats>`
 
 Plots
 ~~~~~
 
-•	:doc:`Roses <source/rose_plot>`
+•	:doc:`Roses <rose_plot>`
 
-•	:doc:`BIAS histogram <source/bias_plot>`
+•	:doc:`BIAS histogram <bias_plot>`
 
-•	:doc:`Density diagram <source/density_plot>`
+•	:doc:`Density diagram <density_plot>`
 
-•	:doc:`Thermocline plot <source/thermo_plot>`
+•	:doc:`Thermocline plot <thermo_plot>`
 
 Tide
 ~~~~
 
-•	:doc:`De-tiding <source/detide_tide>`
+•	:doc:`De-tiding <detide_tide>`
 
-•	:doc:`Re-construct <source/recreate_tide>`
+•	:doc:`Re-construct <recreate_tide>`
 
-•	:doc:`Predict <source/predict_tide>`
+•	:doc:`Predict <predict_tide>`
 
-•	:doc:`Tidal statistics <source/tidal_stat>`
+•	:doc:`Tidal statistics <tidal_stat>`
 
-•	:doc:`Skew surge <source/skew_tide>`
+•	:doc:`Skew surge <skew_tide>`
 
 Transformations
 ~~~~~~~~~~~~~~~
 
-•	:doc:`Rotation <source/rotation_trans>`
+•	:doc:`Rotation <rotation_trans>`
 
-•	:doc:`Wind profile <source/wind_trans>`
+•	:doc:`Wind profile <wind_trans>`
 
-•	:doc:`Depth-average / layers <source/dav_trans>`
+•	:doc:`Depth-average / layers <dav_trans>`
 
-•	:doc:`Hs sea <source/hs_trans>`
+•	:doc:`Hs sea <hs_trans>`
 
-•	:doc:`Orbital velocity <source/orb_trans>`
+•	:doc:`Orbital velocity <orb_trans>`
 
-•	:doc:`U & V / Spd & drr <source/uv_trans>`
+•	:doc:`U & V / Spd & drr <uv_trans>`
 
 Wave
 ~~~~
 
-•	:doc:`Wave spectra <source/spec_wave>`
+•	:doc:`Wave spectra <spec_wave>`
 
-•	:doc:`Wavelet analysis <source/wavelet_wave>`
+•	:doc:`Wavelet analysis <wavelet_wave>`
 
 Extreme value analysis
 ~~~~~~~~~~~~~~~~~~~~~~
 
-•	:doc:`Shape distribution <source/shape_extreme>`
+•	:doc:`Shape distribution <shape_extreme>`
 
 
 Close-source plugins:

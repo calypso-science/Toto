@@ -17,62 +17,62 @@ Those plugins are freely available and can be access directly from `TOTO`
 Statistics
 ~~~~~~~~~~
 
-•	Common statistics <common_statistics>
+•	:doc:`Common statistics <common_statistics>`
 
-•	Comparison statistics <comparison_stats>
+•	:doc:`Comparison statistics <comparison_stats>`
 
-•	Directionnal statistics <direction_stats>
+•	:doc:`Directionnal statistics <direction_stats>`
 
 Plots
 ~~~~~
 
-•	Roses <rose_plot>
+•	:doc:`Roses <rose_plot>`
 
-•	BIAS histogram <bias_plot>
+•	:doc:`BIAS histogram <bias_plot>`
 
-•	Density diagram <density_plot>
+•	:doc:`Density diagram <density_plot>`
 
-•	Thermocline plot <thermo_plot>
+•	:doc:`Thermocline plot <thermo_plot>`
 
 Tide
 ~~~~
 
-•	De-tiding <detide_tide>
+•	:doc:`De-tiding <detide_tide>`
 
-•	Re-construct <recreate_tide>
+•	:doc:`Re-construct <recreate_tide>`
 
-•	Predict <predict_tide>
+•	:doc:`Predict <predict_tide>`
 
-•	Tidal statistics <tidal_stat>
+•	:doc:`Tidal statistics <tidal_stat>`
 
-•	Skew surge <skew_tide>
+•	:doc:`Skew surge <skew_tide>`
 
 Transformations
 ~~~~~~~~~~~~~~~
 
-•	Rotation <rotation_trans>
+•	:doc:`Rotation <rotation_trans>`
 
-•	Wind profile <wind_trans>
+•	:doc:`Wind profile <wind_trans>`
 
-•	Depth-average / layers <dav_trans>
+•	:doc:`Depth-average / layers <dav_trans>`
 
-•	Hs sea <hs_trans>
+•	:doc:`Hs sea <hs_trans>`
 
-•	Orbital velocity <orb_trans>
+•	:doc:`Orbital velocity <orb_trans>`
 
-•	U & V / Spd & drr <uv_trans>
+•	:doc:`U & V / Spd & drr <uv_trans>`
 
 Wave
 ~~~~
 
-•	Wave spectra <spec_wave>
+•	:doc:`Wave spectra <spec_wave>`
 
-•	Wavelet analysis <wavelet_wave>
+•	:doc:`Wavelet analysis <wavelet_wave>`
 
 Extreme value analysis
 ~~~~~~~~~~~~~~~~~~~~~~
 
-•	Shape distribution <shape_extreme>
+•	:doc:`Shape distribution <shape_extreme>`
 
 
 Close-source plugins:
