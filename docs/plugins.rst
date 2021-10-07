@@ -87,6 +87,22 @@ Those plugins can be access after being granted permission by:
 Statistics
 ~~~~~~~~~~
 
+•	:doc:`Joint probability <jp_statistics>`
+
+•	:doc:`Weather window <weatherwindow_stats>`
+
+•	:doc:`Exceedence probability <excprob_stats>`
+
+•	:doc:`Exceedence coincidence probability <exccoincprob_stats>`
+
+•	:doc:`Workability <workability_stats>`
+
+•	:doc:`Wave population <wavepop_stats>`
+
+•	:doc:`Modal wave period <modalwave_stats>`
+
+•	:doc:`Weighted direction <weighteddirec_stats>`
+
 Plots
 ~~~~~
 
