@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-Percentage of occurence example
+Joint probability plot example
 ===============================
 """
 import pandas as pd
@@ -24,7 +24,7 @@ hd[0].StatPlots.joint_probability_plot(Y='hs',X='tp',\
         'Y Min Res Max(optional)':[0,0.5],
         'X label':'Wave Period [s]',
         'Y label':'Wave height [m]',
-        'time blocking':'Seasonal (South hemisphere)',
+        'time blocking':'Annual',
         'probablity expressed in':'percent',
         'display':'On',
         })

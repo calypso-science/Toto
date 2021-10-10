@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """
-BIAS histogramm examples
-========================
+QQ plot examples
+================
 """
 import pandas as pd
 import toto

@@ -73,7 +73,7 @@ Skew surge examples
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.995 seconds)
+   **Total running time of the script:** ( 0 minutes  0.962 seconds)
 
 
 .. _sphx_glr_download_gallery_plot_skewsurge.py:

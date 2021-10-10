@@ -18,8 +18,8 @@
 .. _sphx_glr_gallery_plot_qq.py:
 
 
-BIAS histogramm examples
-========================
+QQ plot examples
+================
 
 .. GENERATED FROM PYTHON SOURCE LINES 6-45
 
@@ -78,7 +78,7 @@ BIAS histogramm examples
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.552 seconds)
+   **Total running time of the script:** ( 0 minutes  0.547 seconds)
 
 
 .. _sphx_glr_download_gallery_plot_qq.py:

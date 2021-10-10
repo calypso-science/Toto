@@ -5,24 +5,24 @@
 
 Computation times
 =================
-**00:45.655** total execution time for **gallery** files:
+**00:50.367** total execution time for **gallery** files:
 
 +-----------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_plot_thermocline.py` (``plot_thermocline.py``) | 00:40.622 | 0.0 MB |
+| :ref:`sphx_glr_gallery_plot_thermocline.py` (``plot_thermocline.py``) | 00:39.966 | 0.0 MB |
 +-----------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_plot_JP.py` (``plot_JP.py``)                   | 00:02.604 | 0.0 MB |
+| :ref:`sphx_glr_gallery_plot_filters.py` (``plot_filters.py``)         | 00:03.521 | 0.0 MB |
 +-----------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_plot_density.py` (``plot_density.py``)         | 00:01.077 | 0.0 MB |
+| :ref:`sphx_glr_gallery_plot_cyclone.py` (``plot_cyclone.py``)         | 00:02.182 | 0.0 MB |
 +-----------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_plot_occurence.py` (``plot_occurence.py``)     | 00:00.800 | 0.0 MB |
+| :ref:`sphx_glr_gallery_plot_density.py` (``plot_density.py``)         | 00:00.999 | 0.0 MB |
 +-----------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_plot_qq.py` (``plot_qq.py``)                   | 00:00.552 | 0.0 MB |
+| :ref:`sphx_glr_gallery_plot_skewsurge.py` (``plot_skewsurge.py``)     | 00:00.962 | 0.0 MB |
 +-----------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_plot_BIAS.py` (``plot_BIAS.py``)               | 00:00.000 | 0.0 MB |
+| :ref:`sphx_glr_gallery_plot_occurence.py` (``plot_occurence.py``)     | 00:00.882 | 0.0 MB |
 +-----------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_plot_cyclone.py` (``plot_cyclone.py``)         | 00:00.000 | 0.0 MB |
+| :ref:`sphx_glr_gallery_plot_BIAS.py` (``plot_BIAS.py``)               | 00:00.668 | 0.0 MB |
 +-----------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_plot_filters.py` (``plot_filters.py``)         | 00:00.000 | 0.0 MB |
+| :ref:`sphx_glr_gallery_plot_JP.py` (``plot_JP.py``)                   | 00:00.641 | 0.0 MB |
 +-----------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_plot_skewsurge.py` (``plot_skewsurge.py``)     | 00:00.000 | 0.0 MB |
+| :ref:`sphx_glr_gallery_plot_qq.py` (``plot_qq.py``)                   | 00:00.547 | 0.0 MB |
 +-----------------------------------------------------------------------+-----------+--------+

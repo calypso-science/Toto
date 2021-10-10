@@ -91,7 +91,7 @@ Cyclone removal
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.988 seconds)
+   **Total running time of the script:** ( 0 minutes  2.182 seconds)
 
 
 .. _sphx_glr_download_gallery_plot_cyclone.py:

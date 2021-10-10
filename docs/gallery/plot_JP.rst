@@ -18,68 +18,20 @@
 .. _sphx_glr_gallery_plot_JP.py:
 
 
-Percentage of occurence example
+Joint probability plot example
 ===============================
 
 .. GENERATED FROM PYTHON SOURCE LINES 6-30
 
 
 
-.. rst-class:: sphx-glr-horizontal
-
-
-    *
-
-      .. image:: /gallery/images/sphx_glr_plot_JP_001.png
-          :alt: plot JP
-          :class: sphx-glr-multi-img
-
-    *
-
-      .. image:: /gallery/images/sphx_glr_plot_JP_002.png
-          :alt: Summer
-          :class: sphx-glr-multi-img
-
-    *
-
-      .. image:: /gallery/images/sphx_glr_plot_JP_003.png
-          :alt: Autumn
-          :class: sphx-glr-multi-img
-
-    *
-
-      .. image:: /gallery/images/sphx_glr_plot_JP_004.png
-          :alt: Winter
-          :class: sphx-glr-multi-img
-
-    *
-
-      .. image:: /gallery/images/sphx_glr_plot_JP_005.png
-          :alt: Spring
-          :class: sphx-glr-multi-img
-
-    *
-
-      .. image:: /gallery/images/sphx_glr_plot_JP_006.png
-          :alt: Annual
-          :class: sphx-glr-multi-img
-
-
-.. rst-class:: sphx-glr-script-out
-
- Out:
-
- .. code-block:: none
-
-    /home/remy/.local/lib/python3.8/site-packages/numpy/core/fromnumeric.py:58: RuntimeWarning: overflow encountered in multiply
-      return bound(*args, **kwds)
+.. image:: /gallery/images/sphx_glr_plot_JP_001.png
+    :alt: Annual
+    :class: sphx-glr-single-img
 
 
 
 
-
-
-|
 
 .. code-block:: default
 
@@ -104,14 +56,14 @@ Percentage of occurence example
             'Y Min Res Max(optional)':[0,0.5],
             'X label':'Wave Period [s]',
             'Y label':'Wave height [m]',
-            'time blocking':'Seasonal (South hemisphere)',
+            'time blocking':'Annual',
             'probablity expressed in':'percent',
             'display':'On',
             })
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  2.604 seconds)
+   **Total running time of the script:** ( 0 minutes  0.641 seconds)
 
 
 .. _sphx_glr_download_gallery_plot_JP.py:

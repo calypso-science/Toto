@@ -73,12 +73,12 @@ Gallery
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Percentage of occurence example">
+    <div class="sphx-glr-thumbcontainer" tooltip="Joint probability plot example">
 
 .. only:: html
 
  .. figure:: /gallery/images/thumb/sphx_glr_plot_JP_thumb.png
-     :alt: Percentage of occurence example
+     :alt: Joint probability plot example
 
      :ref:`sphx_glr_gallery_plot_JP.py`
 
@@ -136,12 +136,12 @@ Gallery
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="BIAS histogramm examples">
+    <div class="sphx-glr-thumbcontainer" tooltip="QQ plot examples">
 
 .. only:: html
 
  .. figure:: /gallery/images/thumb/sphx_glr_plot_qq_thumb.png
-     :alt: BIAS histogramm examples
+     :alt: QQ plot examples
 
      :ref:`sphx_glr_gallery_plot_qq.py`
 

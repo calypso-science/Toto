@@ -69,7 +69,7 @@ Thermocline examples
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  40.622 seconds)
+   **Total running time of the script:** ( 0 minutes  39.966 seconds)
 
 
 .. _sphx_glr_download_gallery_plot_thermocline.py:

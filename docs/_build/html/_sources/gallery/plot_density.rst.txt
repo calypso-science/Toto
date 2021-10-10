@@ -65,7 +65,7 @@ Density histogramm examples
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  1.077 seconds)
+   **Total running time of the script:** ( 0 minutes  0.999 seconds)
 
 
 .. _sphx_glr_download_gallery_plot_density.py:
