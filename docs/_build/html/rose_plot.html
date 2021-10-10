@@ -39,7 +39,51 @@
 <div class="section" id="module-toto.plugins.plots.plot_roses.StatPlots.plot_roses">
 <span id="rose-plot"></span><h1>Rose plot<a class="headerlink" href="#module-toto.plugins.plots.plot_roses.StatPlots.plot_roses" title="Permalink to this headline">¶</a></h1>
 <p>This function provides annual, seasonal or monthly rose plots for wind,
-wave, current or any direcional variable</p>
+wave, current or any direcional variable.
+This function is using <a class="reference external" href="https://github.com/python-windrose/windrose">https://github.com/python-windrose/windrose</a></p>
+<div class="section" id="parameters">
+<h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt>mag<span class="classifier">str</span></dt><dd><p>Name of the column from which to get stats.</p>
+</dd>
+<dt>drr<span class="classifier">str</span></dt><dd><p>Column name representing the directions.</p>
+</dd>
+<dt>args: dict</dt><dd><p>Dictionnary with the folowing keys:
+title: str</p>
+<blockquote>
+<div><p>Graph title</p>
+</div></blockquote>
+<dl class="simple">
+<dt>speed bins (optional): list</dt><dd><p>Speed to plot</p>
+</dd>
+<dt>% quadran (optional): list</dt><dd><p>Percentage of each occurence to plot</p>
+</dd>
+<dt>display: str</dt><dd><p><cite>On</cite> or <cite>Off</cite> to display image</p>
+</dd>
+<dt>folder out: str</dt><dd><p>Path to save the output</p>
+</dd>
+<dt>time blocking: str</dt><dd><dl class="simple">
+<dt>if <code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">blocking=='Annual'</span></code>,</dt><dd><p>Statistics will be calculated for the whole timeserie</p>
+</dd>
+<dt>if <code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">blocking=='Seasonal</span> <span class="pre">(South</span> <span class="pre">hemisphere)'</span></code>,</dt><dd><p>Statistics will be calculated for South hemisphere seasons</p>
+</dd>
+<dt>if <code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">blocking=='Seasonal</span> <span class="pre">(North</span> <span class="pre">hemisphere)'</span></code>,</dt><dd><p>Statistics will be calculated for North hemisphere seasons</p>
+</dd>
+<dt>if <code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">blocking=='Monthly'</span></code>,</dt><dd><p>Statistics will be calculated for each month.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</div>
+<div class="section" id="examples">
+<h2>Examples:<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">=</span><span class="n">tf</span><span class="p">[</span><span class="s1">&#39;test1&#39;</span><span class="p">][</span><span class="s1">&#39;dataframe&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">StatPlots</span><span class="o">.</span><span class="n">plot_roses</span><span class="p">(</span><span class="n">mag</span><span class="o">=</span><span class="s1">&#39;U&#39;</span><span class="p">,</span><span class="n">drr</span><span class="o">=</span><span class="s1">&#39;drr&#39;</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;time blocking&#39;</span><span class="p">:</span><span class="s1">&#39;Yearly&#39;</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span>
+</pre></div>
+</div>
+</div>
 </div>
 
 

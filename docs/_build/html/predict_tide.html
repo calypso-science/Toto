@@ -40,6 +40,40 @@
 <span id="predict"></span><h1>Predict<a class="headerlink" href="#module-toto.plugins.tide.detide.TideAnalysis.predict" title="Permalink to this headline">¶</a></h1>
 <p>This function predict the tide by first detiding a timeseries.
 Works if NaN are in the timeseries</p>
+<div class="section" id="parameters">
+<h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt>mag<span class="classifier">str</span></dt><dd><p>Name of the column from which to extract the tide</p>
+</dd>
+<dt>args: dict</dt><dd><dl>
+<dt>Dictionnary with the folowing keys:</dt><dd><p>Minimum SNR: int
+folder out: str</p>
+<blockquote>
+<div><p>Path to save the output</p>
+</div></blockquote>
+<p>latitude: float
+minimum time: datetime</p>
+<blockquote>
+<div><p>Time the time series start</p>
+</div></blockquote>
+<dl class="simple">
+<dt>maximum time: datetime</dt><dd><p>Time the time series end</p>
+</dd>
+<dt>dt(s): int</dt><dd><p>Time interval in seconds</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</div>
+<div class="section" id="examples">
+<h2>Examples:<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">=</span><span class="n">tf</span><span class="p">[</span><span class="s1">&#39;test1&#39;</span><span class="p">][</span><span class="s1">&#39;dataframe&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">TideAnalysis</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">mag</span><span class="o">=</span><span class="s1">&#39;U&#39;</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;latitude&#39;</span><span class="p">:</span><span class="o">-</span><span class="mf">36.5</span><span class="p">,</span>            <span class="s1">&#39;minimum time&#39;</span><span class="p">:</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2002</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="s1">&#39;maximum time&#39;</span><span class="p">:</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2003</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span>            <span class="s1">&#39;dt(s)&#39;</span><span class="p">:</span><span class="mi">3600</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>
+</pre></div>
+</div>
+</div>
 </div>
 
 

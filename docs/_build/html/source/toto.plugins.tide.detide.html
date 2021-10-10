@@ -46,35 +46,146 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="toto.plugins.tide.detide.TideAnalysis.detide">
-<span class="sig-name descname"><span class="pre">detide</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mag'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'Latitude':</span> <span class="pre">-</span> <span class="pre">36.0,</span> <span class="pre">'Minimum</span> <span class="pre">SNR':</span> <span class="pre">2,</span> <span class="pre">'folder</span> <span class="pre">out':</span> <span class="pre">'/home/remy/software/TOTO/Toto/docs'}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/plugins/tide/detide.html#TideAnalysis.detide"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.plugins.tide.detide.TideAnalysis.detide" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function detide a timeseries.
-Works if NaN are in the timeseries</p>
+<span class="sig-name descname"><span class="pre">detide</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mag'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'folder</span> <span class="pre">out':</span> <span class="pre">'/home/remy/software/TOTO/Toto/docs',</span> <span class="pre">'latitude':</span> <span class="pre">-</span> <span class="pre">36.0,</span> <span class="pre">'minimum</span> <span class="pre">SNR':</span> <span class="pre">2}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/plugins/tide/detide.html#TideAnalysis.detide"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.plugins.tide.detide.TideAnalysis.detide" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function detide a timeseries using Utide software.
+Usefull if NaNs are in the timeseries</p>
+<dl>
+<dt>mag<span class="classifier">str</span></dt><dd><p>Name of the column from which to extract the tide</p>
+</dd>
+<dt>args: dict</dt><dd><dl>
+<dt>Dictionnary with the folowing keys:</dt><dd><p>minimum SNR: int
+folder out: str</p>
+<blockquote>
+<div><p>Path to save the output</p>
+</div></blockquote>
+<p>latitude: float</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">=</span><span class="n">tf</span><span class="p">[</span><span class="s1">&#39;test1&#39;</span><span class="p">][</span><span class="s1">&#39;dataframe&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">TideAnalysis</span><span class="o">.</span><span class="n">detide</span><span class="p">(</span><span class="n">mag</span><span class="o">=</span><span class="s1">&#39;U&#39;</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;latitude&#39;</span><span class="p">:</span><span class="o">-</span><span class="mf">36.5</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="toto.plugins.tide.detide.TideAnalysis.predict">
-<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">mag='mag'</span></em>, <em class="sig-param"><span class="pre">args={'Latitude':</span> <span class="pre">-36.0</span></em>, <em class="sig-param"><span class="pre">'Minimum</span> <span class="pre">SNR':</span> <span class="pre">2</span></em>, <em class="sig-param"><span class="pre">'dt(s)':</span> <span class="pre">60</span></em>, <em class="sig-param"><span class="pre">'maximum</span> <span class="pre">time':</span> <span class="pre">&lt;class</span> <span class="pre">'datetime.datetime'&gt;</span></em>, <em class="sig-param"><span class="pre">'minimum</span> <span class="pre">time':</span> <span class="pre">&lt;class</span> <span class="pre">'datetime.datetime'&gt;}</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/plugins/tide/detide.html#TideAnalysis.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.plugins.tide.detide.TideAnalysis.predict" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">mag='mag'</span></em>, <em class="sig-param"><span class="pre">args={'dt(s)':</span> <span class="pre">60</span></em>, <em class="sig-param"><span class="pre">'latitude':</span> <span class="pre">-36.0</span></em>, <em class="sig-param"><span class="pre">'maximum</span> <span class="pre">time':</span> <span class="pre">&lt;class</span> <span class="pre">'datetime.datetime'&gt;</span></em>, <em class="sig-param"><span class="pre">'minimum</span> <span class="pre">SNR':</span> <span class="pre">2</span></em>, <em class="sig-param"><span class="pre">'minimum</span> <span class="pre">time':</span> <span class="pre">&lt;class</span> <span class="pre">'datetime.datetime'&gt;}</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/plugins/tide/detide.html#TideAnalysis.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.plugins.tide.detide.TideAnalysis.predict" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function predict the tide by first detiding a timeseries.
 Works if NaN are in the timeseries</p>
+<dl>
+<dt>mag<span class="classifier">str</span></dt><dd><p>Name of the column from which to extract the tide</p>
+</dd>
+<dt>args: dict</dt><dd><dl>
+<dt>Dictionnary with the folowing keys:</dt><dd><p>Minimum SNR: int
+folder out: str</p>
+<blockquote>
+<div><p>Path to save the output</p>
+</div></blockquote>
+<p>latitude: float
+minimum time: datetime</p>
+<blockquote>
+<div><p>Time the time series start</p>
+</div></blockquote>
+<dl class="simple">
+<dt>maximum time: datetime</dt><dd><p>Time the time series end</p>
+</dd>
+<dt>dt(s): int</dt><dd><p>Time interval in seconds</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">=</span><span class="n">tf</span><span class="p">[</span><span class="s1">&#39;test1&#39;</span><span class="p">][</span><span class="s1">&#39;dataframe&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">TideAnalysis</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">mag</span><span class="o">=</span><span class="s1">&#39;U&#39;</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;latitude&#39;</span><span class="p">:</span><span class="o">-</span><span class="mf">36.5</span><span class="p">,</span>            <span class="s1">&#39;minimum time&#39;</span><span class="p">:</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2002</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="s1">&#39;maximum time&#39;</span><span class="p">:</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2003</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span>            <span class="s1">&#39;dt(s)&#39;</span><span class="p">:</span><span class="mi">3600</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="toto.plugins.tide.detide.TideAnalysis.recreate">
-<span class="sig-name descname"><span class="pre">recreate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'Latitude':</span> <span class="pre">-</span> <span class="pre">36.0,</span> <span class="pre">'column</span> <span class="pre">amp':</span> <span class="pre">'amp',</span> <span class="pre">'column</span> <span class="pre">cons':</span> <span class="pre">'cons',</span> <span class="pre">'column</span> <span class="pre">pha':</span> <span class="pre">'pha',</span> <span class="pre">'cons</span> <span class="pre">file':</span> <span class="pre">'/home/remy/software/TOTO/Toto/docs/cons_list.txt',</span> <span class="pre">'dt(s)':</span> <span class="pre">3600,</span> <span class="pre">'maximum</span> <span class="pre">time':</span> <span class="pre">datetime.datetime(2021,</span> <span class="pre">10,</span> <span class="pre">8,</span> <span class="pre">22,</span> <span class="pre">1,</span> <span class="pre">2,</span> <span class="pre">149616),</span> <span class="pre">'minimum</span> <span class="pre">time':</span> <span class="pre">datetime.datetime(2021,</span> <span class="pre">10,</span> <span class="pre">1,</span> <span class="pre">22,</span> <span class="pre">1,</span> <span class="pre">2,</span> <span class="pre">149611)}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/plugins/tide/detide.html#TideAnalysis.recreate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.plugins.tide.detide.TideAnalysis.recreate" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">recreate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'column</span> <span class="pre">amp':</span> <span class="pre">'amp',</span> <span class="pre">'column</span> <span class="pre">cons':</span> <span class="pre">'cons',</span> <span class="pre">'column</span> <span class="pre">pha':</span> <span class="pre">'pha',</span> <span class="pre">'cons</span> <span class="pre">file':</span> <span class="pre">'/home/remy/software/TOTO/Toto/docs/cons_list.txt',</span> <span class="pre">'dt(s)':</span> <span class="pre">3600,</span> <span class="pre">'latitude':</span> <span class="pre">-</span> <span class="pre">36.0,</span> <span class="pre">'maximum</span> <span class="pre">time':</span> <span class="pre">datetime.datetime(2021,</span> <span class="pre">10,</span> <span class="pre">17,</span> <span class="pre">22,</span> <span class="pre">42,</span> <span class="pre">9,</span> <span class="pre">398418),</span> <span class="pre">'minimum</span> <span class="pre">time':</span> <span class="pre">datetime.datetime(2021,</span> <span class="pre">10,</span> <span class="pre">10,</span> <span class="pre">22,</span> <span class="pre">42,</span> <span class="pre">9,</span> <span class="pre">398414)}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/plugins/tide/detide.html#TideAnalysis.recreate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.plugins.tide.detide.TideAnalysis.recreate" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Re-create a time series using a file containing</dt><dd><p>Amplitude and Phase for each contituents.</p>
+</dd>
+</dl>
+<dl>
+<dt>args: dict</dt><dd><dl>
+<dt>Dictionnary with the folowing keys:</dt><dd><dl class="simple">
+<dt>cons file: str</dt><dd><p>Txt file containing the amplitude and phase</p>
+</dd>
+<dt>column cons: str</dt><dd><p>Name of the column containing the constituent name</p>
+</dd>
+<dt>column amp: str</dt><dd><p>Name of the column containing the constituent amplitude</p>
+</dd>
+<dt>column pha: str</dt><dd><p>Name of the column containing the constituent phase (in degree)</p>
+</dd>
+<dt>minimum time: datetime</dt><dd><p>Time the time series start</p>
+</dd>
+<dt>maximum time: datetime</dt><dd><p>Time the time series end</p>
+</dd>
+<dt>dt(s): int</dt><dd><p>Time interval in seconds</p>
+</dd>
+</dl>
+<p>latitude: float</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">=</span><span class="n">tf</span><span class="p">[</span><span class="s1">&#39;test1&#39;</span><span class="p">][</span><span class="s1">&#39;dataframe&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">TideAnalysis</span><span class="o">.</span><span class="n">recreate</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;cons file&#39;</span><span class="p">:</span><span class="s1">&#39;test.txt&#39;</span><span class="p">,</span>        <span class="s1">&#39;column cons&#39;</span><span class="p">:</span><span class="s1">&#39;cons&#39;</span><span class="p">,</span><span class="s1">&#39;column amp&#39;</span><span class="p">:</span><span class="n">amp</span><span class="p">,</span><span class="s1">&#39;column pha&#39;</span><span class="p">:</span><span class="n">pha</span><span class="p">,</span>        <span class="s1">&#39;minimum time&#39;</span><span class="p">:</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2002</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="s1">&#39;maximum time&#39;</span><span class="p">:</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2003</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span>        <span class="s1">&#39;dt(s)&#39;</span><span class="p">:</span><span class="mi">3600</span><span class="p">,</span><span class="s1">&#39;latitude&#39;</span><span class="p">:</span><span class="o">-</span><span class="mi">36</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>
+</pre></div>
+</div>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="toto.plugins.tide.detide.TideAnalysis.skew_surge">
-<span class="sig-name descname"><span class="pre">skew_surge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mag'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'Latitude':</span> <span class="pre">-</span> <span class="pre">36.0,</span> <span class="pre">'Minimum</span> <span class="pre">SNR':</span> <span class="pre">2}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/plugins/tide/detide.html#TideAnalysis.skew_surge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.plugins.tide.detide.TideAnalysis.skew_surge" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">skew_surge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mag'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'latitude':</span> <span class="pre">-</span> <span class="pre">36.0,</span> <span class="pre">'minimum</span> <span class="pre">SNR':</span> <span class="pre">2}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/plugins/tide/detide.html#TideAnalysis.skew_surge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.plugins.tide.detide.TideAnalysis.skew_surge" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function calculate the skew surge :
 see <a class="reference external" href="https://www.ntslf.org/storm-surges/skew-surges">https://www.ntslf.org/storm-surges/skew-surges</a></p>
+<dl class="simple">
+<dt>mag<span class="classifier">str</span></dt><dd><p>Name of the column from which to extract the tide</p>
+</dd>
+<dt>args: dict</dt><dd><dl class="simple">
+<dt>Dictionnary with the folowing keys:</dt><dd><p>minimum SNR: int
+latitude: float</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">=</span><span class="n">tf</span><span class="p">[</span><span class="s1">&#39;test1&#39;</span><span class="p">][</span><span class="s1">&#39;dataframe&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">TideAnalysis</span><span class="o">.</span><span class="n">skew_surge</span><span class="p">(</span><span class="n">mag</span><span class="o">=</span><span class="s1">&#39;U&#39;</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;latitude&#39;</span><span class="p">:</span><span class="o">-</span><span class="mf">36.5</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="toto.plugins.tide.detide.TideAnalysis.tidal_stat">
-<span class="sig-name descname"><span class="pre">tidal_stat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mag'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'Latitude':</span> <span class="pre">-</span> <span class="pre">36.0,</span> <span class="pre">'Minimum</span> <span class="pre">SNR':</span> <span class="pre">2,</span> <span class="pre">'folder</span> <span class="pre">out':</span> <span class="pre">'/home/remy/software/TOTO/Toto/docs'}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/plugins/tide/detide.html#TideAnalysis.tidal_stat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.plugins.tide.detide.TideAnalysis.tidal_stat" title="Permalink to this definition">¶</a></dt>
-<dd><p>Function to extract the tide stats from a time series
-i.e HAT,LAT,MHWS,MLWS…</p>
+<span class="sig-name descname"><span class="pre">tidal_stat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mag'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'folder</span> <span class="pre">out':</span> <span class="pre">'/home/remy/software/TOTO/Toto/docs',</span> <span class="pre">'latitude':</span> <span class="pre">-</span> <span class="pre">36.0,</span> <span class="pre">'minimum</span> <span class="pre">SNR':</span> <span class="pre">2}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/plugins/tide/detide.html#TideAnalysis.tidal_stat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.plugins.tide.detide.TideAnalysis.tidal_stat" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Function to extract the tide stats from a time series</dt><dd><p>i.e HAT,LAT,MHWS,MLWS…</p>
+</dd>
+</dl>
+<dl>
+<dt>mag<span class="classifier">str</span></dt><dd><p>Name of the column from which to extract the tide</p>
+</dd>
+<dt>args: dict</dt><dd><dl>
+<dt>Dictionnary with the folowing keys:</dt><dd><p>minimum SNR: int
+folder out: str</p>
+<blockquote>
+<div><p>Path to save the output</p>
+</div></blockquote>
+<p>latitude: float</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">=</span><span class="n">tf</span><span class="p">[</span><span class="s1">&#39;test1&#39;</span><span class="p">][</span><span class="s1">&#39;dataframe&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">TideAnalysis</span><span class="o">.</span><span class="n">tidal_stat</span><span class="p">(</span><span class="n">mag</span><span class="o">=</span><span class="s1">&#39;U&#39;</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;latitude&#39;</span><span class="p">:</span><span class="o">-</span><span class="mf">36.5</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span>
+</pre></div>
+</div>
 </dd></dl>
 
 </dd></dl>

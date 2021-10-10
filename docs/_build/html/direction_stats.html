@@ -42,8 +42,7 @@
 <div class="section" id="parameters">
 <h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h2>
 <dl class="simple">
-<dt>mag<span class="classifier">str</span></dt><dd><p>Name of the column from which to get stats.
-Can be a list for extracting stats from multilple columns.</p>
+<dt>mag<span class="classifier">str</span></dt><dd><p>Name of the column from which to get stats.</p>
 </dd>
 <dt>drr<span class="classifier">str</span></dt><dd><p>Column name representing the directions.</p>
 </dd>
@@ -54,9 +53,9 @@ Can be a list for extracting stats from multilple columns.</p>
 </dd>
 <dt>Percentile or Quantile: float</dt><dd><p>Percentile or Quantile value depending on the function</p>
 </dd>
-<dt>Direction binning: str</dt><dd><p>Can be <cite>centered</cite> or <cite>not-centered</cite> depending if the directionnal are centered over 0</p>
+<dt>direction binning: str</dt><dd><p>Can be <cite>centered</cite> or <cite>not-centered</cite> depending if the directionnal are centered over 0</p>
 </dd>
-<dt>Direction interval: int</dt><dd><p>Dirctionnal interval for the bins in degrees</p>
+<dt>direction interval: int</dt><dd><p>Dirctionnal interval for the bins in degrees</p>
 </dd>
 <dt>folder out: str</dt><dd><p>Path to save the output</p>
 </dd>
@@ -83,7 +82,7 @@ Can be a list for extracting stats from multilple columns.</p>
 </div>
 <div class="section" id="examples">
 <h2>Examples:<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">=</span><span class="n">tf</span><span class="p">[</span><span class="s1">&#39;test1&#39;</span><span class="p">][</span><span class="s1">&#39;dataframe&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">Statistics</span><span class="o">.</span><span class="n">Directional_statistics</span><span class="p">(</span><span class="n">mag</span><span class="o">=</span><span class="s1">&#39;U&#39;</span><span class="p">,</span><span class="n">drr</span><span class="o">=</span><span class="s1">&#39;drr&#39;</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Direction interval&#39;</span><span class="p">:</span><span class="mi">45</span><span class="p">,</span><span class="n">Time</span> <span class="n">blocking</span><span class="s1">&#39;:&#39;</span><span class="n">Yearly</span><span class="s1">&#39;})</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">=</span><span class="n">tf</span><span class="p">[</span><span class="s1">&#39;test1&#39;</span><span class="p">][</span><span class="s1">&#39;dataframe&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">Statistics</span><span class="o">.</span><span class="n">Directional_statistics</span><span class="p">(</span><span class="n">mag</span><span class="o">=</span><span class="s1">&#39;U&#39;</span><span class="p">,</span><span class="n">drr</span><span class="o">=</span><span class="s1">&#39;drr&#39;</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;direction interval&#39;</span><span class="p">:</span><span class="mi">45</span><span class="p">,</span><span class="n">Time</span> <span class="n">blocking</span><span class="s1">&#39;:&#39;</span><span class="n">Yearly</span><span class="s1">&#39;})</span>
 <span class="gp">&gt;&gt;&gt; </span>
 </pre></div>
 </div>

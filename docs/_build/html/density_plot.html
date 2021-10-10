@@ -38,11 +38,43 @@
   <a class="reference internal image-reference" href="../_static/calypso.png"><img alt="../_static/calypso.png" class="align-right" src="../_static/calypso.png" style="width: 150px;" /></a>
 <div class="section" id="module-toto.plugins.plots.plot_roses.StatPlots.density_diagramm">
 <span id="density-plot"></span><h1>Density plot<a class="headerlink" href="#module-toto.plugins.plots.plot_roses.StatPlots.density_diagramm" title="Permalink to this headline">¶</a></h1>
+<p>This function provides density diagrams of parameter Y vs parameter X,
+i.e. similar to scatter plot but emphasing on region withg large number
+of data</p>
+<blockquote>
+<div><dl>
+<dt>X<span class="classifier">str</span></dt><dd><p>Name of the column to plot on the X axis.</p>
+</dd>
+<dt>Y<span class="classifier">str</span></dt><dd><p>Name of the column to plot on the Y axis.</p>
+</dd>
+<dt>args: dict</dt><dd><p>Dictionnary with the folowing keys:
+Y name: str</p>
+<blockquote>
+<div><p>Name of the Y axis</p>
+</div></blockquote>
 <dl class="simple">
-<dt>This function provides density diagrams of parameter Y vs parameter X,</dt><dd><p>i.e. similar to scatter plot but emphasing on region withg large number</p>
+<dt>X name: str</dt><dd><p>Name of the X axis</p>
+</dd>
+<dt>Y unit: str</dt><dd><p>Unit of the Y axis</p>
+</dd>
+<dt>X unit: str</dt><dd><p>Unit of the X axis</p>
+</dd>
+<dt>Y limits: list</dt><dd><p>2 value list with Y axis limit</p>
+</dd>
+<dt>X limits: list</dt><dd><p>2 value list with X axis limits</p>
+</dd>
+<dt>display: str</dt><dd><p><cite>On</cite> or <cite>Off</cite> to display image</p>
+</dd>
+<dt>folder out: str</dt><dd><p>Path to save the output</p>
 </dd>
 </dl>
-<p>of data</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">=</span><span class="n">tf</span><span class="p">[</span><span class="s1">&#39;test1&#39;</span><span class="p">][</span><span class="s1">&#39;dataframe&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">StatPlots</span><span class="o">.</span><span class="n">density_diagramm</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="s1">&#39;U&#39;</span><span class="p">,</span><span class="n">Y</span><span class="o">=</span><span class="s1">&#39;U_m&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>
+</pre></div>
+</div>
+</div></blockquote>
 </div>
 
 

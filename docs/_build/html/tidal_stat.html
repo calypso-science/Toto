@@ -38,8 +38,34 @@
   <a class="reference internal image-reference" href="../_static/calypso.png"><img alt="../_static/calypso.png" class="align-right" src="../_static/calypso.png" style="width: 150px;" /></a>
 <div class="section" id="module-toto.plugins.tide.detide.TideAnalysis.tidal_stat">
 <span id="statistics"></span><h1>Statistics<a class="headerlink" href="#module-toto.plugins.tide.detide.TideAnalysis.tidal_stat" title="Permalink to this headline">¶</a></h1>
-<p>Function to extract the tide stats from a time series
-i.e HAT,LAT,MHWS,MLWS…</p>
+<dl class="simple">
+<dt>Function to extract the tide stats from a time series</dt><dd><p>i.e HAT,LAT,MHWS,MLWS…</p>
+</dd>
+</dl>
+<div class="section" id="parameters">
+<h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt>mag<span class="classifier">str</span></dt><dd><p>Name of the column from which to extract the tide</p>
+</dd>
+<dt>args: dict</dt><dd><dl>
+<dt>Dictionnary with the folowing keys:</dt><dd><p>minimum SNR: int
+folder out: str</p>
+<blockquote>
+<div><p>Path to save the output</p>
+</div></blockquote>
+<p>latitude: float</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</div>
+<div class="section" id="examples">
+<h2>Examples:<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">=</span><span class="n">tf</span><span class="p">[</span><span class="s1">&#39;test1&#39;</span><span class="p">][</span><span class="s1">&#39;dataframe&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">TideAnalysis</span><span class="o">.</span><span class="n">tidal_stat</span><span class="p">(</span><span class="n">mag</span><span class="o">=</span><span class="s1">&#39;U&#39;</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;latitude&#39;</span><span class="p">:</span><span class="o">-</span><span class="mf">36.5</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span>
+</pre></div>
+</div>
+</div>
 </div>
 
 

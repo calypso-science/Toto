@@ -40,6 +40,26 @@
 <span id="skew-surge"></span><h1>Skew surge<a class="headerlink" href="#module-toto.plugins.tide.detide.TideAnalysis.skew_surge" title="Permalink to this headline">¶</a></h1>
 <p>This function calculate the skew surge :
 see <a class="reference external" href="https://www.ntslf.org/storm-surges/skew-surges">https://www.ntslf.org/storm-surges/skew-surges</a></p>
+<div class="section" id="parameters">
+<h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt>mag<span class="classifier">str</span></dt><dd><p>Name of the column from which to extract the tide</p>
+</dd>
+<dt>args: dict</dt><dd><dl class="simple">
+<dt>Dictionnary with the folowing keys:</dt><dd><p>minimum SNR: int
+latitude: float</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</div>
+<div class="section" id="examples">
+<h2>Examples:<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">=</span><span class="n">tf</span><span class="p">[</span><span class="s1">&#39;test1&#39;</span><span class="p">][</span><span class="s1">&#39;dataframe&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">TideAnalysis</span><span class="o">.</span><span class="n">skew_surge</span><span class="p">(</span><span class="n">mag</span><span class="o">=</span><span class="s1">&#39;U&#39;</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;latitude&#39;</span><span class="p">:</span><span class="o">-</span><span class="mf">36.5</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span>
+</pre></div>
+</div>
+</div>
 </div>
 
 

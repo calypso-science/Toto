@@ -42,6 +42,7 @@
 <span class="kn">from</span> <span class="nn">._do_bias_hist</span> <span class="kn">import</span> <span class="n">do_bias_hist</span>
 <span class="kn">from</span> <span class="nn">._do_density_diagramm</span> <span class="kn">import</span> <span class="n">do_density_diagramm</span>
 <span class="kn">from</span> <span class="nn">._do_perc_of_occurence</span> <span class="kn">import</span> <span class="n">do_perc_of_occurence</span>
+<span class="kn">from</span> <span class="nn">._do_qq_plot</span> <span class="kn">import</span> <span class="n">qq_plot</span>
 <span class="kn">from</span> <span class="nn">._thermocline</span> <span class="kn">import</span> <span class="n">thermocline</span>
 <span class="kn">from</span> <span class="nn">toto.plugins.statistics._do_joint_prob</span> <span class="kn">import</span> <span class="n">_do_joint_prob_plot</span>
 <span class="kn">from</span> <span class="nn">...core.toolbox</span> <span class="kn">import</span> <span class="n">get_opt</span><span class="p">,</span><span class="n">dir_interval</span><span class="p">,</span><span class="n">get_increment</span>
@@ -56,26 +57,66 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">dfout</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
 
 <div class="viewcode-block" id="StatPlots.plot_roses"><a class="viewcode-back" href="../../../../source/toto.plugins.plots.plot_roses.html#toto.plugins.plots.plot_roses.StatPlots.plot_roses">[docs]</a>    <span class="k">def</span> <span class="nf">plot_roses</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">mag</span><span class="o">=</span><span class="s1">&#39;mag&#39;</span><span class="p">,</span><span class="n">drr</span><span class="o">=</span><span class="s1">&#39;drr&#39;</span><span class="p">,</span>\
-        <span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Title&#39;</span><span class="p">:</span><span class="s1">&#39;Current speed&#39;</span><span class="p">,</span>\
+        <span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;title&#39;</span><span class="p">:</span><span class="s1">&#39;Current speed&#39;</span><span class="p">,</span>\
         <span class="s1">&#39;units&#39;</span><span class="p">:</span><span class="s1">&#39;m/s&#39;</span><span class="p">,</span>\
-        <span class="s1">&#39;Speed bins (optional)&#39;</span><span class="p">:[],</span>
+        <span class="s1">&#39;speed bins (optional)&#39;</span><span class="p">:[],</span>
         <span class="s1">&#39;% quadran (optional)&#39;</span><span class="p">:[],</span>
-        <span class="s1">&#39;Time blocking&#39;</span><span class="p">:{</span><span class="s1">&#39;Annual&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Seasonal (South hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Seasonal (North hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Monthly&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
+        <span class="s1">&#39;time blocking&#39;</span><span class="p">:{</span><span class="s1">&#39;Annual&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Seasonal (South hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Seasonal (North hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Monthly&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
         <span class="s1">&#39;folder out&#39;</span><span class="p">:</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span>
         <span class="s1">&#39;display&#39;</span><span class="p">:{</span><span class="s1">&#39;On&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Off&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">}</span>
         <span class="p">}):</span>
 
-        <span class="sd">&#39;&#39;&#39; This function provides annual, seasonal or monthly rose plots for wind,</span>
-<span class="sd">          wave, current or any direcional variable&#39;&#39;&#39;</span>
+        <span class="sd">&quot;&quot;&quot; This function provides annual, seasonal or monthly rose plots for wind,</span>
+<span class="sd">            wave, current or any direcional variable.</span>
+<span class="sd">            This function is using https://github.com/python-windrose/windrose</span>
+<span class="sd">            </span>
+<span class="sd">            Parameters</span>
+<span class="sd">            ~~~~~~~~~~</span>
+
+<span class="sd">            mag : str</span>
+<span class="sd">                Name of the column from which to get stats.</span>
+<span class="sd">            drr : str</span>
+<span class="sd">                Column name representing the directions.</span>
+<span class="sd">            args: dict</span>
+<span class="sd">                Dictionnary with the folowing keys:</span>
+<span class="sd">                title: str</span>
+<span class="sd">                    Graph title</span>
+<span class="sd">                speed bins (optional): list</span>
+<span class="sd">                    Speed to plot</span>
+<span class="sd">                % quadran (optional): list</span>
+<span class="sd">                    Percentage of each occurence to plot</span>
+<span class="sd">                display: str</span>
+<span class="sd">                    `On` or `Off` to display image</span>
+<span class="sd">                folder out: str</span>
+<span class="sd">                    Path to save the output</span>
+<span class="sd">                time blocking: str</span>
+<span class="sd">                     if ``Time blocking==&#39;Annual&#39;``,</span>
+<span class="sd">                        Statistics will be calculated for the whole timeserie</span>
+<span class="sd">                     if ``Time blocking==&#39;Seasonal (South hemisphere)&#39;``,</span>
+<span class="sd">                        Statistics will be calculated for South hemisphere seasons</span>
+<span class="sd">                     if ``Time blocking==&#39;Seasonal (North hemisphere)&#39;``,</span>
+<span class="sd">                        Statistics will be calculated for North hemisphere seasons</span>
+<span class="sd">                     if ``Time blocking==&#39;Monthly&#39;``,</span>
+<span class="sd">                        Statistics will be calculated for each month.</span>
+<span class="sd">   </span>
+
+<span class="sd">            Examples:</span>
+<span class="sd">            ~~~~~~~~~</span>
+<span class="sd">            &gt;&gt;&gt; df=tf[&#39;test1&#39;][&#39;dataframe&#39;].StatPlots.plot_roses(mag=&#39;U&#39;,drr=&#39;drr&#39;,args={&#39;time blocking&#39;:&#39;Yearly&#39;})</span>
+<span class="sd">            &gt;&gt;&gt; </span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">display</span><span class="o">=</span><span class="kc">True</span>
         <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;display&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Off&#39;</span><span class="p">:</span>
             <span class="n">display</span><span class="o">=</span><span class="kc">False</span>
         <span class="n">unit</span><span class="o">=</span><span class="n">get_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">mag</span><span class="p">],</span><span class="s1">&#39;units&#39;</span><span class="p">,</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="s1">&#39;filename&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
         
-        <span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;folder out&#39;</span><span class="p">],</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_rose_&#39;</span><span class="o">+</span><span class="n">mag</span><span class="o">+</span><span class="s1">&#39;.png&#39;</span><span class="p">)</span>
-        <span class="n">do_roses</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">mag</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">drr</span><span class="p">],</span><span class="n">unit</span><span class="p">,</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Title&#39;</span><span class="p">],</span>
-            <span class="n">args</span><span class="p">[</span><span class="s1">&#39;Speed bins (optional)&#39;</span><span class="p">],</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;% quadran (optional)&#39;</span><span class="p">],</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Time blocking&#39;</span><span class="p">],</span><span class="n">filename</span><span class="p">,</span><span class="n">display</span><span class="p">)</span></div>
+        <span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;folder out&#39;</span><span class="p">,</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()),</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_rose_&#39;</span><span class="o">+</span><span class="n">mag</span><span class="o">+</span><span class="s1">&#39;.png&#39;</span><span class="p">)</span>
+        <span class="n">do_roses</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">mag</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">drr</span><span class="p">],</span><span class="n">unit</span><span class="p">,</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">],</span>
+            <span class="n">args</span><span class="p">[</span><span class="s1">&#39;speed bins (optional)&#39;</span><span class="p">],</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;% quadran (optional)&#39;</span><span class="p">],</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;time blocking&#39;</span><span class="p">],</span><span class="n">filename</span><span class="p">,</span><span class="n">display</span><span class="p">)</span></div>
 
 
 
@@ -84,18 +125,48 @@
         <span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Nb of bins&#39;</span><span class="p">:</span><span class="mi">30</span><span class="p">,</span><span class="s1">&#39;Xlabel&#39;</span><span class="p">:</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="s1">&#39;units&#39;</span><span class="p">:</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="s1">&#39;display&#39;</span><span class="p">:{</span><span class="s1">&#39;On&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Off&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span><span class="s1">&#39;folder out&#39;</span><span class="p">:</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()}):</span>
 
 
-        <span class="sd">&#39;&#39;&#39; This function provides a bias histogramm</span>
-<span class="sd">        between measured and predicted data for any variables&#39;&#39;&#39;</span>
+        <span class="sd">&quot;&quot;&quot; This function provides a bias histogramm</span>
+<span class="sd">            between measured and predicted data for any variables</span>
+
+<span class="sd">            Parameters</span>
+<span class="sd">            ~~~~~~~~~~</span>
+
+<span class="sd">            measured : str</span>
+<span class="sd">                Name of the column to contain the measured data.</span>
+<span class="sd">            modelled : str</span>
+<span class="sd">                Name of the column to contain the modelled data.</span>
+<span class="sd">            args: dict</span>
+<span class="sd">                Dictionnary with the folowing keys:</span>
+<span class="sd">                Nb of bins: int</span>
+<span class="sd">                    Number of bins to use</span>
+<span class="sd">                Xlabel: str</span>
+<span class="sd">                    X axis label</span>
+<span class="sd">                Units: str</span>
+<span class="sd">                    Units of the data</span>
+<span class="sd">                display: str</span>
+<span class="sd">                    `On` or `Off` to display image</span>
+<span class="sd">                folder out: str</span>
+<span class="sd">                    Path to save the output</span>
+
+<span class="sd">            Examples:</span>
+<span class="sd">            ~~~~~~~~~</span>
+<span class="sd">            &gt;&gt;&gt; df=tf[&#39;test1&#39;][&#39;dataframe&#39;].StatPlots.BIAS_histogramm(measured=&#39;U&#39;,modelled=&#39;U_m&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; </span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">display</span><span class="o">=</span><span class="kc">True</span>
-        <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;display&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Off&#39;</span><span class="p">:</span>
-            <span class="n">display</span><span class="o">=</span><span class="kc">False</span>        
-        <span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;folder out&#39;</span><span class="p">],</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_biasHist.png&#39;</span><span class="p">)</span>
-        <span class="n">unit</span><span class="o">=</span><span class="n">get_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">measured</span><span class="p">],</span><span class="s1">&#39;units&#39;</span><span class="p">,</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;display&#39;</span><span class="p">,</span><span class="s1">&#39;Off&#39;</span><span class="p">)</span><span class="o">==</span><span class="s1">&#39;Off&#39;</span><span class="p">:</span>
+            <span class="n">display</span><span class="o">=</span><span class="kc">False</span> 
 
-        <span class="n">short_name</span><span class="o">=</span><span class="n">get_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">measured</span><span class="p">],</span><span class="s1">&#39;short_name&#39;</span><span class="p">,</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Xlabel&#39;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="s1">&#39;filename&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
 
-        <span class="n">do_bias_hist</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">measured</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">modelled</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span><span class="n">unit</span><span class="p">,</span><span class="n">short_name</span><span class="p">,</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Nb of bins&#39;</span><span class="p">],</span><span class="n">filename</span><span class="p">,</span><span class="n">display</span><span class="p">)</span></div>
+        <span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;folder out&#39;</span><span class="p">,</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()),</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_biasHist.png&#39;</span><span class="p">)</span>
+        <span class="n">unit</span><span class="o">=</span><span class="n">get_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">measured</span><span class="p">],</span><span class="s1">&#39;units&#39;</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;units&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">))</span>
+
+        <span class="n">short_name</span><span class="o">=</span><span class="n">get_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">measured</span><span class="p">],</span><span class="s1">&#39;short_name&#39;</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Xlabel&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+        <span class="n">do_bias_hist</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">measured</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">modelled</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span><span class="n">unit</span><span class="p">,</span><span class="n">short_name</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Nb of bins&#39;</span><span class="p">,</span><span class="mi">30</span><span class="p">),</span><span class="n">filename</span><span class="p">,</span><span class="n">display</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="StatPlots.density_diagramm"><a class="viewcode-back" href="../../../../source/toto.plugins.plots.plot_roses.html#toto.plugins.plots.plot_roses.StatPlots.density_diagramm">[docs]</a>    <span class="k">def</span> <span class="nf">density_diagramm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">X</span><span class="o">=</span><span class="s1">&#39;X&#39;</span><span class="p">,</span><span class="n">Y</span><span class="o">=</span><span class="s1">&#39;Y&#39;</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="p">{</span>
@@ -109,26 +180,58 @@
         <span class="s1">&#39;folder out&#39;</span><span class="p">:</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()}):</span>
 
 
-        <span class="sd">&#39;&#39;&#39; This function provides density diagrams of parameter Y vs parameter X,</span>
-<span class="sd">          i.e. similar to scatter plot but emphasing on region withg large number</span>
-<span class="sd">         of data&#39;&#39;&#39;</span>
+        <span class="sd">&quot;&quot;&quot; This function provides density diagrams of parameter Y vs parameter X,</span>
+<span class="sd">           i.e. similar to scatter plot but emphasing on region withg large number</span>
+<span class="sd">           of data</span>
+
+<span class="sd">            Parameters</span>
+<span class="sd">            ~~~~~~~~~~</span>
+
+<span class="sd">            X : str</span>
+<span class="sd">                Name of the column to plot on the X axis.</span>
+<span class="sd">            Y : str</span>
+<span class="sd">                Name of the column to plot on the Y axis.</span>
+<span class="sd">            args: dict</span>
+<span class="sd">                Dictionnary with the folowing keys:</span>
+<span class="sd">                Y name: str</span>
+<span class="sd">                    Name of the Y axis</span>
+<span class="sd">                X name: str</span>
+<span class="sd">                    Name of the X axis</span>
+<span class="sd">                Y unit: str</span>
+<span class="sd">                    Unit of the Y axis</span>
+<span class="sd">                X unit: str</span>
+<span class="sd">                    Unit of the X axis</span>
+<span class="sd">                Y limits: list</span>
+<span class="sd">                    2 value list with Y axis limit</span>
+<span class="sd">                X limits: list</span>
+<span class="sd">                    2 value list with X axis limits</span>
+<span class="sd">                display: str</span>
+<span class="sd">                    `On` or `Off` to display image</span>
+<span class="sd">                folder out: str</span>
+<span class="sd">                    Path to save the output</span>
+
+<span class="sd">            Examples:</span>
+<span class="sd">            ~~~~~~~~~</span>
+<span class="sd">            &gt;&gt;&gt; df=tf[&#39;test1&#39;][&#39;dataframe&#39;].StatPlots.density_diagramm(X=&#39;U&#39;,Y=&#39;U_m&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; </span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">display</span><span class="o">=</span><span class="kc">True</span>
-        <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;display&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Off&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;display&#39;</span><span class="p">,</span><span class="s1">&#39;Off&#39;</span><span class="p">)</span><span class="o">==</span><span class="s1">&#39;Off&#39;</span><span class="p">:</span>
             <span class="n">display</span><span class="o">=</span><span class="kc">False</span>
-        <span class="n">X_short_name</span><span class="o">=</span><span class="n">get_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">X</span><span class="p">],</span><span class="s1">&#39;short_name&#39;</span><span class="p">,</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;X name&#39;</span><span class="p">])</span>
-        <span class="n">Y_short_name</span><span class="o">=</span><span class="n">get_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">Y</span><span class="p">],</span><span class="s1">&#39;short_name&#39;</span><span class="p">,</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Y name&#39;</span><span class="p">])</span>
+        <span class="n">X_short_name</span><span class="o">=</span><span class="n">get_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">X</span><span class="p">],</span><span class="s1">&#39;short_name&#39;</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;X name&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">))</span>
+        <span class="n">Y_short_name</span><span class="o">=</span><span class="n">get_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">Y</span><span class="p">],</span><span class="s1">&#39;short_name&#39;</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Y name&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">))</span>
 
-        <span class="n">X_unit</span><span class="o">=</span><span class="n">get_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">X</span><span class="p">],</span><span class="s1">&#39;units&#39;</span><span class="p">,</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;X unit&#39;</span><span class="p">])</span>
-        <span class="n">Y_unit</span><span class="o">=</span><span class="n">get_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">Y</span><span class="p">],</span><span class="s1">&#39;units&#39;</span><span class="p">,</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Y unit&#39;</span><span class="p">])</span>        
+        <span class="n">X_unit</span><span class="o">=</span><span class="n">get_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">X</span><span class="p">],</span><span class="s1">&#39;units&#39;</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;X unit&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">))</span>
+        <span class="n">Y_unit</span><span class="o">=</span><span class="n">get_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">Y</span><span class="p">],</span><span class="s1">&#39;units&#39;</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Y unit&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">))</span>       
 
-        <span class="n">Xlim</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;X limits&#39;</span><span class="p">]</span>
-        <span class="n">Ylim</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Y limits&#39;</span><span class="p">]</span>
+        <span class="n">Xlim</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;X limits&#39;</span><span class="p">,[</span><span class="mi">0</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">])</span>
+        <span class="n">Ylim</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Y limits&#39;</span><span class="p">,[</span><span class="mi">0</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">])</span>
 
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="s1">&#39;filename&#39;</span><span class="p">):</span>
-            <span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;folder out&#39;</span><span class="p">],</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">X</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">Y</span><span class="o">+</span><span class="s1">&#39;_density_diagramm.png&#39;</span><span class="p">)</span>
+            <span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;folder out&#39;</span><span class="p">,</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()),</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">X</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">Y</span><span class="o">+</span><span class="s1">&#39;_density_diagramm.png&#39;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;folder out&#39;</span><span class="p">],</span><span class="s1">&#39;density_diagramm.png&#39;</span><span class="p">)</span>
+            <span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;folder out&#39;</span><span class="p">,</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()),</span><span class="s1">&#39;density_diagramm.png&#39;</span><span class="p">)</span>
 
         <span class="n">do_density_diagramm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">X</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">Y</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span><span class="n">X_short_name</span><span class="p">,</span><span class="n">Y_short_name</span><span class="p">,</span><span class="n">X_unit</span><span class="p">,</span><span class="n">Y_unit</span><span class="p">,</span><span class="n">Xlim</span><span class="p">,</span><span class="n">Ylim</span><span class="p">,</span><span class="n">filename</span><span class="p">,</span><span class="n">display</span><span class="p">)</span></div>
 
@@ -143,40 +246,111 @@
         <span class="s1">&#39;folder out&#39;</span><span class="p">:</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()}):</span>
 
 
-        <span class="sd">&#39;&#39;&#39;  This function provides Quantile-Quantile plots (Q-Q plots) for comparison</span>
-<span class="sd">          statistics&#39;&#39;&#39;</span>
+        <span class="sd">&quot;&quot;&quot; This function provides Quantile-Quantile plots (Q-Q plots) for comparison</span>
+<span class="sd">            statistics.</span>
+
+<span class="sd">            Parameters</span>
+<span class="sd">            ~~~~~~~~~~</span>
+
+<span class="sd">            measured : str</span>
+<span class="sd">                Name of the column to contain the measured data.</span>
+<span class="sd">            modelled : str</span>
+<span class="sd">                Name of the column to contain the modelled data.</span>
+<span class="sd">            args: dict</span>
+<span class="sd">                Dictionnary with the folowing keys:</span>
+<span class="sd">                measured name: str</span>
+<span class="sd">                    Name of the Y axis</span>
+<span class="sd">                modelled name: str</span>
+<span class="sd">                    Name of the X axis</span>
+<span class="sd">                measured unit: str</span>
+<span class="sd">                    Unit of the Y axis</span>
+<span class="sd">                modelled unit: str</span>
+<span class="sd">                    Unit of the X axis</span>
+<span class="sd">                Quantile increment step (%): float</span>
+<span class="sd">                    Quantile increment step in percentage</span>
+<span class="sd">                display: str</span>
+<span class="sd">                    `On` or `Off` to display image</span>
+<span class="sd">                folder out: str</span>
+<span class="sd">                    Path to save the output</span>
+
+<span class="sd">            Examples:</span>
+<span class="sd">            ~~~~~~~~~</span>
+<span class="sd">            &gt;&gt;&gt; df=tf[&#39;test1&#39;][&#39;dataframe&#39;].StatPlots.QQ_plot(measured=&#39;U&#39;,modelled=&#39;U_m&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; </span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">display</span><span class="o">=</span><span class="kc">True</span>
-        <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;display&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Off&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;display&#39;</span><span class="p">,</span><span class="s1">&#39;Off&#39;</span><span class="p">)</span><span class="o">==</span><span class="s1">&#39;Off&#39;</span><span class="p">:</span>
             <span class="n">display</span><span class="o">=</span><span class="kc">False</span>
-        <span class="n">X_short_name</span><span class="o">=</span><span class="n">get_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">measured</span><span class="p">],</span><span class="s1">&#39;short_name&#39;</span><span class="p">,</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;measured name&#39;</span><span class="p">])</span>
-        <span class="n">Y_short_name</span><span class="o">=</span><span class="n">get_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">modelled</span><span class="p">],</span><span class="s1">&#39;short_name&#39;</span><span class="p">,</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;modelled name&#39;</span><span class="p">])</span>
+        <span class="n">X_short_name</span><span class="o">=</span><span class="n">get_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">measured</span><span class="p">],</span><span class="s1">&#39;short_name&#39;</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;measured name&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">))</span>
+        <span class="n">Y_short_name</span><span class="o">=</span><span class="n">get_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">modelled</span><span class="p">],</span><span class="s1">&#39;short_name&#39;</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;modelled name&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">))</span>
 
-        <span class="n">X_unit</span><span class="o">=</span><span class="n">get_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">measured</span><span class="p">],</span><span class="s1">&#39;units&#39;</span><span class="p">,</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;measured unit&#39;</span><span class="p">])</span>
-        <span class="n">Y_unit</span><span class="o">=</span><span class="n">get_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">modelled</span><span class="p">],</span><span class="s1">&#39;units&#39;</span><span class="p">,</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;modelled unit&#39;</span><span class="p">])</span>        
+        <span class="n">X_unit</span><span class="o">=</span><span class="n">get_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">measured</span><span class="p">],</span><span class="s1">&#39;units&#39;</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;measured unit&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">))</span>
+        <span class="n">Y_unit</span><span class="o">=</span><span class="n">get_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">modelled</span><span class="p">],</span><span class="s1">&#39;units&#39;</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;modelled unit&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">))</span>        
 
-        <span class="n">pvec</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="o">+</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Quantile increment step (%)&#39;</span><span class="p">],</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Quantile increment step (%)&#39;</span><span class="p">])</span>
-
-        <span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;folder out&#39;</span><span class="p">],</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_qqplot.png&#39;</span><span class="p">)</span>
+        <span class="n">pvec</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="o">+</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Quantile increment step (%)&#39;</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Quantile increment step (%)&#39;</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="s1">&#39;filename&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
+        <span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;folder out&#39;</span><span class="p">,</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()),</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_qqplot.png&#39;</span><span class="p">)</span>
 
         <span class="n">qq_plot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">measured</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">modelled</span><span class="p">],</span><span class="n">pvec</span><span class="p">,</span><span class="n">X_short_name</span><span class="p">,</span><span class="n">Y_short_name</span><span class="p">,</span><span class="n">X_unit</span><span class="p">,</span><span class="n">Y_unit</span><span class="p">,</span><span class="n">filename</span><span class="p">,</span><span class="n">display</span><span class="p">)</span></div>
 
 
 
-<div class="viewcode-block" id="StatPlots.Percentage_of_occurence"><a class="viewcode-back" href="../../../../source/toto.plugins.plots.plot_roses.html#toto.plugins.plots.plot_roses.StatPlots.Percentage_of_occurence">[docs]</a>    <span class="k">def</span> <span class="nf">Percentage_of_occurence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">mag</span><span class="o">=</span><span class="s1">&#39;mag&#39;</span><span class="p">,</span><span class="n">drr</span><span class="o">=</span><span class="s1">&#39;drr&#39;</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="p">{</span>
-                <span class="s1">&#39;Magnitude interval (optional)&#39;</span><span class="p">:[],</span>
+<div class="viewcode-block" id="StatPlots.percentage_of_occurence"><a class="viewcode-back" href="../../../../source/toto.plugins.plots.plot_roses.html#toto.plugins.plots.plot_roses.StatPlots.percentage_of_occurence">[docs]</a>    <span class="k">def</span> <span class="nf">percentage_of_occurence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">mag</span><span class="o">=</span><span class="s1">&#39;mag&#39;</span><span class="p">,</span><span class="n">drr</span><span class="o">=</span><span class="s1">&#39;drr&#39;</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="p">{</span>
+                <span class="s1">&#39;magnitude interval (optional)&#39;</span><span class="p">:[],</span>
                 <span class="s1">&#39;X label&#39;</span><span class="p">:</span><span class="s1">&#39;Wind speed in [m/s]&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;Time blocking&#39;</span><span class="p">:{</span><span class="s1">&#39;Annual&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Seasonal (South hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Seasonal (North hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Monthly&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
-                <span class="s1">&#39;Direction binning&#39;</span><span class="p">:{</span><span class="s1">&#39;centered&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;not-centered&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
-                <span class="s1">&#39;Direction interval&#39;</span><span class="p">:</span> <span class="mf">45.</span><span class="p">,</span>
+                <span class="s1">&#39;time blocking&#39;</span><span class="p">:{</span><span class="s1">&#39;Annual&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Seasonal (South hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Seasonal (North hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Monthly&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
+                <span class="s1">&#39;direction binning&#39;</span><span class="p">:{</span><span class="s1">&#39;centered&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;not-centered&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
+                <span class="s1">&#39;direction interval&#39;</span><span class="p">:</span> <span class="mf">45.</span><span class="p">,</span>
                 <span class="s1">&#39;display&#39;</span><span class="p">:{</span><span class="s1">&#39;On&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Off&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
                 <span class="s1">&#39;folder out&#39;</span><span class="p">:</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()}):</span>
 
-        <span class="sd">&#39;&#39;&#39;  This function provides percentage of occurnce from any variable.</span>
-<span class="sd">         plot are directional if direction is supplied&#39;&#39;&#39;</span>
+        <span class="sd">&quot;&quot;&quot; This function provides percentage of occurnce from any variable.</span>
+<span class="sd">            plot are directional if direction is supplied</span>
+
+<span class="sd">            Parameters</span>
+<span class="sd">            ~~~~~~~~~~</span>
+
+<span class="sd">            mag : str</span>
+<span class="sd">                Name of the column from which to get stats.</span>
+<span class="sd">            drr : str</span>
+<span class="sd">                Column name representing the directions.</span>
+<span class="sd">            args: dict</span>
+<span class="sd">                Dictionnary with the folowing keys:</span>
+<span class="sd">                title: str</span>
+<span class="sd">                    Graph title</span>
+<span class="sd">                magnitude interval (optional): list</span>
+<span class="sd">                    interval to use for the magnitude</span>
+<span class="sd">                X label: str</span>
+<span class="sd">                    Label for the X axis</span>
+<span class="sd">                direction binning: str</span>
+<span class="sd">                    Can be `centered` or `not-centered` depending if the directionnal are centered over 0</span>
+<span class="sd">                direction interval: int</span>
+<span class="sd">                    Dirctionnal interval for the bins in degrees</span>
+<span class="sd">                display: str</span>
+<span class="sd">                    `On` or `Off` to display image</span>
+<span class="sd">                folder out: str</span>
+<span class="sd">                    Path to save the output</span>
+<span class="sd">                time blocking: str</span>
+<span class="sd">                     if ``Time blocking==&#39;Annual&#39;``,</span>
+<span class="sd">                        Statistics will be calculated for the whole timeserie</span>
+<span class="sd">                     if ``Time blocking==&#39;Seasonal (South hemisphere)&#39;``,</span>
+<span class="sd">                        Statistics will be calculated for South hemisphere seasons</span>
+<span class="sd">                     if ``Time blocking==&#39;Seasonal (North hemisphere)&#39;``,</span>
+<span class="sd">                        Statistics will be calculated for North hemisphere seasons</span>
+<span class="sd">                     if ``Time blocking==&#39;Monthly&#39;``,</span>
+<span class="sd">                        Statistics will be calculated for each month.</span>
+<span class="sd">   </span>
+
+<span class="sd">            Examples:</span>
+<span class="sd">            ~~~~~~~~~</span>
+<span class="sd">            &gt;&gt;&gt; df=tf[&#39;test1&#39;][&#39;dataframe&#39;].StatPlots.Percentage_of_occurence(mag=&#39;U&#39;,drr=&#39;drr&#39;,args={&#39;time blocking&#39;:&#39;Yearly&#39;})</span>
+<span class="sd">            &gt;&gt;&gt; </span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">display</span><span class="o">=</span><span class="kc">True</span>
-        <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;display&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Off&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;display&#39;</span><span class="p">,</span><span class="s1">&#39;Off&#39;</span><span class="p">)</span><span class="o">==</span><span class="s1">&#39;Off&#39;</span><span class="p">:</span>
             <span class="n">display</span><span class="o">=</span><span class="kc">False</span>
 
         <span class="k">if</span> <span class="n">drr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
@@ -184,53 +358,101 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">drr</span><span class="o">=</span><span class="kc">None</span>
 
-        <span class="n">mag_inteval</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Magnitude interval (optional)&#39;</span><span class="p">]</span>
+        <span class="n">mag_inteval</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;magnitude interval (optional)&#39;</span><span class="p">,[])</span>
         <span class="n">X_unit</span><span class="o">=</span><span class="n">get_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">mag</span><span class="p">],</span><span class="s1">&#39;units&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
         <span class="n">X_short_name</span><span class="o">=</span><span class="n">get_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">mag</span><span class="p">],</span><span class="s1">&#39;short_name&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">X_short_name</span><span class="o">==</span><span class="s1">&#39;&#39;</span><span class="p">:</span>
-            <span class="n">xlabel</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;X label&#39;</span><span class="p">]</span>
+            <span class="n">xlabel</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;X label&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">xlabel</span><span class="o">=</span><span class="n">X_short_name</span><span class="o">+</span><span class="s1">&#39; [&#39;</span><span class="o">+</span><span class="n">X_unit</span><span class="o">+</span><span class="s1">&#39;]&#39;</span>
 
-        <span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;folder out&#39;</span><span class="p">],</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_OccurencePlot.png&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="s1">&#39;filename&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
 
-        <span class="n">drr_interval</span><span class="o">=</span><span class="n">dir_interval</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Direction interval&#39;</span><span class="p">],</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Direction binning&#39;</span><span class="p">])</span>
-        <span class="n">do_perc_of_occurence</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">mag</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span><span class="n">drr</span><span class="p">,</span><span class="n">mag_inteval</span><span class="p">,</span><span class="n">xlabel</span><span class="p">,</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Time blocking&#39;</span><span class="p">],</span><span class="n">drr_interval</span><span class="p">,</span><span class="n">filename</span><span class="p">,</span><span class="n">display</span><span class="p">)</span></div>
+        <span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;folder out&#39;</span><span class="p">,</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()),</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_OccurencePlot.png&#39;</span><span class="p">)</span>
 
-<div class="viewcode-block" id="StatPlots.Plot_thermocline"><a class="viewcode-back" href="../../../../source/toto.plugins.plots.plot_roses.html#toto.plugins.plots.plot_roses.StatPlots.Plot_thermocline">[docs]</a>    <span class="k">def</span> <span class="nf">Plot_thermocline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">mag</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;mag&#39;</span><span class="p">],</span><span class="n">args</span><span class="o">=</span><span class="p">{</span>
+        <span class="n">drr_interval</span><span class="o">=</span><span class="n">dir_interval</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;direction interval&#39;</span><span class="p">],</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;direction binning&#39;</span><span class="p">])</span>
+        <span class="n">do_perc_of_occurence</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">mag</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span><span class="n">drr</span><span class="p">,</span><span class="n">mag_inteval</span><span class="p">,</span><span class="n">xlabel</span><span class="p">,</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;time blocking&#39;</span><span class="p">],</span><span class="n">drr_interval</span><span class="p">,</span><span class="n">filename</span><span class="p">,</span><span class="n">display</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="StatPlots.plot_thermocline"><a class="viewcode-back" href="../../../../source/toto.plugins.plots.plot_roses.html#toto.plugins.plots.plot_roses.StatPlots.plot_thermocline">[docs]</a>    <span class="k">def</span> <span class="nf">plot_thermocline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">mag</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;mag&#39;</span><span class="p">],</span><span class="n">args</span><span class="o">=</span><span class="p">{</span>
                 <span class="s1">&#39;function&#39;</span><span class="p">:{</span><span class="s1">&#39;Max&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;Mean&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;Median&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;Min&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;Percentile&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;Prod&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;Quantile&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;Std&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;Sum&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;Var&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
-                <span class="s1">&#39;Percentile or Quantile&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+                <span class="s1">&#39;percentile or Quantile&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
                 <span class="s1">&#39;X label&#39;</span><span class="p">:</span><span class="s1">&#39;Water temperature [degC]&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;Time blocking&#39;</span><span class="p">:{</span><span class="s1">&#39;Annual&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Seasonal (South hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Seasonal (North hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Monthly&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
+                <span class="s1">&#39;time blocking&#39;</span><span class="p">:{</span><span class="s1">&#39;Annual&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Seasonal (South hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Seasonal (North hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Monthly&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
                 <span class="s1">&#39;display&#39;</span><span class="p">:{</span><span class="s1">&#39;On&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Off&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
+                <span class="s1">&#39;table&#39;</span><span class="p">:{</span><span class="s1">&#39;On&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Off&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
                 <span class="s1">&#39;folder out&#39;</span><span class="p">:</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()}):</span>
 
-        <span class="sd">&#39;&#39;&#39;  This function provides a plot of parameter versus water depth.</span>
+        <span class="sd">&quot;&quot;&quot; This function provides a plot of parameter versus water depth.</span>
 <span class="sd">            This function average the timeseries ( by mean, median ...)</span>
-<span class="sd">            variables mu be in the format *_lev_1,*_lev_2 etc.. &#39;&#39;&#39;</span>
+
+<span class="sd">            Notes</span>
+<span class="sd">            ~~~~~</span>
+
+<span class="sd">            Variables MUST be in the format *_lev_1,*_lev_2 etc.. </span>
+
+<span class="sd">            Parameters</span>
+<span class="sd">            ~~~~~~~~~~</span>
+
+<span class="sd">            mag : list</span>
+<span class="sd">                Name of the column from which to get stats.</span>
+<span class="sd">            args: dict</span>
+<span class="sd">                Dictionnary with the folowing keys:</span>
+<span class="sd">                function: str</span>
+<span class="sd">                    Statistics to use to process each level:</span>
+<span class="sd">                    can be `Max`,`Mean`,`Median`,`Min`,`Percentile`,`Prod`,`Quantile`,`Std`,`Sum` or `Var`</span>
+<span class="sd">                &#39;percentile or Quantile&#39;: float</span>
+<span class="sd">                    Percetile or quantile to use</span>
+<span class="sd">                X label: str</span>
+<span class="sd">                    Label for the X axis</span>
+<span class="sd">                display: str</span>
+<span class="sd">                    `On` or `Off` to display image</span>
+<span class="sd">                table: str</span>
+<span class="sd">                    `On` or `Off` to print result in a table</span>
+<span class="sd">                folder out: str</span>
+<span class="sd">                    Path to save the output</span>
+<span class="sd">                time blocking: str</span>
+<span class="sd">                     if ``Time blocking==&#39;Annual&#39;``,</span>
+<span class="sd">                        Statistics will be calculated for the whole timeserie</span>
+<span class="sd">                     if ``Time blocking==&#39;Seasonal (South hemisphere)&#39;``,</span>
+<span class="sd">                        Statistics will be calculated for South hemisphere seasons</span>
+<span class="sd">                     if ``Time blocking==&#39;Seasonal (North hemisphere)&#39;``,</span>
+<span class="sd">                        Statistics will be calculated for North hemisphere seasons</span>
+<span class="sd">                     if ``Time blocking==&#39;Monthly&#39;``,</span>
+<span class="sd">                        Statistics will be calculated for each month.</span>
+<span class="sd">   </span>
+
+<span class="sd">            Examples:</span>
+<span class="sd">            ~~~~~~~~~</span>
+<span class="sd">            &gt;&gt;&gt; df=tf[&#39;test1&#39;][&#39;dataframe&#39;].StatPlots.plot_thermocline(mag=[&#39;U_lev_1&#39;,&#39;U_lev_2&#39;],args={&#39;function&#39;:&#39;Mean&#39;,time blocking&#39;:&#39;Yearly&#39;})</span>
+<span class="sd">            &gt;&gt;&gt; </span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mag</span><span class="p">,</span><span class="nb">str</span><span class="p">):</span>
             <span class="k">return</span> <span class="s1">&#39;cannot be only one level,select multiple&#39;</span>
 
         <span class="n">display</span><span class="o">=</span><span class="kc">True</span>
-        <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;display&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Off&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;display&#39;</span><span class="p">,</span><span class="s1">&#39;Off&#39;</span><span class="p">)</span><span class="o">==</span><span class="s1">&#39;Off&#39;</span><span class="p">:</span>
             <span class="n">display</span><span class="o">=</span><span class="kc">False</span>
 
         <span class="n">X_unit</span><span class="o">=</span><span class="n">get_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">mag</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span><span class="s1">&#39;units&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
         <span class="n">X_short_name</span><span class="o">=</span><span class="n">get_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">mag</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span><span class="s1">&#39;short_name&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">X_short_name</span><span class="o">==</span><span class="s1">&#39;&#39;</span><span class="p">:</span>
-            <span class="n">xlabel</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;X label&#39;</span><span class="p">]</span>
+            <span class="n">xlabel</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;X label&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">xlabel</span><span class="o">=</span><span class="n">X_short_name</span><span class="o">+</span><span class="s1">&#39; [&#39;</span><span class="o">+</span><span class="n">X_unit</span><span class="o">+</span><span class="s1">&#39;]&#39;</span>
 
 
         <span class="n">funct</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span><span class="n">np</span><span class="p">,</span><span class="s1">&#39;nan&#39;</span><span class="o">+</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;function&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
-        <span class="n">val</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Percentile or Quantile&#39;</span><span class="p">]</span>
+        <span class="n">val</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;percentile or Quantile&#39;</span><span class="p">,</span><span class="mf">0.1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="s1">&#39;filename&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
 
-        <span class="n">table_filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;folder out&#39;</span><span class="p">],</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_thermocline.xlsx&#39;</span><span class="p">)</span>
-        <span class="n">figure_filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;folder out&#39;</span><span class="p">],</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_thermocline.png&#39;</span><span class="p">)</span>
-        <span class="n">th</span><span class="o">=</span><span class="n">thermocline</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">mag</span><span class="p">],</span><span class="n">time_blocking</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Time blocking&#39;</span><span class="p">],</span><span class="n">funct</span><span class="o">=</span><span class="n">funct</span><span class="p">,</span><span class="n">val</span><span class="o">=</span><span class="n">val</span><span class="p">)</span>
-        <span class="n">th</span><span class="o">.</span><span class="n">output_table</span><span class="p">(</span><span class="n">table_filename</span><span class="p">)</span>
+        <span class="n">table_filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;folder out&#39;</span><span class="p">,</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()),</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_thermocline.xlsx&#39;</span><span class="p">)</span>
+        <span class="n">figure_filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;folder out&#39;</span><span class="p">,</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()),</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_thermocline.png&#39;</span><span class="p">)</span>
+        <span class="n">th</span><span class="o">=</span><span class="n">thermocline</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">mag</span><span class="p">],</span><span class="n">time_blocking</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;time blocking&#39;</span><span class="p">],</span><span class="n">funct</span><span class="o">=</span><span class="n">funct</span><span class="p">,</span><span class="n">val</span><span class="o">=</span><span class="n">val</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;table&#39;</span><span class="p">,</span><span class="s1">&#39;Off&#39;</span><span class="p">)</span><span class="o">==</span><span class="s1">&#39;On&#39;</span><span class="p">:</span>
+            <span class="n">th</span><span class="o">.</span><span class="n">output_table</span><span class="p">(</span><span class="n">table_filename</span><span class="p">)</span>
         <span class="n">th</span><span class="o">.</span><span class="n">output_fig</span><span class="p">(</span><span class="n">figure_filename</span><span class="p">,</span><span class="n">xlabel</span><span class="o">=</span><span class="n">xlabel</span><span class="p">,</span><span class="n">display</span><span class="o">=</span><span class="n">display</span><span class="p">)</span></div>
 
 
@@ -241,44 +463,85 @@
         <span class="s1">&#39;Y Min Res Max(optional)&#39;</span><span class="p">:[</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.5</span><span class="p">],</span>
         <span class="s1">&#39;X label&#39;</span><span class="p">:</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
         <span class="s1">&#39;Y label&#39;</span><span class="p">:</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;Time blocking&#39;</span><span class="p">:{</span><span class="s1">&#39;Annual&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Seasonal (South hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Seasonal (North hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Monthly&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
-        <span class="s1">&#39;Probablity expressed in&#39;</span><span class="p">:{</span><span class="s1">&#39;percent&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;per thoushand&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">},</span>
+        <span class="s1">&#39;time blocking&#39;</span><span class="p">:{</span><span class="s1">&#39;Annual&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Seasonal (South hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Seasonal (North hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Monthly&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
+        <span class="s1">&#39;probablity expressed in&#39;</span><span class="p">:{</span><span class="s1">&#39;percent&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;per thoushand&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">},</span>
         <span class="s1">&#39;display&#39;</span><span class="p">:{</span><span class="s1">&#39;On&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Off&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
         <span class="s1">&#39;folder out&#39;</span><span class="p">:</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span>
         <span class="p">}):</span>
-        <span class="sd">&#39;&#39;&#39; This function provides joint distribution graph for X and Y, i.e. the</span>
+        <span class="sd">&quot;&quot;&quot; This function provides joint distribution graph for X and Y, i.e. the</span>
 <span class="sd">            probability of events defined in terms of both X and Y (per 1000)</span>
-<span class="sd">            &#39;&#39;&#39;</span>
+<span class="sd">        </span>
+<span class="sd">            Parameters</span>
+<span class="sd">            ~~~~~~~~~~</span>
+
+<span class="sd">            X : str</span>
+<span class="sd">                Name of the column to plot on the X axis.</span>
+<span class="sd">            Y : str</span>
+<span class="sd">                Name of the column to plot on the Y axis.</span>
+<span class="sd">            args: dict</span>
+<span class="sd">                Dictionnary with the folowing keys:</span>
+<span class="sd">                X Min Res Max(optional): list</span>
+<span class="sd">                    Minimum, resolution and maximum value of X axis use in the join probability</span>
+<span class="sd">                Y Min Res Max(optional): list</span>
+<span class="sd">                    Minimum, resolution and maximum value of Y axis use in the join probability</span>
+<span class="sd">                X label: str</span>
+<span class="sd">                    Label for the X axis</span>
+<span class="sd">                Y label: str</span>
+<span class="sd">                    Label for the Y axis</span>
+<span class="sd">                display: str</span>
+<span class="sd">                    `On` or `Off` to display image</span>
+<span class="sd">                folder out: str</span>
+<span class="sd">                    Path to save the output</span>
+<span class="sd">                probablity expressed in:</span>
+<span class="sd">                    Can be `percent` or `per thoushand`</span>
+<span class="sd">                time blocking: str</span>
+<span class="sd">                     if ``Time blocking==&#39;Annual&#39;``,</span>
+<span class="sd">                        Statistics will be calculated for the whole timeserie</span>
+<span class="sd">                     if ``Time blocking==&#39;Seasonal (South hemisphere)&#39;``,</span>
+<span class="sd">                        Statistics will be calculated for South hemisphere seasons</span>
+<span class="sd">                     if ``Time blocking==&#39;Seasonal (North hemisphere)&#39;``,</span>
+<span class="sd">                        Statistics will be calculated for North hemisphere seasons</span>
+<span class="sd">                     if ``Time blocking==&#39;Monthly&#39;``,</span>
+<span class="sd">                        Statistics will be calculated for each month.</span>
+<span class="sd">   </span>
+
+<span class="sd">            Examples:</span>
+<span class="sd">            ~~~~~~~~~</span>
+<span class="sd">            &gt;&gt;&gt; df=tf[&#39;test1&#39;][&#39;dataframe&#39;].StatPlots.plot_thermocline(mag=[&#39;U_lev_1&#39;,&#39;U_lev_2&#39;],args={&#39;function&#39;:&#39;Mean&#39;,time blocking&#39;:&#39;Yearly&#39;})</span>
+<span class="sd">            &gt;&gt;&gt; </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="n">display</span><span class="o">=</span><span class="kc">True</span>
-        <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;display&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Off&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;display&#39;</span><span class="p">,</span><span class="s1">&#39;Off&#39;</span><span class="p">)</span><span class="o">==</span><span class="s1">&#39;Off&#39;</span><span class="p">:</span>
             <span class="n">display</span><span class="o">=</span><span class="kc">False</span>
         <span class="n">Ydata</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">Y</span><span class="p">]</span>
         <span class="n">Xdata</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">X</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="s1">&#39;filename&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
+        <span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;folder out&#39;</span><span class="p">,</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()),</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;JP.png&#39;</span><span class="p">)</span>
 
-        <span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;folder out&#39;</span><span class="p">],</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;JP_wave_nrj.png&#39;</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;Probablity expressed in&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;percent&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;probablity expressed in&#39;</span><span class="p">,</span><span class="s1">&#39;percent&#39;</span><span class="p">)</span><span class="o">==</span><span class="s1">&#39;percent&#39;</span><span class="p">:</span>
             <span class="n">multiplier</span><span class="o">=</span><span class="mf">100.</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">multiplier</span><span class="o">=</span><span class="mf">1000.</span>
-        <span class="n">Y_interval</span><span class="o">=</span><span class="n">get_increment</span><span class="p">(</span><span class="n">Ydata</span><span class="p">,</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Y Min Res Max(optional)&#39;</span><span class="p">])</span>
-        <span class="n">X_interval</span><span class="o">=</span><span class="n">get_increment</span><span class="p">(</span><span class="n">Xdata</span><span class="p">,</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;X Min Res Max(optional)&#39;</span><span class="p">])</span>      
+        <span class="n">Y_interval</span><span class="o">=</span><span class="n">get_increment</span><span class="p">(</span><span class="n">Ydata</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Y Min Res Max(optional)&#39;</span><span class="p">,[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="n">X_interval</span><span class="o">=</span><span class="n">get_increment</span><span class="p">(</span><span class="n">Xdata</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;X Min Res Max(optional)&#39;</span><span class="p">,[</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.5</span><span class="p">]))</span>
 
         <span class="n">X_unit</span><span class="o">=</span><span class="n">get_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">X</span><span class="p">],</span><span class="s1">&#39;units&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
         <span class="n">X_short_name</span><span class="o">=</span><span class="n">get_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">X</span><span class="p">],</span><span class="s1">&#39;short_name&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">X_short_name</span><span class="o">==</span><span class="s1">&#39;&#39;</span><span class="p">:</span>
-            <span class="n">xlabel</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;X label&#39;</span><span class="p">]</span>
+            <span class="n">xlabel</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;X label&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">xlabel</span><span class="o">=</span><span class="n">X_short_name</span><span class="o">+</span><span class="s1">&#39; [&#39;</span><span class="o">+</span><span class="n">X_unit</span><span class="o">+</span><span class="s1">&#39;]&#39;</span>
 
         <span class="n">Y_unit</span><span class="o">=</span><span class="n">get_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">Y</span><span class="p">],</span><span class="s1">&#39;units&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
         <span class="n">Y_short_name</span><span class="o">=</span><span class="n">get_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">Y</span><span class="p">],</span><span class="s1">&#39;short_name&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">Y_short_name</span><span class="o">==</span><span class="s1">&#39;&#39;</span><span class="p">:</span>
-            <span class="n">ylabel</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Y label&#39;</span><span class="p">]</span>
+            <span class="n">ylabel</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Y label&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">ylabel</span><span class="o">=</span><span class="n">Y_short_name</span><span class="o">+</span><span class="s1">&#39; [&#39;</span><span class="o">+</span><span class="n">Y_unit</span><span class="o">+</span><span class="s1">&#39;]&#39;</span>
 
-        <span class="n">_do_joint_prob_plot</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="n">Xdata</span><span class="p">,</span><span class="n">Ydata</span><span class="p">,</span><span class="n">X_interval</span><span class="p">,</span><span class="n">Y_interval</span><span class="p">,</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Time blocking&#39;</span><span class="p">],</span><span class="n">display</span><span class="p">,</span><span class="n">xlabel</span><span class="p">,</span><span class="n">ylabel</span><span class="p">,</span><span class="n">multiplier</span><span class="p">)</span></div></div>
+        <span class="n">_do_joint_prob_plot</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="n">Xdata</span><span class="p">,</span><span class="n">Ydata</span><span class="p">,</span><span class="n">X_interval</span><span class="p">,</span><span class="n">Y_interval</span><span class="p">,</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;time blocking&#39;</span><span class="p">],</span><span class="n">display</span><span class="p">,</span><span class="n">xlabel</span><span class="p">,</span><span class="n">ylabel</span><span class="p">,</span><span class="n">multiplier</span><span class="p">)</span></div></div>
 </pre></div>
 
           </div>

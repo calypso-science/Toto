@@ -38,8 +38,32 @@
   <a class="reference internal image-reference" href="../_static/calypso.png"><img alt="../_static/calypso.png" class="align-right" src="../_static/calypso.png" style="width: 150px;" /></a>
 <div class="section" id="module-toto.plugins.tide.detide.TideAnalysis.detide">
 <span id="detide"></span><h1>Detide<a class="headerlink" href="#module-toto.plugins.tide.detide.TideAnalysis.detide" title="Permalink to this headline">¶</a></h1>
-<p>This function detide a timeseries.
-Works if NaN are in the timeseries</p>
+<p>This function detide a timeseries using Utide software.
+Usefull if NaNs are in the timeseries</p>
+<div class="section" id="parameters">
+<h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt>mag<span class="classifier">str</span></dt><dd><p>Name of the column from which to extract the tide</p>
+</dd>
+<dt>args: dict</dt><dd><dl>
+<dt>Dictionnary with the folowing keys:</dt><dd><p>minimum SNR: int
+folder out: str</p>
+<blockquote>
+<div><p>Path to save the output</p>
+</div></blockquote>
+<p>latitude: float</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</div>
+<div class="section" id="examples">
+<h2>Examples:<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">=</span><span class="n">tf</span><span class="p">[</span><span class="s1">&#39;test1&#39;</span><span class="p">][</span><span class="s1">&#39;dataframe&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">TideAnalysis</span><span class="o">.</span><span class="n">detide</span><span class="p">(</span><span class="n">mag</span><span class="o">=</span><span class="s1">&#39;U&#39;</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;latitude&#39;</span><span class="p">:</span><span class="o">-</span><span class="mf">36.5</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span>
+</pre></div>
+</div>
+</div>
 </div>
 
 

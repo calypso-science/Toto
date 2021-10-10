@@ -38,6 +38,43 @@
   <a class="reference internal image-reference" href="../_static/calypso.png"><img alt="../_static/calypso.png" class="align-right" src="../_static/calypso.png" style="width: 150px;" /></a>
 <div class="section" id="module-toto.plugins.tide.detide.TideAnalysis.recreate">
 <span id="re-create"></span><h1>Re-create<a class="headerlink" href="#module-toto.plugins.tide.detide.TideAnalysis.recreate" title="Permalink to this headline">¶</a></h1>
+<dl class="simple">
+<dt>Re-create a time series using a file containing</dt><dd><p>Amplitude and Phase for each contituents.</p>
+</dd>
+</dl>
+<div class="section" id="parameters">
+<h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt>args: dict</dt><dd><dl>
+<dt>Dictionnary with the folowing keys:</dt><dd><dl class="simple">
+<dt>cons file: str</dt><dd><p>Txt file containing the amplitude and phase</p>
+</dd>
+<dt>column cons: str</dt><dd><p>Name of the column containing the constituent name</p>
+</dd>
+<dt>column amp: str</dt><dd><p>Name of the column containing the constituent amplitude</p>
+</dd>
+<dt>column pha: str</dt><dd><p>Name of the column containing the constituent phase (in degree)</p>
+</dd>
+<dt>minimum time: datetime</dt><dd><p>Time the time series start</p>
+</dd>
+<dt>maximum time: datetime</dt><dd><p>Time the time series end</p>
+</dd>
+<dt>dt(s): int</dt><dd><p>Time interval in seconds</p>
+</dd>
+</dl>
+<p>latitude: float</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</div>
+<div class="section" id="examples">
+<h2>Examples:<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">=</span><span class="n">tf</span><span class="p">[</span><span class="s1">&#39;test1&#39;</span><span class="p">][</span><span class="s1">&#39;dataframe&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">TideAnalysis</span><span class="o">.</span><span class="n">recreate</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;cons file&#39;</span><span class="p">:</span><span class="s1">&#39;test.txt&#39;</span><span class="p">,</span>        <span class="s1">&#39;column cons&#39;</span><span class="p">:</span><span class="s1">&#39;cons&#39;</span><span class="p">,</span><span class="s1">&#39;column amp&#39;</span><span class="p">:</span><span class="n">amp</span><span class="p">,</span><span class="s1">&#39;column pha&#39;</span><span class="p">:</span><span class="n">pha</span><span class="p">,</span>        <span class="s1">&#39;minimum time&#39;</span><span class="p">:</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2002</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="s1">&#39;maximum time&#39;</span><span class="p">:</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2003</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span>        <span class="s1">&#39;dt(s)&#39;</span><span class="p">:</span><span class="mi">3600</span><span class="p">,</span><span class="s1">&#39;latitude&#39;</span><span class="p">:</span><span class="o">-</span><span class="mi">36</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>
+</pre></div>
+</div>
+</div>
 </div>
 
 

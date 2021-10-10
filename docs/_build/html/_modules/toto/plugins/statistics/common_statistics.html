@@ -61,7 +61,7 @@
 <div class="viewcode-block" id="Statistics.common_statistics"><a class="viewcode-back" href="../../../../source/toto.plugins.statistics.common_statistics.html#toto.plugins.statistics.common_statistics.Statistics.common_statistics">[docs]</a>    <span class="k">def</span> <span class="nf">common_statistics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">mag</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;mag&#39;</span><span class="p">],</span><span class="n">drr</span><span class="o">=</span><span class="s1">&#39;drr&#39;</span><span class="p">,</span>
         <span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Minimum occurrence (main direction) [%]&#39;</span><span class="p">:</span><span class="mi">15</span><span class="p">,</span>
         <span class="s1">&#39;folder out&#39;</span><span class="p">:</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span>
-        <span class="s1">&#39;Time blocking&#39;</span><span class="p">:{</span><span class="s1">&#39;Yearly&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;time blocking&#39;</span><span class="p">:{</span><span class="s1">&#39;Yearly&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span>
         <span class="s1">&#39;South hemisphere(Summer/Winter)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span>
         <span class="s1">&#39;South hemisphere 4 seasons&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span>
         <span class="s1">&#39;North hemishere(Summer/Winter)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span>
@@ -102,7 +102,7 @@
 
 <span class="sd">            Examples:</span>
 <span class="sd">            ~~~~~~~~~</span>
-<span class="sd">            &gt;&gt;&gt; df=tf[&#39;test1&#39;][&#39;dataframe&#39;].Statistics.common_stats(mag=&#39;U&#39;,drr=&#39;drr&#39;,args={&#39;Time blocking&#39;:&#39;Yearly&#39;})</span>
+<span class="sd">            &gt;&gt;&gt; df=tf[&#39;test1&#39;][&#39;dataframe&#39;].Statistics.common_stats(mag=&#39;U&#39;,drr=&#39;drr&#39;,args={&#39;time blocking&#39;:&#39;Yearly&#39;})</span>
 <span class="sd">            &gt;&gt;&gt; </span>
 <span class="sd">            </span>
 <span class="sd">            Outputs:</span>
@@ -173,8 +173,8 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">statf</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">,</span><span class="s1">&#39;min&#39;</span><span class="p">,</span><span class="s1">&#39;max&#39;</span><span class="p">,</span><span class="s1">&#39;mean&#39;</span><span class="p">,</span><span class="s1">&#39;std&#39;</span><span class="p">,[</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">50</span><span class="p">,</span><span class="mi">90</span><span class="p">,</span><span class="mi">95</span><span class="p">,</span><span class="mi">99</span><span class="p">],</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]</span>         
 
-        <span class="n">hem</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Time blocking&#39;</span><span class="p">]</span>
-        <span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;folder out&#39;</span><span class="p">],</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;stat.xlsx&#39;</span><span class="p">)</span>
+        <span class="n">hem</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;time blocking&#39;</span><span class="p">]</span>
+        <span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;folder out&#39;</span><span class="p">,</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()),</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;stat.xlsx&#39;</span><span class="p">)</span>
         <span class="n">time</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">index</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mag</span><span class="p">,</span><span class="nb">str</span><span class="p">):</span>
@@ -234,7 +234,7 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="s1">&#39;filename&#39;</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
 
-        <span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;folder out&#39;</span><span class="p">],</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;compstat.xlsx&#39;</span><span class="p">)</span>
+        <span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;folder out&#39;</span><span class="p">,</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()),</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;compstat.xlsx&#39;</span><span class="p">)</span>
         <span class="n">hind</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">hindcast</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
         <span class="n">meas</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">measured</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
 
@@ -249,9 +249,9 @@
         <span class="s1">&#39;function&#39;</span><span class="p">:{</span><span class="s1">&#39;Max&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;Mean&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;Median&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;Min&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;Percentile&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;Prod&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;Quantile&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;Std&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;Sum&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;Var&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
         <span class="s1">&#39;Percentile or Quantile&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
         <span class="s1">&#39;folder out&#39;</span><span class="p">:</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span>
-        <span class="s1">&#39;Direction binning&#39;</span><span class="p">:{</span><span class="s1">&#39;centered&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;not-centered&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
-        <span class="s1">&#39;Direction interval&#39;</span><span class="p">:</span> <span class="mf">45.</span><span class="p">,</span>
-        <span class="s1">&#39;Time blocking&#39;</span><span class="p">:{</span><span class="s1">&#39;Annual&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Seasonal (South hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Seasonal (North hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Monthly&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
+        <span class="s1">&#39;direction binning&#39;</span><span class="p">:{</span><span class="s1">&#39;centered&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;not-centered&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
+        <span class="s1">&#39;direction interval&#39;</span><span class="p">:</span> <span class="mf">45.</span><span class="p">,</span>
+        <span class="s1">&#39;time blocking&#39;</span><span class="p">:{</span><span class="s1">&#39;Annual&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Seasonal (South hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Seasonal (North hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Monthly&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
         <span class="p">}):</span>
 
         <span class="sd">&quot;&quot;&quot;Extract statistics for the selected directionnal bins</span>
@@ -261,7 +261,6 @@
 
 <span class="sd">            mag : str</span>
 <span class="sd">                Name of the column from which to get stats.</span>
-<span class="sd">                Can be a list for extracting stats from multilple columns.</span>
 <span class="sd">            drr : str</span>
 <span class="sd">                Column name representing the directions.</span>
 <span class="sd">            args: dict</span>
@@ -271,9 +270,9 @@
 <span class="sd">                        `Prod`, `Quantile`, `Std`, `Sum`, `Var`</span>
 <span class="sd">                    Percentile or Quantile: float</span>
 <span class="sd">                        Percentile or Quantile value depending on the function</span>
-<span class="sd">                    Direction binning: str</span>
+<span class="sd">                    direction binning: str</span>
 <span class="sd">                        Can be `centered` or `not-centered` depending if the directionnal are centered over 0</span>
-<span class="sd">                    Direction interval: int</span>
+<span class="sd">                    direction interval: int</span>
 <span class="sd">                        Dirctionnal interval for the bins in degrees</span>
 <span class="sd">                    folder out: str</span>
 <span class="sd">                        Path to save the output</span>
@@ -293,7 +292,7 @@
 
 <span class="sd">            Examples:</span>
 <span class="sd">            ~~~~~~~~~</span>
-<span class="sd">            &gt;&gt;&gt; df=tf[&#39;test1&#39;][&#39;dataframe&#39;].Statistics.Directional_statistics(mag=&#39;U&#39;,drr=&#39;drr&#39;,args={&#39;Direction interval&#39;:45,Time blocking&#39;:&#39;Yearly&#39;})</span>
+<span class="sd">            &gt;&gt;&gt; df=tf[&#39;test1&#39;][&#39;dataframe&#39;].Statistics.Directional_statistics(mag=&#39;U&#39;,drr=&#39;drr&#39;,args={&#39;direction interval&#39;:45,Time blocking&#39;:&#39;Yearly&#39;})</span>
 <span class="sd">            &gt;&gt;&gt; </span>
 
 <span class="sd">            Outputs:</span>
@@ -331,16 +330,16 @@
         <span class="n">Ydata</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">mag</span><span class="p">]</span>
         <span class="n">Xdata</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">drr</span><span class="p">]</span>
 
-        <span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;folder out&#39;</span><span class="p">],</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;directional_max.xlsx&#39;</span><span class="p">)</span>
+        <span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;folder out&#39;</span><span class="p">,</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()),</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;directional_max.xlsx&#39;</span><span class="p">)</span>
 
-        <span class="n">X_interval</span><span class="o">=</span><span class="n">dir_interval</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Direction interval&#39;</span><span class="p">],</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Direction binning&#39;</span><span class="p">])</span>
+        <span class="n">X_interval</span><span class="o">=</span><span class="n">dir_interval</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;direction interval&#39;</span><span class="p">],</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;direction binning&#39;</span><span class="p">])</span>
         <span class="n">funct</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span><span class="n">np</span><span class="p">,</span><span class="s1">&#39;nan&#39;</span><span class="o">+</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;function&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
         <span class="n">val</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Percentile or Quantile&#39;</span><span class="p">]</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">mag</span><span class="p">],</span><span class="s1">&#39;short_name&#39;</span><span class="p">):</span>
             <span class="n">short_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">mag</span><span class="p">]</span><span class="o">.</span><span class="n">short_name</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">short_name</span><span class="o">=</span><span class="n">mag</span>
-        <span class="n">do_directional_stat</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="n">funct</span><span class="p">,</span><span class="n">val</span><span class="p">,</span><span class="n">short_name</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="n">Xdata</span><span class="p">,</span><span class="n">Ydata</span><span class="p">,</span><span class="n">X_interval</span><span class="p">,</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Time blocking&#39;</span><span class="p">],</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Direction binning&#39;</span><span class="p">])</span></div>
+        <span class="n">do_directional_stat</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="n">funct</span><span class="p">,</span><span class="n">val</span><span class="p">,</span><span class="n">short_name</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="n">Xdata</span><span class="p">,</span><span class="n">Ydata</span><span class="p">,</span><span class="n">X_interval</span><span class="p">,</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;time blocking&#39;</span><span class="p">],</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;direction binning&#39;</span><span class="p">])</span></div>
 
 
 <div class="viewcode-block" id="Statistics.joint_probability"><a class="viewcode-back" href="../../../../source/toto.plugins.statistics.common_statistics.html#toto.plugins.statistics.common_statistics.Statistics.joint_probability">[docs]</a>    <span class="k">def</span> <span class="nf">joint_probability</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">mag</span><span class="o">=</span><span class="s1">&#39;speed&#39;</span><span class="p">,</span><span class="n">drr</span><span class="o">=</span><span class="s1">&#39;direction&#39;</span><span class="p">,</span><span class="n">period</span><span class="o">=</span><span class="s1">&#39;period&#39;</span><span class="p">,</span>\
@@ -348,9 +347,9 @@
         <span class="s1">&#39;folder out&#39;</span><span class="p">:</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span>
         <span class="s1">&#39;X Min Res Max(optional)&#39;</span><span class="p">:[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">22</span><span class="p">],</span>
         <span class="s1">&#39;Y Min Res Max(optional)&#39;</span><span class="p">:[</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.5</span><span class="p">],</span>
-        <span class="s1">&#39;Direction binning&#39;</span><span class="p">:{</span><span class="s1">&#39;centered&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;not-centered&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
-        <span class="s1">&#39;Direction interval&#39;</span><span class="p">:</span> <span class="mf">45.</span><span class="p">,</span>
-        <span class="s1">&#39;Time blocking&#39;</span><span class="p">:{</span><span class="s1">&#39;Annual&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Seasonal (South hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Seasonal (North hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Monthly&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
+        <span class="s1">&#39;direction binning&#39;</span><span class="p">:{</span><span class="s1">&#39;centered&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;not-centered&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
+        <span class="s1">&#39;direction interval&#39;</span><span class="p">:</span> <span class="mf">45.</span><span class="p">,</span>
+        <span class="s1">&#39;time blocking&#39;</span><span class="p">:{</span><span class="s1">&#39;Annual&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Seasonal (South hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Seasonal (North hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Monthly&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
         <span class="s1">&#39;Probablity expressed in&#39;</span><span class="p">:{</span><span class="s1">&#39;percent&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;per thoushand&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">}</span>
         <span class="p">}):</span>
         <span class="sd">&quot;&quot;&quot;This function provides joint distribution tables for X and Y, i.e. the</span>
@@ -363,11 +362,10 @@
 
 <span class="sd">            mag : str</span>
 <span class="sd">                Name of the column from which to get stats.</span>
-<span class="sd">                Can be a list for extracting stats from multilple columns.</span>
 <span class="sd">            drr : str</span>
 <span class="sd">                Column name representing the directions. If method is `Per Vs Dir` or `Mag vs Dir`</span>
 <span class="sd">            period : str</span>
-<span class="sd">                Column name representing the directions. If method is `Per Vs Dir` or `Mag vs Per`</span>
+<span class="sd">                Column name representing the period. If method is `Per Vs Dir` or `Mag vs Per`</span>
 <span class="sd">            args: dict</span>
 <span class="sd">                Dictionnary with the folowing keys:</span>
 <span class="sd">                    method: str</span>
@@ -375,9 +373,9 @@
 <span class="sd">                        `Mag vs Dir`: Plot Maginitude Versus Direction</span>
 <span class="sd">                        `Per Vs Dir`: Plot Period Versus Direction</span>
 <span class="sd">                        `Mag vs Per`: Plot Maginitude Versus Period</span>
-<span class="sd">                    Direction binning: str</span>
+<span class="sd">                    direction binning: str</span>
 <span class="sd">                        Can be `centered` or `not-centered` depending if the directionnal are centered over 0</span>
-<span class="sd">                    Direction interval: int</span>
+<span class="sd">                    direction interval: int</span>
 <span class="sd">                        Dirctionnal interval for the bins in degrees</span>
 <span class="sd">                    folder out: str</span>
 <span class="sd">                        Path to save the output</span>
@@ -399,7 +397,7 @@
 
 <span class="sd">            Examples:</span>
 <span class="sd">            ~~~~~~~~~</span>
-<span class="sd">            &gt;&gt;&gt; df=tf[&#39;test1&#39;][&#39;dataframe&#39;].Statistics.joint_probability(mag=&#39;U&#39;,drr=&#39;drr&#39;,args={&#39;Direction interval&#39;:45,Time blocking&#39;:&#39;Yearly&#39;})</span>
+<span class="sd">            &gt;&gt;&gt; df=tf[&#39;test1&#39;][&#39;dataframe&#39;].Statistics.joint_probability(mag=&#39;U&#39;,drr=&#39;drr&#39;,args={&#39;direction interval&#39;:45,Time blocking&#39;:&#39;Yearly&#39;})</span>
 <span class="sd">            &gt;&gt;&gt; </span>
 
 <span class="sd">            Outputs:</span>
@@ -452,7 +450,7 @@
             <span class="n">Ydata</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">mag</span><span class="p">]</span>
             <span class="n">Xdata</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">period</span><span class="p">]</span>
 
-        <span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;folder out&#39;</span><span class="p">],</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;JP.xlsx&#39;</span><span class="p">)</span>
+        <span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;folder out&#39;</span><span class="p">,</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()),</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;JP.xlsx&#39;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;Probablity expressed in&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;percent&#39;</span><span class="p">:</span>
             <span class="n">multiplier</span><span class="o">=</span><span class="mf">100.</span>
@@ -462,8 +460,8 @@
         
 
         <span class="k">if</span> <span class="n">analysis_method</span><span class="o">==</span><span class="s1">&#39;Mag vs Dir&#39;</span> <span class="ow">or</span> <span class="n">analysis_method</span><span class="o">==</span><span class="s1">&#39;Per Vs Dir&#39;</span><span class="p">:</span>
-            <span class="n">X_interval</span><span class="o">=</span><span class="n">dir_interval</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Direction interval&#39;</span><span class="p">],</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Direction binning&#39;</span><span class="p">])</span>
-            <span class="n">binning</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Direction binning&#39;</span><span class="p">]</span>
+            <span class="n">X_interval</span><span class="o">=</span><span class="n">dir_interval</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;direction interval&#39;</span><span class="p">],</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;direction binning&#39;</span><span class="p">])</span>
+            <span class="n">binning</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;direction binning&#39;</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">X_interval</span><span class="o">=</span><span class="n">get_increment</span><span class="p">(</span><span class="n">Xdata</span><span class="p">,</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;X Min Res Max(optional)&#39;</span><span class="p">])</span>
             <span class="n">binning</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
@@ -471,7 +469,7 @@
 
         <span class="n">X_interval</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">X_interval</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
         <span class="n">Y_interval</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Y_interval</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
-        <span class="n">do_joint_prob</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="n">Xdata</span><span class="p">,</span><span class="n">Ydata</span><span class="p">,</span><span class="n">X_interval</span><span class="p">,</span><span class="n">Y_interval</span><span class="p">,</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Time blocking&#39;</span><span class="p">],</span><span class="n">binning</span><span class="p">,</span><span class="n">multiplier</span><span class="p">,</span><span class="n">mag</span><span class="p">)</span></div>
+        <span class="n">do_joint_prob</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="n">Xdata</span><span class="p">,</span><span class="n">Ydata</span><span class="p">,</span><span class="n">X_interval</span><span class="p">,</span><span class="n">Y_interval</span><span class="p">,</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;time blocking&#39;</span><span class="p">],</span><span class="n">binning</span><span class="p">,</span><span class="n">multiplier</span><span class="p">,</span><span class="n">mag</span><span class="p">)</span></div>
 
 
 
@@ -480,20 +478,83 @@
         <span class="s1">&#39;folder out&#39;</span><span class="p">:</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span>
         <span class="s1">&#39;Exceedance bins: Min Res Max(optional)&#39;</span><span class="p">:[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">22</span><span class="p">],</span>
         <span class="s1">&#39;Duration Min Res Max&#39;</span><span class="p">:[</span><span class="mi">6</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">72</span><span class="p">],</span>
-        <span class="s1">&#39;Time blocking&#39;</span><span class="p">:{</span><span class="s1">&#39;Annual&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Seasonal (South hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Seasonal (North hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Monthly&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
+        <span class="s1">&#39;time blocking&#39;</span><span class="p">:{</span><span class="s1">&#39;Annual&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Seasonal (South hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Seasonal (North hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Monthly&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
          <span class="p">}):</span>
         <span class="sd">&quot;&quot;&quot;This function calculates the averaged number of full windows for data</span>
 <span class="sd">            -exceeding specific values during a specific duration (persistence exceedence)</span>
 <span class="sd">            -non-exceeding specific values during a specific duration (persistence non-exceedence)</span>
 <span class="sd">            Note: if a window overlaps to the next month/season/year, it is assumed to belong to the</span>
-<span class="sd">            month/season/year when the window starts.&quot;&quot;&quot;</span>
+<span class="sd">            month/season/year when the window starts.</span>
 
-        <span class="n">analysis</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;method&#39;</span><span class="p">]</span> 
-        <span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;folder out&#39;</span><span class="p">],</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_WeatherWindow.xlsx&#39;</span><span class="p">)</span>
+<span class="sd">            Parameters</span>
+<span class="sd">            ~~~~~~~~~~</span>
+
+<span class="sd">            data : str</span>
+<span class="sd">                Name of the column from which to get stats.</span>
+<span class="sd">            args: dict</span>
+<span class="sd">                Dictionnary with the folowing keys:</span>
+<span class="sd">                    method: str</span>
+<span class="sd">                        It can be `persistence exceedence` or `persistence non-exceedence`</span>
+<span class="sd">                    Exceedance bins: Min Res Max(optional): list</span>
+<span class="sd">                        Minimum, resolution and maximum value of X axis to use</span>
+<span class="sd">                    Duration Min Res Max: list</span>
+<span class="sd">                        Minimum, resolution and maximum duration to use in hours</span>
+<span class="sd">                    folder out: str</span>
+<span class="sd">                        Path to save the output</span>
+<span class="sd">                    Time blocking: str</span>
+<span class="sd">                         if ``Time blocking==&#39;Annual&#39;``,</span>
+<span class="sd">                            Statistics will be calculated for the whole timeserie</span>
+<span class="sd">                         if ``Time blocking==&#39;Seasonal (South hemisphere)&#39;``,</span>
+<span class="sd">                            Statistics will be calculated for each South hemisphere seasons</span>
+<span class="sd">                         if ``Time blocking==&#39;Seasonal (North hemisphere)&#39;``,</span>
+<span class="sd">                            Statistics will be calculated for each North hemisphere seasons</span>
+<span class="sd">                         if ``Time blocking==&#39;Monthly&#39;``,</span>
+<span class="sd">                            Statistics will be calculated for each month</span>
+
+<span class="sd">            Examples:</span>
+<span class="sd">            ~~~~~~~~~</span>
+<span class="sd">            &gt;&gt;&gt; df=tf[&#39;test1&#39;][&#39;dataframe&#39;].Statistics.weather_window(data=&#39;U&#39;,args={&#39;time blocking&#39;:&#39;Monthly&#39;})</span>
+<span class="sd">            &gt;&gt;&gt; </span>
+<span class="sd">            </span>
+<span class="sd">            Outputs:</span>
+<span class="sd">            ~~~~~~~~</span>
+<span class="sd">            .. list-table:: Weather_window example</span>
+<span class="sd">               :widths: 25 25 25 25 25 25</span>
+<span class="sd">               :header-rows: 1</span>
+
+<span class="sd">               * - </span>
+<span class="sd">                 - 6</span>
+<span class="sd">                 - 12</span>
+<span class="sd">                 - 18</span>
+<span class="sd">                 - 24</span>
+<span class="sd">                 - 36</span>
+<span class="sd">               * - &gt;0.2</span>
+<span class="sd">                 - </span>
+<span class="sd">                 - </span>
+<span class="sd">                 - </span>
+<span class="sd">                 - </span>
+<span class="sd">                 - </span>
+<span class="sd">               * - &gt;0.4</span>
+<span class="sd">                 - </span>
+<span class="sd">                 - </span>
+<span class="sd">                 - </span>
+<span class="sd">                 - </span>
+<span class="sd">                 - </span>
+<span class="sd">               * - &gt;0.6</span>
+<span class="sd">                 - </span>
+<span class="sd">                 - </span>
+<span class="sd">                 - </span>
+<span class="sd">                 - </span>
+<span class="sd">                 - </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+        <span class="n">analysis</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;method&#39;</span><span class="p">,</span><span class="s1">&#39;persistence non-exceedence&#39;</span><span class="p">)</span> 
+        <span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;folder out&#39;</span><span class="p">,</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()),</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_WeatherWindow.xlsx&#39;</span><span class="p">)</span>
         <span class="n">Ydata</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="p">]</span>
         <span class="n">Exc</span><span class="o">=</span><span class="n">get_increment</span><span class="p">(</span><span class="n">Ydata</span><span class="p">,</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Exceedance bins: Min Res Max(optional)&#39;</span><span class="p">])</span>
         <span class="n">duration</span><span class="o">=</span><span class="n">get_increment</span><span class="p">(</span><span class="n">Ydata</span><span class="p">,</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Duration Min Res Max&#39;</span><span class="p">])</span>
-        <span class="n">do_window_stats</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="n">Ydata</span><span class="p">,</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Time blocking&#39;</span><span class="p">],</span><span class="n">analysis</span><span class="p">,</span><span class="n">Exc</span><span class="p">,</span><span class="n">duration</span><span class="p">)</span></div>
+        <span class="n">do_window_stats</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="n">Ydata</span><span class="p">,</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;time blocking&#39;</span><span class="p">],</span><span class="n">analysis</span><span class="p">,</span><span class="n">Exc</span><span class="p">,</span><span class="n">duration</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Statistics.exceedence_probability"><a class="viewcode-back" href="../../../../source/toto.plugins.statistics.common_statistics.html#toto.plugins.statistics.common_statistics.Statistics.exceedence_probability">[docs]</a>    <span class="k">def</span> <span class="nf">exceedence_probability</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="s1">&#39;data&#39;</span><span class="p">,</span>\
         <span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;method&#39;</span><span class="p">:{</span><span class="s1">&#39;persistence exceedence&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;persistence non-exceedence&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span>\
@@ -501,20 +562,85 @@
         <span class="s1">&#39;folder out&#39;</span><span class="p">:</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span>
         <span class="s1">&#39;Exceedance bins: Min Res Max(optional)&#39;</span><span class="p">:[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">22</span><span class="p">],</span>
         <span class="s1">&#39;Duration Min Res Max&#39;</span><span class="p">:[</span><span class="mi">6</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">72</span><span class="p">],</span>
-        <span class="s1">&#39;Time blocking&#39;</span><span class="p">:{</span><span class="s1">&#39;Annual&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Seasonal (South hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Seasonal (North hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Monthly&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
+        <span class="s1">&#39;time blocking&#39;</span><span class="p">:{</span><span class="s1">&#39;Annual&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Seasonal (South hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Seasonal (North hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Monthly&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
          <span class="p">}):</span>
-        <span class="sd">&#39;&#39;&#39;This function calculates the frequency of occurrence of data:</span>
+        <span class="sd">&quot;&quot;&quot;This function calculates the frequency of occurrence of data:</span>
 <span class="sd">            -exceeding specific values (exceedence)</span>
 <span class="sd">            -non-exceeding specific values (non-exceedence)</span>
 <span class="sd">            -exceeding specific values during a specific duration (persistence exceedence)</span>
-<span class="sd">            -non-exceeding specific values during a specific duration (persistence non-exceedence)&#39;&#39;&#39;</span>
+<span class="sd">            -non-exceeding specific values during a specific duration (persistence non-exceedence)</span>
+
+<span class="sd">            Parameters</span>
+<span class="sd">            ~~~~~~~~~~</span>
+
+<span class="sd">            data : str</span>
+<span class="sd">                Name of the column from which to get stats.</span>
+<span class="sd">            args: dict</span>
+<span class="sd">                Dictionnary with the folowing keys:</span>
+<span class="sd">                    method: str</span>
+<span class="sd">                        It can be `exceedence`,`non-exceedence`, `persistence exceedence` or `persistence non-exceedence`</span>
+<span class="sd">                    Exceedance bins: Min Res Max(optional): list</span>
+<span class="sd">                        Minimum, resolution and maximum value of X axis to use</span>
+<span class="sd">                    Duration Min Res Max: list</span>
+<span class="sd">                        Minimum, resolution and maximum duration to use in hours</span>
+<span class="sd">                    folder out: str</span>
+<span class="sd">                        Path to save the output</span>
+<span class="sd">                    Time blocking: str</span>
+<span class="sd">                         if ``Time blocking==&#39;Annual&#39;``,</span>
+<span class="sd">                            Statistics will be calculated for the whole timeserie</span>
+<span class="sd">                         if ``Time blocking==&#39;Seasonal (South hemisphere)&#39;``,</span>
+<span class="sd">                            Statistics will be calculated for each South hemisphere seasons</span>
+<span class="sd">                         if ``Time blocking==&#39;Seasonal (North hemisphere)&#39;``,</span>
+<span class="sd">                            Statistics will be calculated for each North hemisphere seasons</span>
+<span class="sd">                         if ``Time blocking==&#39;Monthly&#39;``,</span>
+<span class="sd">                            Statistics will be calculated for each month</span>
+
+<span class="sd">            Examples:</span>
+<span class="sd">            ~~~~~~~~~</span>
+<span class="sd">            &gt;&gt;&gt; df=tf[&#39;test1&#39;][&#39;dataframe&#39;].Statistics.weather_window(data=&#39;U&#39;,args={&#39;time blocking&#39;:&#39;Monthly&#39;})</span>
+<span class="sd">            &gt;&gt;&gt; </span>
+<span class="sd">            </span>
+<span class="sd">            Outputs:</span>
+<span class="sd">            ~~~~~~~~</span>
+<span class="sd">            .. list-table:: Weather_window example</span>
+<span class="sd">               :widths: 25 25 25 25 25 25</span>
+<span class="sd">               :header-rows: 1</span>
+
+<span class="sd">               * - </span>
+<span class="sd">                 - 6</span>
+<span class="sd">                 - 12</span>
+<span class="sd">                 - 18</span>
+<span class="sd">                 - 24</span>
+<span class="sd">                 - 36</span>
+<span class="sd">               * - &gt;0.2</span>
+<span class="sd">                 - </span>
+<span class="sd">                 - </span>
+<span class="sd">                 - </span>
+<span class="sd">                 - </span>
+<span class="sd">                 - </span>
+<span class="sd">               * - &gt;0.4</span>
+<span class="sd">                 - </span>
+<span class="sd">                 - </span>
+<span class="sd">                 - </span>
+<span class="sd">                 - </span>
+<span class="sd">                 - </span>
+<span class="sd">               * - &gt;0.6</span>
+<span class="sd">                 - </span>
+<span class="sd">                 - </span>
+<span class="sd">                 - </span>
+<span class="sd">                 - </span>
+<span class="sd">                 - </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+
 
         <span class="n">analysis</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;method&#39;</span><span class="p">]</span> 
-        <span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;folder out&#39;</span><span class="p">],</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">analysis</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span><span class="s1">&#39;_&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;_stat.xlsx&#39;</span><span class="p">)</span>
+        <span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;folder out&#39;</span><span class="p">,</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()),</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">analysis</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span><span class="s1">&#39;_&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;_stat.xlsx&#39;</span><span class="p">)</span>
         <span class="n">Ydata</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="p">]</span>
         <span class="n">Exc</span><span class="o">=</span><span class="n">get_increment</span><span class="p">(</span><span class="n">Ydata</span><span class="p">,</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Exceedance bins: Min Res Max(optional)&#39;</span><span class="p">])</span>
         <span class="n">duration</span><span class="o">=</span><span class="n">get_increment</span><span class="p">(</span><span class="n">Ydata</span><span class="p">,</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Duration Min Res Max&#39;</span><span class="p">])</span>
-        <span class="n">do_exc_stats</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="n">Ydata</span><span class="p">,</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Time blocking&#39;</span><span class="p">],</span><span class="n">analysis</span><span class="p">,</span><span class="n">Exc</span><span class="p">,</span><span class="n">duration</span><span class="p">,</span><span class="n">data</span><span class="p">)</span></div>
+        <span class="n">do_exc_stats</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="n">Ydata</span><span class="p">,</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;time blocking&#39;</span><span class="p">],</span><span class="n">analysis</span><span class="p">,</span><span class="n">Exc</span><span class="p">,</span><span class="n">duration</span><span class="p">,</span><span class="n">data</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Statistics.excedence_coincidence_probability"><a class="viewcode-back" href="../../../../source/toto.plugins.statistics.common_statistics.html#toto.plugins.statistics.common_statistics.Statistics.excedence_coincidence_probability">[docs]</a>    <span class="k">def</span> <span class="nf">excedence_coincidence_probability</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="s1">&#39;data&#39;</span><span class="p">,</span><span class="n">coincident_nodir</span><span class="o">=</span><span class="s1">&#39;coincident_nodir&#39;</span><span class="p">,</span><span class="n">coincident_with_dir</span><span class="o">=</span><span class="s1">&#39;coincident_with_dir&#39;</span><span class="p">,</span>\
@@ -523,24 +649,97 @@
         <span class="s1">&#39;Exceedance bins: Min Res Max(optional)&#39;</span><span class="p">:[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span>
         <span class="s1">&#39;Coincidence bins: Min Res Max(optional)&#39;</span><span class="p">:[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span>
         <span class="s1">&#39;Duration Min Res Max&#39;</span><span class="p">:[</span><span class="mi">6</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">72</span><span class="p">],</span>
-        <span class="s1">&#39;Direction binning&#39;</span><span class="p">:{</span><span class="s1">&#39;centered&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;not-centered&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
-        <span class="s1">&#39;Direction interval&#39;</span><span class="p">:</span> <span class="mf">45.</span><span class="p">,</span>
-        <span class="s1">&#39;Time blocking&#39;</span><span class="p">:{</span><span class="s1">&#39;Annual&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Seasonal (South hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Seasonal (North hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Monthly&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
+        <span class="s1">&#39;direction binning&#39;</span><span class="p">:{</span><span class="s1">&#39;centered&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;not-centered&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
+        <span class="s1">&#39;direction interval&#39;</span><span class="p">:</span> <span class="mf">45.</span><span class="p">,</span>
+        <span class="s1">&#39;time blocking&#39;</span><span class="p">:{</span><span class="s1">&#39;Annual&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Seasonal (South hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Seasonal (North hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Monthly&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
          <span class="p">}):</span>
 
-        <span class="sd">&#39;&#39;&#39;Exceedence and non-exceedence analysis co-incident with another</span>
+        <span class="sd">&quot;&quot;&quot;Exceedence and non-exceedence analysis co-incident with another</span>
 <span class="sd">            parameter, similar to Joint-probability function but includes a</span>
-<span class="sd">            cumulative sum to obtain exceedence or non-exceedence(in %).&#39;&#39;&#39;</span>
+<span class="sd">            cumulative sum to obtain exceedence or non-exceedence(in %).</span>
 
+<span class="sd">            Parameters</span>
+<span class="sd">            ~~~~~~~~~~</span>
+
+<span class="sd">            data : str</span>
+<span class="sd">                Name of the column from which to get stats.</span>
+<span class="sd">            coincident_with_dir : str</span>
+<span class="sd">                Column name representing the directions. </span>
+<span class="sd">            coincident_nodir : str</span>
+<span class="sd">                Column name representing another magnitude.</span>
+<span class="sd">            args: dict</span>
+<span class="sd">                Dictionnary with the folowing keys:</span>
+<span class="sd">                    method: str</span>
+<span class="sd">                        Name of the method to use, can be:</span>
+<span class="sd">                        `exceedence`</span>
+<span class="sd">                        `non-exceedence`</span>
+<span class="sd">                    direction binning: str</span>
+<span class="sd">                        Can be `centered` or `not-centered` depending if the directionnal are centered over 0</span>
+<span class="sd">                    direction interval: int</span>
+<span class="sd">                        Dirctionnal interval for the bins in degrees</span>
+<span class="sd">                    folder out: str</span>
+<span class="sd">                        Path to save the output</span>
+<span class="sd">                    Probablity expressed in: str</span>
+<span class="sd">                        This can be `percent` or `per thoushand`</span>
+<span class="sd">                    Exceedance bins: Min Res Max(optional): list</span>
+<span class="sd">                        Minimum, resolution and maximum value of X axis use in the join probability</span>
+<span class="sd">                    Coincidence bins: Min Res Max(optional): list</span>
+<span class="sd">                        Minimum, resolution and maximum value of Y axis use in the join probability</span>
+<span class="sd">                    Time blocking: str</span>
+<span class="sd">                         if ``Time blocking==&#39;Annual&#39;``,</span>
+<span class="sd">                            Statistics will be calculated for the whole timeserie</span>
+<span class="sd">                         if ``Time blocking==&#39;Seasonal (South hemisphere)&#39;``,</span>
+<span class="sd">                            Statistics will be calculated for each South hemisphere seasons</span>
+<span class="sd">                         if ``Time blocking==&#39;Seasonal (North hemisphere)&#39;``,</span>
+<span class="sd">                            Statistics will be calculated for each North hemisphere seasons</span>
+<span class="sd">                         if ``Time blocking==&#39;Monthly&#39;``,</span>
+<span class="sd">                            Statistics will be calculated for each month</span>
+
+<span class="sd">            Examples:</span>
+<span class="sd">            ~~~~~~~~~</span>
+<span class="sd">            &gt;&gt;&gt; df=tf[&#39;test1&#39;][&#39;dataframe&#39;].Statistics.excedence_coincidence_probability(data=&#39;U&#39;,coincident_with_dir=&#39;drr&#39;,args={&#39;direction interval&#39;:45,Time blocking&#39;:&#39;Yearly&#39;})</span>
+<span class="sd">            &gt;&gt;&gt; </span>
+
+<span class="sd">            Outputs:</span>
+<span class="sd">            ~~~~~~~~</span>
+<span class="sd">            .. list-table:: Excedence coincidence probability</span>
+<span class="sd">               :widths: 25 25 25 25 25 25</span>
+<span class="sd">               :header-rows: 1</span>
+
+<span class="sd">               * - exceedence %</span>
+<span class="sd">                 - 0.0-0.2</span>
+<span class="sd">                 - 0.2-0.4</span>
+<span class="sd">                 - 0.4-0.6</span>
+<span class="sd">                 - 0.6-0.8</span>
+<span class="sd">                 - Total</span>
+<span class="sd">               * - &gt;0.0</span>
+<span class="sd">                 - </span>
+<span class="sd">                 - </span>
+<span class="sd">                 -</span>
+<span class="sd">                 -</span>
+<span class="sd">                 - </span>
+<span class="sd">               * - &gt;0.2</span>
+<span class="sd">                 - </span>
+<span class="sd">                 - </span>
+<span class="sd">                 -</span>
+<span class="sd">                 -</span>
+<span class="sd">                 -</span>
+<span class="sd">               * - &gt;0.4</span>
+<span class="sd">                 - </span>
+<span class="sd">                 - </span>
+<span class="sd">                 -</span>
+<span class="sd">                 -</span>
+<span class="sd">                 -</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">analysis</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;method&#39;</span><span class="p">]</span> 
-        <span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;folder out&#39;</span><span class="p">],</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_ExCoincstat.xlsx&#39;</span><span class="p">)</span>
+        <span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;folder out&#39;</span><span class="p">,</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()),</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_ExCoincstat.xlsx&#39;</span><span class="p">)</span>
         <span class="n">Y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="p">]</span>
         <span class="n">Exc</span><span class="o">=</span><span class="n">get_increment</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Exceedance bins: Min Res Max(optional)&#39;</span><span class="p">])</span>
         <span class="k">if</span> <span class="n">coincident_nodir</span><span class="o">==</span><span class="s1">&#39;none&#39;</span><span class="p">:</span>
             <span class="n">analysis_method</span><span class="o">=</span><span class="s1">&#39;Mag_Dir&#39;</span>
             <span class="n">X</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">coincident_with_dir</span><span class="p">]</span>
-            <span class="n">X_interval</span><span class="o">=</span><span class="n">dir_interval</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Direction interval&#39;</span><span class="p">],</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Direction binning&#39;</span><span class="p">])</span>
-            <span class="n">binning</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Direction binning&#39;</span><span class="p">]</span>
+            <span class="n">X_interval</span><span class="o">=</span><span class="n">dir_interval</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;direction interval&#39;</span><span class="p">],</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;direction binning&#39;</span><span class="p">])</span>
+            <span class="n">binning</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;direction binning&#39;</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">analysis_method</span><span class="o">=</span><span class="s1">&#39;Mag_Var&#39;</span>
             <span class="n">X</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">coincident_nodir</span><span class="p">]</span>
@@ -548,65 +747,195 @@
             <span class="n">binning</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
             
 
-        <span class="n">do_exc_coinc_stats</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">,</span><span class="n">Exc</span><span class="p">,</span><span class="n">X_interval</span><span class="p">,</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Time blocking&#39;</span><span class="p">],</span><span class="n">analysis_method</span><span class="p">,</span><span class="n">analysis</span><span class="p">,</span><span class="n">binning</span><span class="p">)</span></div>
+        <span class="n">do_exc_coinc_stats</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">,</span><span class="n">Exc</span><span class="p">,</span><span class="n">X_interval</span><span class="p">,</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;time blocking&#39;</span><span class="p">],</span><span class="n">analysis_method</span><span class="p">,</span><span class="n">analysis</span><span class="p">,</span><span class="n">binning</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="Statistics.workability"><a class="viewcode-back" href="../../../../source/toto.plugins.statistics.common_statistics.html#toto.plugins.statistics.common_statistics.Statistics.workability">[docs]</a>    <span class="k">def</span> <span class="nf">workability</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">data1</span><span class="o">=</span><span class="s1">&#39;data1&#39;</span><span class="p">,</span><span class="n">data2</span><span class="o">=</span><span class="s1">&#39;data2&#39;</span><span class="p">,</span><span class="n">data3_optional</span><span class="o">=</span><span class="s1">&#39;data3_optional&#39;</span><span class="p">,</span><span class="n">data4_optional</span><span class="o">=</span><span class="s1">&#39;data4_optional&#39;</span><span class="p">,</span>\
+<div class="viewcode-block" id="Statistics.workability"><a class="viewcode-back" href="../../../../source/toto.plugins.statistics.common_statistics.html#toto.plugins.statistics.common_statistics.Statistics.workability">[docs]</a>    <span class="k">def</span> <span class="nf">workability</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">variables</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;data1&#39;</span><span class="p">],</span>\
         <span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;method&#39;</span><span class="p">:{</span><span class="s1">&#39;persistence exceedence&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;persistence non-exceedence&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>\
                <span class="s1">&#39;folder out&#39;</span><span class="p">:</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span>
-               <span class="s1">&#39;Threshold for each dataset:&#39;</span><span class="p">:[</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">],</span> 
-               <span class="s1">&#39;Duration Min Res Max&#39;</span><span class="p">:[</span><span class="mi">6</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">72</span><span class="p">],</span> 
-               <span class="s1">&#39;Time blocking&#39;</span><span class="p">:{</span><span class="s1">&#39;Annual&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Seasonal (South hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Seasonal (North hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Monthly&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
+               <span class="s1">&#39;threshold for each dataset&#39;</span><span class="p">:[</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">],</span> 
+               <span class="s1">&#39;duration min res max&#39;</span><span class="p">:[</span><span class="mi">6</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">72</span><span class="p">],</span> 
+               <span class="s1">&#39;time blocking&#39;</span><span class="p">:{</span><span class="s1">&#39;Annual&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Seasonal (South hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Seasonal (North hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Monthly&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
         <span class="p">}):</span>
 
-        <span class="sd">&#39;&#39;&#39;This function provides workability persistence (non-)exceedence tables, </span>
-<span class="sd">            i.e. the % of workable time based on 2 to 4 limiting</span>
-<span class="sd">            paramters (e.g. Hs &lt; 2m and Wind speed &lt; 10 m/s)&#39;&#39;&#39;</span>
+        <span class="sd">&quot;&quot;&quot;This function provides workability persistence (non-)exceedence tables, </span>
+<span class="sd">            i.e. the % of workable time based on limiting</span>
+<span class="sd">            paramters (e.g. Hs &lt; 2m and Wind speed &lt; 10 m/s)</span>
 
+<span class="sd">            Parameters</span>
+<span class="sd">            ~~~~~~~~~~</span>
 
-        <span class="n">analysis</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;method&#39;</span><span class="p">]</span> 
-        <span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;folder out&#39;</span><span class="p">],</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_Workability.xlsx&#39;</span><span class="p">)</span>
-        <span class="n">duration</span><span class="o">=</span><span class="n">get_increment</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">data1</span><span class="p">],</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Duration Min Res Max&#39;</span><span class="p">])</span>
-        <span class="n">Exc</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Threshold for each dataset:&#39;</span><span class="p">]</span>
+<span class="sd">            variables : list</span>
+<span class="sd">                Name of the column use to create the conditions .</span>
+<span class="sd">            args: dict</span>
+<span class="sd">                Dictionnary with the folowing keys:</span>
+<span class="sd">                    method: str</span>
+<span class="sd">                        Name of the method to use, can be:</span>
+<span class="sd">                        `persistence exceedence` default</span>
+<span class="sd">                        `persistence non-exceedence`</span>
+<span class="sd">                    threshold for each dataset: list</span>
+<span class="sd">                        list of threshold to use for each of the paramater listed in `data`.</span>
+<span class="sd">                        `data` and `Threshold` must have the same length</span>
+<span class="sd">                    duration min res max: int</span>
+<span class="sd">                        Duration interval in hours</span>
+<span class="sd">                    folder out: str</span>
+<span class="sd">                        Path to save the output</span>
+<span class="sd">                    Time blocking: str</span>
+<span class="sd">                         if ``Time blocking==&#39;Annual&#39;``,</span>
+<span class="sd">                            Statistics will be calculated for the whole timeserie</span>
+<span class="sd">                         if ``Time blocking==&#39;Seasonal (South hemisphere)&#39;``,</span>
+<span class="sd">                            Statistics will be calculated for each South hemisphere seasons</span>
+<span class="sd">                         if ``Time blocking==&#39;Seasonal (North hemisphere)&#39;``,</span>
+<span class="sd">                            Statistics will be calculated for each North hemisphere seasons</span>
+<span class="sd">                         if ``Time blocking==&#39;Monthly&#39;``,</span>
+<span class="sd">                            Statistics will be calculated for each month</span>
+
+<span class="sd">            Examples:</span>
+<span class="sd">            ~~~~~~~~~</span>
+<span class="sd">            &gt;&gt;&gt; df=tf[&#39;test1&#39;][&#39;dataframe&#39;].Statistics.workability(data=[&#39;hs&#39;,&#39;tp&#39;],args={&#39;Threshold&#39;:[2,15],Time blocking&#39;:&#39;Yearly&#39;})</span>
+<span class="sd">            &gt;&gt;&gt; </span>
+
+<span class="sd">            Outputs:</span>
+<span class="sd">            ~~~~~~~~</span>
+<span class="sd">            .. list-table:: Workability probability</span>
+<span class="sd">               :widths: 25 25 25 25 25 25</span>
+<span class="sd">               :header-rows: 1</span>
+
+<span class="sd">               * - </span>
+<span class="sd">                 - &gt;6</span>
+<span class="sd">                 - &gt;12</span>
+<span class="sd">                 - &gt;18</span>
+<span class="sd">                 - &gt;24</span>
+<span class="sd">                 - &gt;36</span>
+<span class="sd">               * - January</span>
+<span class="sd">                 - </span>
+<span class="sd">                 - </span>
+<span class="sd">                 -</span>
+<span class="sd">                 -</span>
+<span class="sd">                 - </span>
+<span class="sd">               * - February</span>
+<span class="sd">                 - </span>
+<span class="sd">                 - </span>
+<span class="sd">                 -</span>
+<span class="sd">                 -</span>
+<span class="sd">                 -</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">analysis</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;method&#39;</span><span class="p">,</span><span class="s1">&#39;persistence exceedence&#39;</span><span class="p">)</span> 
+        <span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;folder out&#39;</span><span class="p">,</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()),</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_Workability.xlsx&#39;</span><span class="p">)</span>
+        <span class="n">duration</span><span class="o">=</span><span class="n">get_increment</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">variables</span><span class="p">],</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;duration min res max&#39;</span><span class="p">])</span>
+        <span class="n">Exc</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;threshold for each dataset&#39;</span><span class="p">]</span>
         
-        <span class="n">variables</span><span class="o">=</span><span class="p">[</span><span class="n">data1</span><span class="p">,</span><span class="n">data2</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">data3_optional</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
-            <span class="n">variables</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data3_optional</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">data4_optional</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
-                <span class="n">variables</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data4_optional</span><span class="p">)</span>
-
+        
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">variables</span><span class="p">)</span><span class="o">!=</span><span class="nb">len</span><span class="p">(</span><span class="n">Exc</span><span class="p">):</span>
             <span class="k">return</span> <span class="s1">&#39;The number of thresholds differs from the number of selected parameters&#39;</span>
 
 
-        <span class="n">do_workability</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">variables</span><span class="p">],</span><span class="n">Exc</span><span class="p">,</span><span class="n">duration</span><span class="p">,</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Time blocking&#39;</span><span class="p">],</span><span class="n">analysis</span><span class="p">)</span></div>
+        <span class="n">do_workability</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">variables</span><span class="p">],</span><span class="n">Exc</span><span class="p">,</span><span class="n">duration</span><span class="p">,</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;time blocking&#39;</span><span class="p">],</span><span class="n">analysis</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Statistics.wave_population"><a class="viewcode-back" href="../../../../source/toto.plugins.statistics.common_statistics.html#toto.plugins.statistics.common_statistics.Statistics.wave_population">[docs]</a>    <span class="k">def</span> <span class="nf">wave_population</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Hs</span><span class="o">=</span><span class="s1">&#39;Hs&#39;</span><span class="p">,</span><span class="n">Tm02</span><span class="o">=</span><span class="s1">&#39;Tm02&#39;</span><span class="p">,</span><span class="n">Drr_optional</span><span class="o">=</span><span class="s1">&#39;Drr_optional&#39;</span><span class="p">,</span><span class="n">Tp_optional</span><span class="o">=</span><span class="s1">&#39;Tp_optional&#39;</span><span class="p">,</span><span class="n">SW_optional</span><span class="o">=</span><span class="s1">&#39;SW&#39;</span><span class="p">,</span>\
             <span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Method&#39;</span><span class="p">:{</span><span class="s1">&#39;Height only&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Height/Direction&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Height/Tp&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Height/period&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
-                <span class="s1">&#39;Direction binning&#39;</span><span class="p">:{</span><span class="s1">&#39;centered&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;not-centered&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
-                <span class="s1">&#39;Direction interval&#39;</span><span class="p">:</span> <span class="mf">45.</span><span class="p">,</span>
+                <span class="s1">&#39;direction binning&#39;</span><span class="p">:{</span><span class="s1">&#39;centered&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;not-centered&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
+                <span class="s1">&#39;direction interval&#39;</span><span class="p">:</span> <span class="mf">45.</span><span class="p">,</span>
                 <span class="s1">&#39;Heigh bin size&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
                 <span class="s1">&#39;Period bin size&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
                 <span class="s1">&#39;Exposure (years) (= length of time series if not specified)&#39;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
                 <span class="s1">&#39;folder out&#39;</span><span class="p">:</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span>
-                <span class="s1">&#39;Directional switch&#39;</span><span class="p">:{</span><span class="s1">&#39;On&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Off&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">}</span>
+                <span class="s1">&#39;directional switch&#39;</span><span class="p">:{</span><span class="s1">&#39;On&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Off&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">}</span>
             <span class="p">}):</span>
 
 
-        <span class="sd">&#39;&#39;&#39; This function computes the wave population for fatigue analysis</span>
+        <span class="sd">&quot;&quot;&quot; This function computes the wave population for fatigue analysis</span>
 <span class="sd">            - Based on Rayleigh distribution if spectral width parameter (SW) is not</span>
 <span class="sd">              specified.</span>
 <span class="sd">            - Based on Longuet-Higgins Hs-Tp joint probability distribution if SW is</span>
-<span class="sd">              specified&#39;&#39;&#39;</span>
+<span class="sd">              specified</span>
 
-        <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;Directional switch&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;On&#39;</span><span class="p">:</span>
+<span class="sd">            Parameters</span>
+<span class="sd">            ~~~~~~~~~~</span>
+
+<span class="sd">            Hs : str</span>
+<span class="sd">                Name of the column containing significant wave height.</span>
+<span class="sd">            Tm02: str</span>
+<span class="sd">                Name of the column containing the mean wave period using spectral moments of order 0 and </span>
+<span class="sd">            Drr_optional: str</span>
+<span class="sd">                Optional column containing the direction</span>
+<span class="sd">            Tp_optional: str</span>
+<span class="sd">                Optional column containing the wave period</span>
+<span class="sd">            SW_optional: str</span>
+<span class="sd">                Optional column containing the spectral width parameter</span>
+<span class="sd">            args: dict</span>
+<span class="sd">                Dictionnary with the folowing keys:</span>
+<span class="sd">                    Method: str</span>
+<span class="sd">                        Name of the method to use, can be:</span>
+<span class="sd">                        `Height only`</span>
+<span class="sd">                        `Height/Direction`</span>
+<span class="sd">                        `Height/Tp`</span>
+<span class="sd">                        `Height/period`</span>
+<span class="sd">                    direction binning: str</span>
+<span class="sd">                        Can be `centered` or `not-centered` depending if the directionnal are centered over 0</span>
+<span class="sd">                    direction interval: int</span>
+<span class="sd">                        Dirctionnal interval for the bins in degrees</span>
+<span class="sd">                    Heigh bin size: float</span>
+<span class="sd">                        Interval in meter for Hs</span>
+<span class="sd">                    Period bin size&#39;: float</span>
+<span class="sd">                        Interval in second for the period</span>
+<span class="sd">                    Exposure (years) (= length of time series if not specified): int</span>
+<span class="sd">                        Number of years use, length of time series if not specified</span>
+<span class="sd">                    folder out: str</span>
+<span class="sd">                        Path to save the output</span>
+<span class="sd">                    directional switch: str</span>
+<span class="sd">                        Can be `On` or `Off` to use direction</span>
+<span class="sd">            Examples:</span>
+<span class="sd">            ~~~~~~~~~</span>
+<span class="sd">            &gt;&gt;&gt; df=tf[&#39;test1&#39;][&#39;dataframe&#39;].Statistics.wave_population(data=[&#39;hs&#39;,&#39;tp&#39;],args={&#39;Threshold&#39;:[2,15],Time blocking&#39;:&#39;Yearly&#39;})</span>
+<span class="sd">            &gt;&gt;&gt; </span>
+
+<span class="sd">            Outputs:</span>
+<span class="sd">            ~~~~~~~~</span>
+<span class="sd">            .. list-table:: Workability probability</span>
+<span class="sd">               :widths: 25 25 25 25 25 25</span>
+<span class="sd">               :header-rows: 1</span>
+
+<span class="sd">               * - </span>
+<span class="sd">                 - Omni</span>
+<span class="sd">                 - N</span>
+<span class="sd">                 - S</span>
+<span class="sd">                 - E</span>
+<span class="sd">                 - W</span>
+<span class="sd">               * - &gt; 0.0 &lt;= 0.1</span>
+<span class="sd">                 - </span>
+<span class="sd">                 - </span>
+<span class="sd">                 -</span>
+<span class="sd">                 -</span>
+<span class="sd">                 - </span>
+<span class="sd">               * - &gt; 0.1 &lt;= 0.2</span>
+<span class="sd">                 - </span>
+<span class="sd">                 - </span>
+<span class="sd">                 -</span>
+<span class="sd">                 -</span>
+<span class="sd">                 -</span>
+<span class="sd">               * - &gt; 0.2 &lt;= 0.3</span>
+<span class="sd">                 - </span>
+<span class="sd">                 - </span>
+<span class="sd">                 -</span>
+<span class="sd">                 -</span>
+<span class="sd">                 -</span>
+<span class="sd">               * - Total</span>
+<span class="sd">                 - </span>
+<span class="sd">                 - </span>
+<span class="sd">                 -</span>
+<span class="sd">                 -</span>
+<span class="sd">                 - </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;directional switch&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;On&#39;</span><span class="p">:</span>
             <span class="n">drr_switch</span><span class="o">=</span><span class="kc">True</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">drr_switch</span><span class="o">=</span><span class="kc">False</span>
-        <span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;folder out&#39;</span><span class="p">],</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_Wavepop.xlsx&#39;</span><span class="p">)</span>
+        <span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;folder out&#39;</span><span class="p">,</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()),</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_Wavepop.xlsx&#39;</span><span class="p">)</span>
         <span class="n">method</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Method&#39;</span><span class="p">]</span>
-        <span class="n">Ddir</span><span class="o">=</span><span class="n">dir_interval</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Direction interval&#39;</span><span class="p">],</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Direction binning&#39;</span><span class="p">])</span>
+        <span class="n">Ddir</span><span class="o">=</span><span class="n">dir_interval</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;direction interval&#39;</span><span class="p">],</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;direction binning&#39;</span><span class="p">])</span>
         <span class="k">if</span> <span class="n">Tp_optional</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
             <span class="n">Tp</span><span class="o">=</span><span class="kc">None</span>
         <span class="k">else</span><span class="p">:</span>
@@ -631,7 +960,7 @@
 
         
 <div class="viewcode-block" id="Statistics.modal_wave_period"><a class="viewcode-back" href="../../../../source/toto.plugins.statistics.common_statistics.html#toto.plugins.statistics.common_statistics.Statistics.modal_wave_period">[docs]</a>    <span class="k">def</span> <span class="nf">modal_wave_period</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Hs</span><span class="o">=</span><span class="s1">&#39;Hs&#39;</span><span class="p">,</span><span class="n">Tp</span><span class="o">=</span><span class="s1">&#39;Tp&#39;</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;folder out&#39;</span><span class="p">:</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span>
-                                                    <span class="s1">&#39;type&#39;</span><span class="p">:{</span><span class="s1">&#39;South hemisphere(Summer/Winter)&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span>\
+                                                    <span class="s1">&#39;time blocking&#39;</span><span class="p">:{</span><span class="s1">&#39;South hemisphere(Summer/Winter)&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span>\
                                                             <span class="s1">&#39;South hemisphere 4 seasons&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
                                                             <span class="s1">&#39;North hemishere(Summer/Winter)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span>
                                                             <span class="s1">&#39;North hemisphere moosoon(SW,NE,Hot season)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span>
@@ -639,17 +968,61 @@
                                                             <span class="p">}}):</span>
 
     
-        <span class="sd">&#39;&#39;&#39; This function computes the modal period for a set of hs/tp</span>
-<span class="sd">            The modal period is taken as the mean period of the top 5% of wave height&#39;&#39;&#39;</span>
-        <span class="n">hem</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span>
-        <span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;folder out&#39;</span><span class="p">],</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;modal_wave_period.xlsx&#39;</span><span class="p">)</span>
+        <span class="sd">&quot;&quot;&quot; This function computes the modal period for a set of hs/tp</span>
+<span class="sd">            The modal period is taken as the mean period of the top 5% of wave height</span>
+
+<span class="sd">            Parameters</span>
+<span class="sd">            ~~~~~~~~~~</span>
+
+<span class="sd">            Hs : str</span>
+<span class="sd">                Name of the column containing significant wave height.</span>
+<span class="sd">            Tp: str</span>
+<span class="sd">                Name of the column containing the wave period.</span>
+<span class="sd">            args: dict</span>
+<span class="sd">                Dictionnary with the folowing keys:</span>
+<span class="sd">                    folder out: str</span>
+<span class="sd">                        Path to save the output</span>
+<span class="sd">                    Time blocking: str</span>
+<span class="sd">                         if ``Time blocking==&#39;South hemisphere(Summer/Winter)&#39;``,</span>
+<span class="sd">                            Statistics will be calculated for South hemisphere summer and winter seasons</span>
+<span class="sd">                         if ``Time blocking==&#39;South hemisphere 4 seasons&#39;``,</span>
+<span class="sd">                            Statistics will be calculated for each South hemisphere seasons</span>
+<span class="sd">                         if ``Time blocking==&#39;North hemishere(Summer/Winter)&#39;``,</span>
+<span class="sd">                            Statistics will be calculated for North hemisphere summer and winter seasons</span>
+<span class="sd">                         if ``Time blocking==&#39;North hemisphere 4 seasons&#39;``,</span>
+<span class="sd">                            Statistics will be calculated for each North hemisphere seasons</span>
+<span class="sd">                         if ``Time blocking==&#39;North hemisphere moosoon(SW,NE,Hot season)&#39;``,</span>
+<span class="sd">                            Statistics will be calculated for the North hemisphere moonsoon seasons</span>
+
+<span class="sd">            Examples:</span>
+<span class="sd">            ~~~~~~~~~</span>
+<span class="sd">            &gt;&gt;&gt; df=tf[&#39;test1&#39;][&#39;dataframe&#39;].Statistics.modal_wave_period(Hs=&#39;hs&#39;,Tp=&#39;tp&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; </span>
+
+<span class="sd">            Outputs:</span>
+<span class="sd">            ~~~~~~~~</span>
+<span class="sd">            .. list-table:: Workability probability</span>
+<span class="sd">               :widths: 25 25</span>
+<span class="sd">               :header-rows: 1</span>
+
+<span class="sd">               * - </span>
+<span class="sd">                 - Modal wave period</span>
+<span class="sd">               * - January</span>
+<span class="sd">                 - </span>
+<span class="sd">               * - February</span>
+<span class="sd">                 - </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+        <span class="n">hem</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;time blocking&#39;</span><span class="p">,</span><span class="s1">&#39;South hemisphere(Summer/Winter)&#39;</span><span class="p">)</span>
+        <span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;folder out&#39;</span><span class="p">,</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()),</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;modal_wave_period.xlsx&#39;</span><span class="p">)</span>
         <span class="n">hs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">Hs</span><span class="p">]</span>
         <span class="n">tp</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">Tp</span><span class="p">];</span>
         <span class="n">time</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">index</span>
         <span class="n">do_modal_stat</span><span class="p">(</span><span class="n">time</span><span class="p">,</span><span class="n">hs</span><span class="p">,</span><span class="n">tp</span><span class="p">,</span><span class="n">hem</span><span class="p">,</span><span class="n">filename</span><span class="p">)</span>     </div>
 
 <div class="viewcode-block" id="Statistics.weighted_direction"><a class="viewcode-back" href="../../../../source/toto.plugins.statistics.common_statistics.html#toto.plugins.statistics.common_statistics.Statistics.weighted_direction">[docs]</a>    <span class="k">def</span> <span class="nf">weighted_direction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Hs</span><span class="o">=</span><span class="s1">&#39;Hs&#39;</span><span class="p">,</span><span class="n">drr</span><span class="o">=</span><span class="s1">&#39;drr&#39;</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;folder out&#39;</span><span class="p">:</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span>
-                                                    <span class="s1">&#39;type&#39;</span><span class="p">:{</span><span class="s1">&#39;South hemisphere(Summer/Winter)&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span>\
+                                                    <span class="s1">&#39;time blocking&#39;</span><span class="p">:{</span><span class="s1">&#39;South hemisphere(Summer/Winter)&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span>\
                                                             <span class="s1">&#39;South hemisphere 4 seasons&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
                                                             <span class="s1">&#39;North hemishere(Summer/Winter)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span>
                                                             <span class="s1">&#39;North hemisphere moosoon(SW,NE,Hot season)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span>
@@ -657,11 +1030,53 @@
                                                             <span class="p">}}):</span>
 
     
-        <span class="sd">&#39;&#39;&#39;This function computes the energy weighted-dreiction based on </span>
-<span class="sd">            input timeseries of Hs and Dir&#39;&#39;&#39;</span>
+        <span class="sd">&quot;&quot;&quot;This function computes the energy weighted-dreiction based on </span>
+<span class="sd">            input timeseries of Hs and Dir</span>
+<span class="sd">            </span>
+<span class="sd">            Parameters</span>
+<span class="sd">            ~~~~~~~~~~</span>
 
-        <span class="n">hem</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span>
-        <span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;folder out&#39;</span><span class="p">],</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;weighted_direction.xlsx&#39;</span><span class="p">)</span>
+<span class="sd">            Hs : str</span>
+<span class="sd">                Name of the column containing significant wave height.</span>
+<span class="sd">            drr: str</span>
+<span class="sd">                Name of the column containing the direction.</span>
+<span class="sd">            args: dict</span>
+<span class="sd">                Dictionnary with the folowing keys:</span>
+<span class="sd">                    folder out: str</span>
+<span class="sd">                        Path to save the output</span>
+<span class="sd">                    Time blocking: str</span>
+<span class="sd">                         if ``Time blocking==&#39;South hemisphere(Summer/Winter)&#39;``,</span>
+<span class="sd">                            Statistics will be calculated for South hemisphere summer and winter seasons</span>
+<span class="sd">                         if ``Time blocking==&#39;South hemisphere 4 seasons&#39;``,</span>
+<span class="sd">                            Statistics will be calculated for each South hemisphere seasons</span>
+<span class="sd">                         if ``Time blocking==&#39;North hemishere(Summer/Winter)&#39;``,</span>
+<span class="sd">                            Statistics will be calculated for North hemisphere summer and winter seasons</span>
+<span class="sd">                         if ``Time blocking==&#39;North hemisphere 4 seasons&#39;``,</span>
+<span class="sd">                            Statistics will be calculated for each North hemisphere seasons</span>
+<span class="sd">                         if ``Time blocking==&#39;North hemisphere moosoon(SW,NE,Hot season)&#39;``,</span>
+<span class="sd">                            Statistics will be calculated for the North hemisphere moonsoon seasons</span>
+
+<span class="sd">            Examples:</span>
+<span class="sd">            ~~~~~~~~~</span>
+<span class="sd">            &gt;&gt;&gt; df=tf[&#39;test1&#39;][&#39;dataframe&#39;].Statistics.modal_wave_period(Hs=&#39;hs&#39;,Tp=&#39;tp&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; </span>
+
+<span class="sd">            Outputs:</span>
+<span class="sd">            ~~~~~~~~</span>
+<span class="sd">            .. list-table:: Workability probability</span>
+<span class="sd">               :widths: 25 25</span>
+<span class="sd">               :header-rows: 1</span>
+
+<span class="sd">               * - </span>
+<span class="sd">                 - Energy weighted direction</span>
+<span class="sd">               * - January</span>
+<span class="sd">                 - </span>
+<span class="sd">               * - February</span>
+<span class="sd">                 - </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">hem</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;time blocking&#39;</span><span class="p">]</span>
+        <span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;folder out&#39;</span><span class="p">,</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()),</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;weighted_direction.xlsx&#39;</span><span class="p">)</span>
         <span class="n">hs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">Hs</span><span class="p">]</span>
         <span class="n">drr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">drr</span><span class="p">];</span>
         <span class="n">time</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">index</span>

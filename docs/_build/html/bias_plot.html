@@ -40,6 +40,38 @@
 <span id="bias-plot"></span><h1>BIAS plot<a class="headerlink" href="#module-toto.plugins.plots.plot_roses.StatPlots.BIAS_histogramm" title="Permalink to this headline">¶</a></h1>
 <p>This function provides a bias histogramm
 between measured and predicted data for any variables</p>
+<div class="section" id="parameters">
+<h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt>measured<span class="classifier">str</span></dt><dd><p>Name of the column to contain the measured data.</p>
+</dd>
+<dt>modelled<span class="classifier">str</span></dt><dd><p>Name of the column to contain the modelled data.</p>
+</dd>
+<dt>args: dict</dt><dd><p>Dictionnary with the folowing keys:
+Nb of bins: int</p>
+<blockquote>
+<div><p>Number of bins to use</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Xlabel: str</dt><dd><p>X axis label</p>
+</dd>
+<dt>Units: str</dt><dd><p>Units of the data</p>
+</dd>
+<dt>display: str</dt><dd><p><cite>On</cite> or <cite>Off</cite> to display image</p>
+</dd>
+<dt>folder out: str</dt><dd><p>Path to save the output</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</div>
+<div class="section" id="examples">
+<h2>Examples:<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">=</span><span class="n">tf</span><span class="p">[</span><span class="s1">&#39;test1&#39;</span><span class="p">][</span><span class="s1">&#39;dataframe&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">StatPlots</span><span class="o">.</span><span class="n">BIAS_histogramm</span><span class="p">(</span><span class="n">measured</span><span class="o">=</span><span class="s1">&#39;U&#39;</span><span class="p">,</span><span class="n">modelled</span><span class="o">=</span><span class="s1">&#39;U_m&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>
+</pre></div>
+</div>
+</div>
 </div>
 
 

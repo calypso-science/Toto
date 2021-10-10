@@ -49,52 +49,298 @@
 <span class="sig-name descname"><span class="pre">BIAS_histogramm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">measured</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'measured'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modelled</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'modelled'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'Nb</span> <span class="pre">of</span> <span class="pre">bins':</span> <span class="pre">30,</span> <span class="pre">'Xlabel':</span> <span class="pre">'',</span> <span class="pre">'display':</span> <span class="pre">{'Off':</span> <span class="pre">False,</span> <span class="pre">'On':</span> <span class="pre">True},</span> <span class="pre">'folder</span> <span class="pre">out':</span> <span class="pre">'/home/remy/software/TOTO/Toto/docs',</span> <span class="pre">'units':</span> <span class="pre">''}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/plugins/plots/plot_roses.html#StatPlots.BIAS_histogramm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.plugins.plots.plot_roses.StatPlots.BIAS_histogramm" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function provides a bias histogramm
 between measured and predicted data for any variables</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="toto.plugins.plots.plot_roses.StatPlots.Percentage_of_occurence">
-<span class="sig-name descname"><span class="pre">Percentage_of_occurence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mag'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'drr'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'Direction</span> <span class="pre">binning':</span> <span class="pre">{'centered':</span> <span class="pre">True,</span> <span class="pre">'not-centered':</span> <span class="pre">False},</span> <span class="pre">'Direction</span> <span class="pre">interval':</span> <span class="pre">45.0,</span> <span class="pre">'Magnitude</span> <span class="pre">interval</span> <span class="pre">(optional)':</span> <span class="pre">[],</span> <span class="pre">'Time</span> <span class="pre">blocking':</span> <span class="pre">{'Annual':</span> <span class="pre">True,</span> <span class="pre">'Monthly':</span> <span class="pre">False,</span> <span class="pre">'Seasonal</span> <span class="pre">(North</span> <span class="pre">hemisphere)':</span> <span class="pre">False,</span> <span class="pre">'Seasonal</span> <span class="pre">(South</span> <span class="pre">hemisphere)':</span> <span class="pre">False},</span> <span class="pre">'X</span> <span class="pre">label':</span> <span class="pre">'Wind</span> <span class="pre">speed</span> <span class="pre">in</span> <span class="pre">[m/s]',</span> <span class="pre">'display':</span> <span class="pre">{'Off':</span> <span class="pre">False,</span> <span class="pre">'On':</span> <span class="pre">True},</span> <span class="pre">'folder</span> <span class="pre">out':</span> <span class="pre">'/home/remy/software/TOTO/Toto/docs'}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/plugins/plots/plot_roses.html#StatPlots.Percentage_of_occurence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.plugins.plots.plot_roses.StatPlots.Percentage_of_occurence" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function provides percentage of occurnce from any variable.
-plot are directional if direction is supplied</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="toto.plugins.plots.plot_roses.StatPlots.Plot_thermocline">
-<span class="sig-name descname"><span class="pre">Plot_thermocline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['mag']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'Percentile</span> <span class="pre">or</span> <span class="pre">Quantile':</span> <span class="pre">0.1,</span> <span class="pre">'Time</span> <span class="pre">blocking':</span> <span class="pre">{'Annual':</span> <span class="pre">True,</span> <span class="pre">'Monthly':</span> <span class="pre">False,</span> <span class="pre">'Seasonal</span> <span class="pre">(North</span> <span class="pre">hemisphere)':</span> <span class="pre">False,</span> <span class="pre">'Seasonal</span> <span class="pre">(South</span> <span class="pre">hemisphere)':</span> <span class="pre">False},</span> <span class="pre">'X</span> <span class="pre">label':</span> <span class="pre">'Water</span> <span class="pre">temperature</span> <span class="pre">[degC]',</span> <span class="pre">'display':</span> <span class="pre">{'Off':</span> <span class="pre">False,</span> <span class="pre">'On':</span> <span class="pre">True},</span> <span class="pre">'folder</span> <span class="pre">out':</span> <span class="pre">'/home/remy/software/TOTO/Toto/docs',</span> <span class="pre">'function':</span> <span class="pre">{'Max':</span> <span class="pre">True,</span> <span class="pre">'Mean':</span> <span class="pre">False,</span> <span class="pre">'Median':</span> <span class="pre">False,</span> <span class="pre">'Min':</span> <span class="pre">False,</span> <span class="pre">'Percentile':</span> <span class="pre">False,</span> <span class="pre">'Prod':</span> <span class="pre">False,</span> <span class="pre">'Quantile':</span> <span class="pre">False,</span> <span class="pre">'Std':</span> <span class="pre">False,</span> <span class="pre">'Sum':</span> <span class="pre">False,</span> <span class="pre">'Var':</span> <span class="pre">False}}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/plugins/plots/plot_roses.html#StatPlots.Plot_thermocline"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.plugins.plots.plot_roses.StatPlots.Plot_thermocline" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function provides a plot of parameter versus water depth.
-This function average the timeseries ( by mean, median …)
-variables mu be in the format <a href="#id1"><span class="problematic" id="id2">*</span></a>_lev_1,*_lev_2 etc..</p>
+<dl>
+<dt>measured<span class="classifier">str</span></dt><dd><p>Name of the column to contain the measured data.</p>
+</dd>
+<dt>modelled<span class="classifier">str</span></dt><dd><p>Name of the column to contain the modelled data.</p>
+</dd>
+<dt>args: dict</dt><dd><p>Dictionnary with the folowing keys:
+Nb of bins: int</p>
+<blockquote>
+<div><p>Number of bins to use</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Xlabel: str</dt><dd><p>X axis label</p>
+</dd>
+<dt>Units: str</dt><dd><p>Units of the data</p>
+</dd>
+<dt>display: str</dt><dd><p><cite>On</cite> or <cite>Off</cite> to display image</p>
+</dd>
+<dt>folder out: str</dt><dd><p>Path to save the output</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">=</span><span class="n">tf</span><span class="p">[</span><span class="s1">&#39;test1&#39;</span><span class="p">][</span><span class="s1">&#39;dataframe&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">StatPlots</span><span class="o">.</span><span class="n">BIAS_histogramm</span><span class="p">(</span><span class="n">measured</span><span class="o">=</span><span class="s1">&#39;U&#39;</span><span class="p">,</span><span class="n">modelled</span><span class="o">=</span><span class="s1">&#39;U_m&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="toto.plugins.plots.plot_roses.StatPlots.QQ_plot">
 <span class="sig-name descname"><span class="pre">QQ_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">measured</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'measured'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modelled</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'modelled'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'Quantile</span> <span class="pre">increment</span> <span class="pre">step</span> <span class="pre">(%)':</span> <span class="pre">1.0,</span> <span class="pre">'display':</span> <span class="pre">{'Off':</span> <span class="pre">False,</span> <span class="pre">'On':</span> <span class="pre">True},</span> <span class="pre">'folder</span> <span class="pre">out':</span> <span class="pre">'/home/remy/software/TOTO/Toto/docs',</span> <span class="pre">'measured</span> <span class="pre">name':</span> <span class="pre">'',</span> <span class="pre">'measured</span> <span class="pre">unit':</span> <span class="pre">'',</span> <span class="pre">'modelled</span> <span class="pre">name':</span> <span class="pre">'',</span> <span class="pre">'modelled</span> <span class="pre">unit':</span> <span class="pre">''}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/plugins/plots/plot_roses.html#StatPlots.QQ_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.plugins.plots.plot_roses.StatPlots.QQ_plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function provides Quantile-Quantile plots (Q-Q plots) for comparison
-statistics</p>
+statistics.</p>
+<dl>
+<dt>measured<span class="classifier">str</span></dt><dd><p>Name of the column to contain the measured data.</p>
+</dd>
+<dt>modelled<span class="classifier">str</span></dt><dd><p>Name of the column to contain the modelled data.</p>
+</dd>
+<dt>args: dict</dt><dd><p>Dictionnary with the folowing keys:
+measured name: str</p>
+<blockquote>
+<div><p>Name of the Y axis</p>
+</div></blockquote>
+<dl class="simple">
+<dt>modelled name: str</dt><dd><p>Name of the X axis</p>
+</dd>
+<dt>measured unit: str</dt><dd><p>Unit of the Y axis</p>
+</dd>
+<dt>modelled unit: str</dt><dd><p>Unit of the X axis</p>
+</dd>
+<dt>Quantile increment step (%): float</dt><dd><p>Quantile increment step in percentage</p>
+</dd>
+<dt>display: str</dt><dd><p><cite>On</cite> or <cite>Off</cite> to display image</p>
+</dd>
+<dt>folder out: str</dt><dd><p>Path to save the output</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">=</span><span class="n">tf</span><span class="p">[</span><span class="s1">&#39;test1&#39;</span><span class="p">][</span><span class="s1">&#39;dataframe&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">StatPlots</span><span class="o">.</span><span class="n">QQ_plot</span><span class="p">(</span><span class="n">measured</span><span class="o">=</span><span class="s1">&#39;U&#39;</span><span class="p">,</span><span class="n">modelled</span><span class="o">=</span><span class="s1">&#39;U_m&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="toto.plugins.plots.plot_roses.StatPlots.density_diagramm">
 <span class="sig-name descname"><span class="pre">density_diagramm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'X'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Y'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'X</span> <span class="pre">limits':</span> <span class="pre">[0,</span> <span class="pre">inf],</span> <span class="pre">'X</span> <span class="pre">name':</span> <span class="pre">'',</span> <span class="pre">'X</span> <span class="pre">unit':</span> <span class="pre">'',</span> <span class="pre">'Y</span> <span class="pre">limits':</span> <span class="pre">[0,</span> <span class="pre">inf],</span> <span class="pre">'Y</span> <span class="pre">name':</span> <span class="pre">'',</span> <span class="pre">'Y</span> <span class="pre">unit':</span> <span class="pre">'',</span> <span class="pre">'display':</span> <span class="pre">{'Off':</span> <span class="pre">False,</span> <span class="pre">'On':</span> <span class="pre">True},</span> <span class="pre">'folder</span> <span class="pre">out':</span> <span class="pre">'/home/remy/software/TOTO/Toto/docs'}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/plugins/plots/plot_roses.html#StatPlots.density_diagramm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.plugins.plots.plot_roses.StatPlots.density_diagramm" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="simple">
-<dt>This function provides density diagrams of parameter Y vs parameter X,</dt><dd><p>i.e. similar to scatter plot but emphasing on region withg large number</p>
+<dd><p>This function provides density diagrams of parameter Y vs parameter X,
+i.e. similar to scatter plot but emphasing on region withg large number
+of data</p>
+<blockquote>
+<div><dl>
+<dt>X<span class="classifier">str</span></dt><dd><p>Name of the column to plot on the X axis.</p>
+</dd>
+<dt>Y<span class="classifier">str</span></dt><dd><p>Name of the column to plot on the Y axis.</p>
+</dd>
+<dt>args: dict</dt><dd><p>Dictionnary with the folowing keys:
+Y name: str</p>
+<blockquote>
+<div><p>Name of the Y axis</p>
+</div></blockquote>
+<dl class="simple">
+<dt>X name: str</dt><dd><p>Name of the X axis</p>
+</dd>
+<dt>Y unit: str</dt><dd><p>Unit of the Y axis</p>
+</dd>
+<dt>X unit: str</dt><dd><p>Unit of the X axis</p>
+</dd>
+<dt>Y limits: list</dt><dd><p>2 value list with Y axis limit</p>
+</dd>
+<dt>X limits: list</dt><dd><p>2 value list with X axis limits</p>
+</dd>
+<dt>display: str</dt><dd><p><cite>On</cite> or <cite>Off</cite> to display image</p>
+</dd>
+<dt>folder out: str</dt><dd><p>Path to save the output</p>
 </dd>
 </dl>
-<p>of data</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">=</span><span class="n">tf</span><span class="p">[</span><span class="s1">&#39;test1&#39;</span><span class="p">][</span><span class="s1">&#39;dataframe&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">StatPlots</span><span class="o">.</span><span class="n">density_diagramm</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="s1">&#39;U&#39;</span><span class="p">,</span><span class="n">Y</span><span class="o">=</span><span class="s1">&#39;U_m&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>
+</pre></div>
+</div>
+</div></blockquote>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="toto.plugins.plots.plot_roses.StatPlots.joint_probability_plot">
-<span class="sig-name descname"><span class="pre">joint_probability_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'X'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Y'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'Probablity</span> <span class="pre">expressed</span> <span class="pre">in':</span> <span class="pre">{'per</span> <span class="pre">thoushand':</span> <span class="pre">True,</span> <span class="pre">'percent':</span> <span class="pre">False},</span> <span class="pre">'Time</span> <span class="pre">blocking':</span> <span class="pre">{'Annual':</span> <span class="pre">True,</span> <span class="pre">'Monthly':</span> <span class="pre">False,</span> <span class="pre">'Seasonal</span> <span class="pre">(North</span> <span class="pre">hemisphere)':</span> <span class="pre">False,</span> <span class="pre">'Seasonal</span> <span class="pre">(South</span> <span class="pre">hemisphere)':</span> <span class="pre">False},</span> <span class="pre">'X</span> <span class="pre">Min</span> <span class="pre">Res</span> <span class="pre">Max(optional)':</span> <span class="pre">[2,</span> <span class="pre">1,</span> <span class="pre">22],</span> <span class="pre">'X</span> <span class="pre">label':</span> <span class="pre">'',</span> <span class="pre">'Y</span> <span class="pre">Min</span> <span class="pre">Res</span> <span class="pre">Max(optional)':</span> <span class="pre">[0,</span> <span class="pre">0.5],</span> <span class="pre">'Y</span> <span class="pre">label':</span> <span class="pre">'',</span> <span class="pre">'display':</span> <span class="pre">{'Off':</span> <span class="pre">False,</span> <span class="pre">'On':</span> <span class="pre">True},</span> <span class="pre">'folder</span> <span class="pre">out':</span> <span class="pre">'/home/remy/software/TOTO/Toto/docs'}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/plugins/plots/plot_roses.html#StatPlots.joint_probability_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.plugins.plots.plot_roses.StatPlots.joint_probability_plot" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">joint_probability_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'X'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Y'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'X</span> <span class="pre">Min</span> <span class="pre">Res</span> <span class="pre">Max(optional)':</span> <span class="pre">[2,</span> <span class="pre">1,</span> <span class="pre">22],</span> <span class="pre">'X</span> <span class="pre">label':</span> <span class="pre">'',</span> <span class="pre">'Y</span> <span class="pre">Min</span> <span class="pre">Res</span> <span class="pre">Max(optional)':</span> <span class="pre">[0,</span> <span class="pre">0.5],</span> <span class="pre">'Y</span> <span class="pre">label':</span> <span class="pre">'',</span> <span class="pre">'display':</span> <span class="pre">{'Off':</span> <span class="pre">False,</span> <span class="pre">'On':</span> <span class="pre">True},</span> <span class="pre">'folder</span> <span class="pre">out':</span> <span class="pre">'/home/remy/software/TOTO/Toto/docs',</span> <span class="pre">'probablity</span> <span class="pre">expressed</span> <span class="pre">in':</span> <span class="pre">{'per</span> <span class="pre">thoushand':</span> <span class="pre">True,</span> <span class="pre">'percent':</span> <span class="pre">False},</span> <span class="pre">'time</span> <span class="pre">blocking':</span> <span class="pre">{'Annual':</span> <span class="pre">True,</span> <span class="pre">'Monthly':</span> <span class="pre">False,</span> <span class="pre">'Seasonal</span> <span class="pre">(North</span> <span class="pre">hemisphere)':</span> <span class="pre">False,</span> <span class="pre">'Seasonal</span> <span class="pre">(South</span> <span class="pre">hemisphere)':</span> <span class="pre">False}}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/plugins/plots/plot_roses.html#StatPlots.joint_probability_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.plugins.plots.plot_roses.StatPlots.joint_probability_plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function provides joint distribution graph for X and Y, i.e. the
 probability of events defined in terms of both X and Y (per 1000)</p>
+<dl>
+<dt>X<span class="classifier">str</span></dt><dd><p>Name of the column to plot on the X axis.</p>
+</dd>
+<dt>Y<span class="classifier">str</span></dt><dd><p>Name of the column to plot on the Y axis.</p>
+</dd>
+<dt>args: dict</dt><dd><p>Dictionnary with the folowing keys:
+X Min Res Max(optional): list</p>
+<blockquote>
+<div><p>Minimum, resolution and maximum value of X axis use in the join probability</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Y Min Res Max(optional): list</dt><dd><p>Minimum, resolution and maximum value of Y axis use in the join probability</p>
+</dd>
+<dt>X label: str</dt><dd><p>Label for the X axis</p>
+</dd>
+<dt>Y label: str</dt><dd><p>Label for the Y axis</p>
+</dd>
+<dt>display: str</dt><dd><p><cite>On</cite> or <cite>Off</cite> to display image</p>
+</dd>
+<dt>folder out: str</dt><dd><p>Path to save the output</p>
+</dd>
+<dt>probablity expressed in:</dt><dd><p>Can be <cite>percent</cite> or <cite>per thoushand</cite></p>
+</dd>
+<dt>time blocking: str</dt><dd><dl class="simple">
+<dt>if <code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">blocking=='Annual'</span></code>,</dt><dd><p>Statistics will be calculated for the whole timeserie</p>
+</dd>
+<dt>if <code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">blocking=='Seasonal</span> <span class="pre">(South</span> <span class="pre">hemisphere)'</span></code>,</dt><dd><p>Statistics will be calculated for South hemisphere seasons</p>
+</dd>
+<dt>if <code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">blocking=='Seasonal</span> <span class="pre">(North</span> <span class="pre">hemisphere)'</span></code>,</dt><dd><p>Statistics will be calculated for North hemisphere seasons</p>
+</dd>
+<dt>if <code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">blocking=='Monthly'</span></code>,</dt><dd><p>Statistics will be calculated for each month.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">=</span><span class="n">tf</span><span class="p">[</span><span class="s1">&#39;test1&#39;</span><span class="p">][</span><span class="s1">&#39;dataframe&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">StatPlots</span><span class="o">.</span><span class="n">plot_thermocline</span><span class="p">(</span><span class="n">mag</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;U_lev_1&#39;</span><span class="p">,</span><span class="s1">&#39;U_lev_2&#39;</span><span class="p">],</span><span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;function&#39;</span><span class="p">:</span><span class="s1">&#39;Mean&#39;</span><span class="p">,</span><span class="n">time</span> <span class="n">blocking</span><span class="s1">&#39;:&#39;</span><span class="n">Yearly</span><span class="s1">&#39;})</span>
+<span class="gp">&gt;&gt;&gt; </span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="toto.plugins.plots.plot_roses.StatPlots.percentage_of_occurence">
+<span class="sig-name descname"><span class="pre">percentage_of_occurence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mag'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'drr'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'X</span> <span class="pre">label':</span> <span class="pre">'Wind</span> <span class="pre">speed</span> <span class="pre">in</span> <span class="pre">[m/s]',</span> <span class="pre">'direction</span> <span class="pre">binning':</span> <span class="pre">{'centered':</span> <span class="pre">True,</span> <span class="pre">'not-centered':</span> <span class="pre">False},</span> <span class="pre">'direction</span> <span class="pre">interval':</span> <span class="pre">45.0,</span> <span class="pre">'display':</span> <span class="pre">{'Off':</span> <span class="pre">False,</span> <span class="pre">'On':</span> <span class="pre">True},</span> <span class="pre">'folder</span> <span class="pre">out':</span> <span class="pre">'/home/remy/software/TOTO/Toto/docs',</span> <span class="pre">'magnitude</span> <span class="pre">interval</span> <span class="pre">(optional)':</span> <span class="pre">[],</span> <span class="pre">'time</span> <span class="pre">blocking':</span> <span class="pre">{'Annual':</span> <span class="pre">True,</span> <span class="pre">'Monthly':</span> <span class="pre">False,</span> <span class="pre">'Seasonal</span> <span class="pre">(North</span> <span class="pre">hemisphere)':</span> <span class="pre">False,</span> <span class="pre">'Seasonal</span> <span class="pre">(South</span> <span class="pre">hemisphere)':</span> <span class="pre">False}}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/plugins/plots/plot_roses.html#StatPlots.percentage_of_occurence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.plugins.plots.plot_roses.StatPlots.percentage_of_occurence" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function provides percentage of occurnce from any variable.
+plot are directional if direction is supplied</p>
+<dl>
+<dt>mag<span class="classifier">str</span></dt><dd><p>Name of the column from which to get stats.</p>
+</dd>
+<dt>drr<span class="classifier">str</span></dt><dd><p>Column name representing the directions.</p>
+</dd>
+<dt>args: dict</dt><dd><p>Dictionnary with the folowing keys:
+title: str</p>
+<blockquote>
+<div><p>Graph title</p>
+</div></blockquote>
+<dl class="simple">
+<dt>magnitude interval (optional): list</dt><dd><p>interval to use for the magnitude</p>
+</dd>
+<dt>X label: str</dt><dd><p>Label for the X axis</p>
+</dd>
+<dt>direction binning: str</dt><dd><p>Can be <cite>centered</cite> or <cite>not-centered</cite> depending if the directionnal are centered over 0</p>
+</dd>
+<dt>direction interval: int</dt><dd><p>Dirctionnal interval for the bins in degrees</p>
+</dd>
+<dt>display: str</dt><dd><p><cite>On</cite> or <cite>Off</cite> to display image</p>
+</dd>
+<dt>folder out: str</dt><dd><p>Path to save the output</p>
+</dd>
+<dt>time blocking: str</dt><dd><dl class="simple">
+<dt>if <code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">blocking=='Annual'</span></code>,</dt><dd><p>Statistics will be calculated for the whole timeserie</p>
+</dd>
+<dt>if <code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">blocking=='Seasonal</span> <span class="pre">(South</span> <span class="pre">hemisphere)'</span></code>,</dt><dd><p>Statistics will be calculated for South hemisphere seasons</p>
+</dd>
+<dt>if <code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">blocking=='Seasonal</span> <span class="pre">(North</span> <span class="pre">hemisphere)'</span></code>,</dt><dd><p>Statistics will be calculated for North hemisphere seasons</p>
+</dd>
+<dt>if <code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">blocking=='Monthly'</span></code>,</dt><dd><p>Statistics will be calculated for each month.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">=</span><span class="n">tf</span><span class="p">[</span><span class="s1">&#39;test1&#39;</span><span class="p">][</span><span class="s1">&#39;dataframe&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">StatPlots</span><span class="o">.</span><span class="n">Percentage_of_occurence</span><span class="p">(</span><span class="n">mag</span><span class="o">=</span><span class="s1">&#39;U&#39;</span><span class="p">,</span><span class="n">drr</span><span class="o">=</span><span class="s1">&#39;drr&#39;</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;time blocking&#39;</span><span class="p">:</span><span class="s1">&#39;Yearly&#39;</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="toto.plugins.plots.plot_roses.StatPlots.plot_roses">
-<span class="sig-name descname"><span class="pre">plot_roses</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mag'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'drr'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'%</span> <span class="pre">quadran</span> <span class="pre">(optional)':</span> <span class="pre">[],</span> <span class="pre">'Speed</span> <span class="pre">bins</span> <span class="pre">(optional)':</span> <span class="pre">[],</span> <span class="pre">'Time</span> <span class="pre">blocking':</span> <span class="pre">{'Annual':</span> <span class="pre">True,</span> <span class="pre">'Monthly':</span> <span class="pre">False,</span> <span class="pre">'Seasonal</span> <span class="pre">(North</span> <span class="pre">hemisphere)':</span> <span class="pre">False,</span> <span class="pre">'Seasonal</span> <span class="pre">(South</span> <span class="pre">hemisphere)':</span> <span class="pre">False},</span> <span class="pre">'Title':</span> <span class="pre">'Current</span> <span class="pre">speed',</span> <span class="pre">'display':</span> <span class="pre">{'Off':</span> <span class="pre">False,</span> <span class="pre">'On':</span> <span class="pre">True},</span> <span class="pre">'folder</span> <span class="pre">out':</span> <span class="pre">'/home/remy/software/TOTO/Toto/docs',</span> <span class="pre">'units':</span> <span class="pre">'m/s'}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/plugins/plots/plot_roses.html#StatPlots.plot_roses"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.plugins.plots.plot_roses.StatPlots.plot_roses" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">plot_roses</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mag'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'drr'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'%</span> <span class="pre">quadran</span> <span class="pre">(optional)':</span> <span class="pre">[],</span> <span class="pre">'display':</span> <span class="pre">{'Off':</span> <span class="pre">False,</span> <span class="pre">'On':</span> <span class="pre">True},</span> <span class="pre">'folder</span> <span class="pre">out':</span> <span class="pre">'/home/remy/software/TOTO/Toto/docs',</span> <span class="pre">'speed</span> <span class="pre">bins</span> <span class="pre">(optional)':</span> <span class="pre">[],</span> <span class="pre">'time</span> <span class="pre">blocking':</span> <span class="pre">{'Annual':</span> <span class="pre">True,</span> <span class="pre">'Monthly':</span> <span class="pre">False,</span> <span class="pre">'Seasonal</span> <span class="pre">(North</span> <span class="pre">hemisphere)':</span> <span class="pre">False,</span> <span class="pre">'Seasonal</span> <span class="pre">(South</span> <span class="pre">hemisphere)':</span> <span class="pre">False},</span> <span class="pre">'title':</span> <span class="pre">'Current</span> <span class="pre">speed',</span> <span class="pre">'units':</span> <span class="pre">'m/s'}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/plugins/plots/plot_roses.html#StatPlots.plot_roses"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.plugins.plots.plot_roses.StatPlots.plot_roses" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function provides annual, seasonal or monthly rose plots for wind,
-wave, current or any direcional variable</p>
+wave, current or any direcional variable.
+This function is using <a class="reference external" href="https://github.com/python-windrose/windrose">https://github.com/python-windrose/windrose</a></p>
+<dl>
+<dt>mag<span class="classifier">str</span></dt><dd><p>Name of the column from which to get stats.</p>
+</dd>
+<dt>drr<span class="classifier">str</span></dt><dd><p>Column name representing the directions.</p>
+</dd>
+<dt>args: dict</dt><dd><p>Dictionnary with the folowing keys:
+title: str</p>
+<blockquote>
+<div><p>Graph title</p>
+</div></blockquote>
+<dl class="simple">
+<dt>speed bins (optional): list</dt><dd><p>Speed to plot</p>
+</dd>
+<dt>% quadran (optional): list</dt><dd><p>Percentage of each occurence to plot</p>
+</dd>
+<dt>display: str</dt><dd><p><cite>On</cite> or <cite>Off</cite> to display image</p>
+</dd>
+<dt>folder out: str</dt><dd><p>Path to save the output</p>
+</dd>
+<dt>time blocking: str</dt><dd><dl class="simple">
+<dt>if <code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">blocking=='Annual'</span></code>,</dt><dd><p>Statistics will be calculated for the whole timeserie</p>
+</dd>
+<dt>if <code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">blocking=='Seasonal</span> <span class="pre">(South</span> <span class="pre">hemisphere)'</span></code>,</dt><dd><p>Statistics will be calculated for South hemisphere seasons</p>
+</dd>
+<dt>if <code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">blocking=='Seasonal</span> <span class="pre">(North</span> <span class="pre">hemisphere)'</span></code>,</dt><dd><p>Statistics will be calculated for North hemisphere seasons</p>
+</dd>
+<dt>if <code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">blocking=='Monthly'</span></code>,</dt><dd><p>Statistics will be calculated for each month.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">=</span><span class="n">tf</span><span class="p">[</span><span class="s1">&#39;test1&#39;</span><span class="p">][</span><span class="s1">&#39;dataframe&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">StatPlots</span><span class="o">.</span><span class="n">plot_roses</span><span class="p">(</span><span class="n">mag</span><span class="o">=</span><span class="s1">&#39;U&#39;</span><span class="p">,</span><span class="n">drr</span><span class="o">=</span><span class="s1">&#39;drr&#39;</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;time blocking&#39;</span><span class="p">:</span><span class="s1">&#39;Yearly&#39;</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="toto.plugins.plots.plot_roses.StatPlots.plot_thermocline">
+<span class="sig-name descname"><span class="pre">plot_thermocline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['mag']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'X</span> <span class="pre">label':</span> <span class="pre">'Water</span> <span class="pre">temperature</span> <span class="pre">[degC]',</span> <span class="pre">'display':</span> <span class="pre">{'Off':</span> <span class="pre">False,</span> <span class="pre">'On':</span> <span class="pre">True},</span> <span class="pre">'folder</span> <span class="pre">out':</span> <span class="pre">'/home/remy/software/TOTO/Toto/docs',</span> <span class="pre">'function':</span> <span class="pre">{'Max':</span> <span class="pre">True,</span> <span class="pre">'Mean':</span> <span class="pre">False,</span> <span class="pre">'Median':</span> <span class="pre">False,</span> <span class="pre">'Min':</span> <span class="pre">False,</span> <span class="pre">'Percentile':</span> <span class="pre">False,</span> <span class="pre">'Prod':</span> <span class="pre">False,</span> <span class="pre">'Quantile':</span> <span class="pre">False,</span> <span class="pre">'Std':</span> <span class="pre">False,</span> <span class="pre">'Sum':</span> <span class="pre">False,</span> <span class="pre">'Var':</span> <span class="pre">False},</span> <span class="pre">'percentile</span> <span class="pre">or</span> <span class="pre">Quantile':</span> <span class="pre">0.1,</span> <span class="pre">'table':</span> <span class="pre">{'Off':</span> <span class="pre">False,</span> <span class="pre">'On':</span> <span class="pre">True},</span> <span class="pre">'time</span> <span class="pre">blocking':</span> <span class="pre">{'Annual':</span> <span class="pre">True,</span> <span class="pre">'Monthly':</span> <span class="pre">False,</span> <span class="pre">'Seasonal</span> <span class="pre">(North</span> <span class="pre">hemisphere)':</span> <span class="pre">False,</span> <span class="pre">'Seasonal</span> <span class="pre">(South</span> <span class="pre">hemisphere)':</span> <span class="pre">False}}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/plugins/plots/plot_roses.html#StatPlots.plot_thermocline"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.plugins.plots.plot_roses.StatPlots.plot_thermocline" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function provides a plot of parameter versus water depth.
+This function average the timeseries ( by mean, median …)</p>
+<p>Variables MUST be in the format <a href="#id1"><span class="problematic" id="id2">*</span></a>_lev_1,*_lev_2 etc..</p>
+<dl>
+<dt>mag<span class="classifier">list</span></dt><dd><p>Name of the column from which to get stats.</p>
+</dd>
+<dt>args: dict</dt><dd><p>Dictionnary with the folowing keys:
+function: str</p>
+<blockquote>
+<div><p>Statistics to use to process each level:
+can be <cite>Max</cite>,`Mean`,`Median`,`Min`,`Percentile`,`Prod`,`Quantile`,`Std`,`Sum` or <cite>Var</cite></p>
+</div></blockquote>
+<dl class="simple">
+<dt>‘percentile or Quantile’: float</dt><dd><p>Percetile or quantile to use</p>
+</dd>
+<dt>X label: str</dt><dd><p>Label for the X axis</p>
+</dd>
+<dt>display: str</dt><dd><p><cite>On</cite> or <cite>Off</cite> to display image</p>
+</dd>
+<dt>table: str</dt><dd><p><cite>On</cite> or <cite>Off</cite> to print result in a table</p>
+</dd>
+<dt>folder out: str</dt><dd><p>Path to save the output</p>
+</dd>
+<dt>time blocking: str</dt><dd><dl class="simple">
+<dt>if <code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">blocking=='Annual'</span></code>,</dt><dd><p>Statistics will be calculated for the whole timeserie</p>
+</dd>
+<dt>if <code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">blocking=='Seasonal</span> <span class="pre">(South</span> <span class="pre">hemisphere)'</span></code>,</dt><dd><p>Statistics will be calculated for South hemisphere seasons</p>
+</dd>
+<dt>if <code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">blocking=='Seasonal</span> <span class="pre">(North</span> <span class="pre">hemisphere)'</span></code>,</dt><dd><p>Statistics will be calculated for North hemisphere seasons</p>
+</dd>
+<dt>if <code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">blocking=='Monthly'</span></code>,</dt><dd><p>Statistics will be calculated for each month.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">=</span><span class="n">tf</span><span class="p">[</span><span class="s1">&#39;test1&#39;</span><span class="p">][</span><span class="s1">&#39;dataframe&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">StatPlots</span><span class="o">.</span><span class="n">plot_thermocline</span><span class="p">(</span><span class="n">mag</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;U_lev_1&#39;</span><span class="p">,</span><span class="s1">&#39;U_lev_2&#39;</span><span class="p">],</span><span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;function&#39;</span><span class="p">:</span><span class="s1">&#39;Mean&#39;</span><span class="p">,</span><span class="n">time</span> <span class="n">blocking</span><span class="s1">&#39;:&#39;</span><span class="n">Yearly</span><span class="s1">&#39;})</span>
+<span class="gp">&gt;&gt;&gt; </span>
+</pre></div>
+</div>
 </dd></dl>
 
 </dd></dl>

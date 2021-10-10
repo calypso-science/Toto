@@ -10,6 +10,153 @@ Gallery
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Thermocline examples">
+
+.. only:: html
+
+ .. figure:: /gallery/images/thumb/sphx_glr_plot_thermocline_thumb.png
+     :alt: Thermocline examples
+
+     :ref:`sphx_glr_gallery_plot_thermocline.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /gallery/plot_thermocline
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Skew surge examples">
+
+.. only:: html
+
+ .. figure:: /gallery/images/thumb/sphx_glr_plot_skewsurge_thumb.png
+     :alt: Skew surge examples
+
+     :ref:`sphx_glr_gallery_plot_skewsurge.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /gallery/plot_skewsurge
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Percentage of occurence example">
+
+.. only:: html
+
+ .. figure:: /gallery/images/thumb/sphx_glr_plot_occurence_thumb.png
+     :alt: Percentage of occurence example
+
+     :ref:`sphx_glr_gallery_plot_occurence.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /gallery/plot_occurence
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Percentage of occurence example">
+
+.. only:: html
+
+ .. figure:: /gallery/images/thumb/sphx_glr_plot_JP_thumb.png
+     :alt: Percentage of occurence example
+
+     :ref:`sphx_glr_gallery_plot_JP.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /gallery/plot_JP
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Density histogramm examples">
+
+.. only:: html
+
+ .. figure:: /gallery/images/thumb/sphx_glr_plot_density_thumb.png
+     :alt: Density histogramm examples
+
+     :ref:`sphx_glr_gallery_plot_density.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /gallery/plot_density
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="BIAS histogramm examples">
+
+.. only:: html
+
+ .. figure:: /gallery/images/thumb/sphx_glr_plot_BIAS_thumb.png
+     :alt: BIAS histogramm examples
+
+     :ref:`sphx_glr_gallery_plot_BIAS.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /gallery/plot_BIAS
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="BIAS histogramm examples">
+
+.. only:: html
+
+ .. figure:: /gallery/images/thumb/sphx_glr_plot_qq_thumb.png
+     :alt: BIAS histogramm examples
+
+     :ref:`sphx_glr_gallery_plot_qq.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /gallery/plot_qq
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Filters examples">
 
 .. only:: html
