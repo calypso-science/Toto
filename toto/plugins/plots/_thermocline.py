@@ -70,7 +70,9 @@ class thermocline():
         for month in months:
             xmin=min(xmin,np.nanmin(self.profile[month]))
             xmax=max(xmax,np.nanmax(self.profile[month]))
-
+        extra=(xmax-xmin)*.1
+        xmin=xmin-extra
+        xmax=xmax+extra
         for j,sub in enumerate(spec):
             ax = plt.subplot(sub)
             ax.plot(self.profile[months[j]],self.x*-1)
@@ -82,7 +84,7 @@ class thermocline():
         
         fig.align_labels()
       
-        if display:
-            plt.show(block=~display)
 
         plt.savefig(figure_filename)
+        if display:
+           plt.show()

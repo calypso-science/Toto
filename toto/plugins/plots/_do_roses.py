@@ -125,7 +125,7 @@ def do_roses(time,spd,drr,units,title,spdedg,quadran,time_blocking,fileout,show=
     #plt.subplots_adjust(bottom=0.02,top=.95,hspace=0.3)
     plt.savefig(fileout)
     if show:
-        plt.show(block=~show)
+        plt.show()
 
     
 

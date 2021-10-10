@@ -1,10 +1,10 @@
 .. image:: ../_static/calypso.png
    :width: 150 px
    :align: right
-Thermocline plot
-================
+QQ plot
+=========
 
-.. automodule:: toto.plugins.plots.plot_roses.StatPlots.plot_thermocline
+.. automodule:: toto.plugins.plots.plot_roses.StatPlots.QQ_plot
    :members:
    :undoc-members:
    :show-inheritance:

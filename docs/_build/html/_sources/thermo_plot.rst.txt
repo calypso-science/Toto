@@ -4,7 +4,7 @@
 Thermocline plot
 ================
 
-.. automodule:: toto.plugins.plots.plot_roses.StatPlots.Plot_thermocline
+.. automodule:: toto.plugins.plots.plot_roses.StatPlots.plot_thermocline
    :members:
    :undoc-members:
    :show-inheritance:

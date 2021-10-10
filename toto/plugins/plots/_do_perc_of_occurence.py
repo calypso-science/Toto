@@ -122,8 +122,8 @@ def do_perc_of_occurence(time,mag,drr,mag_interval,xlabel,time_blocking,dir_int,
     # else:
     #     plt.subplots_adjust(bottom=0.05,top=.95,hspace=.5)
 
-
-    if show:
-        plt.show(block=~show)
     plt.savefig(fileout)
+    if show:
+        plt.show()
+   
 

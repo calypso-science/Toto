@@ -6,6 +6,6 @@ __plot_roses__=True
 __BIAS_histogramm__=True
 __density_diagramm__=True
 __QQ_plot__=False
-__Percentage_of_occurence__=False
+__Percentage_of_occurence__=True
 __Plot_thermocline__=True
 __joint_probability_plot__=False

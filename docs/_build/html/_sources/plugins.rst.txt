@@ -34,6 +34,8 @@ Plots
 
 •	:doc:`Thermocline plot <thermo_plot>`
 
+•	:doc:`Percentage of occurence <occurence_plot>`
+
 Tide
 ~~~~
 
@@ -106,11 +108,9 @@ Statistics
 Plots
 ~~~~~
 
-Tide
-~~~~
+•	:doc:`QQ plot <qq_plot>`
 
-Transformations
-~~~~~~~~~~~~~~~
+•	:doc:`Joint probability plot <JP_plot>`
 
 Wave
 ~~~~

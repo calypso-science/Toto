@@ -45,8 +45,6 @@ def do_density_diagramm(X,Y,X_short_name,Y_short_name,X_unit,Y_unit,Xlim,Ylim,fi
     plt.colorbar()
 
 
-    if show:
-        plt.show(block=~show)
-
     plt.savefig(fileout)
-
+    if show:
+        plt.show()

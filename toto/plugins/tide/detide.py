@@ -59,20 +59,39 @@ class TideAnalysis:
         create_table(outfile,var,np.array(mat))
 
     def detide(self,mag='mag',\
-        args={'Minimum SNR':2,\
-        'Latitude':-36.0,
+        args={'minimum SNR':2,\
+        'latitude':-36.0,
         'folder out':os.getcwd(),
         }):
 
-        """ This function detide a timeseries.
-        Works if NaN are in the timeseries"""
+        """ This function detide a timeseries using Utide software.
+        Usefull if NaNs are in the timeseries
+        
+        Parameters
+        ~~~~~~~~~~
+
+        mag : str
+            Name of the column from which to extract the tide
+        args: dict
+            Dictionnary with the folowing keys:
+                minimum SNR: int
+                folder out: str
+                    Path to save the output
+                latitude: float
+
+        Examples:
+        ~~~~~~~~~
+        >>> df=tf['test1']['dataframe'].TideAnalysis.detide(mag='U',args={'latitude':-36.5})
+        >>> 
+
+        """
 
         if hasattr(self.data,'latitude'):
             latitude=self.data.latitude[0]
             if not latitude:
-                latitude=args['Latitude']
+                latitude=args['latitude']
         else:
-            latitude=args['Latitude']
+            latitude=args['latitude']
         if hasattr(self.data[mag],'short_name'):
             short_name=self.data[mag].short_name
         else:
@@ -83,11 +102,11 @@ class TideAnalysis:
         stime=np.array(date2num(time))
         lat=latitude
         if hasattr(self.data,'filename'):
-            outfile=os.path.join(args['folder out'],os.path.splitext(self.data.filename)[0]+'_Conc.xlsx')
+            outfile=os.path.join(args.get('folder out',os.getcwd()),os.path.splitext(self.data.filename)[0]+'_Conc.xlsx')
         else:
-            outfile=os.path.join(args['folder out'],'Conc.xlsx')
+            outfile=os.path.join(args.get('folder out',os.getcwd()),'Conc.xlsx')
 
-        ray=args['Minimum SNR']
+        ray=args.get('minimum SNR',2)
         demeaned = self.data[mag].values - np.nanmean(self.data[mag].values)
 
         opts = dict(method='ols',conf_int='linear',trend=False, Rayleigh_min=ray)
@@ -106,29 +125,55 @@ class TideAnalysis:
         'column cons': 'cons',
         'column amp': 'amp',
         'column pha': 'pha',
-        'minimum time':datetime.now(),'maximum time':datetime.now()+timedelta(days=7),'dt(s)':3600,
-        'Latitude':-36.0,
+        'minimum time':datetime.now(),
+        'maximum time':datetime.now()+timedelta(days=7),
+        'dt(s)':3600,
+        'latitude':-36.0,
         }):
 
-        # if not os.pagth.isfile(args['cons file']):
-        #     print('Can''t find file: %s' % args['cons file'])
+        """ Re-create a time series using a file containing
+         Amplitude and Phase for each contituents.
 
-        # try:
-        df = pd.read_csv(args['cons file'])
-        # except:
-        #     print('Can''t read file with pandas.read_csv')
-        #     return
+        Parameters
+        ~~~~~~~~~~
 
-        # if (args['column cons'] or args['column amp'] or args['column pha']) not in df:
-        #     print('Can''t find the columns')
-        #     return       
+        args: dict
+            Dictionnary with the folowing keys:
+                cons file: str
+                    Txt file containing the amplitude and phase
+                column cons: str
+                    Name of the column containing the constituent name
+                column amp: str
+                    Name of the column containing the constituent amplitude
+                column pha: str
+                    Name of the column containing the constituent phase (in degree)
+                minimum time: datetime
+                    Time the time series start
+                maximum time: datetime
+                    Time the time series end                    
+                dt(s): int
+                    Time interval in seconds
+                latitude: float
+
+        Examples:
+        ~~~~~~~~~
+        >>> df=tf['test1']['dataframe'].TideAnalysis.recreate(args={'cons file':'test.txt',\
+        'column cons':'cons','column amp':amp,'column pha':pha,\
+        'minimum time':datetime.datetime(2002,1,1),'maximum time':datetime.datetime(2003,1,1),\
+        'dt(s)':3600,'latitude':-36)
+        >>> 
+
+        """
+
+
+        df = pd.read_csv(args['cons file'])   
 
         constituents=df[args['column cons']].values
         amplitudes=df[args['column amp']].values
         phases=df[args['column pha']].values
 
 
-        latitude=args['Latitude']
+        latitude=args['latitude']
 
         min_time=args['minimum time']
         max_time=args['maximum time']
@@ -143,25 +188,52 @@ class TideAnalysis:
         self.dfout.index.name='time' 
         return self.dfout
     def predict(self,mag='mag',\
-        args={'minimum time':datetime,'maximum time':datetime,'dt(s)':60,'Minimum SNR':2,\
-        'Latitude':-36.0,
+        args={'minimum time':datetime,'maximum time':datetime,'dt(s)':60,'minimum SNR':2,\
+        'latitude':-36.0,
         }):
 
         """ This function predict the tide by first detiding a timeseries.
-        Works if NaN are in the timeseries"""
+        Works if NaN are in the timeseries
+
+        Parameters
+        ~~~~~~~~~~
+
+        mag : str
+            Name of the column from which to extract the tide
+        args: dict
+            Dictionnary with the folowing keys:
+                Minimum SNR: int
+                folder out: str
+                    Path to save the output
+                latitude: float
+                minimum time: datetime
+                    Time the time series start
+                maximum time: datetime
+                    Time the time series end                    
+                dt(s): int
+                    Time interval in seconds
+        
+        Examples:
+        ~~~~~~~~~
+        >>> df=tf['test1']['dataframe'].TideAnalysis.predict(mag='U',args={'latitude':-36.5,\
+            'minimum time':datetime.datetime(2002,1,1),'maximum time':datetime.datetime(2003,1,1),\
+            'dt(s)':3600)
+        >>> 
+
+        """
 
         if hasattr(self.data,'latitude'):
             latitude=self.data.latitude[0]
             if not self.data.latitude:
-                latitude=args['Latitude']
+                latitude=args['latitude']
         else:
-            latitude=args['Latitude']
+            latitude=args['latitude']
 
         time=self.data.index
         dt=(time[2]-time[1]).total_seconds()/3600. # in hours
         stime=np.array(date2num(time))
         lat=latitude
-        ray=args['Minimum SNR']
+        ray=args.get('minimum SNR',2)
         demeaned = self.data[mag].values - np.nanmean(self.data[mag].values)
         opts = dict(method='ols',conf_int='linear', trend=False, Rayleigh_min=ray)
         coef = solve(stime,demeaned,lat= lat,**opts)
@@ -192,14 +264,32 @@ class TideAnalysis:
 
 
     def tidal_stat(self,mag='mag',\
-        args={'Minimum SNR':2,\
-        'Latitude':-36.0,
+        args={'minimum SNR':2,\
+        'latitude':-36.0,
         'folder out':os.getcwd(),
         }):
 
-        '''Function to extract the tide stats from a time series
-            i.e HAT,LAT,MHWS,MLWS...'''
+        """Function to extract the tide stats from a time series
+            i.e HAT,LAT,MHWS,MLWS...
 
+        Parameters
+        ~~~~~~~~~~
+
+        mag : str
+            Name of the column from which to extract the tide
+        args: dict
+            Dictionnary with the folowing keys:
+                minimum SNR: int
+                folder out: str
+                    Path to save the output
+                latitude: float
+
+        Examples:
+        ~~~~~~~~~
+        >>> df=tf['test1']['dataframe'].TideAnalysis.tidal_stat(mag='U',args={'latitude':-36.5})
+        >>> 
+
+        """
         if hasattr(self.data,'latitude'):
             latitude=self.data.latitude
             if not self.data.latitude:
@@ -254,30 +344,46 @@ class TideAnalysis:
         stats[7,2]='%.2f' % (min(ts_recon))
 
         if hasattr(self.data,'filename'):
-            outfile=os.path.join(args['folder out'],os.path.splitext(self.data.filename)[0]+'_Concstats.xlsx')
+            outfile=os.path.join(args.get('folder out',os.getcwd()),os.path.splitext(self.data.filename)[0]+'_Concstats.xlsx')
         else:
-            outfile=os.path.join(args['folder out'],'Concstats.xlsx')
+            outfile=os.path.join(args.get('folder out',os.getcwd()),'Concstats.xlsx')
         create_table(outfile,'stat',stats)
 
-    def skew_surge(self,mag='mag',args={'Minimum SNR':2,\
-        'Latitude':-36.0}):
+    def skew_surge(self,mag='mag',args={'minimum SNR':2,\
+        'latitude':-36.0}):
         #
 
         """ This function calculate the skew surge :
-        see https://www.ntslf.org/storm-surges/skew-surges"""
+        see https://www.ntslf.org/storm-surges/skew-surges
 
+        Parameters
+        ~~~~~~~~~~
+
+        mag : str
+            Name of the column from which to extract the tide
+        args: dict
+            Dictionnary with the folowing keys:
+                minimum SNR: int
+                latitude: float
+
+        Examples:
+        ~~~~~~~~~
+        >>> df=tf['test1']['dataframe'].TideAnalysis.skew_surge(mag='U',args={'latitude':-36.5})
+        >>> 
+
+        """
         if hasattr(self.data,'latitude'):
             latitude=self.data.latitude
             if not self.data.latitude:
-                latitude=args['Latitude']
+                latitude=args['latitude']
         else:
-            latitude=args['Latitude']
+            latitude=args['latitude']
 
         xobs=self.data.index
         dt=(xobs[2]-xobs[1]).total_seconds()/3600. # in hours
         stime=np.array(date2num(xobs))
         lat=latitude
-        ray=args['Minimum SNR']
+        ray=args.get('minimum SNR',2)
         yobs = self.data[mag].values - np.nanmean(self.data[mag].values)
         opts = dict(method='ols',conf_int='linear', Rayleigh_min=ray)
         coef = solve(stime,yobs,lat= lat,**opts)
