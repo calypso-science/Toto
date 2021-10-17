@@ -1,4 +1,4 @@
-.. image:: ../_static/calypso.png
+.. image:: _static/calypso.png
    :width: 150 px
    :align: right
 

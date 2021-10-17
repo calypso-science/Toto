@@ -16,7 +16,7 @@ time=pd.to_datetime(wave['time'],unit='s')
 wave['time'][:]=time
 wave.set_index('time',inplace=True)
 
-
+### Using the spectral method
 result=wave.WaveAnalysis.ssh_to_wave(sea_level='ssh1',\
         args={
          'windows': 3600,
@@ -28,6 +28,9 @@ result=wave.WaveAnalysis.ssh_to_wave(sea_level='ssh1',\
          'minimum number of waves per window for zero crossing analysis': 30,
          })
 
+print(result)
+
+### Using the zero-crossing method
 result2=wave.WaveAnalysis.ssh_to_wave(sea_level='ssh1',\
         args={
          'windows': 3600,
@@ -38,6 +41,8 @@ result2=wave.WaveAnalysis.ssh_to_wave(sea_level='ssh1',\
          'method':'zero-crossing',
          'minimum number of waves per window for zero crossing analysis': 30,
          })
+
+print(result2)
 
 # Plot the results
 fig=plt.figure()

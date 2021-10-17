@@ -140,10 +140,10 @@ Gallery
 
 .. only:: html
 
- .. figure:: /gallery/images/thumb/sphx_glr_wave_spectra_thumb.png
+ .. figure:: /gallery/images/thumb/sphx_glr_plot_wave_spectra_thumb.png
      :alt: Wave spectra examples
 
-     :ref:`sphx_glr_gallery_wave_spectra.py`
+     :ref:`sphx_glr_gallery_plot_wave_spectra.py`
 
 .. raw:: html
 
@@ -153,7 +153,7 @@ Gallery
 .. toctree::
    :hidden:
 
-   /gallery/wave_spectra
+   /gallery/plot_wave_spectra
 
 .. raw:: html
 
@@ -224,10 +224,10 @@ Gallery
 
 .. only:: html
 
- .. figure:: /gallery/images/thumb/sphx_glr_ssh2wave_thumb.png
+ .. figure:: /gallery/images/thumb/sphx_glr_plot_ssh2wave_thumb.png
      :alt: Sea level to wave examples
 
-     :ref:`sphx_glr_gallery_ssh2wave.py`
+     :ref:`sphx_glr_gallery_plot_ssh2wave.py`
 
 .. raw:: html
 
@@ -237,7 +237,7 @@ Gallery
 .. toctree::
    :hidden:
 
-   /gallery/ssh2wave
+   /gallery/plot_ssh2wave
 
 .. raw:: html
 

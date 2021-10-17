@@ -1,9 +1,9 @@
-.. image:: ../_static/calypso.png
+.. image:: _static/calypso.png
    :width: 150 px
    :align: right
 
 Comparison statistics
-=================
+=====================
 
 .. automodule:: toto.plugins.statistics.common_statistics.Statistics.Directional_statistics
    :members:

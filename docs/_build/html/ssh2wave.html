@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Open-source plugins: &#8212; Toto 1.0 documentation</title>
+    <title>Surface elevation to wave &#8212; Toto 1.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
     <link rel="stylesheet" type="text/css" href="_static/gallery.css" />
@@ -36,59 +36,48 @@
           <div class="body" role="main">
             
   <a class="reference internal image-reference" href="_images/calypso.png"><img alt="_images/calypso.png" class="align-right" src="_images/calypso.png" style="width: 150px;" /></a>
-<div class="section" id="open-source-plugins">
-<h1>Open-source plugins:<a class="headerlink" href="#open-source-plugins" title="Permalink to this headline">¶</a></h1>
-<p>Those plugins are freely available and can be access directly from <cite>TOTO</cite></p>
-<div class="section" id="statistics">
-<h2>Statistics<a class="headerlink" href="#statistics" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><p><span class="xref std std-doc">Common statistics</span></p></li>
-<li><p><span class="xref std std-doc">Comparison statistics</span></p></li>
-<li><p><span class="xref std std-doc">Directionnal statistics</span></p></li>
-</ul>
+<div class="section" id="module-toto.plugins.wave.wave_spectra.WaveAnalysis.ssh_to_wave">
+<span id="surface-elevation-to-wave"></span><h1>Surface elevation to wave<a class="headerlink" href="#module-toto.plugins.wave.wave_spectra.WaveAnalysis.ssh_to_wave" title="Permalink to this headline">¶</a></h1>
+<p>This function transform a timeseries of elevation to Hs using:
+-Spectra method
+- zero-crossing method</p>
+<div class="section" id="parameters">
+<h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt>sea_level<span class="classifier">str</span></dt><dd><p>Name of the column which contains the sea level.</p>
+</dd>
+<dt>args: dict</dt><dd><p>Dictionnary with the folowing keys:
+units: str</p>
+<blockquote>
+<div><p>Units of the sea level</p>
+</div></blockquote>
+<dl class="simple">
+<dt>windows: int</dt><dd><p>windows to process in seconds.</p>
+</dd>
+<dt>overlap: int</dt><dd><p>overlap in seconds</p>
+</dd>
+<dt>nfft: int</dt><dd><p>Length of the signal to calculate the Fourier transform of.</p>
+</dd>
+<dt>detrend: str</dt><dd><p><cite>linear</cite>, <cite>constante</cite> or <cite>Off</cite> to detrend the timeseries before doing the analysis</p>
+</dd>
+<dt>wave period range (min and max) (in s): list</dt><dd><p>Calulating wave within this Wave period</p>
+</dd>
+<dt>method: str</dt><dd><p>Can be <cite>spectra</cite> or <cite>zero-crossing</cite> depending what method to use</p>
+</dd>
+<dt>minimum number of waves per window for zero crossing analysis: int</dt><dd><p>Minimum number of waves per window for zero crossing analysis</p>
+</dd>
+<dt>crossing: str</dt><dd><p>Can be <cite>downcrossing</cite> or <cite>upcrossing</cite>. Method to use if not using the spectra method</p>
+</dd>
+</dl>
+</dd>
+</dl>
 </div>
-<div class="section" id="plots">
-<h2>Plots<a class="headerlink" href="#plots" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><p><span class="xref std std-doc">Roses</span></p></li>
-<li><p><span class="xref std std-doc">BIAS histogram</span></p></li>
-<li><p><span class="xref std std-doc">Density diagram</span></p></li>
-<li><p><span class="xref std std-doc">Thermocline plot</span></p></li>
-</ul>
+<div class="section" id="examples">
+<h2>Examples:<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">=</span><span class="n">tf</span><span class="p">[</span><span class="s1">&#39;test1&#39;</span><span class="p">][</span><span class="s1">&#39;dataframe&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">WaveAnalysis</span><span class="o">.</span><span class="n">ssh_to_wave</span><span class="p">(</span><span class="n">sea_level</span><span class="o">=</span><span class="s1">&#39;ssh&#39;</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;method&#39;</span><span class="o">=</span><span class="s1">&#39;spectra&#39;</span><span class="p">,</span><span class="n">windows</span><span class="p">:</span><span class="mi">3600</span><span class="p">,</span><span class="s1">&#39;nfft&#39;</span><span class="p">:</span><span class="mi">3600</span><span class="p">,</span><span class="s1">&#39;overlap&#39;</span><span class="p">:</span><span class="mi">3600</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>
+</pre></div>
 </div>
-<div class="section" id="tide">
-<h2>Tide<a class="headerlink" href="#tide" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><p><span class="xref std std-doc">De-tiding</span></p></li>
-<li><p><span class="xref std std-doc">Re-construct</span></p></li>
-<li><p><span class="xref std std-doc">Predict</span></p></li>
-<li><p><span class="xref std std-doc">Tidal statistics</span></p></li>
-<li><p><span class="xref std std-doc">Skew surge</span></p></li>
-</ul>
-</div>
-<div class="section" id="transformations">
-<h2>Transformations<a class="headerlink" href="#transformations" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><p><span class="xref std std-doc">Rotation</span></p></li>
-<li><p><span class="xref std std-doc">Wind profile</span></p></li>
-<li><p><span class="xref std std-doc">Depth-average / layers</span></p></li>
-<li><p><span class="xref std std-doc">Hs sea</span></p></li>
-<li><p><span class="xref std std-doc">Orbital velocity</span></p></li>
-<li><p><span class="xref std std-doc">U &amp; V / Spd &amp; drr</span></p></li>
-</ul>
-</div>
-<div class="section" id="wave">
-<h2>Wave<a class="headerlink" href="#wave" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><p><span class="xref std std-doc">Wave spectra</span></p></li>
-<li><p><span class="xref std std-doc">Wavelet analysis</span></p></li>
-</ul>
-</div>
-<div class="section" id="extreme-value-analysis">
-<h2>Extreme value analysis<a class="headerlink" href="#extreme-value-analysis" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><p><span class="xref std std-doc">Shape distribution</span></p></li>
-</ul>
 </div>
 </div>
 
@@ -164,7 +153,7 @@
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
-      <a href="_sources/open_plugins.rst.txt"
+      <a href="_sources/ssh2wave.rst.txt"
           rel="nofollow">Page source</a>
     </div>
 
