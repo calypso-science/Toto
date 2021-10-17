@@ -46,15 +46,15 @@ print(df)
 #     'folder out':os.getcwd(),'X Min Res Max(optional)':[0,2],'Y Min Res Max(optional)':[0,2],\
 #     'Time blocking':'Monthly','Probablity expressed in':'percent','Probablity expressed in':'per thoushand','display':'On'})
 
-df2=df[0].Statistics.weather_window(data='spd',args={'method':'exceedance non-persistence',\
-  'folder out':'','Exceedance bins: Min Res Max(optional)':[0,0.5],'Duration Min Res Max':[6,6,12],
-  'Time blocking':'Monthly'})
-import pdb;pdb.set_trace()
-# df=df[0].Statistics.weighted_direction(Hs='hs[m]',drr='dpm_sea8[deg]',args={'folder out':os.getcwd(),
-#                                                     'type':'South hemisphere(Summer/Winter)'
-#                                                             })
+# df2=df[0].Statistics.weather_window(data='spd',args={'method':'exceedance non-persistence',\
+#   'folder out':'','Exceedance bins: Min Res Max(optional)':[0,0.5],'Duration Min Res Max':[6,6,12],
+#   'Time blocking':'Monthly'})
+# import pdb;pdb.set_trace()
+df=df[0].Statistics.weighted_direction(Hs='spd',drr='spd',args={
+                                                    'time blocking':'South hemisphere(Summer/Winter)'
+                                                            })
 
-# df=df[0].Statistics.modal_wave_period(Hs='hs[m]',Tp='tp[s]',args={'folder out':os.getcwd(),
+# df=df[0].Statistics.modal_wave_period(Hs='spd',Tp='spd',args={
 #                                                     'type':'South hemisphere(Summer/Winter)'
 #                                                             })
 #df=tf['test1']['dataframe'].Statistics.common_stats(mag='U',drr='drr')
@@ -105,7 +105,8 @@ import pdb;pdb.set_trace()
 # 	'folder out':'','Exceedance bins: Min Res Max(optional)':[0,0.1],'Duration Min Res Max':[1,1,12],
 # 	'Time blocking':'Annual','Probablity expressed in':'percent'})
 
-# df=df[0].Statistics.exc_coinc_prob(data='elev',coincident_nodir='hvel_U_lev_3.0',coincident_with_dir='coincident_with_dir',\
+# df=df[0].Statistics.excedence_coincidence_probability(data='spd',
+# 	coincident_nodir='spd',coincident_with_dir='drr',\
 #         args={'method':'exceedence',\
 #         'folder out':'',
 #         'Exceedance bins: Min Res Max(optional)':[0,.2],
@@ -122,12 +123,11 @@ import pdb;pdb.set_trace()
 #         })
 
 
-# df=df[0].Statistics.workability(data1='Spd',data2='Dir',data3_optional='data3_optional',data4_optional='data4_optional',\
+# df=df[0].Statistics.workability(variables=['spd','drr'],\
 #         args={'method':'persistence exceedence',\
-#                'folder out':'/tmp/',
-#                'Threshold for each dataset:':[0.5,300], 
-#                'Duration Min Res Max':[6,6,72], 
-#                'Time blocking':'Monthly'})
+#                'threshold for each dataset':[0.03,0], 
+#                'duration min res max':[6,6,72], 
+#                'time blocking':'Monthly'})
 
 
 # df=df[0].StatPlots.plot_roses(mag='Spd',drr='Dir',\
@@ -175,15 +175,15 @@ import pdb;pdb.set_trace()
 #         'folder out':'/tmp/'})
 
 
-# df=df[0].Statistics.wave_population(Hs='Spd',Tm02='Spd',Drr_optional='Dir',Tp_optional='Spd',SW_optional='Spd',\
+# df=df[0].Statistics.wave_population(Hs='spd',Tm02='spd',
+# 	Drr_optional='Dir',Tp_optional='Spd',SW_optional='Spd',\
 #             args={'Method':'Height only',#:True,'Height/Direction':False,'Height/Tp':False,'height/period':False},
-#                 'Direction binning':'centered',
-#                 'Direction interval': 45.,
+#                 'direction binning':'centered',
+#                 'direction interval': 45.,
 #                 'Heigh bin size': 0.1,
 #                 'Period bin size': 2,
 #                 'Exposure (years) (= length of time series if not specified)':0,
-#                 'folder out':'',
-#                 'Directional switch':'On'}
+#                 'directional switch':'On'}
 #             )
 
 

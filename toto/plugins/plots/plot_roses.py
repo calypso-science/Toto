@@ -69,7 +69,7 @@ class StatPlots:
         """
 
         display=True
-        if args['display']=='Off':
+        if args.get('display','Off')=='Off':
             display=False
         unit=get_opt(self.data[mag],'units',args['units'])
 

@@ -963,7 +963,7 @@ class Statistics:
 
             Outputs:
             ~~~~~~~~
-            .. list-table:: Workability probability
+            .. list-table:: Modal wave period probability
                :widths: 25 25
                :header-rows: 1
 
