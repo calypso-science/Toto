@@ -43,6 +43,38 @@ well as the scaled-averaged wavelet power time series within a specific
 period band. The code is based on the wavelet toolbox from Torrence and
 Compo
 See <a class="reference external" href="https://paos.colorado.edu/research/wavelets/software.html">https://paos.colorado.edu/research/wavelets/software.html</a></p>
+<div class="section" id="parameters">
+<h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt>sea_level<span class="classifier">str</span></dt><dd><p>Name of the column which contains the sea level.</p>
+</dd>
+<dt>args: dict</dt><dd><p>Dictionnary with the folowing keys:
+units: str</p>
+<blockquote>
+<div><p>Units of the sea level</p>
+</div></blockquote>
+<dl class="simple">
+<dt>mother wavelet: str</dt><dd><p>Can be <cite>Morlet</cite>,`Paul` or <cite>DOG</cite></p>
+</dd>
+<dt>wave period range (min and max) (in s): list</dt><dd><p>Calulating wave within this Wave period</p>
+</dd>
+<dt>number of sub-ocatve per period band: int</dt><dd><p>Number of sub-ocatve per period band</p>
+</dd>
+<dt>display: str</dt><dd><p><cite>On</cite> or <cite>Off</cite> to display image</p>
+</dd>
+<dt>folder out: str</dt><dd><p>Path to save the output</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</div>
+<div class="section" id="examples">
+<h2>Examples:<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">=</span><span class="n">tf</span><span class="p">[</span><span class="s1">&#39;test1&#39;</span><span class="p">][</span><span class="s1">&#39;dataframe&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">WaveAnalysis</span><span class="o">.</span><span class="n">wavelet_analysis</span><span class="p">(</span><span class="n">sea_level</span><span class="o">=</span><span class="s1">&#39;ssh&#39;</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="p">{})</span>
+<span class="gp">&gt;&gt;&gt; </span>
+</pre></div>
+</div>
+</div>
 </div>
 
 

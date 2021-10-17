@@ -52,6 +52,27 @@ Gallery
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Wavelet examples">
+
+.. only:: html
+
+ .. figure:: /gallery/images/thumb/sphx_glr_plot_wavelet_thumb.png
+     :alt: Wavelet examples
+
+     :ref:`sphx_glr_gallery_plot_wavelet.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /gallery/plot_wavelet
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Percentage of occurence example">
 
 .. only:: html
@@ -115,6 +136,27 @@ Gallery
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Wave spectra examples">
+
+.. only:: html
+
+ .. figure:: /gallery/images/thumb/sphx_glr_wave_spectra_thumb.png
+     :alt: Wave spectra examples
+
+     :ref:`sphx_glr_gallery_wave_spectra.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /gallery/wave_spectra
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="BIAS histogramm examples">
 
 .. only:: html
@@ -175,6 +217,27 @@ Gallery
    :hidden:
 
    /gallery/plot_filters
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Sea level to wave examples">
+
+.. only:: html
+
+ .. figure:: /gallery/images/thumb/sphx_glr_ssh2wave_thumb.png
+     :alt: Sea level to wave examples
+
+     :ref:`sphx_glr_gallery_ssh2wave.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /gallery/ssh2wave
 
 .. raw:: html
 

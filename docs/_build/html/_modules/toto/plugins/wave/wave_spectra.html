@@ -54,59 +54,129 @@
 
 <div class="viewcode-block" id="WaveAnalysis.wave_spectra"><a class="viewcode-back" href="../../../../source/toto.plugins.wave.wave_spectra.html#toto.plugins.wave.wave_spectra.WaveAnalysis.wave_spectra">[docs]</a>    <span class="k">def</span> <span class="nf">wave_spectra</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">sea_level</span><span class="o">=</span><span class="s1">&#39;sea_level&#39;</span><span class="p">,</span>\
         <span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;units&#39;</span><span class="p">:</span><span class="s1">&#39;m&#39;</span><span class="p">,</span>
-         <span class="s1">&#39;Windows&#39;</span><span class="p">:</span> <span class="mi">3600</span><span class="p">,</span>
-         <span class="s1">&#39;Overlap&#39;</span><span class="p">:</span><span class="mi">1800</span><span class="p">,</span>
-         <span class="s1">&#39;Nfft&#39;</span><span class="p">:</span><span class="mi">3600</span><span class="p">,</span>
-         <span class="s1">&#39;Detrend&#39;</span><span class="p">:{</span><span class="s1">&#39;Off&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;linear&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;constante&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
-         <span class="s1">&#39;Period (s) min and max for plotting&#39;</span><span class="p">:[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1000</span><span class="p">],</span>
-         <span class="s1">&#39;Xaxis&#39;</span><span class="p">:{</span><span class="s1">&#39;period&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;frequency&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
+         <span class="s1">&#39;windows&#39;</span><span class="p">:</span> <span class="mi">3600</span><span class="p">,</span>
+         <span class="s1">&#39;overlap&#39;</span><span class="p">:</span><span class="mi">1800</span><span class="p">,</span>
+         <span class="s1">&#39;nfft&#39;</span><span class="p">:</span><span class="mi">3600</span><span class="p">,</span>
+         <span class="s1">&#39;detrend&#39;</span><span class="p">:{</span><span class="s1">&#39;Off&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;linear&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;constante&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
+         <span class="s1">&#39;period (s) min and max for plotting&#39;</span><span class="p">:[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1000</span><span class="p">],</span>
+         <span class="s1">&#39;xaxis&#39;</span><span class="p">:{</span><span class="s1">&#39;period&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;frequency&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
          <span class="s1">&#39;folder out&#39;</span><span class="p">:</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span>
          <span class="s1">&#39;display&#39;</span><span class="p">:{</span><span class="s1">&#39;On&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Off&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">}</span>
          <span class="p">}):</span>
 
-        <span class="sd">&#39;&#39;&#39;This function estimated the 1D wave spectrum (Power Spectral Density) and plot it&#39;&#39;&#39;</span>
-        <span class="n">unit</span><span class="o">=</span><span class="n">get_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">sea_level</span><span class="p">],</span><span class="s1">&#39;units&#39;</span><span class="p">,</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">])</span>
+        <span class="sd">&quot;&quot;&quot; This function estimated the 1D wave spectrum (Power Spectral Density)</span>
+<span class="sd">            and plot it</span>
+
+<span class="sd">            Parameters</span>
+<span class="sd">            ~~~~~~~~~~</span>
+
+<span class="sd">            sea_level : str</span>
+<span class="sd">                Name of the column which contains the sea level.</span>
+<span class="sd">            args: dict</span>
+<span class="sd">                Dictionnary with the folowing keys:</span>
+<span class="sd">                units: str</span>
+<span class="sd">                    Units of the sea level</span>
+<span class="sd">                windows: int</span>
+<span class="sd">                    windows to process in seconds.</span>
+<span class="sd">                overlap: int</span>
+<span class="sd">                    overlap in seconds</span>
+<span class="sd">                nfft: int</span>
+<span class="sd">                     Length of the signal to calculate the Fourier transform of.</span>
+<span class="sd">                detrend: str</span>
+<span class="sd">                    `linear`, `constante` or `Off` to detrend the timeseries before doing the analysis</span>
+<span class="sd">                period (s) min and max for plotting: list</span>
+<span class="sd">                    X axis limit in seconds</span>
+<span class="sd">                xaxis: str</span>
+<span class="sd">                    Can be `period` or `frequency` depending what on the type of plot</span>
+<span class="sd">                display: str</span>
+<span class="sd">                    `On` or `Off` to display image</span>
+<span class="sd">                folder out: str</span>
+<span class="sd">                    Path to save the output </span>
+
+<span class="sd">            Examples:</span>
+<span class="sd">            ~~~~~~~~~</span>
+<span class="sd">            &gt;&gt;&gt; df=tf[&#39;test1&#39;][&#39;dataframe&#39;].WaveAnalysis.wave_spectra(sea_level=&#39;ssh&#39;,args={&#39;windows:3600,&#39;nfft&#39;:3600,&#39;overlap&#39;:3600)</span>
+<span class="sd">            &gt;&gt;&gt; </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">unit</span><span class="o">=</span><span class="n">get_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">sea_level</span><span class="p">],</span><span class="s1">&#39;units&#39;</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;units&#39;</span><span class="p">,</span><span class="s1">&#39;m&#39;</span><span class="p">))</span>
         <span class="n">display</span><span class="o">=</span><span class="kc">True</span>
-        <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;display&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Off&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;display&#39;</span><span class="p">,</span><span class="s1">&#39;Off&#39;</span><span class="p">)</span><span class="o">==</span><span class="s1">&#39;Off&#39;</span><span class="p">:</span>
             <span class="n">display</span><span class="o">=</span><span class="kc">False</span>
 
         <span class="n">detrend</span><span class="o">=</span><span class="kc">False</span>
-        <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;Detrend&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;linear&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;detrend&#39;</span><span class="p">,</span><span class="kc">False</span><span class="p">)</span><span class="o">==</span><span class="s1">&#39;linear&#39;</span><span class="p">:</span>
             <span class="n">detrend</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span>
-        <span class="k">elif</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;Detrend&#39;</span><span class="p">]</span><span class="o">==</span> <span class="s1">&#39;constant&#39;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;detrend&#39;</span><span class="p">,</span><span class="kc">False</span><span class="p">)</span><span class="o">==</span> <span class="s1">&#39;constant&#39;</span><span class="p">:</span>
             <span class="n">detrend</span><span class="o">=</span><span class="s1">&#39;constant&#39;</span>
 
+
         <span class="n">Xaxis</span><span class="o">=</span><span class="kc">True</span>
-        <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;Xaxis&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;period&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;xaxis&#39;</span><span class="p">,</span><span class="s1">&#39;period&#39;</span><span class="p">)</span><span class="o">==</span><span class="s1">&#39;period&#39;</span><span class="p">:</span>
             <span class="n">Xaxis</span><span class="o">=</span><span class="kc">False</span>
-        <span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;folder out&#39;</span><span class="p">],</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_Spec.png&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="s1">&#39;filename&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
+
+        <span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;folder out&#39;</span><span class="p">,</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()),</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_Spec.png&#39;</span><span class="p">)</span>
         <span class="n">error</span><span class="o">=</span><span class="n">do_wave_spectra_plot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">sea_level</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span><span class="n">unit</span><span class="p">,</span>
-            <span class="n">args</span><span class="p">[</span><span class="s1">&#39;Windows&#39;</span><span class="p">],</span>
-            <span class="n">args</span><span class="p">[</span><span class="s1">&#39;Overlap&#39;</span><span class="p">],</span>
-            <span class="n">args</span><span class="p">[</span><span class="s1">&#39;Nfft&#39;</span><span class="p">],</span>
-            <span class="n">detrend</span><span class="p">,</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Period (s) min and max for plotting&#39;</span><span class="p">],</span><span class="n">Xaxis</span><span class="p">,</span><span class="n">filename</span><span class="p">,</span><span class="n">display</span><span class="p">)</span></div>
+            <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;windows&#39;</span><span class="p">,</span><span class="mi">3600</span><span class="p">),</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;overlap&#39;</span><span class="p">,</span><span class="mi">1800</span><span class="p">),</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nfft&#39;</span><span class="p">,</span><span class="mi">3600</span><span class="p">),</span>
+            <span class="n">detrend</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;period (s) min and max for plotting&#39;</span><span class="p">,[</span><span class="mi">10</span><span class="p">,</span><span class="mi">1000</span><span class="p">]),</span><span class="n">Xaxis</span><span class="p">,</span><span class="n">filename</span><span class="p">,</span><span class="n">display</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="WaveAnalysis.ssh_to_wave"><a class="viewcode-back" href="../../../../source/toto.plugins.wave.wave_spectra.html#toto.plugins.wave.wave_spectra.WaveAnalysis.ssh_to_wave">[docs]</a>    <span class="k">def</span> <span class="nf">ssh_to_wave</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">sea_level</span><span class="o">=</span><span class="s1">&#39;sea_level&#39;</span><span class="p">,</span>\
         <span class="n">args</span><span class="o">=</span><span class="p">{</span>
-         <span class="s1">&#39;Windows&#39;</span><span class="p">:</span> <span class="mi">3600</span><span class="p">,</span>
-         <span class="s1">&#39;Overlap&#39;</span><span class="p">:</span><span class="mi">1800</span><span class="p">,</span>
-         <span class="s1">&#39;Nfft&#39;</span><span class="p">:</span><span class="mi">3600</span><span class="p">,</span>
-         <span class="s1">&#39;Detrend&#39;</span><span class="p">:{</span><span class="s1">&#39;Off&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;linear&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;constante&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
-         <span class="s1">&#39;Wave period range (min and max) (in s)&#39;</span><span class="p">:[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">25</span><span class="p">],</span>
-         <span class="s1">&#39;Method&#39;</span><span class="p">:{</span><span class="s1">&#39;spectra&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;zero-crossing&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
-         <span class="s1">&#39;Minimum number of waves per window for zero crossing analysis&#39;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span>
-         <span class="s1">&#39;Crossing&#39;</span><span class="p">:{</span><span class="s1">&#39;Downcrossing&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Upcrossing&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
+         <span class="s1">&#39;windows&#39;</span><span class="p">:</span> <span class="mi">3600</span><span class="p">,</span>
+         <span class="s1">&#39;overlap&#39;</span><span class="p">:</span><span class="mi">1800</span><span class="p">,</span>
+         <span class="s1">&#39;nfft&#39;</span><span class="p">:</span><span class="mi">3600</span><span class="p">,</span>
+         <span class="s1">&#39;detrend&#39;</span><span class="p">:{</span><span class="s1">&#39;Off&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;linear&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;constante&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
+         <span class="s1">&#39;wave period range (min and max) (in s)&#39;</span><span class="p">:[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">25</span><span class="p">],</span>
+         <span class="s1">&#39;method&#39;</span><span class="p">:{</span><span class="s1">&#39;spectra&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;zero-crossing&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
+         <span class="s1">&#39;minimum number of waves per window for zero crossing analysis&#39;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span>
+         <span class="s1">&#39;crossing&#39;</span><span class="p">:{</span><span class="s1">&#39;downcrossing&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;upcrossing&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
          <span class="p">}):</span>
         
 
         <span class="sd">&quot;&quot;&quot; This function transform a timeseries of elevation to Hs using:</span>
 <span class="sd">            -Spectra method</span>
 <span class="sd">            - zero-crossing method</span>
-<span class="sd">            &quot;&quot;&quot;</span>
-        <span class="n">min_wave</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Minimum number of waves per window for zero crossing analysis&#39;</span><span class="p">]</span>
-        <span class="n">period</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Wave period range (min and max) (in s)&#39;</span><span class="p">]</span>
-        <span class="n">method</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Method&#39;</span><span class="p">]</span>
+
+<span class="sd">            Parameters</span>
+<span class="sd">            ~~~~~~~~~~</span>
+
+<span class="sd">            sea_level : str</span>
+<span class="sd">                Name of the column which contains the sea level.</span>
+<span class="sd">            args: dict</span>
+<span class="sd">                Dictionnary with the folowing keys:</span>
+<span class="sd">                units: str</span>
+<span class="sd">                    Units of the sea level</span>
+<span class="sd">                windows: int</span>
+<span class="sd">                    windows to process in seconds.</span>
+<span class="sd">                overlap: int</span>
+<span class="sd">                    overlap in seconds</span>
+<span class="sd">                nfft: int</span>
+<span class="sd">                     Length of the signal to calculate the Fourier transform of.</span>
+<span class="sd">                detrend: str</span>
+<span class="sd">                    `linear`, `constante` or `Off` to detrend the timeseries before doing the analysis</span>
+<span class="sd">                wave period range (min and max) (in s): list</span>
+<span class="sd">                    Calulating wave within this Wave period</span>
+<span class="sd">                method: str</span>
+<span class="sd">                    Can be `spectra` or `zero-crossing` depending what method to use</span>
+<span class="sd">                minimum number of waves per window for zero crossing analysis: int</span>
+<span class="sd">                    Minimum number of waves per window for zero crossing analysis</span>
+<span class="sd">                crossing: str</span>
+<span class="sd">                    Can be `downcrossing` or `upcrossing`. Method to use if not using the spectra method</span>
+
+<span class="sd">            Examples:</span>
+<span class="sd">            ~~~~~~~~~</span>
+<span class="sd">            &gt;&gt;&gt; df=tf[&#39;test1&#39;][&#39;dataframe&#39;].WaveAnalysis.ssh_to_wave(sea_level=&#39;ssh&#39;,args={&#39;method&#39;=&#39;spectra&#39;,windows:3600,&#39;nfft&#39;:3600,&#39;overlap&#39;:3600)</span>
+<span class="sd">            &gt;&gt;&gt; </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">min_wave</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;minimum number of waves per window for zero crossing analysis&#39;</span><span class="p">,</span><span class="mi">30</span><span class="p">)</span>
+        <span class="n">period</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;wave period range (min and max) (in s)&#39;</span><span class="p">,[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">25</span><span class="p">])</span>
+        <span class="n">method</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;method&#39;</span><span class="p">,</span><span class="s1">&#39;zero-crossing&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">method</span><span class="o">==</span><span class="s1">&#39;zero-crossing&#39;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">sea_level</span><span class="p">]</span><span class="o">=</span><span class="n">bandpass_filter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">sea_level</span><span class="p">],</span><span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;lower cut-off (s)&#39;</span><span class="p">:</span><span class="n">period</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="s1">&#39;upper cut-off (s)&#39;</span><span class="p">:</span><span class="n">period</span><span class="p">[</span><span class="mi">1</span><span class="p">]})</span>
 
@@ -114,18 +184,18 @@
 
 
         <span class="n">detrend</span><span class="o">=</span><span class="kc">False</span>
-        <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;Detrend&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;linear&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;detrend&#39;</span><span class="p">,</span><span class="kc">False</span><span class="p">)</span><span class="o">==</span><span class="s1">&#39;linear&#39;</span><span class="p">:</span>
             <span class="n">detrend</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span>
-        <span class="k">elif</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;Detrend&#39;</span><span class="p">]</span><span class="o">==</span> <span class="s1">&#39;constant&#39;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;detrend&#39;</span><span class="p">,</span><span class="kc">False</span><span class="p">)</span><span class="o">==</span> <span class="s1">&#39;constant&#39;</span><span class="p">:</span>
             <span class="n">detrend</span><span class="o">=</span><span class="s1">&#39;constant&#39;</span>
 
         <span class="n">crossing</span><span class="o">=</span><span class="kc">False</span>
-        <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;Crossing&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Upcrossing&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;crossing&#39;</span><span class="p">,</span><span class="kc">False</span><span class="p">)</span><span class="o">==</span><span class="s1">&#39;upcrossing&#39;</span><span class="p">:</span>
             <span class="n">crossing</span><span class="o">=</span><span class="kc">True</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">dfout</span><span class="o">=</span><span class="n">do_ssh_to_wave</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">sea_level</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
-            <span class="n">args</span><span class="p">[</span><span class="s1">&#39;Overlap&#39;</span><span class="p">],</span>
-            <span class="n">args</span><span class="p">[</span><span class="s1">&#39;Nfft&#39;</span><span class="p">],</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Windows&#39;</span><span class="p">],</span><span class="n">detrend</span><span class="p">,</span><span class="n">period</span><span class="p">,</span><span class="n">min_wave</span><span class="p">,</span><span class="n">crossing</span><span class="p">,</span><span class="n">method</span><span class="p">)</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;overlap&#39;</span><span class="p">,</span><span class="mi">3600</span><span class="p">),</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nfft&#39;</span><span class="p">,</span><span class="mi">3600</span><span class="p">),</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;windows&#39;</span><span class="p">,</span><span class="mi">3600</span><span class="p">),</span><span class="n">detrend</span><span class="p">,</span><span class="n">period</span><span class="p">,</span><span class="n">min_wave</span><span class="p">,</span><span class="n">crossing</span><span class="p">,</span><span class="n">method</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">dfout</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;time&#39;</span>
 
@@ -135,31 +205,61 @@
 <div class="viewcode-block" id="WaveAnalysis.wavelet_analysis"><a class="viewcode-back" href="../../../../source/toto.plugins.wave.wave_spectra.html#toto.plugins.wave.wave_spectra.WaveAnalysis.wavelet_analysis">[docs]</a>    <span class="k">def</span> <span class="nf">wavelet_analysis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">sea_level</span><span class="o">=</span><span class="s1">&#39;sea_level&#39;</span><span class="p">,</span>\
         <span class="n">args</span><span class="o">=</span><span class="p">{</span>
          <span class="s1">&#39;units&#39;</span><span class="p">:</span><span class="s1">&#39;m&#39;</span><span class="p">,</span>
-         <span class="s1">&#39;Mother wavelet&#39;</span><span class="p">:{</span><span class="s1">&#39;Morlet&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Paul&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;DOG&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
-         <span class="s1">&#39;Wave period range (min and max) (in s)&#39;</span><span class="p">:[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">25</span><span class="p">],</span>
-         <span class="s1">&#39;Number of sub-ocatve per period band&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+         <span class="s1">&#39;mother wavelet&#39;</span><span class="p">:{</span><span class="s1">&#39;Morlet&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Paul&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;DOG&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
+         <span class="s1">&#39;wave period range (min and max) (in s)&#39;</span><span class="p">:[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">25</span><span class="p">],</span>
+         <span class="s1">&#39;number of sub-ocatve per period band&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
          <span class="s1">&#39;folder out&#39;</span><span class="p">:</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span>
          <span class="s1">&#39;display&#39;</span><span class="p">:{</span><span class="s1">&#39;On&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Off&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">}</span>
          <span class="p">}):</span>
         
 
-        <span class="sd">&#39;&#39;&#39; This function estimates the wavelet power spectrum of a time series, as</span>
-<span class="sd">         well as the scaled-averaged wavelet power time series within a specific</span>
-<span class="sd">         period band. The code is based on the wavelet toolbox from Torrence and</span>
-<span class="sd">         Compo</span>
-<span class="sd">         See https://paos.colorado.edu/research/wavelets/software.html&#39;&#39;&#39;</span>
+        <span class="sd">&quot;&quot;&quot; This function estimates the wavelet power spectrum of a time series, as</span>
+<span class="sd">            well as the scaled-averaged wavelet power time series within a specific</span>
+<span class="sd">            period band. The code is based on the wavelet toolbox from Torrence and</span>
+<span class="sd">            Compo</span>
+<span class="sd">            See https://paos.colorado.edu/research/wavelets/software.html</span>
+
+<span class="sd">            Parameters</span>
+<span class="sd">            ~~~~~~~~~~</span>
+
+<span class="sd">            sea_level : str</span>
+<span class="sd">                Name of the column which contains the sea level.</span>
+<span class="sd">            args: dict</span>
+<span class="sd">                Dictionnary with the folowing keys:</span>
+<span class="sd">                units: str</span>
+<span class="sd">                    Units of the sea level</span>
+<span class="sd">                mother wavelet: str</span>
+<span class="sd">                    Can be `Morlet`,`Paul` or `DOG`</span>
+<span class="sd">                wave period range (min and max) (in s): list</span>
+<span class="sd">                    Calulating wave within this Wave period</span>
+<span class="sd">                number of sub-ocatve per period band: int</span>
+<span class="sd">                     Number of sub-ocatve per period band</span>
+<span class="sd">                display: str</span>
+<span class="sd">                    `On` or `Off` to display image</span>
+<span class="sd">                folder out: str</span>
+<span class="sd">                    Path to save the output </span>
+
+<span class="sd">            Examples:</span>
+<span class="sd">            ~~~~~~~~~</span>
+<span class="sd">            &gt;&gt;&gt; df=tf[&#39;test1&#39;][&#39;dataframe&#39;].WaveAnalysis.wavelet_analysis(sea_level=&#39;ssh&#39;,args={})</span>
+<span class="sd">            &gt;&gt;&gt; </span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">display</span><span class="o">=</span><span class="kc">True</span>
-        <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;display&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Off&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;display&#39;</span><span class="p">,</span><span class="s1">&#39;Off&#39;</span><span class="p">)</span><span class="o">==</span><span class="s1">&#39;Off&#39;</span><span class="p">:</span>
             <span class="n">display</span><span class="o">=</span><span class="kc">False</span>
-        <span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;folder out&#39;</span><span class="p">],</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_Wavelet.png&#39;</span><span class="p">)</span>
-        <span class="n">period</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Wave period range (min and max) (in s)&#39;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="s1">&#39;filename&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
+
+        <span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;folder out&#39;</span><span class="p">,</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()),</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_Wavelet.png&#39;</span><span class="p">)</span>
+        <span class="n">period</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;wave period range (min and max) (in s)&#39;</span><span class="p">,[</span><span class="mi">3</span><span class="p">,</span><span class="mi">25</span><span class="p">])</span>
 
 
-        <span class="n">unit</span><span class="o">=</span><span class="n">get_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">sea_level</span><span class="p">],</span><span class="s1">&#39;units&#39;</span><span class="p">,</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">])</span>
+        <span class="n">unit</span><span class="o">=</span><span class="n">get_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">sea_level</span><span class="p">],</span><span class="s1">&#39;units&#39;</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;units&#39;</span><span class="p">,</span><span class="s1">&#39;m&#39;</span><span class="p">))</span>
 
         <span class="n">do_wavelet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">sea_level</span><span class="p">],</span>
-            <span class="n">args</span><span class="p">[</span><span class="s1">&#39;Mother wavelet&#39;</span><span class="p">],</span><span class="n">period</span><span class="p">,</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Number of sub-ocatve per period band&#39;</span><span class="p">],</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;mother wavelet&#39;</span><span class="p">,</span><span class="s1">&#39;Morlet&#39;</span><span class="p">),</span><span class="n">period</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;number of sub-ocatve per period band&#39;</span><span class="p">,</span><span class="mi">8</span><span class="p">),</span>
             <span class="n">unit</span><span class="p">,</span><span class="n">filename</span><span class="p">,</span><span class="n">display</span><span class="p">)</span></div></div>
 </pre></div>
 

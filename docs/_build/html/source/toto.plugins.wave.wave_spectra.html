@@ -46,26 +46,117 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="toto.plugins.wave.wave_spectra.WaveAnalysis.ssh_to_wave">
-<span class="sig-name descname"><span class="pre">ssh_to_wave</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sea_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'sea_level'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'Crossing':</span> <span class="pre">{'Downcrossing':</span> <span class="pre">True,</span> <span class="pre">'Upcrossing':</span> <span class="pre">False},</span> <span class="pre">'Detrend':</span> <span class="pre">{'Off':</span> <span class="pre">True,</span> <span class="pre">'constante':</span> <span class="pre">False,</span> <span class="pre">'linear':</span> <span class="pre">False},</span> <span class="pre">'Method':</span> <span class="pre">{'spectra':</span> <span class="pre">True,</span> <span class="pre">'zero-crossing':</span> <span class="pre">False},</span> <span class="pre">'Minimum</span> <span class="pre">number</span> <span class="pre">of</span> <span class="pre">waves</span> <span class="pre">per</span> <span class="pre">window</span> <span class="pre">for</span> <span class="pre">zero</span> <span class="pre">crossing</span> <span class="pre">analysis':</span> <span class="pre">30,</span> <span class="pre">'Nfft':</span> <span class="pre">3600,</span> <span class="pre">'Overlap':</span> <span class="pre">1800,</span> <span class="pre">'Wave</span> <span class="pre">period</span> <span class="pre">range</span> <span class="pre">(min</span> <span class="pre">and</span> <span class="pre">max)</span> <span class="pre">(in</span> <span class="pre">s)':</span> <span class="pre">[3,</span> <span class="pre">25],</span> <span class="pre">'Windows':</span> <span class="pre">3600}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/plugins/wave/wave_spectra.html#WaveAnalysis.ssh_to_wave"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.plugins.wave.wave_spectra.WaveAnalysis.ssh_to_wave" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">ssh_to_wave</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sea_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'sea_level'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'crossing':</span> <span class="pre">{'downcrossing':</span> <span class="pre">True,</span> <span class="pre">'upcrossing':</span> <span class="pre">False},</span> <span class="pre">'detrend':</span> <span class="pre">{'Off':</span> <span class="pre">True,</span> <span class="pre">'constante':</span> <span class="pre">False,</span> <span class="pre">'linear':</span> <span class="pre">False},</span> <span class="pre">'method':</span> <span class="pre">{'spectra':</span> <span class="pre">True,</span> <span class="pre">'zero-crossing':</span> <span class="pre">False},</span> <span class="pre">'minimum</span> <span class="pre">number</span> <span class="pre">of</span> <span class="pre">waves</span> <span class="pre">per</span> <span class="pre">window</span> <span class="pre">for</span> <span class="pre">zero</span> <span class="pre">crossing</span> <span class="pre">analysis':</span> <span class="pre">30,</span> <span class="pre">'nfft':</span> <span class="pre">3600,</span> <span class="pre">'overlap':</span> <span class="pre">1800,</span> <span class="pre">'wave</span> <span class="pre">period</span> <span class="pre">range</span> <span class="pre">(min</span> <span class="pre">and</span> <span class="pre">max)</span> <span class="pre">(in</span> <span class="pre">s)':</span> <span class="pre">[3,</span> <span class="pre">25],</span> <span class="pre">'windows':</span> <span class="pre">3600}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/plugins/wave/wave_spectra.html#WaveAnalysis.ssh_to_wave"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.plugins.wave.wave_spectra.WaveAnalysis.ssh_to_wave" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function transform a timeseries of elevation to Hs using:
 -Spectra method
 - zero-crossing method</p>
+<dl>
+<dt>sea_level<span class="classifier">str</span></dt><dd><p>Name of the column which contains the sea level.</p>
+</dd>
+<dt>args: dict</dt><dd><p>Dictionnary with the folowing keys:
+units: str</p>
+<blockquote>
+<div><p>Units of the sea level</p>
+</div></blockquote>
+<dl class="simple">
+<dt>windows: int</dt><dd><p>windows to process in seconds.</p>
+</dd>
+<dt>overlap: int</dt><dd><p>overlap in seconds</p>
+</dd>
+<dt>nfft: int</dt><dd><p>Length of the signal to calculate the Fourier transform of.</p>
+</dd>
+<dt>detrend: str</dt><dd><p><cite>linear</cite>, <cite>constante</cite> or <cite>Off</cite> to detrend the timeseries before doing the analysis</p>
+</dd>
+<dt>wave period range (min and max) (in s): list</dt><dd><p>Calulating wave within this Wave period</p>
+</dd>
+<dt>method: str</dt><dd><p>Can be <cite>spectra</cite> or <cite>zero-crossing</cite> depending what method to use</p>
+</dd>
+<dt>minimum number of waves per window for zero crossing analysis: int</dt><dd><p>Minimum number of waves per window for zero crossing analysis</p>
+</dd>
+<dt>crossing: str</dt><dd><p>Can be <cite>downcrossing</cite> or <cite>upcrossing</cite>. Method to use if not using the spectra method</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">=</span><span class="n">tf</span><span class="p">[</span><span class="s1">&#39;test1&#39;</span><span class="p">][</span><span class="s1">&#39;dataframe&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">WaveAnalysis</span><span class="o">.</span><span class="n">ssh_to_wave</span><span class="p">(</span><span class="n">sea_level</span><span class="o">=</span><span class="s1">&#39;ssh&#39;</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;method&#39;</span><span class="o">=</span><span class="s1">&#39;spectra&#39;</span><span class="p">,</span><span class="n">windows</span><span class="p">:</span><span class="mi">3600</span><span class="p">,</span><span class="s1">&#39;nfft&#39;</span><span class="p">:</span><span class="mi">3600</span><span class="p">,</span><span class="s1">&#39;overlap&#39;</span><span class="p">:</span><span class="mi">3600</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="toto.plugins.wave.wave_spectra.WaveAnalysis.wave_spectra">
-<span class="sig-name descname"><span class="pre">wave_spectra</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sea_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'sea_level'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'Detrend':</span> <span class="pre">{'Off':</span> <span class="pre">True,</span> <span class="pre">'constante':</span> <span class="pre">False,</span> <span class="pre">'linear':</span> <span class="pre">False},</span> <span class="pre">'Nfft':</span> <span class="pre">3600,</span> <span class="pre">'Overlap':</span> <span class="pre">1800,</span> <span class="pre">'Period</span> <span class="pre">(s)</span> <span class="pre">min</span> <span class="pre">and</span> <span class="pre">max</span> <span class="pre">for</span> <span class="pre">plotting':</span> <span class="pre">[10,</span> <span class="pre">1000],</span> <span class="pre">'Windows':</span> <span class="pre">3600,</span> <span class="pre">'Xaxis':</span> <span class="pre">{'frequency':</span> <span class="pre">False,</span> <span class="pre">'period':</span> <span class="pre">True},</span> <span class="pre">'display':</span> <span class="pre">{'Off':</span> <span class="pre">False,</span> <span class="pre">'On':</span> <span class="pre">True},</span> <span class="pre">'folder</span> <span class="pre">out':</span> <span class="pre">'/home/remy/software/TOTO/Toto/docs',</span> <span class="pre">'units':</span> <span class="pre">'m'}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/plugins/wave/wave_spectra.html#WaveAnalysis.wave_spectra"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.plugins.wave.wave_spectra.WaveAnalysis.wave_spectra" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function estimated the 1D wave spectrum (Power Spectral Density) and plot it</p>
+<span class="sig-name descname"><span class="pre">wave_spectra</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sea_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'sea_level'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'detrend':</span> <span class="pre">{'Off':</span> <span class="pre">True,</span> <span class="pre">'constante':</span> <span class="pre">False,</span> <span class="pre">'linear':</span> <span class="pre">False},</span> <span class="pre">'display':</span> <span class="pre">{'Off':</span> <span class="pre">False,</span> <span class="pre">'On':</span> <span class="pre">True},</span> <span class="pre">'folder</span> <span class="pre">out':</span> <span class="pre">'/home/remy/software/TOTO/Toto/docs',</span> <span class="pre">'nfft':</span> <span class="pre">3600,</span> <span class="pre">'overlap':</span> <span class="pre">1800,</span> <span class="pre">'period</span> <span class="pre">(s)</span> <span class="pre">min</span> <span class="pre">and</span> <span class="pre">max</span> <span class="pre">for</span> <span class="pre">plotting':</span> <span class="pre">[10,</span> <span class="pre">1000],</span> <span class="pre">'units':</span> <span class="pre">'m',</span> <span class="pre">'windows':</span> <span class="pre">3600,</span> <span class="pre">'xaxis':</span> <span class="pre">{'frequency':</span> <span class="pre">False,</span> <span class="pre">'period':</span> <span class="pre">True}}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/plugins/wave/wave_spectra.html#WaveAnalysis.wave_spectra"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.plugins.wave.wave_spectra.WaveAnalysis.wave_spectra" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function estimated the 1D wave spectrum (Power Spectral Density)
+and plot it</p>
+<dl>
+<dt>sea_level<span class="classifier">str</span></dt><dd><p>Name of the column which contains the sea level.</p>
+</dd>
+<dt>args: dict</dt><dd><p>Dictionnary with the folowing keys:
+units: str</p>
+<blockquote>
+<div><p>Units of the sea level</p>
+</div></blockquote>
+<dl class="simple">
+<dt>windows: int</dt><dd><p>windows to process in seconds.</p>
+</dd>
+<dt>overlap: int</dt><dd><p>overlap in seconds</p>
+</dd>
+<dt>nfft: int</dt><dd><p>Length of the signal to calculate the Fourier transform of.</p>
+</dd>
+<dt>detrend: str</dt><dd><p><cite>linear</cite>, <cite>constante</cite> or <cite>Off</cite> to detrend the timeseries before doing the analysis</p>
+</dd>
+<dt>period (s) min and max for plotting: list</dt><dd><p>X axis limit in seconds</p>
+</dd>
+<dt>xaxis: str</dt><dd><p>Can be <cite>period</cite> or <cite>frequency</cite> depending what on the type of plot</p>
+</dd>
+<dt>display: str</dt><dd><p><cite>On</cite> or <cite>Off</cite> to display image</p>
+</dd>
+<dt>folder out: str</dt><dd><p>Path to save the output</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">=</span><span class="n">tf</span><span class="p">[</span><span class="s1">&#39;test1&#39;</span><span class="p">][</span><span class="s1">&#39;dataframe&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">WaveAnalysis</span><span class="o">.</span><span class="n">wave_spectra</span><span class="p">(</span><span class="n">sea_level</span><span class="o">=</span><span class="s1">&#39;ssh&#39;</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;windows:3600,&#39;</span><span class="n">nfft</span><span class="s1">&#39;:3600,&#39;</span><span class="n">overlap</span><span class="s1">&#39;:3600)</span>
+<span class="gp">&gt;&gt;&gt; </span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="toto.plugins.wave.wave_spectra.WaveAnalysis.wavelet_analysis">
-<span class="sig-name descname"><span class="pre">wavelet_analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sea_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'sea_level'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'Mother</span> <span class="pre">wavelet':</span> <span class="pre">{'DOG':</span> <span class="pre">False,</span> <span class="pre">'Morlet':</span> <span class="pre">True,</span> <span class="pre">'Paul':</span> <span class="pre">False},</span> <span class="pre">'Number</span> <span class="pre">of</span> <span class="pre">sub-ocatve</span> <span class="pre">per</span> <span class="pre">period</span> <span class="pre">band':</span> <span class="pre">8,</span> <span class="pre">'Wave</span> <span class="pre">period</span> <span class="pre">range</span> <span class="pre">(min</span> <span class="pre">and</span> <span class="pre">max)</span> <span class="pre">(in</span> <span class="pre">s)':</span> <span class="pre">[3,</span> <span class="pre">25],</span> <span class="pre">'display':</span> <span class="pre">{'Off':</span> <span class="pre">False,</span> <span class="pre">'On':</span> <span class="pre">True},</span> <span class="pre">'folder</span> <span class="pre">out':</span> <span class="pre">'/home/remy/software/TOTO/Toto/docs',</span> <span class="pre">'units':</span> <span class="pre">'m'}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/plugins/wave/wave_spectra.html#WaveAnalysis.wavelet_analysis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.plugins.wave.wave_spectra.WaveAnalysis.wavelet_analysis" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">wavelet_analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sea_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'sea_level'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'display':</span> <span class="pre">{'Off':</span> <span class="pre">False,</span> <span class="pre">'On':</span> <span class="pre">True},</span> <span class="pre">'folder</span> <span class="pre">out':</span> <span class="pre">'/home/remy/software/TOTO/Toto/docs',</span> <span class="pre">'mother</span> <span class="pre">wavelet':</span> <span class="pre">{'DOG':</span> <span class="pre">False,</span> <span class="pre">'Morlet':</span> <span class="pre">True,</span> <span class="pre">'Paul':</span> <span class="pre">False},</span> <span class="pre">'number</span> <span class="pre">of</span> <span class="pre">sub-ocatve</span> <span class="pre">per</span> <span class="pre">period</span> <span class="pre">band':</span> <span class="pre">8,</span> <span class="pre">'units':</span> <span class="pre">'m',</span> <span class="pre">'wave</span> <span class="pre">period</span> <span class="pre">range</span> <span class="pre">(min</span> <span class="pre">and</span> <span class="pre">max)</span> <span class="pre">(in</span> <span class="pre">s)':</span> <span class="pre">[3,</span> <span class="pre">25]}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/plugins/wave/wave_spectra.html#WaveAnalysis.wavelet_analysis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.plugins.wave.wave_spectra.WaveAnalysis.wavelet_analysis" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function estimates the wavelet power spectrum of a time series, as
 well as the scaled-averaged wavelet power time series within a specific
 period band. The code is based on the wavelet toolbox from Torrence and
 Compo
 See <a class="reference external" href="https://paos.colorado.edu/research/wavelets/software.html">https://paos.colorado.edu/research/wavelets/software.html</a></p>
+<dl>
+<dt>sea_level<span class="classifier">str</span></dt><dd><p>Name of the column which contains the sea level.</p>
+</dd>
+<dt>args: dict</dt><dd><p>Dictionnary with the folowing keys:
+units: str</p>
+<blockquote>
+<div><p>Units of the sea level</p>
+</div></blockquote>
+<dl class="simple">
+<dt>mother wavelet: str</dt><dd><p>Can be <cite>Morlet</cite>,`Paul` or <cite>DOG</cite></p>
+</dd>
+<dt>wave period range (min and max) (in s): list</dt><dd><p>Calulating wave within this Wave period</p>
+</dd>
+<dt>number of sub-ocatve per period band: int</dt><dd><p>Number of sub-ocatve per period band</p>
+</dd>
+<dt>display: str</dt><dd><p><cite>On</cite> or <cite>Off</cite> to display image</p>
+</dd>
+<dt>folder out: str</dt><dd><p>Path to save the output</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">=</span><span class="n">tf</span><span class="p">[</span><span class="s1">&#39;test1&#39;</span><span class="p">][</span><span class="s1">&#39;dataframe&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">WaveAnalysis</span><span class="o">.</span><span class="n">wavelet_analysis</span><span class="p">(</span><span class="n">sea_level</span><span class="o">=</span><span class="s1">&#39;ssh&#39;</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="p">{})</span>
+<span class="gp">&gt;&gt;&gt; </span>
+</pre></div>
+</div>
 </dd></dl>
 
 </dd></dl>
