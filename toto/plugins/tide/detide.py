@@ -87,11 +87,15 @@ class TideAnalysis:
         """
 
         if hasattr(self.data,'latitude'):
-            latitude=self.data.latitude[0]
-            if not latitude:
-                latitude=args['latitude']
+            try:
+                latitude=self.data.latitude[0]
+                if not latitude:
+                    latitude=args['latitude']
+            except:
+                    latitude=args['latitude']
         else:
             latitude=args['latitude']
+            
         if hasattr(self.data[mag],'short_name'):
             short_name=self.data[mag].short_name
         else:
