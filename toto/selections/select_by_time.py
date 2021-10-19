@@ -40,6 +40,7 @@
 from datetime import datetime,date
 from matplotlib.dates import date2num
 import pandas as pd
+import numpy as np
 
 
 def select_by_time(input_array,args={'minimum time':datetime,'maximum time':datetime,\
@@ -63,7 +64,7 @@ def select_by_time(input_array,args={'minimum time':datetime,'maximum time':date
             mask=all_month==month
             input_array[name+'_'+month_str]=input_array[name].loc[mask]
 
-        del input_array[name]
+        #del input_array[name]
 
     elif method=='Annual':
         name=input_array.name
@@ -75,7 +76,7 @@ def select_by_time(input_array,args={'minimum time':datetime,'maximum time':date
             mask=all_year==year
             input_array[name+'_'+year_str]=input_array[name].loc[mask]
 
-        del input_array[name]
+        #del input_array[name]
 
     elif method=='Seasonal':
         name=input_array.name
@@ -86,12 +87,15 @@ def select_by_time(input_array,args={'minimum time':datetime,'maximum time':date
         seasons.append([6,7,8])
         seasons.append([9,10,11])
 
-        for season in seasons:
+        for isea,season in enumerate(seasons):
             season_str = date(1900, season[0], 1).strftime('%b')+'_to_'+date(1900, season[-1], 1).strftime('%b')
-            mask=(all_month>=season[0]) & (all_month<=season[-1])
+            if isea==0:
+                mask=np.logical_or(all_month>=season[0],all_month<=season[-1])
+            else:
+                mask=(all_month>=season[0]) & (all_month<=season[-1])
             input_array[name+'_'+season_str]=input_array[name].loc[mask]
 
-        del input_array[name]
+        #del input_array[name]
 
     else:
         name=input_array.name
@@ -107,7 +111,7 @@ def select_by_time(input_array,args={'minimum time':datetime,'maximum time':date
        
         input_array[name+'_custom']=input_array[name].loc[mask]
 
-        del input_array[name]
+        #del input_array[name]
 
 
     return input_array
