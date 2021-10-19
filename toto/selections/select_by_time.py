@@ -81,7 +81,7 @@ def select_by_time(input_array,args={'minimum time':datetime,'maximum time':date
         name=input_array.name
         input_array = pd.DataFrame(input_array)
         all_month=input_array.index.month
-        seasons=[12,1,2]
+        seasons=[[12,1,2]]
         seasons.append([3,4,5])
         seasons.append([6,7,8])
         seasons.append([9,10,11])
