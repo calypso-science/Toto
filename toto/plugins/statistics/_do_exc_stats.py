@@ -26,7 +26,7 @@ def do_window_stats(filename,time,mag,time_blocking,method,threshold,duration):
     display_message()
     
 
-def do_exc_stats(filename,time,mag,time_blocking,method,threshold,duration):
+def do_exc_stats(filename,time,mag,time_blocking,method,threshold,duration,mag_name):
 
 
     display_message()   

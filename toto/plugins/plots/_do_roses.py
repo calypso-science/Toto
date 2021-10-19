@@ -116,7 +116,7 @@ def do_roses(time,spd,drr,units,title,spdedg,quadran,time_blocking,fileout,show=
             if i==number_of_real_loops-1:
                 ax.set_yticklabels(quadran)
                 if number_of_real_loops==1:
-                    ax.set_legend(units=units,title=title,loc='lower right')
+                    ax.set_legend(units=units,title=title,loc='best')
                 elif np.logical_and(number_of_loops==5,i==number_of_loops-1):
                     ax.set_legend(units=units,title=title,bbox_to_anchor=(1.75,0.5), loc="center left", borderaxespad=0)
                 else:

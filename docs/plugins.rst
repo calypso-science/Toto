@@ -117,7 +117,6 @@ Wave
 
 •	:doc:`Sea surface elevation to wave statistics <ssh2wave>`
 
-•	:doc:`Wavelet analysis <wavelet_wave>`
 
 Extreme value analysis
 ~~~~~~~~~~~~~~~~~~~~~~

@@ -522,8 +522,8 @@ class Statistics:
         args={'method':{'persistence exceedence':True,'persistence non-exceedence':False,\
         'exceedence':False,'non-exceedence':False},\
         'folder out':os.getcwd(),
-        'Exceedance bins: Min Res Max(optional)':[2,1,22],
-        'Duration Min Res Max':[6,6,72],
+        'exceedance bins: Min Res Max(optional)':[2,1,22],
+        'duration Min Res Max':[6,6,72],
         'time blocking':{'Annual':True,'Seasonal (South hemisphere)':False,'Seasonal (North hemisphere)':False,'Monthly':False},
          }):
         """This function calculates the frequency of occurrence of data:
@@ -541,13 +541,13 @@ class Statistics:
                 Dictionnary with the folowing keys:
                     method: str
                         It can be `exceedence`,`non-exceedence`, `persistence exceedence` or `persistence non-exceedence`
-                    Exceedance bins: Min Res Max(optional): list
+                    exceedance bins: Min Res Max(optional): list
                         Minimum, resolution and maximum value of X axis to use
-                    Duration Min Res Max: list
+                    duration Min Res Max: list
                         Minimum, resolution and maximum duration to use in hours
                     folder out: str
                         Path to save the output
-                    Time blocking: str
+                    time blocking: str
                          if ``Time blocking=='Annual'``,
                             Statistics will be calculated for the whole timeserie
                          if ``Time blocking=='Seasonal (South hemisphere)'``,
@@ -600,8 +600,8 @@ class Statistics:
         analysis=args['method'] 
         filename=os.path.join(args.get('folder out',os.getcwd()),os.path.splitext(self.data.filename)[0]+'_'+analysis.replace(' ','_').replace('-','')+'_stat.xlsx')
         Ydata=self.data[data]
-        Exc=get_increment(Ydata,args['Exceedance bins: Min Res Max(optional)'])
-        duration=get_increment(Ydata,args['Duration Min Res Max'])
+        Exc=get_increment(Ydata,args['exceedance bins: Min Res Max(optional)'])
+        duration=get_increment(Ydata,args['duration Min Res Max'])
         do_exc_stats(filename,self.data.index,Ydata,args['time blocking'],analysis,Exc,duration,data)
 
 
