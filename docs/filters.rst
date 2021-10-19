@@ -32,3 +32,5 @@ The following filters functions are currently available:
 •	:doc:`Moving average <source/toto.filters.moving_average>`
 
 •	:doc:`Spike removal <source/toto.filters.spike_removal>`
+
+•	:doc:`Lanczos filter <source/toto.filters.lanczos_filter>`

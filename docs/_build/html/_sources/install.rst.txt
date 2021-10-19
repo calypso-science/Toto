@@ -7,8 +7,14 @@ Installation:
 =============
 
 Where to get it
---------------------
+---------------
 The source code is currently hosted on GitHub at: https://github.com/calypso-science/Toto
+
+It can be clone by doing:
+.. code:: bash
+	git clone https://github.com/calypso-science/Toto.git
+
+Note: This software works with python > 3 only
 
 Module requirements:
 --------------------
@@ -18,6 +24,14 @@ WAFO
 The PyWafo toolbox need to be installed if you are going to use the Extreme Value Analysis plugins.
 If you are using WINDOWS I recommend using the totoview_nototo.exe as the WAFO toolbox is harder to install.
 To install it please refer to the `PyWafo`_ GitHub page 
+
+Note: A tip to install PYWAFO is to this line a few times. Not sure why but it works.
+
+.. code:: bash
+	python setup.py install
+
+
+
 
 Install from sources
 --------------------

@@ -7,8 +7,16 @@
         The input data.
     window : int
         window in hour, a good window is 40 h window of hourly data
-    Type : {'lanczos lowpas 1st order', 'lanczos lowpas 2nd order'}, optional
-        The type of lowpass filter, first or second order
+    type : str
+        Can be `lanczos lowpas 1st order`, `lanczos lowpas 2nd order` depending on the order.
+
+
+    Examples:
+    ~~~~~~~~~
+
+    >>> df['filtered']=lanczos_filter.lanczos_filter(df['signal'].copy(),args={'window':100,'Type':'lanczos lowpas 1st order'})
+    >>> 
+
 
 """
 
@@ -19,12 +27,12 @@ import numpy as np
 
 
 def lanczos_filter(input_array,args={'window':int(),\
-                                    'Type':{'lanczos lowpas 1st order':True,
+                                    'type':{'lanczos lowpas 1st order':True,
                                             'lanczos lowpas 2nd order':False}
                                     }):
 
     window=args['window']
-    filter_type=args['Type']
+    filter_type=args.get('type','lanczos lowpas 1st order')
     mean = input_array.mean()
     delt=(input_array.index[1]-input_array.index[0]).total_seconds()/3600 # in hours
     

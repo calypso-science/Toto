@@ -78,6 +78,7 @@
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span><span class="n">date</span>
 <span class="kn">from</span> <span class="nn">matplotlib.dates</span> <span class="kn">import</span> <span class="n">date2num</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 
 <div class="viewcode-block" id="select_by_time"><a class="viewcode-back" href="../../../source/toto.selections.select_by_time.html#toto.selections.select_by_time.select_by_time">[docs]</a><span class="k">def</span> <span class="nf">select_by_time</span><span class="p">(</span><span class="n">input_array</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;minimum time&#39;</span><span class="p">:</span><span class="n">datetime</span><span class="p">,</span><span class="s1">&#39;maximum time&#39;</span><span class="p">:</span><span class="n">datetime</span><span class="p">,</span>\
@@ -101,7 +102,7 @@
             <span class="n">mask</span><span class="o">=</span><span class="n">all_month</span><span class="o">==</span><span class="n">month</span>
             <span class="n">input_array</span><span class="p">[</span><span class="n">name</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">month_str</span><span class="p">]</span><span class="o">=</span><span class="n">input_array</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
 
-        <span class="k">del</span> <span class="n">input_array</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+        <span class="c1">#del input_array[name]</span>
 
     <span class="k">elif</span> <span class="n">method</span><span class="o">==</span><span class="s1">&#39;Annual&#39;</span><span class="p">:</span>
         <span class="n">name</span><span class="o">=</span><span class="n">input_array</span><span class="o">.</span><span class="n">name</span>
@@ -113,23 +114,26 @@
             <span class="n">mask</span><span class="o">=</span><span class="n">all_year</span><span class="o">==</span><span class="n">year</span>
             <span class="n">input_array</span><span class="p">[</span><span class="n">name</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">year_str</span><span class="p">]</span><span class="o">=</span><span class="n">input_array</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
 
-        <span class="k">del</span> <span class="n">input_array</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+        <span class="c1">#del input_array[name]</span>
 
     <span class="k">elif</span> <span class="n">method</span><span class="o">==</span><span class="s1">&#39;Seasonal&#39;</span><span class="p">:</span>
         <span class="n">name</span><span class="o">=</span><span class="n">input_array</span><span class="o">.</span><span class="n">name</span>
         <span class="n">input_array</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">input_array</span><span class="p">)</span>
         <span class="n">all_month</span><span class="o">=</span><span class="n">input_array</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">month</span>
-        <span class="n">seasons</span><span class="o">=</span><span class="p">[</span><span class="mi">12</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">seasons</span><span class="o">=</span><span class="p">[[</span><span class="mi">12</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]]</span>
         <span class="n">seasons</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">])</span>
         <span class="n">seasons</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">])</span>
         <span class="n">seasons</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="mi">9</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">11</span><span class="p">])</span>
 
-        <span class="k">for</span> <span class="n">season</span> <span class="ow">in</span> <span class="n">seasons</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">isea</span><span class="p">,</span><span class="n">season</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">seasons</span><span class="p">):</span>
             <span class="n">season_str</span> <span class="o">=</span> <span class="n">date</span><span class="p">(</span><span class="mi">1900</span><span class="p">,</span> <span class="n">season</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%b&#39;</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;_to_&#39;</span><span class="o">+</span><span class="n">date</span><span class="p">(</span><span class="mi">1900</span><span class="p">,</span> <span class="n">season</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%b&#39;</span><span class="p">)</span>
-            <span class="n">mask</span><span class="o">=</span><span class="p">(</span><span class="n">all_month</span><span class="o">&gt;=</span><span class="n">season</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">all_month</span><span class="o">&lt;=</span><span class="n">season</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">isea</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+                <span class="n">mask</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">logical_or</span><span class="p">(</span><span class="n">all_month</span><span class="o">&gt;=</span><span class="n">season</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">all_month</span><span class="o">&lt;=</span><span class="n">season</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">mask</span><span class="o">=</span><span class="p">(</span><span class="n">all_month</span><span class="o">&gt;=</span><span class="n">season</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">all_month</span><span class="o">&lt;=</span><span class="n">season</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
             <span class="n">input_array</span><span class="p">[</span><span class="n">name</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">season_str</span><span class="p">]</span><span class="o">=</span><span class="n">input_array</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
 
-        <span class="k">del</span> <span class="n">input_array</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+        <span class="c1">#del input_array[name]</span>
 
     <span class="k">else</span><span class="p">:</span>
         <span class="n">name</span><span class="o">=</span><span class="n">input_array</span><span class="o">.</span><span class="n">name</span>
@@ -145,7 +149,7 @@
        
         <span class="n">input_array</span><span class="p">[</span><span class="n">name</span><span class="o">+</span><span class="s1">&#39;_custom&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">input_array</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
 
-        <span class="k">del</span> <span class="n">input_array</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+        <span class="c1">#del input_array[name]</span>
 
 
     <span class="k">return</span> <span class="n">input_array</span></div>

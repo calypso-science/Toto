@@ -71,64 +71,130 @@
     <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Extreme"><a class="viewcode-back" href="../../../../source/toto.plugins.extreme.do_extreme.html#toto.plugins.extreme.do_extreme.Extreme">[docs]</a><span class="nd">@pd</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">extensions</span><span class="o">.</span><span class="n">register_dataframe_accessor</span><span class="p">(</span><span class="s2">&quot;Extreme&quot;</span><span class="p">)</span>
-
-
-
 <span class="k">class</span> <span class="nc">Extreme</span><span class="p">(</span><span class="n">ExtremeBase</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pandas_obj</span><span class="p">):</span>
          <span class="nb">super</span><span class="p">(</span><span class="n">Extreme</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">pandas_obj</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Extreme.distribution_shape"><a class="viewcode-back" href="../../../../source/toto.plugins.extreme.do_extreme.html#toto.plugins.extreme.do_extreme.Extreme.distribution_shape">[docs]</a>    <span class="k">def</span> <span class="nf">distribution_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">magnitude</span><span class="o">=</span><span class="s1">&#39;magnitude&#39;</span><span class="p">,</span><span class="n">direction_optional</span><span class="o">=</span><span class="s1">&#39;direction_optional&#39;</span><span class="p">,</span>\
-        <span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Fitting distribution&#39;</span><span class="p">:{</span><span class="s1">&#39;Weibull&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Gumbel&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;GPD&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;GEV&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
-         <span class="s1">&#39;Method&#39;</span><span class="p">:{</span><span class="s1">&#39;pkd&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;pwm&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;mom&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;ml&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">},</span>
+<div class="viewcode-block" id="Extreme.distribution_shape"><a class="viewcode-back" href="../../../../source/toto.plugins.extreme.do_extreme.html#toto.plugins.extreme.do_extreme.Extreme.distribution_shape">[docs]</a>    <span class="k">def</span> <span class="nf">distribution_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">mag</span><span class="o">=</span><span class="s1">&#39;magnitude&#39;</span><span class="p">,</span><span class="n">drr</span><span class="o">=</span><span class="s1">&#39;direction&#39;</span><span class="p">,</span>\
+        <span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;fitting distribution&#39;</span><span class="p">:{</span><span class="s1">&#39;Weibull&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Gumbel&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;GPD&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;GEV&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
+         <span class="s1">&#39;method&#39;</span><span class="p">:{</span><span class="s1">&#39;pkd&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;pwm&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;mom&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;ml&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">},</span>
          <span class="s1">&#39;threshold type&#39;</span><span class="p">:{</span><span class="s1">&#39;percentile&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;value&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
          <span class="s1">&#39;threshold value&#39;</span><span class="p">:</span><span class="mf">95.0</span><span class="p">,</span>
-         <span class="s1">&#39;Directional&#39;</span><span class="p">:{</span><span class="s1">&#39;On&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Off&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
-         <span class="s1">&#39;Minimum number of peaks over threshold&#39;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span>
-         <span class="s1">&#39;Minimum time interval between peaks (h)&#39;</span><span class="p">:</span><span class="mf">24.0</span><span class="p">,</span>
-         <span class="s1">&#39;Direction binning&#39;</span><span class="p">:{</span><span class="s1">&#39;centered&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;not-centered&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
-         <span class="s1">&#39;Direction interval&#39;</span><span class="p">:</span> <span class="mf">45.</span><span class="p">,</span>
-         <span class="s1">&#39;Time blocking&#39;</span><span class="p">:{</span><span class="s1">&#39;Annual&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Seasonal (South hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Seasonal (North hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Monthly&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
-         <span class="s1">&#39;Display peaks&#39;</span><span class="p">:{</span><span class="s1">&#39;On&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Off&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
-         <span class="s1">&#39;Display CDFs&#39;</span><span class="p">:{</span><span class="s1">&#39;On&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Off&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
+         <span class="s1">&#39;directional&#39;</span><span class="p">:{</span><span class="s1">&#39;On&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Off&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
+         <span class="s1">&#39;minimum number of peaks over threshold&#39;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span>
+         <span class="s1">&#39;minimum time interval between peaks (h)&#39;</span><span class="p">:</span><span class="mf">24.0</span><span class="p">,</span>
+         <span class="s1">&#39;direction binning&#39;</span><span class="p">:{</span><span class="s1">&#39;centered&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;not-centered&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
+         <span class="s1">&#39;direction interval&#39;</span><span class="p">:</span> <span class="mf">45.</span><span class="p">,</span>
+         <span class="s1">&#39;time blocking&#39;</span><span class="p">:{</span><span class="s1">&#39;Annual&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Seasonal (South hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Seasonal (North hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Monthly&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
+         <span class="s1">&#39;display peaks&#39;</span><span class="p">:{</span><span class="s1">&#39;On&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Off&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
+         <span class="s1">&#39;display CDFs&#39;</span><span class="p">:{</span><span class="s1">&#39;On&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Off&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
          <span class="s1">&#39;folder out&#39;</span><span class="p">:</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
          <span class="p">}):</span>
 
         <span class="sd">&quot;&quot;&quot;This function is used for distribution analysis of any type.</span>
-<span class="sd">        It generates return the shape and scale of a distribution.</span>
-<span class="sd">        Inputs can be:</span>
-<span class="sd">         -only magnitude (omni-directional extreme value ananlysis)</span>
-<span class="sd">         -magnitute and direction (directional ARI with omni or directional POT)_</span>
+<span class="sd">           It generates return the shape and scale of a distribution.</span>
+<span class="sd">           Inputs can be:</span>
+<span class="sd">                -only magnitude (omni-directional extreme value ananlysis)</span>
+<span class="sd">                -magnitute and direction (directional ARI with omni or directional POT)_</span>
+<span class="sd">            </span>
+<span class="sd">            Parameters</span>
+<span class="sd">            ~~~~~~~~~~</span>
+
+<span class="sd">            mag : str</span>
+<span class="sd">                Name of the column from which to get stats.</span>
+<span class="sd">            drr : str optionnal</span>
+<span class="sd">                Column name representing the directions.</span>
+<span class="sd">            args: dict</span>
+<span class="sd">                Dictionnary with the folowing keys:</span>
+<span class="sd">                    fitting distribution: str</span>
+<span class="sd">                        Name of the fit to use, can be: `Weibull`, `Gumbel`, `GPD` or `GEV`.</span>
+<span class="sd">                    method: str</span>
+<span class="sd">                        Name of the estimation method, can be:</span>
+<span class="sd">                        `pkd`: Pickands’ estimator.</span>
+<span class="sd">                        `pwm`: PWM-method</span>
+<span class="sd">                        `mom`: Moment method</span>
+<span class="sd">                        `ml` : Maximum Likelihood method</span>
+<span class="sd">                    threshold type: str</span>
+<span class="sd">                        Method to find the peaks:</span>
+<span class="sd">                        `percentile`: using the th percentile</span>
+<span class="sd">                        `value`: using a treshold value</span>
+<span class="sd">                    threshold value: float</span>
+<span class="sd">                        Either a absolute value or percentile value depending on the `threshold type`</span>
+<span class="sd">                    directional: str</span>
+<span class="sd">                        Can be `On` or `Off`, to calculate stats for each direction.</span>
+<span class="sd">                        Needs `drr` variable</span>
+<span class="sd">                    direction binning: str</span>
+<span class="sd">                        Can be `centered` or `not-centered` depending if the directionnal are centered over 0</span>
+<span class="sd">                    direction interval: int</span>
+<span class="sd">                        Dirctionnal interval for the bins in degrees</span>
+<span class="sd">                    minimum number of peaks over threshold: int</span>
+<span class="sd">                    minimum time interval between peaks (h): int</span>
+<span class="sd">                    display peaks: str</span>
+<span class="sd">                        `On` or `Off` to display peaks over threshold</span>
+<span class="sd">                    display CDFs: str</span>
+<span class="sd">                        `On` or `Off` to display CFDs image</span>
+<span class="sd">                    folder out: str</span>
+<span class="sd">                        Path to save the output</span>
+<span class="sd">                    time blocking: str</span>
+<span class="sd">                         if ``Time blocking==&#39;Annual&#39;``,</span>
+<span class="sd">                            Statistics will be calculated for the whole timeserie</span>
+<span class="sd">                         if ``Time blocking==&#39;Seasonal (South hemisphere)&#39;``,</span>
+<span class="sd">                            Statistics will be calculated for each South hemisphere seasons</span>
+<span class="sd">                         if ``Time blocking==&#39;Seasonal (North hemisphere)&#39;``,</span>
+<span class="sd">                            Statistics will be calculated for each North hemisphere seasons</span>
+<span class="sd">                         if ``Time blocking==&#39;Monthly&#39;``,</span>
+<span class="sd">                            Statistics will be calculated for each 12 months</span>
+
+<span class="sd">            Examples:</span>
+<span class="sd">            ~~~~~~~~~</span>
+<span class="sd">            &gt;&gt;&gt; df=tf[&#39;test1&#39;][&#39;dataframe&#39;].Extreme.distribution_shape(mag=&#39;U&#39;,drr=&#39;drr&#39;,args={&#39;directional&#39;:&#39;On&#39;,Time blocking&#39;:&#39;Annual&#39;})</span>
+<span class="sd">            &gt;&gt;&gt; </span>
+
+<span class="sd">            Outputs:</span>
+<span class="sd">            ~~~~~~~~</span>
+<span class="sd">            .. list-table:: Distribution shape</span>
+<span class="sd">               :widths: 25 25 25</span>
+<span class="sd">               :header-rows: 1</span>
+
+<span class="sd">               * - Filename</span>
+<span class="sd">                 - Scale</span>
+<span class="sd">                 - Shape</span>
+<span class="sd">               * - </span>
+<span class="sd">                 - </span>
+<span class="sd">                 - </span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="c1"># variabl check</span>
-        <span class="k">if</span> <span class="n">direction_optional</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
-            <span class="n">direction_optional</span><span class="o">=</span><span class="kc">None</span>
 
-        <span class="n">folderout</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;folder out&#39;</span><span class="p">])</span>
+        <span class="c1"># variabl check</span>
+        <span class="k">if</span> <span class="n">drr</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+            <span class="n">drr</span><span class="o">=</span><span class="kc">None</span>
+
+        <span class="n">folderout</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;folder out&#39;</span><span class="p">,</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()))</span>
 
         <span class="c1">## Inputs</span>
-        <span class="n">fitting</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Fitting distribution&#39;</span><span class="p">]</span>
-        <span class="n">method</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Method&#39;</span><span class="p">]</span>
-        <span class="n">min_peak</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Minimum number of peaks over threshold&#39;</span><span class="p">]</span>      
+        <span class="n">fitting</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;fitting distribution&#39;</span><span class="p">,</span><span class="s1">&#39;Weibull&#39;</span><span class="p">)</span>
+        <span class="n">method</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;method&#39;</span><span class="p">,</span><span class="s1">&#39;ml&#39;</span><span class="p">)</span>
+        <span class="n">min_peak</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;minimum number of peaks over threshold&#39;</span><span class="p">]</span>      
 
-        <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;Directional&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;On&#39;</span><span class="p">:</span>
-            <span class="n">drr_interval</span><span class="o">=</span><span class="n">dir_interval</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Direction interval&#39;</span><span class="p">],</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Direction binning&#39;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;directional&#39;</span><span class="p">,</span><span class="s1">&#39;Off&#39;</span><span class="p">)</span><span class="o">==</span><span class="s1">&#39;On&#39;</span><span class="p">:</span>
+            <span class="n">drr_interval</span><span class="o">=</span><span class="n">dir_interval</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;direction interval&#39;</span><span class="p">,</span><span class="mi">45</span><span class="p">),</span>
+                <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;direction binning&#39;</span><span class="p">,</span><span class="s1">&#39;centered&#39;</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">drr_interval</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">360</span><span class="p">]</span>
 
-        <span class="n">time_blocking</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Time blocking&#39;</span><span class="p">]</span>
+        <span class="n">time_blocking</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;time blocking&#39;</span><span class="p">,</span><span class="s1">&#39;Annual&#39;</span><span class="p">)</span>
         <span class="n">pks_opt</span><span class="o">=</span><span class="p">{}</span>
-        <span class="n">thresh</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;threshold value&#39;</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;threshold type&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;percentile&#39;</span><span class="p">:</span>
-            <span class="n">sort_data</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dfout</span><span class="p">[</span><span class="n">magnitude</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+        <span class="n">thresh</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;threshold value&#39;</span><span class="p">,</span><span class="mi">95</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;threshold type&#39;</span><span class="p">,</span><span class="s1">&#39;percentile&#39;</span><span class="p">)</span><span class="o">==</span><span class="s1">&#39;percentile&#39;</span><span class="p">:</span>
+            <span class="n">sort_data</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dfout</span><span class="p">[</span><span class="n">mag</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
             <span class="n">pks_opt</span><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">sort_data</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sort_data</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">thresh</span><span class="o">/</span><span class="mi">100</span><span class="p">)))]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">pks_opt</span><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">thresh</span>
 
-        <span class="n">pks_opt</span><span class="p">[</span><span class="s1">&#39;distance&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Minimum time interval between peaks (h)&#39;</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sint</span><span class="o">/</span><span class="mi">3600</span><span class="p">)</span>
+        <span class="n">pks_opt</span><span class="p">[</span><span class="s1">&#39;distance&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;minimum time interval between peaks (h)&#39;</span><span class="p">,</span><span class="mi">24</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sint</span><span class="o">/</span><span class="mi">3600</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_get_peaks</span><span class="p">(</span><span class="n">magnitude</span><span class="p">,</span><span class="n">drr</span><span class="o">=</span><span class="n">direction_optional</span><span class="p">,</span><span class="n">directional_interval</span><span class="o">=</span><span class="n">drr_interval</span><span class="p">,</span><span class="n">time_blocking</span><span class="o">=</span><span class="n">time_blocking</span><span class="p">,</span><span class="n">peaks_options</span><span class="o">=</span><span class="n">pks_opt</span><span class="p">,</span><span class="n">min_peak</span><span class="o">=</span><span class="n">min_peak</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_get_peaks</span><span class="p">(</span><span class="n">mag</span><span class="p">,</span><span class="n">drr</span><span class="o">=</span><span class="n">drr</span><span class="p">,</span><span class="n">directional_interval</span><span class="o">=</span><span class="n">drr_interval</span><span class="p">,</span>
+            <span class="n">time_blocking</span><span class="o">=</span><span class="n">time_blocking</span><span class="p">,</span><span class="n">peaks_options</span><span class="o">=</span><span class="n">pks_opt</span><span class="p">,</span><span class="n">min_peak</span><span class="o">=</span><span class="n">min_peak</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="s1">&#39;Omni&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">peaks_index</span><span class="p">[</span><span class="s1">&#39;Annual&#39;</span><span class="p">]:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;No Peak found !!&#39;</span><span class="p">)</span>
@@ -136,57 +202,137 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_clean_peak</span><span class="p">()</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_get_shape</span><span class="p">(</span><span class="n">magnitude</span><span class="p">,</span><span class="n">fitting</span><span class="p">,</span><span class="n">method</span><span class="p">,</span><span class="n">time_blocking</span><span class="p">,)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_get_shape</span><span class="p">(</span><span class="n">mag</span><span class="p">,</span><span class="n">fitting</span><span class="p">,</span><span class="n">method</span><span class="p">,</span><span class="n">time_blocking</span><span class="p">,)</span>
 
-        <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;Display peaks&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;On&#39;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_plot_peaks</span><span class="p">(</span><span class="n">magnitude</span><span class="p">,</span><span class="n">display</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">folder</span><span class="o">=</span><span class="n">folderout</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;display peaks&#39;</span><span class="p">,</span><span class="s1">&#39;Off&#39;</span><span class="p">)</span><span class="o">==</span><span class="s1">&#39;On&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_plot_peaks</span><span class="p">(</span><span class="n">mag</span><span class="p">,</span><span class="n">display</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">folder</span><span class="o">=</span><span class="n">folderout</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_plot_peaks</span><span class="p">(</span><span class="n">magnitude</span><span class="p">,</span><span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">folder</span><span class="o">=</span><span class="n">folderout</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_plot_peaks</span><span class="p">(</span><span class="n">mag</span><span class="p">,</span><span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">folder</span><span class="o">=</span><span class="n">folderout</span><span class="p">)</span>
 
         <span class="n">all_dirs</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">peaks_index</span><span class="p">[</span><span class="s1">&#39;Annual&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-        <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;Display CDFs&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;On&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;display CDFs&#39;</span><span class="p">,</span><span class="s1">&#39;Off&#39;</span><span class="p">)</span><span class="o">==</span><span class="s1">&#39;On&#39;</span><span class="p">:</span>
             <span class="n">display</span><span class="o">=</span><span class="kc">True</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">display</span><span class="o">=</span><span class="kc">False</span>
 
-        <span class="k">for</span> <span class="n">all_dir</span> <span class="ow">in</span> <span class="n">all_dirs</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_plot_cdfs</span><span class="p">(</span><span class="n">magnitude</span><span class="p">,</span><span class="n">drr</span><span class="o">=</span><span class="n">all_dir</span><span class="p">,</span><span class="n">display</span><span class="o">=</span><span class="n">display</span><span class="p">,</span><span class="n">folder</span><span class="o">=</span><span class="n">folderout</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_export_shape_as_xls</span><span class="p">([</span><span class="n">magnitude</span><span class="p">],</span><span class="n">fitting</span><span class="p">,</span><span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folderout</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">+</span><span class="s1">&#39;Shape.xlsx&#39;</span><span class="p">))</span></div>
+        <span class="k">for</span> <span class="n">all_dir</span> <span class="ow">in</span> <span class="n">all_dirs</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_plot_cdfs</span><span class="p">(</span><span class="n">mag</span><span class="p">,</span><span class="n">drr</span><span class="o">=</span><span class="n">all_dir</span><span class="p">,</span><span class="n">display</span><span class="o">=</span><span class="n">display</span><span class="p">,</span><span class="n">folder</span><span class="o">=</span><span class="n">folderout</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_export_shape_as_xls</span><span class="p">([</span><span class="n">mag</span><span class="p">],</span><span class="n">fitting</span><span class="p">,</span>
+            <span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folderout</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">+</span><span class="s1">&#39;Shape.xlsx&#39;</span><span class="p">))</span></div>
+
 
 <div class="viewcode-block" id="Extreme.extreme_water_elevation"><a class="viewcode-back" href="../../../../source/toto.plugins.extreme.do_extreme.html#toto.plugins.extreme.do_extreme.Extreme.extreme_water_elevation">[docs]</a>    <span class="k">def</span> <span class="nf">extreme_water_elevation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">tide</span><span class="o">=</span><span class="s1">&#39;tide&#39;</span><span class="p">,</span><span class="n">surge</span><span class="o">=</span><span class="s1">&#39;surge&#39;</span><span class="p">,</span>
-        <span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Fitting distribution&#39;</span><span class="p">:{</span><span class="s1">&#39;Weibull&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Gumbel&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;GPD&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;GEV&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
-         <span class="s1">&#39;Method&#39;</span><span class="p">:{</span><span class="s1">&#39;pkd&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;pwm&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;mom&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;ml&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">},</span>
-         <span class="s1">&#39;Surge&#39;</span><span class="p">:{</span><span class="s1">&#39;Positive only&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Negative only&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Both (neg and pos)&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">},</span>
-         <span class="s1">&#39;Return period&#39;</span><span class="p">:[</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">25</span><span class="p">,</span><span class="mi">50</span><span class="p">,</span><span class="mi">100</span><span class="p">],</span>
+        <span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;fitting distribution&#39;</span><span class="p">:{</span><span class="s1">&#39;Weibull&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Gumbel&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;GPD&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;GEV&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
+         <span class="s1">&#39;method&#39;</span><span class="p">:{</span><span class="s1">&#39;pkd&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;pwm&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;mom&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;ml&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">},</span>
+         <span class="s1">&#39;surge&#39;</span><span class="p">:{</span><span class="s1">&#39;Positive only&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Negative only&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Both (neg and pos)&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">},</span>
+         <span class="s1">&#39;return period&#39;</span><span class="p">:[</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">25</span><span class="p">,</span><span class="mi">50</span><span class="p">,</span><span class="mi">100</span><span class="p">],</span>
          <span class="s1">&#39;threshold type&#39;</span><span class="p">:{</span><span class="s1">&#39;percentile&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;value&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
          <span class="s1">&#39;threshold value&#39;</span><span class="p">:</span><span class="mf">95.0</span><span class="p">,</span>
-         <span class="s1">&#39;Minimum number of peaks over threshold&#39;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span>
-         <span class="s1">&#39;Minimum time interval between peaks (h)&#39;</span><span class="p">:</span><span class="mf">24.0</span><span class="p">,</span>
-         <span class="s1">&#39;Time blocking&#39;</span><span class="p">:{</span><span class="s1">&#39;Annual&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Seasonal (South hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Seasonal (North hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Monthly&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
-         <span class="s1">&#39;Display peaks&#39;</span><span class="p">:{</span><span class="s1">&#39;On&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Off&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
-         <span class="s1">&#39;Display CDFs&#39;</span><span class="p">:{</span><span class="s1">&#39;On&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Off&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
+         <span class="s1">&#39;minimum number of peaks over threshold&#39;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span>
+         <span class="s1">&#39;minimum time interval between peaks (h)&#39;</span><span class="p">:</span><span class="mf">24.0</span><span class="p">,</span>
+         <span class="s1">&#39;time blocking&#39;</span><span class="p">:{</span><span class="s1">&#39;Annual&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Seasonal (South hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Seasonal (North hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Monthly&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
+         <span class="s1">&#39;display peaks&#39;</span><span class="p">:{</span><span class="s1">&#39;On&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Off&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
+         <span class="s1">&#39;display CDFs&#39;</span><span class="p">:{</span><span class="s1">&#39;On&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Off&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
          <span class="s1">&#39;folder out&#39;</span><span class="p">:</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
          <span class="p">}):</span>
 
-
-        <span class="sd">&quot;&quot;&quot;This function is used for extreme value analysis of total still water </span>
+        <span class="sd">&quot;&quot;&quot; This function is used for extreme value analysis of total still water </span>
 <span class="sd">            elevation (surge + tide).</span>
 <span class="sd">            Inputs must be surge and tide level (in the same unit).</span>
 <span class="sd">            The method complies with ISO recommendations:</span>
 <span class="sd">            return period values are estimated by fitting a distribution</span>
 <span class="sd">            to the empirical distribution obtained by combining the</span>
 <span class="sd">            joint frequency distribution of tidal and surge elevations.</span>
+
+<span class="sd">            Parameters</span>
+<span class="sd">            ~~~~~~~~~~</span>
+
+<span class="sd">            tide: str</span>
+<span class="sd">                Column name representing the tide.</span>
+<span class="sd">            surge: str optionnal</span>
+<span class="sd">                Column name representing the surge.</span>
+<span class="sd">            args: dict</span>
+<span class="sd">                Dictionnary with the folowing keys:</span>
+<span class="sd">                    fitting distribution: str</span>
+<span class="sd">                        Name of the fit to use, can be: `Weibull`, `Gumbel`, `GPD` or `GEV`.</span>
+<span class="sd">                    method: str</span>
+<span class="sd">                        Name of the estimation method, can be:</span>
+<span class="sd">                        `pkd`: Pickands’ estimator.</span>
+<span class="sd">                        `pwm`: PWM-method</span>
+<span class="sd">                        `mom`: Moment method</span>
+<span class="sd">                        `ml` : Maximum Likelihood method</span>
+<span class="sd">                    surge: str</span>
+<span class="sd">                        Can be:</span>
+<span class="sd">                        `Positive only`: use only positive surge</span>
+<span class="sd">                        `Negative only`:use only negative surge</span>
+<span class="sd">                        `Both (neg and pos)`: use both</span>
+<span class="sd">                    return period: list</span>
+<span class="sd">                        Return period values.</span>
+<span class="sd">                    threshold type: str</span>
+<span class="sd">                        Method to find the peaks:</span>
+<span class="sd">                        `percentile`: using the th percentile</span>
+<span class="sd">                        `value`: using a treshold value</span>
+<span class="sd">                    threshold value: float</span>
+<span class="sd">                        Either a absolute value or percentile value depending on the `threshold type`</span>
+<span class="sd">                    minimum number of peaks over threshold: int</span>
+<span class="sd">                    minimum time interval between peaks (h): int</span>
+<span class="sd">                    display peaks: str</span>
+<span class="sd">                        `On` or `Off` to display peaks over threshold</span>
+<span class="sd">                    display CDFs: str</span>
+<span class="sd">                        `On` or `Off` to display CFDs image</span>
+<span class="sd">                    folder out: str</span>
+<span class="sd">                        Path to save the output</span>
+<span class="sd">                    time blocking: str</span>
+<span class="sd">                         if ``Time blocking==&#39;Annual&#39;``,</span>
+<span class="sd">                            Statistics will be calculated for the whole timeserie</span>
+<span class="sd">                         if ``Time blocking==&#39;Seasonal (South hemisphere)&#39;``,</span>
+<span class="sd">                            Statistics will be calculated for each South hemisphere seasons</span>
+<span class="sd">                         if ``Time blocking==&#39;Seasonal (North hemisphere)&#39;``,</span>
+<span class="sd">                            Statistics will be calculated for each North hemisphere seasons</span>
+<span class="sd">                         if ``Time blocking==&#39;Monthly&#39;``,</span>
+<span class="sd">                            Statistics will be calculated for each 12 months</span>
+
+<span class="sd">            Examples:</span>
+<span class="sd">            ~~~~~~~~~</span>
+<span class="sd">            &gt;&gt;&gt; df=tf[&#39;test1&#39;][&#39;dataframe&#39;].Extreme.extreme_water_elevation(tide=&#39;Et&#39;,surge=&#39;Eo&#39;,args={&#39;Time blocking&#39;:&#39;Annual&#39;})</span>
+<span class="sd">            &gt;&gt;&gt; </span>
+
+<span class="sd">            Outputs:</span>
+<span class="sd">            ~~~~~~~~</span>
+<span class="sd">            .. list-table:: Extreme water elevation</span>
+<span class="sd">               :widths: 25 25</span>
+<span class="sd">               :header-rows: 1</span>
+
+<span class="sd">               * - positive surge</span>
+<span class="sd">                 - Omni</span>
+<span class="sd">               * - 1</span>
+<span class="sd">                 - </span>
+<span class="sd">               * - 10</span>
+<span class="sd">                 - </span>
+<span class="sd">               * - 25</span>
+<span class="sd">                 - </span>
+<span class="sd">               * -</span>
+<span class="sd">                 -</span>
+<span class="sd">               * - negative surge</span>
+<span class="sd">                 - Omni</span>
+<span class="sd">               * - 1</span>
+<span class="sd">                 - </span>
+<span class="sd">               * - 10</span>
+<span class="sd">                 - </span>
+<span class="sd">               * - 25</span>
+<span class="sd">                 - </span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">dfout</span><span class="p">[</span><span class="s1">&#39;positive_surge&#39;</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">surge</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dfout</span><span class="p">[</span><span class="s1">&#39;negative_surge&#39;</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">surge</span><span class="p">]</span><span class="o">*-</span><span class="mf">1.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dfout</span><span class="p">[</span><span class="s1">&#39;positive_tide&#39;</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">tide</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dfout</span><span class="p">[</span><span class="s1">&#39;negative_tide&#39;</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">tide</span><span class="p">]</span><span class="o">*-</span><span class="mf">1.</span>
-        <span class="n">folderout</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;folder out&#39;</span><span class="p">])</span>
+        <span class="n">folderout</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;folder out&#39;</span><span class="p">,</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()))</span>
 
         <span class="c1">## Inputs</span>
-        <span class="n">surge_mode</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Surge&#39;</span><span class="p">]</span>
+        <span class="n">surge_mode</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;surge&#39;</span><span class="p">,</span><span class="s1">&#39;Both (neg and pos)&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">surge_mode</span><span class="o">==</span><span class="s1">&#39;Both (neg and pos)&#39;</span><span class="p">:</span>
             <span class="n">surges</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;positive_&#39;</span><span class="p">,</span><span class="s1">&#39;negative_&#39;</span><span class="p">]</span>
         <span class="k">elif</span> <span class="n">surge_mode</span><span class="o">==</span><span class="s1">&#39;Positive only&#39;</span><span class="p">:</span>
@@ -195,47 +341,49 @@
             <span class="n">surges</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;negative_&#39;</span><span class="p">]</span>
 
 
-        <span class="n">fitting</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Fitting distribution&#39;</span><span class="p">]</span>
-        <span class="n">method</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Method&#39;</span><span class="p">]</span>
-        <span class="n">min_peak</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Minimum number of peaks over threshold&#39;</span><span class="p">]</span>
-        <span class="n">rv</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Return period&#39;</span><span class="p">]</span>
+        <span class="n">fitting</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;fitting distribution&#39;</span><span class="p">,</span><span class="s1">&#39;Weibull&#39;</span><span class="p">)</span>
+        <span class="n">method</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;method&#39;</span><span class="p">,</span><span class="s1">&#39;ml&#39;</span><span class="p">)</span>
+        <span class="n">min_peak</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;minimum number of peaks over threshold&#39;</span><span class="p">,</span><span class="mi">30</span><span class="p">)</span>
+        <span class="n">rv</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;return period&#39;</span><span class="p">,[</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">25</span><span class="p">,</span><span class="mi">50</span><span class="p">,</span><span class="mi">100</span><span class="p">])</span>
         <span class="k">if</span> <span class="o">~</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">rv</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
             <span class="n">rv</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">rv</span><span class="p">)</span>
        
 
         <span class="n">drr_interval</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">360</span><span class="p">]</span>   
 
-        <span class="n">time_blocking</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Time blocking&#39;</span><span class="p">]</span>
+        <span class="n">time_blocking</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;time blocking&#39;</span><span class="p">,</span><span class="s1">&#39;Annual&#39;</span><span class="p">)</span>
         <span class="n">pks_opt</span><span class="o">=</span><span class="p">{}</span>
-        <span class="n">thresh</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;threshold value&#39;</span><span class="p">]</span>
+        <span class="n">thresh</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;threshold value&#39;</span><span class="p">,</span><span class="mi">95</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;threshold type&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;percentile&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;threshold type&#39;</span><span class="p">,</span><span class="s1">&#39;percentile&#39;</span><span class="p">)</span><span class="o">==</span><span class="s1">&#39;percentile&#39;</span><span class="p">:</span>
             <span class="n">sort_data</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dfout</span><span class="p">[</span><span class="n">surge</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">))</span>
             <span class="n">sort_data</span><span class="o">=</span><span class="n">sort_data</span><span class="p">[</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">sort_data</span><span class="p">)]</span>
             <span class="n">pks_opt</span><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">sort_data</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sort_data</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">thresh</span><span class="o">/</span><span class="mi">100</span><span class="p">)))]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">pks_opt</span><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">thresh</span>
 
-        <span class="n">pks_opt</span><span class="p">[</span><span class="s1">&#39;distance&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Minimum time interval between peaks (h)&#39;</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sint</span><span class="o">/</span><span class="mi">3600</span><span class="p">)</span>
+        <span class="n">pks_opt</span><span class="p">[</span><span class="s1">&#39;distance&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;minimum time interval between peaks (h)&#39;</span><span class="p">,</span><span class="mi">24</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sint</span><span class="o">/</span><span class="mi">3600</span><span class="p">)</span>
         <span class="n">to_export</span><span class="o">=</span><span class="p">[]</span>
 
         <span class="k">for</span> <span class="n">surge</span> <span class="ow">in</span> <span class="n">surges</span><span class="p">:</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">_get_peaks</span><span class="p">(</span><span class="n">surge</span><span class="o">+</span><span class="s1">&#39;surge&#39;</span><span class="p">,</span><span class="n">time_blocking</span><span class="o">=</span><span class="n">time_blocking</span><span class="p">,</span><span class="n">peaks_options</span><span class="o">=</span><span class="n">pks_opt</span><span class="p">,</span><span class="n">min_peak</span><span class="o">=</span><span class="n">min_peak</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_get_peaks</span><span class="p">(</span><span class="n">surge</span><span class="o">+</span><span class="s1">&#39;surge&#39;</span><span class="p">,</span><span class="n">time_blocking</span><span class="o">=</span><span class="n">time_blocking</span><span class="p">,</span>
+                <span class="n">peaks_options</span><span class="o">=</span><span class="n">pks_opt</span><span class="p">,</span><span class="n">min_peak</span><span class="o">=</span><span class="n">min_peak</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="s1">&#39;Omni&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">peaks_index</span><span class="p">[</span><span class="s1">&#39;Annual&#39;</span><span class="p">]:</span>
                 <span class="k">return</span> <span class="s1">&#39;No Peak found !!&#39;</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_clean_peak</span><span class="p">()</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">_do_EVA_water</span><span class="p">(</span><span class="n">surge</span><span class="o">+</span><span class="s1">&#39;surge&#39;</span><span class="p">,</span><span class="n">surge</span><span class="o">+</span><span class="s1">&#39;tide&#39;</span><span class="p">,</span><span class="n">rv</span><span class="p">,</span><span class="n">fitting</span><span class="p">,</span><span class="n">method</span><span class="p">,</span><span class="n">time_blocking</span><span class="p">,</span><span class="n">pks_opt</span><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_do_EVA_water</span><span class="p">(</span><span class="n">surge</span><span class="o">+</span><span class="s1">&#39;surge&#39;</span><span class="p">,</span><span class="n">surge</span><span class="o">+</span><span class="s1">&#39;tide&#39;</span><span class="p">,</span><span class="n">rv</span><span class="p">,</span><span class="n">fitting</span><span class="p">,</span><span class="n">method</span><span class="p">,</span><span class="n">time_blocking</span><span class="p">,</span>
+                <span class="n">pks_opt</span><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">])</span>
 
-            <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;Display peaks&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;On&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;display peaks&#39;</span><span class="p">,</span><span class="s1">&#39;Off&#39;</span><span class="p">)</span><span class="o">==</span><span class="s1">&#39;On&#39;</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_plot_peaks</span><span class="p">(</span><span class="n">surge</span><span class="o">+</span><span class="s1">&#39;surge&#39;</span><span class="p">,</span><span class="n">display</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">folder</span><span class="o">=</span><span class="n">folderout</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_plot_peaks</span><span class="p">(</span><span class="n">surge</span><span class="o">+</span><span class="s1">&#39;surge&#39;</span><span class="p">,</span><span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">folder</span><span class="o">=</span><span class="n">folderout</span><span class="p">)</span>
 
-            <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;Display CDFs&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;On&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;display CDFs&#39;</span><span class="p">,</span><span class="s1">&#39;On&#39;</span><span class="p">)</span><span class="o">==</span><span class="s1">&#39;On&#39;</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_plot_cdfs</span><span class="p">(</span><span class="n">surge</span><span class="o">+</span><span class="s1">&#39;surge&#39;</span><span class="p">,</span><span class="n">display</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">folder</span><span class="o">=</span><span class="n">folderout</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_plot_cdfs</span><span class="p">(</span><span class="n">surge</span><span class="o">+</span><span class="s1">&#39;surge&#39;</span><span class="p">,</span><span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">folder</span><span class="o">=</span><span class="n">folderout</span><span class="p">)</span>
@@ -244,108 +392,215 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_export_as_xls</span><span class="p">(</span><span class="n">to_export</span><span class="p">,</span><span class="n">rv</span><span class="p">,</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folderout</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">+</span><span class="s1">&#39;EVA_water.xlsx&#39;</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="Extreme.do_extreme"><a class="viewcode-back" href="../../../../source/toto.plugins.extreme.do_extreme.html#toto.plugins.extreme.do_extreme.Extreme.do_extreme">[docs]</a>    <span class="k">def</span> <span class="nf">do_extreme</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">magnitude</span><span class="o">=</span><span class="s1">&#39;magnitude&#39;</span><span class="p">,</span><span class="n">tp_optional</span><span class="o">=</span><span class="s1">&#39;tp_optional&#39;</span><span class="p">,</span><span class="n">direction_optional</span><span class="o">=</span><span class="s1">&#39;direction_optional&#39;</span><span class="p">,</span><span class="n">tm_optional</span><span class="o">=</span><span class="s1">&#39;tm_optional&#39;</span><span class="p">,</span><span class="n">water_depth_optional</span><span class="o">=</span><span class="s1">&#39;water_depth_optional&#39;</span><span class="p">,</span>\
-        <span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Fitting distribution&#39;</span><span class="p">:{</span><span class="s1">&#39;Weibull&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Gumbel&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;GPD&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;GEV&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
-         <span class="s1">&#39;Method&#39;</span><span class="p">:{</span><span class="s1">&#39;pkd&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;pwm&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;mom&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;ml&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">},</span>
-         <span class="s1">&#39;Slope fitting distribution&#39;</span><span class="p">:{</span><span class="s1">&#39;Weibull&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Gumbel&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
-         <span class="s1">&#39;Slope treshold&#39;</span><span class="p">:</span><span class="mf">0.005</span><span class="p">,</span>
-         <span class="s1">&#39;Return period&#39;</span><span class="p">:[</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">25</span><span class="p">,</span><span class="mi">50</span><span class="p">,</span><span class="mi">100</span><span class="p">],</span>
-         <span class="s1">&#39;Estimate Hmax &amp; Cmax RPVs&#39;</span><span class="p">:{</span><span class="s1">&#39;On&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Off&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">},</span>
+<div class="viewcode-block" id="Extreme.do_extreme"><a class="viewcode-back" href="../../../../source/toto.plugins.extreme.do_extreme.html#toto.plugins.extreme.do_extreme.Extreme.do_extreme">[docs]</a>    <span class="k">def</span> <span class="nf">do_extreme</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">mag</span><span class="o">=</span><span class="s1">&#39;magnitude&#39;</span><span class="p">,</span>
+        <span class="n">tp</span><span class="o">=</span><span class="s1">&#39;tp_optional&#39;</span><span class="p">,</span>
+        <span class="n">drr</span><span class="o">=</span><span class="s1">&#39;direction_optional&#39;</span><span class="p">,</span>
+        <span class="n">tm</span><span class="o">=</span><span class="s1">&#39;tm_optional&#39;</span><span class="p">,</span>
+        <span class="n">water_depth</span><span class="o">=</span><span class="s1">&#39;water_depth_optional&#39;</span><span class="p">,</span>\
+        <span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;fitting distribution&#39;</span><span class="p">:{</span><span class="s1">&#39;Weibull&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Gumbel&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;GPD&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;GEV&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
+         <span class="s1">&#39;method&#39;</span><span class="p">:{</span><span class="s1">&#39;pkd&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;pwm&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;mom&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;ml&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">},</span>
+         <span class="s1">&#39;slope fitting distribution&#39;</span><span class="p">:{</span><span class="s1">&#39;Weibull&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Gumbel&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
+         <span class="s1">&#39;slope treshold&#39;</span><span class="p">:</span><span class="mf">0.005</span><span class="p">,</span>
+         <span class="s1">&#39;return period&#39;</span><span class="p">:[</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">25</span><span class="p">,</span><span class="mi">50</span><span class="p">,</span><span class="mi">100</span><span class="p">],</span>
+         <span class="s1">&#39;estimate Hmax &amp; Cmax RPVs&#39;</span><span class="p">:{</span><span class="s1">&#39;On&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Off&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">},</span>
          <span class="s1">&#39;threshold type&#39;</span><span class="p">:{</span><span class="s1">&#39;percentile&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;value&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
          <span class="s1">&#39;threshold value&#39;</span><span class="p">:</span><span class="mf">95.0</span><span class="p">,</span>
-         <span class="s1">&#39;Directional&#39;</span><span class="p">:{</span><span class="s1">&#39;On&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Off&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
-         <span class="s1">&#39;Minimum number of peaks over threshold&#39;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span>
-         <span class="s1">&#39;Minimum time interval between peaks (h)&#39;</span><span class="p">:</span><span class="mf">24.0</span><span class="p">,</span>
-         <span class="s1">&#39;Direction binning&#39;</span><span class="p">:{</span><span class="s1">&#39;centered&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;not-centered&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
-         <span class="s1">&#39;Direction interval&#39;</span><span class="p">:</span> <span class="mf">45.</span><span class="p">,</span>
-         <span class="s1">&#39;Time blocking&#39;</span><span class="p">:{</span><span class="s1">&#39;Annual&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Seasonal (South hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Seasonal (North hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Monthly&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
-         <span class="s1">&#39;Display peaks&#39;</span><span class="p">:{</span><span class="s1">&#39;On&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Off&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
-         <span class="s1">&#39;Display CDFs&#39;</span><span class="p">:{</span><span class="s1">&#39;On&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Off&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
-         <span class="s1">&#39;Water depth&#39;</span><span class="p">:</span><span class="mf">5000.0</span><span class="p">,</span>
+         <span class="s1">&#39;directional&#39;</span><span class="p">:{</span><span class="s1">&#39;On&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Off&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
+         <span class="s1">&#39;minimum number of peaks over threshold&#39;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span>
+         <span class="s1">&#39;minimum time interval between peaks (h)&#39;</span><span class="p">:</span><span class="mf">24.0</span><span class="p">,</span>
+         <span class="s1">&#39;direction binning&#39;</span><span class="p">:{</span><span class="s1">&#39;centered&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;not-centered&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
+         <span class="s1">&#39;direction interval&#39;</span><span class="p">:</span> <span class="mf">45.</span><span class="p">,</span>
+         <span class="s1">&#39;time blocking&#39;</span><span class="p">:{</span><span class="s1">&#39;Annual&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Seasonal (South hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Seasonal (North hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Monthly&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
+         <span class="s1">&#39;display peaks&#39;</span><span class="p">:{</span><span class="s1">&#39;On&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Off&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
+         <span class="s1">&#39;display CDFs&#39;</span><span class="p">:{</span><span class="s1">&#39;On&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Off&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
+         <span class="s1">&#39;water depth&#39;</span><span class="p">:</span><span class="mf">5000.0</span><span class="p">,</span>
          <span class="s1">&#39;folder out&#39;</span><span class="p">:</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
          <span class="p">}):</span>
     
 
-        <span class="sd">&quot;&quot;&quot;This function is used for extreme value analysis of any type.</span>
-<span class="sd">        It generates return period values for any parameters.</span>
-<span class="sd">        Inputs can be:</span>
-<span class="sd">         -only magnitude (omni-directional extreme value ananlysis)</span>
-<span class="sd">         -magnitute and direction (directional ARI with omni or directional POT)_</span>
-<span class="sd">         -wave magnitude and period (omni-directional analysis and bi-variate,</span>
-<span class="sd">          Hs vs. Tp, extremes, estimated using the FORM method)</span>
-<span class="sd">         -wave magnitude, period and direction (directional ARI with omni or</span>
-<span class="sd">          directional POT and bi-variate extremes, Hs vs. Tp, estimated using the</span>
-<span class="sd">          FORM method for each selected directions)&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot; This function is used for extreme value analysis of any type.</span>
+<span class="sd">            It generates return period values for any parameters.</span>
+<span class="sd">            Inputs can be:</span>
+<span class="sd">             -only magnitude (omni-directional extreme value ananlysis)</span>
+<span class="sd">             -magnitute and direction (directional ARI with omni or directional POT)_</span>
+<span class="sd">             -wave magnitude and period (omni-directional analysis and bi-variate,</span>
+<span class="sd">              Hs vs. Tp, extremes, estimated using the FORM method)</span>
+<span class="sd">             -wave magnitude, period and direction (directional ARI with omni or</span>
+<span class="sd">              directional POT and bi-variate extremes, Hs vs. Tp, estimated using the</span>
+<span class="sd">              FORM method for each selected directions)</span>
+<span class="sd">            </span>
+<span class="sd">            Parameters</span>
+<span class="sd">            ~~~~~~~~~~</span>
 
+<span class="sd">            mag : str</span>
+<span class="sd">                Name of the column from which to get stats.</span>
+<span class="sd">            tp : str optionnal</span>
+<span class="sd">                Column name representing the peak period.</span>
+<span class="sd">            tm : str optionnal</span>
+<span class="sd">                Column name representing Tm02.</span>
+<span class="sd">            drr : str optionnal</span>
+<span class="sd">                Column name representing the directions.</span>
+<span class="sd">            water_depth : str optionnal</span>
+<span class="sd">                Column name representing the water elevation.</span>
+<span class="sd">            args: dict</span>
+<span class="sd">                Dictionnary with the folowing keys:</span>
+<span class="sd">                    fitting distribution: str</span>
+<span class="sd">                        Name of the fit to use, can be: `Weibull`, `Gumbel`, `GPD` or `GEV`.</span>
+<span class="sd">                    method: str</span>
+<span class="sd">                        Name of the estimation method, can be:</span>
+<span class="sd">                        `pkd`: Pickands’ estimator.</span>
+<span class="sd">                        `pwm`: PWM-method</span>
+<span class="sd">                        `mom`: Moment method</span>
+<span class="sd">                        `ml` : Maximum Likelihood method</span>
+<span class="sd">                    threshold type: str</span>
+<span class="sd">                        Method to find the peaks:</span>
+<span class="sd">                        `percentile`: using the th percentile</span>
+<span class="sd">                        `value`: using a treshold value</span>
+<span class="sd">                    threshold value: float</span>
+<span class="sd">                        Either a absolute value or percentile value depending on the `threshold type`</span>
+<span class="sd">                    slope fitting distribution: str</span>
+<span class="sd">                        Can be: `Weibull`, `Gumbel`</span>
+<span class="sd">                    slope threshold: float</span>
+<span class="sd">                    return period: list</span>
+<span class="sd">                        Return period values.      </span>
+<span class="sd">                    estimate Hmax &amp; Cmax RPVs: str</span>
+<span class="sd">                        Can be `On` or `Off`</span>
+<span class="sd">                    water depth: float</span>
+<span class="sd">                        Total water depth if not specified in the input</span>
+<span class="sd">                    directional: str</span>
+<span class="sd">                        Can be `On` or `Off`, to calculate stats for each direction.</span>
+<span class="sd">                        Needs `drr` variable</span>
+<span class="sd">                    direction binning: str</span>
+<span class="sd">                        Can be `centered` or `not-centered` depending if the directionnal are centered over 0</span>
+<span class="sd">                    direction interval: int</span>
+<span class="sd">                        Dirctionnal interval for the bins in degrees</span>
+<span class="sd">                    minimum number of peaks over threshold: int</span>
+<span class="sd">                    minimum time interval between peaks (h): int</span>
+<span class="sd">                    display peaks: str</span>
+<span class="sd">                        `On` or `Off` to display peaks over threshold</span>
+<span class="sd">                    display CDFs: str</span>
+<span class="sd">                        `On` or `Off` to display CFDs image</span>
+<span class="sd">                    folder out: str</span>
+<span class="sd">                        Path to save the output</span>
+<span class="sd">                    time blocking: str</span>
+<span class="sd">                         if ``Time blocking==&#39;Annual&#39;``,</span>
+<span class="sd">                            Statistics will be calculated for the whole timeserie</span>
+<span class="sd">                         if ``Time blocking==&#39;Seasonal (South hemisphere)&#39;``,</span>
+<span class="sd">                            Statistics will be calculated for each South hemisphere seasons</span>
+<span class="sd">                         if ``Time blocking==&#39;Seasonal (North hemisphere)&#39;``,</span>
+<span class="sd">                            Statistics will be calculated for each North hemisphere seasons</span>
+<span class="sd">                         if ``Time blocking==&#39;Monthly&#39;``,</span>
+<span class="sd">                            Statistics will be calculated for each 12 months</span>
+
+<span class="sd">            Examples:</span>
+<span class="sd">            ~~~~~~~~~</span>
+<span class="sd">            &gt;&gt;&gt; df=tf[&#39;test1&#39;][&#39;dataframe&#39;].Extreme.do_extreme(mag=&#39;U&#39;,args={&#39;directional&#39;:&#39;On&#39;,Time blocking&#39;:&#39;Annual&#39;})</span>
+<span class="sd">            &gt;&gt;&gt; </span>
+
+<span class="sd">            Outputs:</span>
+<span class="sd">            ~~~~~~~~</span>
+<span class="sd">            .. list-table:: Extreme value</span>
+<span class="sd">               :widths: 25 25 25 25 25 25</span>
+<span class="sd">               :header-rows: 1</span>
+
+<span class="sd">               * - </span>
+<span class="sd">                 - Omni</span>
+<span class="sd">                 - N</span>
+<span class="sd">                 - E</span>
+<span class="sd">                 - W</span>
+<span class="sd">                 - S</span>
+<span class="sd">               * - 1</span>
+<span class="sd">                 - </span>
+<span class="sd">                 -</span>
+<span class="sd">                 -</span>
+<span class="sd">                 -</span>
+<span class="sd">                 -</span>
+<span class="sd">               * - 10</span>
+<span class="sd">                 - </span>
+<span class="sd">                 -</span>
+<span class="sd">                 -</span>
+<span class="sd">                 -</span>
+<span class="sd">                 -</span>
+<span class="sd">               * - 100</span>
+<span class="sd">                 - </span>
+<span class="sd">                 -</span>
+<span class="sd">                 -</span>
+<span class="sd">                 -</span>
+<span class="sd">                 -</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># variabl check</span>
-        <span class="k">if</span> <span class="n">tp_optional</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
-            <span class="n">tp_optional</span><span class="o">=</span><span class="kc">None</span>
-        <span class="k">if</span> <span class="n">direction_optional</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
-            <span class="n">direction_optional</span><span class="o">=</span><span class="kc">None</span>
-        <span class="k">if</span> <span class="n">tm_optional</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
-            <span class="n">tm_optional</span><span class="o">=</span><span class="kc">None</span>
-        <span class="k">if</span> <span class="n">water_depth_optional</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
-            <span class="n">water_depth_optional</span><span class="o">=</span><span class="kc">None</span>
+        <span class="k">if</span> <span class="n">tp</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+            <span class="n">tp</span><span class="o">=</span><span class="kc">None</span>
+        <span class="k">if</span> <span class="n">drr</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+            <span class="n">drr</span><span class="o">=</span><span class="kc">None</span>
+        <span class="k">if</span> <span class="n">tm</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+            <span class="n">tm</span><span class="o">=</span><span class="kc">None</span>
+        <span class="k">if</span> <span class="n">water_depth</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+            <span class="n">water_depth</span><span class="o">=</span><span class="kc">None</span>
             
-        <span class="n">folderout</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;folder out&#39;</span><span class="p">])</span>
+        <span class="n">folderout</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;folder out&#39;</span><span class="p">,</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()))</span>
 
         <span class="c1">## Inputs</span>
-        <span class="n">slp_fitting</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Slope fitting distribution&#39;</span><span class="p">]</span>
-        <span class="n">slp_threshold</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Slope treshold&#39;</span><span class="p">]</span>
-        <span class="n">fitting</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Fitting distribution&#39;</span><span class="p">]</span>
-        <span class="n">method</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Method&#39;</span><span class="p">]</span>
-        <span class="n">min_peak</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Minimum number of peaks over threshold&#39;</span><span class="p">]</span>
-        <span class="n">rv</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Return period&#39;</span><span class="p">]</span>
+        <span class="n">slp_fitting</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;slope fitting distribution&#39;</span><span class="p">,</span><span class="s1">&#39;Weibull&#39;</span><span class="p">)</span>
+        <span class="n">slp_threshold</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;slope treshold&#39;</span><span class="p">,</span><span class="mf">0.005</span><span class="p">)</span>
+        <span class="n">fitting</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;fitting distribution&#39;</span><span class="p">,</span><span class="s1">&#39;Weibull&#39;</span><span class="p">)</span>
+        <span class="n">method</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;method&#39;</span><span class="p">,</span><span class="s1">&#39;ml&#39;</span><span class="p">)</span>
+        <span class="n">min_peak</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;minimum number of peaks over threshold&#39;</span><span class="p">,</span><span class="mi">30</span><span class="p">)</span>
+        <span class="n">rv</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;return period&#39;</span><span class="p">,[</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">25</span><span class="p">,</span><span class="mi">50</span><span class="p">,</span><span class="mi">100</span><span class="p">])</span>
+
         <span class="k">if</span> <span class="o">~</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">rv</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
             <span class="n">rv</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">rv</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">water_depth_optional</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
-            <span class="n">h</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">water_depth_optional</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">water_depth</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+            <span class="n">h</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">water_depth</span><span class="p">])</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">h</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Water depth&#39;</span><span class="p">]</span>
+            <span class="n">h</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;water depth&#39;</span><span class="p">,</span><span class="mi">500000</span><span class="p">)</span>
 
         <span class="n">Hmax_RPV</span><span class="o">=</span><span class="kc">True</span>
-        <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;Estimate Hmax &amp; Cmax RPVs&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Off&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;estimate Hmax &amp; Cmax RPVs&#39;</span><span class="p">,</span><span class="s1">&#39;Off&#39;</span><span class="p">)</span><span class="o">==</span><span class="s1">&#39;Off&#39;</span><span class="p">:</span>
             <span class="n">Hmax_RPV</span><span class="o">=</span><span class="kc">False</span>
 
-        <span class="k">if</span> <span class="n">Hmax_RPV</span> <span class="ow">and</span> <span class="n">tm_optional</span><span class="o">==</span><span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">Hmax_RPV</span> <span class="ow">and</span> <span class="n">tm</span><span class="o">==</span><span class="kc">None</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Estimate Hmax &amp; Cmax RPVs has to be OFF, TM02 not found&#39;</span><span class="p">)</span>
             <span class="n">Hmax_RPV</span><span class="o">=</span><span class="kc">False</span>
 
         
 
-        <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;Directional&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;On&#39;</span><span class="p">:</span>
-            <span class="n">drr_interval</span><span class="o">=</span><span class="n">dir_interval</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Direction interval&#39;</span><span class="p">],</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Direction binning&#39;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;directional&#39;</span><span class="p">,</span><span class="s1">&#39;Off&#39;</span><span class="p">)</span><span class="o">==</span><span class="s1">&#39;On&#39;</span><span class="p">:</span>
+            <span class="n">drr_interval</span><span class="o">=</span><span class="n">dir_interval</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Direction interval&#39;</span><span class="p">,</span><span class="mi">45</span><span class="p">),</span>
+                <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Direction binning&#39;</span><span class="p">,</span><span class="s1">&#39;centered&#39;</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">drr_interval</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">360</span><span class="p">]</span>
 
         
 
-        <span class="n">time_blocking</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Time blocking&#39;</span><span class="p">]</span>
+        <span class="n">time_blocking</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;time blocking&#39;</span><span class="p">,</span><span class="s1">&#39;Annual&#39;</span><span class="p">)</span>
         <span class="n">pks_opt</span><span class="o">=</span><span class="p">{}</span>
-        <span class="n">thresh</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;threshold value&#39;</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;threshold type&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;percentile&#39;</span><span class="p">:</span>
+        <span class="n">thresh</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;threshold value&#39;</span><span class="p">,</span><span class="mi">95</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;threshold type&#39;</span><span class="p">,</span><span class="s1">&#39;percentile&#39;</span><span class="p">)</span><span class="o">==</span><span class="s1">&#39;percentile&#39;</span><span class="p">:</span>
             <span class="n">sort_data</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dfout</span><span class="p">[</span><span class="n">magnitude</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
             <span class="n">pks_opt</span><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">sort_data</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sort_data</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">thresh</span><span class="o">/</span><span class="mi">100</span><span class="p">)))]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">pks_opt</span><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">thresh</span>
 
-        <span class="n">pks_opt</span><span class="p">[</span><span class="s1">&#39;distance&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Minimum time interval between peaks (h)&#39;</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sint</span><span class="o">/</span><span class="mi">3600</span><span class="p">)</span>
+        <span class="n">pks_opt</span><span class="p">[</span><span class="s1">&#39;distance&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;minimum time interval between peaks (h)&#39;</span><span class="p">,</span><span class="mi">24</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sint</span><span class="o">/</span><span class="mi">3600</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_get_peaks</span><span class="p">(</span><span class="n">magnitude</span><span class="p">,</span><span class="n">drr</span><span class="o">=</span><span class="n">direction_optional</span><span class="p">,</span><span class="n">directional_interval</span><span class="o">=</span><span class="n">drr_interval</span><span class="p">,</span><span class="n">time_blocking</span><span class="o">=</span><span class="n">time_blocking</span><span class="p">,</span><span class="n">peaks_options</span><span class="o">=</span><span class="n">pks_opt</span><span class="p">,</span><span class="n">min_peak</span><span class="o">=</span><span class="n">min_peak</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_get_peaks</span><span class="p">(</span><span class="n">magnitude</span><span class="p">,</span><span class="n">drr</span><span class="o">=</span><span class="n">drr</span><span class="p">,</span><span class="n">directional_interval</span><span class="o">=</span><span class="n">drr_interval</span><span class="p">,</span>
+            <span class="n">time_blocking</span><span class="o">=</span><span class="n">time_blocking</span><span class="p">,</span><span class="n">peaks_options</span><span class="o">=</span><span class="n">pks_opt</span><span class="p">,</span><span class="n">min_peak</span><span class="o">=</span><span class="n">min_peak</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="s1">&#39;Omni&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">peaks_index</span><span class="p">[</span><span class="s1">&#39;Annual&#39;</span><span class="p">]:</span>
             <span class="k">return</span> <span class="s1">&#39;No Peak found !!&#39;</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_clean_peak</span><span class="p">()</span>
 
-        <span class="k">if</span> <span class="n">tp_optional</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">dfout</span><span class="p">[</span><span class="s1">&#39;slp&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">calc_slp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">magnitude</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">tp_optional</span><span class="p">],</span><span class="n">h</span><span class="o">=</span><span class="n">h</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">tp</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dfout</span><span class="p">[</span><span class="s1">&#39;slp&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">calc_slp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">magnitude</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">tp</span><span class="p">],</span><span class="n">h</span><span class="o">=</span><span class="n">h</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">dfout</span><span class="p">[</span><span class="s1">&#39;slp&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mask</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dfout</span><span class="p">[</span><span class="s1">&#39;slp&#39;</span><span class="p">]</span><span class="o">&lt;</span><span class="n">slp_threshold</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_do_EVA</span><span class="p">(</span><span class="n">magnitude</span><span class="p">,</span><span class="n">tp_optional</span><span class="p">,</span><span class="n">tm_optional</span><span class="p">,</span><span class="n">rv</span><span class="p">,</span><span class="n">fitting</span><span class="p">,</span><span class="n">slp_fitting</span><span class="p">,</span><span class="n">method</span><span class="p">,</span><span class="n">h</span><span class="p">,</span><span class="n">Hmax_RPV</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_do_EVA</span><span class="p">(</span><span class="n">magnitude</span><span class="p">,</span><span class="n">tp</span><span class="p">,</span><span class="n">tm</span><span class="p">,</span><span class="n">rv</span><span class="p">,</span><span class="n">fitting</span><span class="p">,</span><span class="n">slp_fitting</span><span class="p">,</span><span class="n">method</span><span class="p">,</span><span class="n">h</span><span class="p">,</span><span class="n">Hmax_RPV</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;Display peaks&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;On&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;display peaks&#39;</span><span class="p">,</span><span class="s1">&#39;Off&#39;</span><span class="p">)</span><span class="o">==</span><span class="s1">&#39;On&#39;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_plot_peaks</span><span class="p">(</span><span class="n">magnitude</span><span class="p">,</span><span class="n">display</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">folder</span><span class="o">=</span><span class="n">folderout</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_plot_peaks</span><span class="p">(</span><span class="n">magnitude</span><span class="p">,</span><span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">folder</span><span class="o">=</span><span class="n">folderout</span><span class="p">)</span>
@@ -353,74 +608,160 @@
         
 
         <span class="n">all_dirs</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">peaks_index</span><span class="p">[</span><span class="s1">&#39;Annual&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-        <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;Display CDFs&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;On&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;display CDFs&#39;</span><span class="p">,</span><span class="s1">&#39;On&#39;</span><span class="p">)</span><span class="o">==</span><span class="s1">&#39;On&#39;</span><span class="p">:</span>
             <span class="n">display</span><span class="o">=</span><span class="kc">True</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">display</span><span class="o">=</span><span class="kc">False</span>
 
         <span class="k">for</span> <span class="n">all_dir</span> <span class="ow">in</span> <span class="n">all_dirs</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_plot_cdfs</span><span class="p">(</span><span class="n">magnitude</span><span class="p">,</span><span class="n">drr</span><span class="o">=</span><span class="n">all_dir</span><span class="p">,</span><span class="n">display</span><span class="o">=</span><span class="n">display</span><span class="p">,</span><span class="n">folder</span><span class="o">=</span><span class="n">folderout</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">tp_optional</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span> 
+            <span class="k">if</span> <span class="n">tp</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span> 
                <span class="bp">self</span><span class="o">.</span><span class="n">_plot_contours</span><span class="p">(</span><span class="n">magnitude</span><span class="p">,</span><span class="n">rv</span><span class="p">,</span><span class="n">drr</span><span class="o">=</span><span class="n">all_dir</span><span class="p">,</span><span class="n">display</span><span class="o">=</span><span class="n">display</span><span class="p">,</span><span class="n">folder</span><span class="o">=</span><span class="n">folderout</span><span class="p">)</span>
 
         
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_export_as_xls</span><span class="p">([</span><span class="n">magnitude</span><span class="p">,</span><span class="s1">&#39;tp&#39;</span><span class="p">,</span><span class="s1">&#39;tmin&#39;</span><span class="p">,</span><span class="s1">&#39;tmax&#39;</span><span class="p">,</span><span class="s1">&#39;hmax&#39;</span><span class="p">,</span><span class="s1">&#39;cmax&#39;</span><span class="p">],</span><span class="n">rv</span><span class="p">,</span><span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folderout</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">+</span><span class="s1">&#39;EVA.xlsx&#39;</span><span class="p">))</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_export_as_xls</span><span class="p">([</span><span class="n">magnitude</span><span class="p">,</span><span class="s1">&#39;tp&#39;</span><span class="p">,</span><span class="s1">&#39;tmin&#39;</span><span class="p">,</span><span class="s1">&#39;tmax&#39;</span><span class="p">,</span><span class="s1">&#39;hmax&#39;</span><span class="p">,</span><span class="s1">&#39;cmax&#39;</span><span class="p">],</span><span class="n">rv</span><span class="p">,</span>
+            <span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folderout</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">+</span><span class="s1">&#39;EVA.xlsx&#39;</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="Extreme.do_extreme_adjusted"><a class="viewcode-back" href="../../../../source/toto.plugins.extreme.do_extreme.html#toto.plugins.extreme.do_extreme.Extreme.do_extreme_adjusted">[docs]</a>    <span class="k">def</span> <span class="nf">do_extreme_adjusted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">hs</span><span class="o">=</span><span class="s1">&#39;magnitude&#39;</span><span class="p">,</span><span class="n">wspd_optional</span><span class="o">=</span><span class="s1">&#39;tp_optional&#39;</span><span class="p">,</span>\
-        <span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Fitting distributionfor Hs&#39;</span><span class="p">:{</span><span class="s1">&#39;Weibull&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Gumbel&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;GPD&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;GEV&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
-         <span class="s1">&#39;Fitting distributionfor Wspd&#39;</span><span class="p">:{</span><span class="s1">&#39;Weibull&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Gumbel&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;GPD&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;GEV&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
-         <span class="s1">&#39;Estimation method for Hs&#39;</span><span class="p">:{</span><span class="s1">&#39;pkd&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;pwm&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;mom&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;ml&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">},</span>
-         <span class="s1">&#39;Estimation method for Wspd&#39;</span><span class="p">:{</span><span class="s1">&#39;pkd&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;pwm&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;mom&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;ml&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">},</span>
-         <span class="s1">&#39;Risk level: e.g. 10%, 5%, 1%&#39;</span><span class="p">:[</span><span class="mi">10</span><span class="p">],</span>
-         <span class="s1">&#39;Max limiting Hs (typically 5 m for barge tow and 8 m for ships&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
-         <span class="s1">&#39;Transport speed (m/s)&#39;</span><span class="p">:</span><span class="mf">2.572</span><span class="p">,</span>
-         <span class="s1">&#39;Transport distance (km)&#39;</span><span class="p">:</span><span class="mf">1000.0</span><span class="p">,</span>
-         <span class="s1">&#39;Time blocking&#39;</span><span class="p">:{</span><span class="s1">&#39;Annual&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Seasonal (South hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Seasonal (North hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Monthly&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
-         <span class="s1">&#39;Display CDFs&#39;</span><span class="p">:{</span><span class="s1">&#39;On&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Off&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
+<div class="viewcode-block" id="Extreme.do_extreme_adjusted"><a class="viewcode-back" href="../../../../source/toto.plugins.extreme.do_extreme.html#toto.plugins.extreme.do_extreme.Extreme.do_extreme_adjusted">[docs]</a>    <span class="k">def</span> <span class="nf">do_extreme_adjusted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">hs</span><span class="o">=</span><span class="s1">&#39;magnitude&#39;</span><span class="p">,</span><span class="n">wspd</span><span class="o">=</span><span class="s1">&#39;wind_optional&#39;</span><span class="p">,</span>\
+        <span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;fitting distribution for Hs&#39;</span><span class="p">:{</span><span class="s1">&#39;Weibull&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Gumbel&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;GPD&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;GEV&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
+         <span class="s1">&#39;fitting distribution for Wspd&#39;</span><span class="p">:{</span><span class="s1">&#39;Weibull&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Gumbel&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;GPD&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;GEV&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
+         <span class="s1">&#39;estimation method for Hs&#39;</span><span class="p">:{</span><span class="s1">&#39;pkd&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;pwm&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;mom&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;ml&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">},</span>
+         <span class="s1">&#39;estimation method for Wspd&#39;</span><span class="p">:{</span><span class="s1">&#39;pkd&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;pwm&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;mom&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;ml&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">},</span>
+         <span class="s1">&#39;risk level&#39;</span><span class="p">:[</span><span class="mi">10</span><span class="p">],</span>
+         <span class="s1">&#39;max limiting Hs&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+         <span class="s1">&#39;transport speed (m/s)&#39;</span><span class="p">:</span><span class="mf">2.572</span><span class="p">,</span>
+         <span class="s1">&#39;transport distance (km)&#39;</span><span class="p">:</span><span class="mf">1000.0</span><span class="p">,</span>
+         <span class="s1">&#39;time blocking&#39;</span><span class="p">:{</span><span class="s1">&#39;Annual&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Seasonal (South hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Seasonal (North hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Monthly&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
+         <span class="s1">&#39;display CDFs&#39;</span><span class="p">:{</span><span class="s1">&#39;On&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Off&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
          <span class="s1">&#39;folder out&#39;</span><span class="p">:</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
          <span class="p">}):</span>
     
 
-        <span class="sd">&quot;&quot;&quot;This function is used for adjusted extreme value analysis (Hs and wind speed)</span>
-<span class="sd">           accuonting for time of exposure (typically for transportation metocean extremes). It generates</span>
-<span class="sd">           return period values for Hs and Wspd. Inputs are: %Hs and Wsp (optional).</span>
-<span class="sd">           Reference: GL Noble Denton, 2010. TECHNICAL POLICY BOARD, GUIDELINES FOR</span>
-<span class="sd">           MARINE TRANSPORTATIONS. GL Noble Denton Group Ltd.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot; This function is used for adjusted extreme value analysis (Hs and wind speed)</span>
+<span class="sd">            accuonting for time of exposure (typically for transportation metocean extremes). It generates</span>
+<span class="sd">            return period values for Hs and Wspd. Inputs are: %Hs and Wsp (optional).</span>
+<span class="sd">            Reference: GL Noble Denton, 2010. TECHNICAL POLICY BOARD, GUIDELINES FOR</span>
+<span class="sd">            MARINE TRANSPORTATIONS. GL Noble Denton Group Ltd.</span>
 
+<span class="sd">            Parameters</span>
+<span class="sd">            ~~~~~~~~~~</span>
 
-        <span class="n">fitting</span><span class="o">=</span><span class="p">[</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Fitting distributionfor Hs&#39;</span><span class="p">]]</span>
-        <span class="n">method</span><span class="o">=</span><span class="p">[</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Estimation method for Hs&#39;</span><span class="p">]]</span>
+<span class="sd">            hs : str</span>
+<span class="sd">                Column name representing the wave height</span>
+<span class="sd">            wspd : str optionnal</span>
+<span class="sd">                Column name representing the wind speed.</span>
+<span class="sd">            args: dict</span>
+<span class="sd">                Dictionnary with the folowing keys:</span>
+<span class="sd">                    fitting distributionfor Hs: str</span>
+<span class="sd">                        Name of the fit to use, can be: `Weibull`, `Gumbel`, `GPD` or `GEV`.</span>
+<span class="sd">                    fitting distributionfor Wspd: str</span>
+<span class="sd">                        Name of the fit to use, can be: `Weibull`, `Gumbel`, `GPD` or `GEV`.</span>
+<span class="sd">                    estimation method for Hs: str</span>
+<span class="sd">                        Name of the estimation method, can be:</span>
+<span class="sd">                        `pkd`: Pickands’ estimator.</span>
+<span class="sd">                        `pwm`: PWM-method</span>
+<span class="sd">                        `mom`: Moment method</span>
+<span class="sd">                        `ml` : Maximum Likelihood method</span>
+<span class="sd">                    estimation method for Wspd: str</span>
+<span class="sd">                        Name of the estimation method, can be:</span>
+<span class="sd">                        `pkd`: Pickands’ estimator.</span>
+<span class="sd">                        `pwm`: PWM-method</span>
+<span class="sd">                        `mom`: Moment method</span>
+<span class="sd">                        `ml` : Maximum Likelihood method</span>
+<span class="sd">                    risk level: list</span>
+<span class="sd">                        percentage for the risk level</span>
+<span class="sd">                    max limiting Hs: float</span>
+<span class="sd">                        Typically 5 m for barge tow and 8 m for ships</span>
+<span class="sd">                    transport speed (m/s): float</span>
+<span class="sd">                        Boat in speed in m/s</span>
+<span class="sd">                    transport distance (km): float</span>
+<span class="sd">                    display CDFs: str</span>
+<span class="sd">                        `On` or `Off` to display CFDs image</span>
+<span class="sd">                    folder out: str</span>
+<span class="sd">                        Path to save the output</span>
+<span class="sd">                    time blocking: str</span>
+<span class="sd">                         if ``Time blocking==&#39;Annual&#39;``,</span>
+<span class="sd">                            Statistics will be calculated for the whole timeserie</span>
+<span class="sd">                         if ``Time blocking==&#39;Seasonal (South hemisphere)&#39;``,</span>
+<span class="sd">                            Statistics will be calculated for each South hemisphere seasons</span>
+<span class="sd">                         if ``Time blocking==&#39;Seasonal (North hemisphere)&#39;``,</span>
+<span class="sd">                            Statistics will be calculated for each North hemisphere seasons</span>
+<span class="sd">                         if ``Time blocking==&#39;Monthly&#39;``,</span>
+<span class="sd">                            Statistics will be calculated for each 12 months</span>
+
+<span class="sd">            Examples:</span>
+<span class="sd">            ~~~~~~~~~</span>
+<span class="sd">            &gt;&gt;&gt; df=tf[&#39;test1&#39;][&#39;dataframe&#39;].Extreme.do_extreme_adjusted(hs=&#39;hs&#39;,args={&#39;transport speed (m/s)&#39;:2.5,&#39;transport distance (km)&#39;: 100,&#39;time blocking&#39;:&#39;Annual&#39;})</span>
+<span class="sd">            &gt;&gt;&gt; </span>
+
+<span class="sd">            Outputs:</span>
+<span class="sd">            ~~~~~~~~</span>
+<span class="sd">            .. list-table:: Extreme value</span>
+<span class="sd">               :widths: 25 25 25 25 25 25</span>
+<span class="sd">               :header-rows: 1</span>
+
+<span class="sd">               * - </span>
+<span class="sd">                 - Omni</span>
+<span class="sd">                 - N</span>
+<span class="sd">                 - E</span>
+<span class="sd">                 - W</span>
+<span class="sd">                 - S</span>
+<span class="sd">               * - 1</span>
+<span class="sd">                 - </span>
+<span class="sd">                 -</span>
+<span class="sd">                 -</span>
+<span class="sd">                 -</span>
+<span class="sd">                 -</span>
+<span class="sd">               * - 10</span>
+<span class="sd">                 - </span>
+<span class="sd">                 -</span>
+<span class="sd">                 -</span>
+<span class="sd">                 -</span>
+<span class="sd">                 -</span>
+<span class="sd">               * - 100</span>
+<span class="sd">                 - </span>
+<span class="sd">                 -</span>
+<span class="sd">                 -</span>
+<span class="sd">                 -</span>
+<span class="sd">                 -</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">fitting</span><span class="o">=</span><span class="p">[</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;fitting distributionfor Hs&#39;</span><span class="p">,</span><span class="s1">&#39;Weibull&#39;</span><span class="p">)]</span>
+        <span class="n">method</span><span class="o">=</span><span class="p">[</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;estimation method for Hs&#39;</span><span class="p">,</span><span class="s1">&#39;ml&#39;</span><span class="p">)]</span>
         <span class="n">magnitude</span><span class="o">=</span><span class="p">[</span><span class="n">hs</span><span class="p">]</span>
         <span class="n">typ</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;wave&#39;</span><span class="p">]</span>
 
 
-        <span class="k">if</span> <span class="n">wspd_optional</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
-            <span class="n">magnitude</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">wspd_optional</span><span class="p">)</span>
-            <span class="n">fitting</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Fitting distributionfor Wspd&#39;</span><span class="p">])</span>
-            <span class="n">method</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Estimation method for Wspd&#39;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">wspd</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+            <span class="n">magnitude</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">wspd</span><span class="p">)</span>
+            <span class="n">fitting</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;fitting distributionfor Wspd&#39;</span><span class="p">,</span><span class="s1">&#39;Weibull&#39;</span><span class="p">))</span>
+            <span class="n">method</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;estimation method for Wspd&#39;</span><span class="p">,</span><span class="s1">&#39;ml&#39;</span><span class="p">))</span>
             <span class="n">typ</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;wind&#39;</span><span class="p">)</span>
 
         <span class="n">extreme_paramters</span><span class="o">=</span><span class="nb">zip</span><span class="p">(</span><span class="n">magnitude</span><span class="p">,</span><span class="n">fitting</span><span class="p">,</span><span class="n">method</span><span class="p">,</span><span class="n">typ</span><span class="p">)</span>
 
-        <span class="n">folderout</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;folder out&#39;</span><span class="p">])</span>
+        <span class="n">folderout</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;folder out&#39;</span><span class="p">,</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()))</span>
 
-        <span class="n">risk_level</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Risk level: e.g. 10%, 5%, 1%&#39;</span><span class="p">]</span>
-        <span class="n">hs_limit</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Max limiting Hs (typically 5 m for barge tow and 8 m for ships&#39;</span><span class="p">]</span>
-        <span class="n">transport_speed</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Transport speed (m/s)&#39;</span><span class="p">]</span>
-        <span class="n">transport_dist</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Transport distance (km)&#39;</span><span class="p">]</span>
+        <span class="n">risk_level</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;risk level&#39;</span><span class="p">,[</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">])</span>
+        <span class="n">hs_limit</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;max limiting Hs&#39;</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
+        <span class="n">transport_speed</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;transport speed (m/s)&#39;</span><span class="p">,</span><span class="mf">2.5</span><span class="p">)</span>
+        <span class="n">transport_dist</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Transport distance (km)&#39;</span><span class="p">,</span><span class="mi">1000</span><span class="p">)</span>
 
-        <span class="n">time_blocking</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Time blocking&#39;</span><span class="p">]</span>
+        <span class="n">time_blocking</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;time blocking&#39;</span><span class="p">,</span><span class="s1">&#39;Annual&#39;</span><span class="p">)</span>
    
 
         <span class="k">for</span> <span class="n">mag</span><span class="p">,</span><span class="n">fit</span><span class="p">,</span><span class="n">met</span><span class="p">,</span><span class="n">typ</span> <span class="ow">in</span> <span class="n">extreme_paramters</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_do_EVA_adjusted</span><span class="p">(</span><span class="n">mag</span><span class="p">,</span><span class="n">time_blocking</span><span class="p">,</span><span class="n">transport_speed</span><span class="p">,</span><span class="n">transport_dist</span><span class="p">,</span><span class="n">hs_limit</span><span class="p">,</span><span class="n">risk_level</span><span class="p">,</span><span class="n">fit</span><span class="p">,</span><span class="n">met</span><span class="p">,</span><span class="n">typ</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;Display CDFs&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;On&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_do_EVA_adjusted</span><span class="p">(</span><span class="n">mag</span><span class="p">,</span><span class="n">time_blocking</span><span class="p">,</span><span class="n">transport_speed</span><span class="p">,</span><span class="n">transport_dist</span><span class="p">,</span>
+                <span class="n">hs_limit</span><span class="p">,</span><span class="n">risk_level</span><span class="p">,</span><span class="n">fit</span><span class="p">,</span><span class="n">met</span><span class="p">,</span><span class="n">typ</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;display CDFs&#39;</span><span class="p">,</span><span class="s1">&#39;Off&#39;</span><span class="p">)</span><span class="o">==</span><span class="s1">&#39;On&#39;</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_plot_cdfs</span><span class="p">(</span><span class="n">mag</span><span class="p">,</span><span class="n">display</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">folder</span><span class="o">=</span><span class="n">folderout</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_plot_cdfs</span><span class="p">(</span><span class="n">mag</span><span class="p">,</span><span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">folder</span><span class="o">=</span><span class="n">folderout</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_export_as_xls</span><span class="p">(</span><span class="n">magnitude</span><span class="p">,</span><span class="n">risk_level</span><span class="p">,</span><span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folderout</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">+</span><span class="s1">&#39;EVA_adjusted.xlsx&#39;</span><span class="p">))</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_export_as_xls</span><span class="p">(</span><span class="n">magnitude</span><span class="p">,</span><span class="n">risk_level</span><span class="p">,</span>
+            <span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folderout</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">+</span><span class="s1">&#39;EVA_adjusted.xlsx&#39;</span><span class="p">))</span></div>
 
 
 
@@ -487,7 +828,8 @@
                 <span class="k">if</span> <span class="n">mag</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">eva_stats</span><span class="p">[</span><span class="n">identifiers</span><span class="p">[</span><span class="n">j</span><span class="p">]][</span><span class="s1">&#39;Omni&#39;</span><span class="p">]:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">eva_stats</span><span class="p">[</span><span class="n">identifiers</span><span class="p">[</span><span class="n">j</span><span class="p">]][</span><span class="s1">&#39;Omni&#39;</span><span class="p">][</span><span class="n">mag</span><span class="p">]</span><span class="o">=</span><span class="p">{}</span>
 
-                <span class="n">y</span><span class="o">=</span><span class="n">get_mag_for_water_elevation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dfout</span><span class="p">[</span><span class="n">mag</span><span class="p">][</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">dfout</span><span class="p">[</span><span class="n">tide</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span><span class="n">threshold</span><span class="p">)</span>
+                <span class="n">y</span><span class="p">,</span><span class="n">_</span><span class="p">,</span><span class="n">_</span><span class="p">,</span><span class="n">_</span><span class="o">=</span><span class="n">get_mag_for_water_elevation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dfout</span><span class="p">[</span><span class="n">mag</span><span class="p">][</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">dfout</span><span class="p">[</span><span class="n">tide</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span><span class="n">threshold</span><span class="p">)</span>
+
                 <span class="n">loc</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="o">-</span><span class="mf">0.01</span><span class="p">;</span>
                 <span class="n">krP</span><span class="o">=</span><span class="n">calc_kRp</span><span class="p">(</span><span class="n">rp</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">peak</span><span class="p">),</span><span class="bp">self</span><span class="o">.</span><span class="n">nyear</span><span class="p">,</span><span class="n">Hmp</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
                 <span class="n">phat</span><span class="p">,</span><span class="n">scale</span><span class="p">,</span><span class="n">shape</span><span class="o">=</span><span class="n">do_fitting</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="n">fitting</span><span class="p">,</span><span class="n">method</span><span class="p">,</span><span class="n">loc</span><span class="o">=</span><span class="n">loc</span><span class="p">)</span>

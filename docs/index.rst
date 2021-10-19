@@ -21,6 +21,8 @@ TOTO is a toolbox developed by Calypso Science Ltd and MetOcean Solution Ltd.
 It includes all the functions developed over the years to realized ocean timeseries statistics, extreme analysis and data representation. 
 TOTO extends panda’s `DataFrame`_ with methods to manipulate, filter and calculate various ocean science statistics.
 
+TOTO fuctions can be used a standalone function. If the user prefers to use the function in a GUI, `TOTOVIEW`_should be installed.
+
 
 .. toctree::
    :maxdepth: 2
@@ -53,3 +55,4 @@ Indices and tables
 
 
 .. _`DataFrame`: https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html
+.. _`TOTOVIEW`: https://github.com/calypso-science/Totoview
