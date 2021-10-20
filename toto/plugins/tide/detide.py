@@ -52,8 +52,8 @@ class TideAnalysis:
         mat.append(row)
         for i,con in enumerate(cons):
             row=[con]
-            row.append('%.2f' %amp[i])
-            row.append('%.2f' %pha[i])
+            row.append('%.4f' %amp[i])
+            row.append('%.4f' %pha[i])
             mat.append(row)
 
         create_table(outfile,var,np.array(mat))

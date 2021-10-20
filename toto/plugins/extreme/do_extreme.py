@@ -101,8 +101,8 @@ class Extreme(ExtremeBase):
 
 
         # variabl check
-        if direction_optional not in self.data:
-            direction_optional=None
+        if drr not in self.data:
+            drr=None
 
         folderout=os.path.join(args.get('folder out',os.getcwd()))
 

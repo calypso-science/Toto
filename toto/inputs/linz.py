@@ -9,7 +9,8 @@
     ~~~~~~~~~~
 
     filename : (files,) str or list_like
-        A list of filename to process.
+        A list of filename to process. This can be either a NetCDF file made by linz.downdload
+        or a csv file directly downloaded from Linz website
 
     Examples
     ~~~~~~~~
@@ -22,6 +23,17 @@ import glob,os,sys
 import pandas as pd
 import xarray as xr
 from datetime import datetime, timedelta
+import requests
+from multiprocessing.pool import ThreadPool
+
+def url_response(url):
+
+    fileout, url = url
+    linzfile = requests.get(url, allow_redirects=True)
+    if linzfile.status_code != 404:
+        with open(fileout, 'wb') as fd:
+            for chunk in linzfile.iter_content(chunk_size=128):
+                fd.write(chunk)
 
 def lat2msl(readme, ds,sensor=41):
     # Converts data to mean sea level based on information contained in the station's readme
@@ -135,6 +147,29 @@ def lat2msl(readme, ds,sensor=41):
         ds[ref_gauge[key]['t1'] : ref_gauge[key]['t2']] = ds[ref_gauge[key]['t1'] : ref_gauge[key]['t2']] - ref_gauge[key]['value']
 
     return ds,lon,lat
+def download_linz(station,start_date,end_date=None,fileout=None,sensors=[40,41]):
+    #https://sealevel-data.linz.govt.nz/AUCT/2019/40/AUCT_40_2019001.zip
+    #https://sealevel-data.linz.govt.nz/AUCT/2014/40/AUCT_40_2014.zip
+    baseurl='https://sealevel-data.linz.govt.nz/%s/%i/%i/%s_%i_%s.zip'
+    if not end_date:
+        end_date=datetime.now()
+
+    if type(sensors)!=type(list()):
+        sensors=[sensors]
+
+
+
+    for sensor in sensors:
+        urls=[]
+        for y in range(start_date.year,end_date.year+1):
+            for n in range(1,367):
+                fileout=os.path.join(os.getcwd(),'linz_'+str(sensor)+'_'+str(y)+'%03i.zip'%n)
+                urls=(fileout,
+                    baseurl % (station,y,sensor,station,sensor,str(y)+'%03i'%n))
+
+                url_response(urls)
+#        ThreadPool(1).imap_unordered(url_response, urls)
+
 
 class LINZfile():
 
@@ -149,12 +184,43 @@ class LINZfile():
             filenames=[filenames]
         self.filenames=filenames
         self.data=[]
-        # READ 
-        self._reads_nc()
 
-    def _reads_nc(self):
+        self._reads()
+
+    def _reads(self):
         for file in self.filenames:
-            self._read_nc(file)
+            if file.endswith('.csv'):
+                self._read_csv(file)
+            elif file.endswith('.nc'):
+                self._read_nc(file)
+
+    def _read_csv(self,filename):
+        sensor=filename.split('_')[-2]
+        station=filename.split('_')[-3]
+        df=pd.read_csv(filename,delimiter=',',
+            names=['station','date_time','elev'+sensor],
+            parse_dates=['date_time'])
+
+        df.rename(columns={'date_time':'time'},inplace=True)
+        del df['station']
+
+        
+        filepath,filename=os.path.split(filename)
+        readmefile=os.path.join(filepath,station+'_readme.txt')
+        df.set_index('time',inplace=True)
+        df['elev'+sensor],lon,lat=lat2msl(readmefile, df['elev'+sensor],sensor=int(sensor))
+        df.reset_index(inplace=True)
+        df.set_index('time',inplace=True,drop=False)
+
+
+        setattr(df['elev'+sensor],'units','m')
+        setattr(df['elev'+sensor],'long_name','water_level')
+
+
+        setattr(df,'longitude',lon)
+        setattr(df,'latitude',lat)           
+        self.data.append(df)
+
 
     def _read_nc(self,filename):
 
@@ -209,11 +275,11 @@ class LINZfile():
 
 
 
-
     def _toDataFrame(self):
        #print(self.data)
         return self.data
 
 
 if __name__ == '__main__':
-    LINZfile('/home/remy/projects/019_stormsurge/storm_surge_data/nz_tidal_gauges/linz/raw/AUCT_raw.nc')
+    #LINZfile('/home/remy/projects/019_stormsurge/storm_surge_data/nz_tidal_gauges/linz/raw/AUCT_raw.nc')
+    download_linz('AUCT',datetime(2010,1,1),end_date=None,fileout=None,sensors=[40,41])

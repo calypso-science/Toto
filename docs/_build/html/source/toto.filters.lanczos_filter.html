@@ -48,12 +48,19 @@
 </dd>
 <dt>window<span class="classifier">int</span></dt><dd><p>window in hour, a good window is 40 h window of hourly data</p>
 </dd>
-<dt>Type<span class="classifier">{‘lanczos lowpas 1st order’, ‘lanczos lowpas 2nd order’}, optional</span></dt><dd><p>The type of lowpass filter, first or second order</p>
+<dt>type<span class="classifier">str</span></dt><dd><p>Can be <cite>lanczos lowpas 1st order</cite>, <cite>lanczos lowpas 2nd order</cite> depending on the order.</p>
 </dd>
 </dl>
+</div>
+<div class="section" id="examples">
+<h2>Examples:<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;filtered&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">lanczos_filter</span><span class="o">.</span><span class="n">lanczos_filter</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;signal&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span><span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;window&#39;</span><span class="p">:</span><span class="mi">100</span><span class="p">,</span><span class="s1">&#39;Type&#39;</span><span class="p">:</span><span class="s1">&#39;lanczos lowpas 1st order&#39;</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span>
+</pre></div>
+</div>
 <dl class="py function">
 <dt class="sig sig-object py" id="toto.filters.lanczos_filter.lanczos_filter">
-<span class="sig-prename descclassname"><span class="pre">toto.filters.lanczos_filter.</span></span><span class="sig-name descname"><span class="pre">lanczos_filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'Type':</span> <span class="pre">{'lanczos</span> <span class="pre">lowpas</span> <span class="pre">1st</span> <span class="pre">order':</span> <span class="pre">True,</span> <span class="pre">'lanczos</span> <span class="pre">lowpas</span> <span class="pre">2nd</span> <span class="pre">order':</span> <span class="pre">False},</span> <span class="pre">'window':</span> <span class="pre">0}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/filters/lanczos_filter.html#lanczos_filter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.filters.lanczos_filter.lanczos_filter" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">toto.filters.lanczos_filter.</span></span><span class="sig-name descname"><span class="pre">lanczos_filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'type':</span> <span class="pre">{'lanczos</span> <span class="pre">lowpas</span> <span class="pre">1st</span> <span class="pre">order':</span> <span class="pre">True,</span> <span class="pre">'lanczos</span> <span class="pre">lowpas</span> <span class="pre">2nd</span> <span class="pre">order':</span> <span class="pre">False},</span> <span class="pre">'window':</span> <span class="pre">0}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/filters/lanczos_filter.html#lanczos_filter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.filters.lanczos_filter.lanczos_filter" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">

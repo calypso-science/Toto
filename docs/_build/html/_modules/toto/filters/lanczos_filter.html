@@ -45,8 +45,16 @@
 <span class="sd">        The input data.</span>
 <span class="sd">    window : int</span>
 <span class="sd">        window in hour, a good window is 40 h window of hourly data</span>
-<span class="sd">    Type : {&#39;lanczos lowpas 1st order&#39;, &#39;lanczos lowpas 2nd order&#39;}, optional</span>
-<span class="sd">        The type of lowpass filter, first or second order</span>
+<span class="sd">    type : str</span>
+<span class="sd">        Can be `lanczos lowpas 1st order`, `lanczos lowpas 2nd order` depending on the order.</span>
+
+
+<span class="sd">    Examples:</span>
+<span class="sd">    ~~~~~~~~~</span>
+
+<span class="sd">    &gt;&gt;&gt; df[&#39;filtered&#39;]=lanczos_filter.lanczos_filter(df[&#39;signal&#39;].copy(),args={&#39;window&#39;:100,&#39;Type&#39;:&#39;lanczos lowpas 1st order&#39;})</span>
+<span class="sd">    &gt;&gt;&gt; </span>
+
 
 <span class="sd">&quot;&quot;&quot;</span>
 
@@ -57,12 +65,12 @@
 
 
 <div class="viewcode-block" id="lanczos_filter"><a class="viewcode-back" href="../../../source/toto.filters.lanczos_filter.html#toto.filters.lanczos_filter.lanczos_filter">[docs]</a><span class="k">def</span> <span class="nf">lanczos_filter</span><span class="p">(</span><span class="n">input_array</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;window&#39;</span><span class="p">:</span><span class="nb">int</span><span class="p">(),</span>\
-                                    <span class="s1">&#39;Type&#39;</span><span class="p">:{</span><span class="s1">&#39;lanczos lowpas 1st order&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span>
+                                    <span class="s1">&#39;type&#39;</span><span class="p">:{</span><span class="s1">&#39;lanczos lowpas 1st order&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span>
                                             <span class="s1">&#39;lanczos lowpas 2nd order&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">}</span>
                                     <span class="p">}):</span>
 
     <span class="n">window</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;window&#39;</span><span class="p">]</span>
-    <span class="n">filter_type</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Type&#39;</span><span class="p">]</span>
+    <span class="n">filter_type</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">,</span><span class="s1">&#39;lanczos lowpas 1st order&#39;</span><span class="p">)</span>
     <span class="n">mean</span> <span class="o">=</span> <span class="n">input_array</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
     <span class="n">delt</span><span class="o">=</span><span class="p">(</span><span class="n">input_array</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">input_array</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span><span class="o">/</span><span class="mi">3600</span> <span class="c1"># in hours</span>
     

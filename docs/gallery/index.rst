@@ -259,6 +259,27 @@ Gallery
    :hidden:
 
    /gallery/plot_cyclone
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Linz post-processing examples">
+
+.. only:: html
+
+ .. figure:: /gallery/images/thumb/sphx_glr_plot_linz_exemple_thumb.png
+     :alt: Linz post-processing examples
+
+     :ref:`sphx_glr_gallery_plot_linz_exemple.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /gallery/plot_linz_exemple
 .. raw:: html
 
     <div class="sphx-glr-clear"></div>

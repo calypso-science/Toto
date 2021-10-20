@@ -47,7 +47,8 @@
 <span class="sd">    ~~~~~~~~~~</span>
 
 <span class="sd">    filename : (files,) str or list_like</span>
-<span class="sd">        A list of filename to process.</span>
+<span class="sd">        A list of filename to process. This can be either a NetCDF file made by linz.downdload</span>
+<span class="sd">        or a csv file directly downloaded from Linz website</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    ~~~~~~~~</span>
@@ -60,6 +61,17 @@
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">multiprocessing.pool</span> <span class="kn">import</span> <span class="n">ThreadPool</span>
+
+<div class="viewcode-block" id="url_response"><a class="viewcode-back" href="../../../source/toto.inputs.linz.html#toto.inputs.linz.url_response">[docs]</a><span class="k">def</span> <span class="nf">url_response</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+
+    <span class="n">fileout</span><span class="p">,</span> <span class="n">url</span> <span class="o">=</span> <span class="n">url</span>
+    <span class="n">linzfile</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">allow_redirects</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">linzfile</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">404</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fileout</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">linzfile</span><span class="o">.</span><span class="n">iter_content</span><span class="p">(</span><span class="n">chunk_size</span><span class="o">=</span><span class="mi">128</span><span class="p">):</span>
+                <span class="n">fd</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="lat2msl"><a class="viewcode-back" href="../../../source/toto.inputs.linz.html#toto.inputs.linz.lat2msl">[docs]</a><span class="k">def</span> <span class="nf">lat2msl</span><span class="p">(</span><span class="n">readme</span><span class="p">,</span> <span class="n">ds</span><span class="p">,</span><span class="n">sensor</span><span class="o">=</span><span class="mi">41</span><span class="p">):</span>
     <span class="c1"># Converts data to mean sea level based on information contained in the station&#39;s readme</span>
@@ -173,6 +185,29 @@
         <span class="n">ds</span><span class="p">[</span><span class="n">ref_gauge</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;t1&#39;</span><span class="p">]</span> <span class="p">:</span> <span class="n">ref_gauge</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;t2&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="n">ref_gauge</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;t1&#39;</span><span class="p">]</span> <span class="p">:</span> <span class="n">ref_gauge</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;t2&#39;</span><span class="p">]]</span> <span class="o">-</span> <span class="n">ref_gauge</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span>
 
     <span class="k">return</span> <span class="n">ds</span><span class="p">,</span><span class="n">lon</span><span class="p">,</span><span class="n">lat</span></div>
+<div class="viewcode-block" id="download_linz"><a class="viewcode-back" href="../../../source/toto.inputs.linz.html#toto.inputs.linz.download_linz">[docs]</a><span class="k">def</span> <span class="nf">download_linz</span><span class="p">(</span><span class="n">station</span><span class="p">,</span><span class="n">start_date</span><span class="p">,</span><span class="n">end_date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">fileout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">sensors</span><span class="o">=</span><span class="p">[</span><span class="mi">40</span><span class="p">,</span><span class="mi">41</span><span class="p">]):</span>
+    <span class="c1">#https://sealevel-data.linz.govt.nz/AUCT/2019/40/AUCT_40_2019001.zip</span>
+    <span class="c1">#https://sealevel-data.linz.govt.nz/AUCT/2014/40/AUCT_40_2014.zip</span>
+    <span class="n">baseurl</span><span class="o">=</span><span class="s1">&#39;https://sealevel-data.linz.govt.nz/</span><span class="si">%s</span><span class="s1">/</span><span class="si">%i</span><span class="s1">/</span><span class="si">%i</span><span class="s1">/</span><span class="si">%s</span><span class="s1">_</span><span class="si">%i</span><span class="s1">_</span><span class="si">%s</span><span class="s1">.zip&#39;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">end_date</span><span class="p">:</span>
+        <span class="n">end_date</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">sensors</span><span class="p">)</span><span class="o">!=</span><span class="nb">type</span><span class="p">(</span><span class="nb">list</span><span class="p">()):</span>
+        <span class="n">sensors</span><span class="o">=</span><span class="p">[</span><span class="n">sensors</span><span class="p">]</span>
+
+
+
+    <span class="k">for</span> <span class="n">sensor</span> <span class="ow">in</span> <span class="n">sensors</span><span class="p">:</span>
+        <span class="n">urls</span><span class="o">=</span><span class="p">[]</span>
+        <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">start_date</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">end_date</span><span class="o">.</span><span class="n">year</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">367</span><span class="p">):</span>
+                <span class="n">fileout</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span><span class="s1">&#39;linz_&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">sensor</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;</span><span class="si">%03i</span><span class="s1">.zip&#39;</span><span class="o">%</span><span class="n">n</span><span class="p">)</span>
+                <span class="n">urls</span><span class="o">=</span><span class="p">(</span><span class="n">fileout</span><span class="p">,</span>
+                    <span class="n">baseurl</span> <span class="o">%</span> <span class="p">(</span><span class="n">station</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">sensor</span><span class="p">,</span><span class="n">station</span><span class="p">,</span><span class="n">sensor</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;</span><span class="si">%03i</span><span class="s1">&#39;</span><span class="o">%</span><span class="n">n</span><span class="p">))</span>
+
+                <span class="n">url_response</span><span class="p">(</span><span class="n">urls</span><span class="p">)</span></div>
+<span class="c1">#        ThreadPool(1).imap_unordered(url_response, urls)</span>
+
 
 <div class="viewcode-block" id="LINZfile"><a class="viewcode-back" href="../../../source/toto.inputs.linz.html#toto.inputs.linz.LINZfile">[docs]</a><span class="k">class</span> <span class="nc">LINZfile</span><span class="p">():</span>
 
@@ -187,12 +222,43 @@
             <span class="n">filenames</span><span class="o">=</span><span class="p">[</span><span class="n">filenames</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">filenames</span><span class="o">=</span><span class="n">filenames</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">=</span><span class="p">[]</span>
-        <span class="c1"># READ </span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_reads_nc</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">_reads_nc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_reads</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_reads</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">filenames</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_read_nc</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.csv&#39;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_read_csv</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.nc&#39;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_read_nc</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_read_csv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">filename</span><span class="p">):</span>
+        <span class="n">sensor</span><span class="o">=</span><span class="n">filename</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">station</span><span class="o">=</span><span class="n">filename</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span>
+        <span class="n">df</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span>
+            <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;station&#39;</span><span class="p">,</span><span class="s1">&#39;date_time&#39;</span><span class="p">,</span><span class="s1">&#39;elev&#39;</span><span class="o">+</span><span class="n">sensor</span><span class="p">],</span>
+            <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;date_time&#39;</span><span class="p">])</span>
+
+        <span class="n">df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;date_time&#39;</span><span class="p">:</span><span class="s1">&#39;time&#39;</span><span class="p">},</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">del</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;station&#39;</span><span class="p">]</span>
+
+        
+        <span class="n">filepath</span><span class="p">,</span><span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">readmefile</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span><span class="n">station</span><span class="o">+</span><span class="s1">&#39;_readme.txt&#39;</span><span class="p">)</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">,</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">df</span><span class="p">[</span><span class="s1">&#39;elev&#39;</span><span class="o">+</span><span class="n">sensor</span><span class="p">],</span><span class="n">lon</span><span class="p">,</span><span class="n">lat</span><span class="o">=</span><span class="n">lat2msl</span><span class="p">(</span><span class="n">readmefile</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;elev&#39;</span><span class="o">+</span><span class="n">sensor</span><span class="p">],</span><span class="n">sensor</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">sensor</span><span class="p">))</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">,</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">drop</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+
+        <span class="nb">setattr</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;elev&#39;</span><span class="o">+</span><span class="n">sensor</span><span class="p">],</span><span class="s1">&#39;units&#39;</span><span class="p">,</span><span class="s1">&#39;m&#39;</span><span class="p">)</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;elev&#39;</span><span class="o">+</span><span class="n">sensor</span><span class="p">],</span><span class="s1">&#39;long_name&#39;</span><span class="p">,</span><span class="s1">&#39;water_level&#39;</span><span class="p">)</span>
+
+
+        <span class="nb">setattr</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="s1">&#39;longitude&#39;</span><span class="p">,</span><span class="n">lon</span><span class="p">)</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="s1">&#39;latitude&#39;</span><span class="p">,</span><span class="n">lat</span><span class="p">)</span>           
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
 
     <span class="k">def</span> <span class="nf">_read_nc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">filename</span><span class="p">):</span>
 
@@ -247,14 +313,14 @@
 
 
 
-
     <span class="k">def</span> <span class="nf">_toDataFrame</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
        <span class="c1">#print(self.data)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span></div>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">LINZfile</span><span class="p">(</span><span class="s1">&#39;/home/remy/projects/019_stormsurge/storm_surge_data/nz_tidal_gauges/linz/raw/AUCT_raw.nc&#39;</span><span class="p">)</span>
+    <span class="c1">#LINZfile(&#39;/home/remy/projects/019_stormsurge/storm_surge_data/nz_tidal_gauges/linz/raw/AUCT_raw.nc&#39;)</span>
+    <span class="n">download_linz</span><span class="p">(</span><span class="s1">&#39;AUCT&#39;</span><span class="p">,</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2010</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">end_date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">fileout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">sensors</span><span class="o">=</span><span class="p">[</span><span class="mi">40</span><span class="p">,</span><span class="mi">41</span><span class="p">])</span>
 </pre></div>
 
           </div>
