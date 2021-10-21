@@ -7,7 +7,7 @@ from matplotlib import gridspec
 from grid_strategy import strategies
 from ...core.toolbox import display_message
 
-def do_joint_prob(filename,time,Xdata,Ydata,X_interval,Y_interval,time_blocking,binning,multiplier=1000):
+def do_joint_prob(filename,time,Xdata,Ydata,X_interval,Y_interval,time_blocking,binning,multiplier=1000,mag_name=''):
 
     display_message()
 

@@ -312,7 +312,7 @@ class Statistics:
         'direction binning':{'centered':True,'not-centered':False},
         'direction interval': 45.,
         'time blocking':{'Annual':True,'Seasonal (South hemisphere)':False,'Seasonal (North hemisphere)':False,'Monthly':False},
-        'Probablity expressed in':{'percent':False,'per thoushand':True}
+        'probablity expressed in':{'percent':False,'per thoushand':True}
         }):
         """This function provides joint distribution tables for X and Y, i.e. the
             probability of events defined in terms of both X and Y (per 1000)
@@ -341,7 +341,7 @@ class Statistics:
                         Dirctionnal interval for the bins in degrees
                     folder out: str
                         Path to save the output
-                    Probablity expressed in: str
+                    probablity expressed in: str
                         This can be `percent` or `per thoushand`
                     X Min Res Max(optional): list
                         Minimum, resolution and maximum value of X axis use in the join probability
@@ -399,7 +399,7 @@ class Statistics:
                  -
                  - 100
         """
-        analysis_method=args['method']
+        analysis_method=args.get('method','Mag vs Dir')
 
         if analysis_method=='Mag vs Dir':
             Ydata=self.data[mag]
@@ -412,9 +412,12 @@ class Statistics:
             Ydata=self.data[mag]
             Xdata=self.data[period]
 
+
+        if not hasattr(self.data,'filename'):
+            self.data.filename=''
         filename=os.path.join(args.get('folder out',os.getcwd()),os.path.splitext(self.data.filename)[0]+'JP.xlsx')
 
-        if args['Probablity expressed in']=='percent':
+        if args.get('probablity expressed in','percent')=='percent':
             multiplier=100.
         else:
             multiplier=1000.
@@ -422,8 +425,9 @@ class Statistics:
         
 
         if analysis_method=='Mag vs Dir' or analysis_method=='Per Vs Dir':
-            X_interval=dir_interval(args['direction interval'],args['direction binning'])
-            binning=args['direction binning']
+            X_interval=dir_interval(args.get('direction interval',45),
+                args.get('direction binning','centered'))
+            binning=args.get('direction binning','centered')
         else:
             X_interval=get_increment(Xdata,args['X Min Res Max(optional)'])
             binning=''
@@ -431,7 +435,8 @@ class Statistics:
 
         X_interval=np.append(X_interval,np.nan)
         Y_interval=np.append(Y_interval,np.nan)
-        do_joint_prob(filename,self.data.index,Xdata,Ydata,X_interval,Y_interval,args['time blocking'],binning,multiplier,mag)
+        do_joint_prob(filename,self.data.index,Xdata,Ydata,X_interval,Y_interval,
+            args.get('time blocking','Annual'),binning,multiplier,mag)
 
 
 
