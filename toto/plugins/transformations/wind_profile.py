@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 import xarray as xr
-from ...core.toolbox import wavenuma,uv2spdir,spdir2uv
+from ...core.toolbox import wavenuma,uv2spdir,spdir2uv,qkhfs
 
 @pd.api.extensions.register_dataframe_accessor("DataTransformation")
 class DataTransformation:
@@ -163,3 +163,120 @@ class DataTransformation:
         self.dfout['u']=u
         self.dfout['v']=v
         return self.dfout
+
+
+    def bed_shear_stress(self,spd='spd',hs='hs',tp='tp',
+                        args={'water_depth':10,
+                        'mode':{'dav':'On','3D':'Off'},
+                        'rho_water':1027,
+                              'z0': 0.001,
+                        }):
+        """
+        Computation of bed shear stress due to current and waves
+        current-related stress is computed following a drag-coefficient approach
+        wave-related stress is computed following Van Rijn approach
+        Combined wave-current mean and max stresses are computed following Soulsby(1995) approach
+        https://odnature.naturalsciences.be/coherens/manual#manual
+        https://odnature.naturalsciences.be/downloads/coherens/documentation/chapter7.pdf#nameddest=Bed_shear_stresses
+        
+        http://www.coastalwiki.org/wiki/Shallow-water_wave_theory#
+        http://www.coastalwiki.org/wiki/Shallow-water_wave_theory#Seabed_Friction  
+        General relationships obtained from :
+        https://repository.tudelft.nl/islandora/object/uuid%3Aea12eb20-aee3-4f58-99fb-ebc216e98879
+        Description of TRANSPOR2004 and Implementation in Delft3D-ONLINE
+        Take from the work of Simon Wepp in Opendrift
+
+
+        Parameters
+        ~~~~~~~~~~
+
+        spd : str
+            Name of the column from which to get current speed.
+        hs : str, optional
+            Column name representing the wave height.
+        tp : str, optional
+            Column name representing the wave period.
+
+        args: dict
+            Dictionnary with the folowing keys:
+            water_depth: float
+                Total water depth or level from which the current was taken
+            mode: str
+                Use `3D` or `dav` for 3D current or depth=average current. default `dav`
+            rho_water float:
+                Sea water density kg/m3, default 1027
+            z0 float:
+                Roughness height, default 0.001
+
+        Examples:
+        ~~~~~~~~~
+        >>> df=tf['test1']['dataframe'].DataTransformation.bed_shear_stress(spd='spd',hs='hs',tp='tp',args={'water_depth':10})
+        >>> 
+        """
+        if args.get('mode','dav'):
+            dav=True
+        else:
+            dav=False
+
+        rho_water = args.get('rho_water',1027) # kg/m3
+        z0 = args.get('z0',0.001) # roughness height
+        water_depth = np.abs(args.get('water_depth',10)) # water depth positive down
+        current_speed = self.data[spd] # depth-averaged current 
+
+        #######################################################
+        # current-related bed shear stress
+        #######################################################
+        if dav:
+            # depth-averaged current approach :
+            Cdrag=( 0.4 /(np.log(abs(water_depth/z0))-1) )**2
+            #Now compute the bed shear stress [N/m2] 
+            tau_cur=rho_water*Cdrag*current_speed**2 # eq. 7.1 in COHERENS Manual
+        else:
+            #3D currents:
+            Cdrag=(0.4/np.log(water_depth/z0))**2
+            tau_cur=rho_water*Cdrag*current_speed**2 # eq. 7.1 in COHERENS Manual
+
+
+        #######################################################
+        # wave-related bed shear stress (if wave available)
+        #######################################################
+        hs = self.data[hs]
+        tp = self.data[tp]
+        # wave-related roughness
+
+        # see VanRijn 
+        # https://tinyurl.com/nyjcss5w
+        # SIMPLE GENERAL FORMULAE FOR SAND TRANSPORT IN RIVERS, ESTUARIES AND COASTAL WATERS
+        # >> page 6
+        # 
+        # Note : VanRijn 2007 suggests same equations than for current-related roughness 
+        # where 20*d50 <ksw<150*d50: Here we are using Nikuradse roughness for consistency 
+        # with the use of z0 in the current-related shear stress 
+
+        ksw=30*z0 # wave related bed roughness - taken as Nikuradse roughness 
+        w=2*np.pi/tp # angular frequency
+        kh = qkhfs( w, water_depth ) # from dispersion relationship 
+        Adelta = hs/(2*np.sinh(kh)) # peak wave orbital excursion 
+        Udelta = (np.pi*hs)/(tp*np.sinh(kh))  # peak wave orbital velocity linear theory 
+        # wave-related friction coefficient (Swart,1974) and eq. 3.8 on VanRijn pdf
+        # see also COHERENS manual eq. 7.17 which is equivalent since exp(a+b) =exp(a)*exp(b)
+        fw_swart = np.exp(-5.977+5.213*(Adelta/ksw)**-0.194)  
+        fw_swart = np.minimum(fw_swart,0.3)
+        fw_soulsby = 0.237 * (Adelta/ksw)**-0.52 #eq. 7.18 COHERENS, not used for now
+
+        tau_wave = 0.25 * rho_water * fw_swart * (Udelta)**2 # wave-related bed shear stress eq. 3.7 on VanRijn pdf
+
+        #cycle mean bed shear stress according to Soulsby,1995, see also COHERENS manual eq. 7.14
+        tau_cw=tau_cur*(1+1.2*(tau_wave/(tau_cur+tau_wave))**3.2)
+        # max bed shear stress during wave cycle >> used for the resuspension criterion.
+        theta_cur_dir = 0.0 #angle between direction of travel of wave and current, in radians, in practice rarely known so assume 0.0 for now
+        print('angle between direction of travel of wave and current not implemented yet')
+        tau_cw_max = ( tau_cur**2 + tau_wave**2 + 2*tau_cur*tau_wave*np.cos(theta_cur_dir) )**0.5 # COHERENS eq. 7.15
+        
+        self.dfout['tau_cw']=tau_cw
+        self.dfout['tau_cw_max']=tau_cw_max
+
+        return self.dfout
+
+
+    
