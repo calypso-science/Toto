@@ -46,6 +46,36 @@
 <span class="s1">        r.zyngfogel@calypso.science or</span><span class="se">\n\</span>
 <span class="s1">        b.beamsley@metocean.co.nz&#39;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;########################################################################&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="qkhfs"><a class="viewcode-back" href="../../../source/toto.core.toolbox.html#toto.core.toolbox.qkhfs">[docs]</a><span class="k">def</span> <span class="nf">qkhfs</span><span class="p">(</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Quick iterative calculation of kh in gravity-wave dispersion relationship</span>
+<span class="sd">    kh = qkhfs(w, h )</span>
+<span class="sd">    </span>
+<span class="sd">    Input</span>
+<span class="sd">        w - angular wave frequency = 2*pi/T where T = wave period [1/s]</span>
+<span class="sd">        h - water depth [m]</span>
+<span class="sd">    Returns</span>
+<span class="sd">        kh - wavenumber * depth [ ]</span>
+<span class="sd">    Orbital velocities from kh are accurate to 3e-12 !</span>
+<span class="sd">    RL Soulsby (2006) &quot;Simplified calculation of wave orbital velocities&quot;</span>
+<span class="sd">    HR Wallingford Report TR 155, February 2006</span>
+<span class="sd">    Eqns. 12a - 14</span>
+<span class="sd">    from  https://github.com/csherwood-usgs/crspy/blob/master/crspy.py</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="mf">9.81</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">w</span><span class="o">**</span><span class="mf">2.0</span> <span class="o">*</span><span class="n">h</span><span class="o">/</span><span class="n">g</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span><span class="o">&lt;</span><span class="mf">1.</span><span class="p">)</span> <span class="o">+</span> <span class="n">x</span> <span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="o">&gt;=</span><span class="mf">1.</span><span class="p">)</span>
+    <span class="c1"># is this faster than a loop?</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span> <span class="n">y</span> <span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="o">-</span><span class="p">(</span> <span class="p">(</span><span class="n">y</span><span class="o">*</span><span class="n">t</span> <span class="o">-</span><span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">t</span><span class="o">+</span><span class="n">y</span><span class="o">*</span><span class="p">(</span><span class="mf">1.0</span><span class="o">-</span><span class="n">t</span><span class="o">**</span><span class="mf">2.0</span><span class="p">)))</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span> <span class="n">y</span> <span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="o">-</span><span class="p">(</span> <span class="p">(</span><span class="n">y</span><span class="o">*</span><span class="n">t</span> <span class="o">-</span><span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">t</span><span class="o">+</span><span class="n">y</span><span class="o">*</span><span class="p">(</span><span class="mf">1.0</span><span class="o">-</span><span class="n">t</span><span class="o">**</span><span class="mf">2.0</span><span class="p">)))</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span> <span class="n">y</span> <span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="o">-</span><span class="p">(</span> <span class="p">(</span><span class="n">y</span><span class="o">*</span><span class="n">t</span> <span class="o">-</span><span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">t</span><span class="o">+</span><span class="n">y</span><span class="o">*</span><span class="p">(</span><span class="mf">1.0</span><span class="o">-</span><span class="n">t</span><span class="o">**</span><span class="mf">2.0</span><span class="p">)))</span>
+    <span class="n">kh</span> <span class="o">=</span> <span class="n">y</span>
+    <span class="k">return</span> <span class="n">kh</span></div>
+
 <div class="viewcode-block" id="peaks"><a class="viewcode-back" href="../../../source/toto.core.toolbox.html#toto.core.toolbox.peaks">[docs]</a><span class="k">def</span> <span class="nf">peaks</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; return peaks and trough indx</span>
 <span class="sd">        from Nagi Hatoum peaks.m</span>

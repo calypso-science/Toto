@@ -39,7 +39,7 @@
 <span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
-<span class="kn">from</span> <span class="nn">...core.toolbox</span> <span class="kn">import</span> <span class="n">wavenuma</span><span class="p">,</span><span class="n">uv2spdir</span><span class="p">,</span><span class="n">spdir2uv</span>
+<span class="kn">from</span> <span class="nn">...core.toolbox</span> <span class="kn">import</span> <span class="n">wavenuma</span><span class="p">,</span><span class="n">uv2spdir</span><span class="p">,</span><span class="n">spdir2uv</span><span class="p">,</span><span class="n">qkhfs</span>
 
 <div class="viewcode-block" id="DataTransformation"><a class="viewcode-back" href="../../../../source/toto.plugins.transformations.wind_profile.html#toto.plugins.transformations.wind_profile.DataTransformation">[docs]</a><span class="nd">@pd</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">extensions</span><span class="o">.</span><span class="n">register_dataframe_accessor</span><span class="p">(</span><span class="s2">&quot;DataTransformation&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">DataTransformation</span><span class="p">:</span>
@@ -200,7 +200,124 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">dfout</span><span class="p">[</span><span class="s1">&#39;u&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">u</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dfout</span><span class="p">[</span><span class="s1">&#39;v&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">v</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dfout</span></div>
+
+
+<div class="viewcode-block" id="DataTransformation.bed_shear_stress"><a class="viewcode-back" href="../../../../source/toto.plugins.transformations.wind_profile.html#toto.plugins.transformations.wind_profile.DataTransformation.bed_shear_stress">[docs]</a>    <span class="k">def</span> <span class="nf">bed_shear_stress</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">spd</span><span class="o">=</span><span class="s1">&#39;spd&#39;</span><span class="p">,</span><span class="n">hs</span><span class="o">=</span><span class="s1">&#39;hs&#39;</span><span class="p">,</span><span class="n">tp</span><span class="o">=</span><span class="s1">&#39;tp&#39;</span><span class="p">,</span>
+                        <span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;water_depth&#39;</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span>
+                        <span class="s1">&#39;mode&#39;</span><span class="p">:{</span><span class="s1">&#39;dav&#39;</span><span class="p">:</span><span class="s1">&#39;On&#39;</span><span class="p">,</span><span class="s1">&#39;3D&#39;</span><span class="p">:</span><span class="s1">&#39;Off&#39;</span><span class="p">},</span>
+                        <span class="s1">&#39;rho_water&#39;</span><span class="p">:</span><span class="mi">1027</span><span class="p">,</span>
+                              <span class="s1">&#39;z0&#39;</span><span class="p">:</span> <span class="mf">0.001</span><span class="p">,</span>
+                        <span class="p">}):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computation of bed shear stress due to current and waves</span>
+<span class="sd">        current-related stress is computed following a drag-coefficient approach</span>
+<span class="sd">        wave-related stress is computed following Van Rijn approach</span>
+<span class="sd">        Combined wave-current mean and max stresses are computed following Soulsby(1995) approach</span>
+<span class="sd">        https://odnature.naturalsciences.be/coherens/manual#manual</span>
+<span class="sd">        https://odnature.naturalsciences.be/downloads/coherens/documentation/chapter7.pdf#nameddest=Bed_shear_stresses</span>
+<span class="sd">        </span>
+<span class="sd">        http://www.coastalwiki.org/wiki/Shallow-water_wave_theory#</span>
+<span class="sd">        http://www.coastalwiki.org/wiki/Shallow-water_wave_theory#Seabed_Friction  </span>
+<span class="sd">        General relationships obtained from :</span>
+<span class="sd">        https://repository.tudelft.nl/islandora/object/uuid%3Aea12eb20-aee3-4f58-99fb-ebc216e98879</span>
+<span class="sd">        Description of TRANSPOR2004 and Implementation in Delft3D-ONLINE</span>
+<span class="sd">        Take from the work of Simon Wepp in Opendrift</span>
+
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ~~~~~~~~~~</span>
+
+<span class="sd">        spd : str</span>
+<span class="sd">            Name of the column from which to get current speed.</span>
+<span class="sd">        hs : str, optional</span>
+<span class="sd">            Column name representing the wave height.</span>
+<span class="sd">        tp : str, optional</span>
+<span class="sd">            Column name representing the wave period.</span>
+
+<span class="sd">        args: dict</span>
+<span class="sd">            Dictionnary with the folowing keys:</span>
+<span class="sd">            water_depth: float</span>
+<span class="sd">                Total water depth or level from which the current was taken</span>
+<span class="sd">            mode: str</span>
+<span class="sd">                Use `3D` or `dav` for 3D current or depth=average current. default `dav`</span>
+<span class="sd">            rho_water float:</span>
+<span class="sd">                Sea water density kg/m3, default 1027</span>
+<span class="sd">            z0 float:</span>
+<span class="sd">                Roughness height, default 0.001</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">        ~~~~~~~~~</span>
+<span class="sd">        &gt;&gt;&gt; df=tf[&#39;test1&#39;][&#39;dataframe&#39;].DataTransformation.bed_shear_stress(spd=&#39;spd&#39;,hs=&#39;hs&#39;,tp=&#39;tp&#39;,args={&#39;water_depth&#39;:10})</span>
+<span class="sd">        &gt;&gt;&gt; </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;mode&#39;</span><span class="p">,</span><span class="s1">&#39;dav&#39;</span><span class="p">):</span>
+            <span class="n">dav</span><span class="o">=</span><span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">dav</span><span class="o">=</span><span class="kc">False</span>
+
+        <span class="n">rho_water</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;rho_water&#39;</span><span class="p">,</span><span class="mi">1027</span><span class="p">)</span> <span class="c1"># kg/m3</span>
+        <span class="n">z0</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;z0&#39;</span><span class="p">,</span><span class="mf">0.001</span><span class="p">)</span> <span class="c1"># roughness height</span>
+        <span class="n">water_depth</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;water_depth&#39;</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span> <span class="c1"># water depth positive down</span>
+        <span class="n">current_speed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">spd</span><span class="p">]</span> <span class="c1"># depth-averaged current </span>
+
+        <span class="c1">#######################################################</span>
+        <span class="c1"># current-related bed shear stress</span>
+        <span class="c1">#######################################################</span>
+        <span class="k">if</span> <span class="n">dav</span><span class="p">:</span>
+            <span class="c1"># depth-averaged current approach :</span>
+            <span class="n">Cdrag</span><span class="o">=</span><span class="p">(</span> <span class="mf">0.4</span> <span class="o">/</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">water_depth</span><span class="o">/</span><span class="n">z0</span><span class="p">))</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+            <span class="c1">#Now compute the bed shear stress [N/m2] </span>
+            <span class="n">tau_cur</span><span class="o">=</span><span class="n">rho_water</span><span class="o">*</span><span class="n">Cdrag</span><span class="o">*</span><span class="n">current_speed</span><span class="o">**</span><span class="mi">2</span> <span class="c1"># eq. 7.1 in COHERENS Manual</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1">#3D currents:</span>
+            <span class="n">Cdrag</span><span class="o">=</span><span class="p">(</span><span class="mf">0.4</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">water_depth</span><span class="o">/</span><span class="n">z0</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span>
+            <span class="n">tau_cur</span><span class="o">=</span><span class="n">rho_water</span><span class="o">*</span><span class="n">Cdrag</span><span class="o">*</span><span class="n">current_speed</span><span class="o">**</span><span class="mi">2</span> <span class="c1"># eq. 7.1 in COHERENS Manual</span>
+
+
+        <span class="c1">#######################################################</span>
+        <span class="c1"># wave-related bed shear stress (if wave available)</span>
+        <span class="c1">#######################################################</span>
+        <span class="n">hs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">hs</span><span class="p">]</span>
+        <span class="n">tp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">tp</span><span class="p">]</span>
+        <span class="c1"># wave-related roughness</span>
+
+        <span class="c1"># see VanRijn </span>
+        <span class="c1"># https://tinyurl.com/nyjcss5w</span>
+        <span class="c1"># SIMPLE GENERAL FORMULAE FOR SAND TRANSPORT IN RIVERS, ESTUARIES AND COASTAL WATERS</span>
+        <span class="c1"># &gt;&gt; page 6</span>
+        <span class="c1"># </span>
+        <span class="c1"># Note : VanRijn 2007 suggests same equations than for current-related roughness </span>
+        <span class="c1"># where 20*d50 &lt;ksw&lt;150*d50: Here we are using Nikuradse roughness for consistency </span>
+        <span class="c1"># with the use of z0 in the current-related shear stress </span>
+
+        <span class="n">ksw</span><span class="o">=</span><span class="mi">30</span><span class="o">*</span><span class="n">z0</span> <span class="c1"># wave related bed roughness - taken as Nikuradse roughness </span>
+        <span class="n">w</span><span class="o">=</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="n">tp</span> <span class="c1"># angular frequency</span>
+        <span class="n">kh</span> <span class="o">=</span> <span class="n">qkhfs</span><span class="p">(</span> <span class="n">w</span><span class="p">,</span> <span class="n">water_depth</span> <span class="p">)</span> <span class="c1"># from dispersion relationship </span>
+        <span class="n">Adelta</span> <span class="o">=</span> <span class="n">hs</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sinh</span><span class="p">(</span><span class="n">kh</span><span class="p">))</span> <span class="c1"># peak wave orbital excursion </span>
+        <span class="n">Udelta</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">hs</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">tp</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sinh</span><span class="p">(</span><span class="n">kh</span><span class="p">))</span>  <span class="c1"># peak wave orbital velocity linear theory </span>
+        <span class="c1"># wave-related friction coefficient (Swart,1974) and eq. 3.8 on VanRijn pdf</span>
+        <span class="c1"># see also COHERENS manual eq. 7.17 which is equivalent since exp(a+b) =exp(a)*exp(b)</span>
+        <span class="n">fw_swart</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">5.977</span><span class="o">+</span><span class="mf">5.213</span><span class="o">*</span><span class="p">(</span><span class="n">Adelta</span><span class="o">/</span><span class="n">ksw</span><span class="p">)</span><span class="o">**-</span><span class="mf">0.194</span><span class="p">)</span>  
+        <span class="n">fw_swart</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">fw_swart</span><span class="p">,</span><span class="mf">0.3</span><span class="p">)</span>
+        <span class="n">fw_soulsby</span> <span class="o">=</span> <span class="mf">0.237</span> <span class="o">*</span> <span class="p">(</span><span class="n">Adelta</span><span class="o">/</span><span class="n">ksw</span><span class="p">)</span><span class="o">**-</span><span class="mf">0.52</span> <span class="c1">#eq. 7.18 COHERENS, not used for now</span>
+
+        <span class="n">tau_wave</span> <span class="o">=</span> <span class="mf">0.25</span> <span class="o">*</span> <span class="n">rho_water</span> <span class="o">*</span> <span class="n">fw_swart</span> <span class="o">*</span> <span class="p">(</span><span class="n">Udelta</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="c1"># wave-related bed shear stress eq. 3.7 on VanRijn pdf</span>
+
+        <span class="c1">#cycle mean bed shear stress according to Soulsby,1995, see also COHERENS manual eq. 7.14</span>
+        <span class="n">tau_cw</span><span class="o">=</span><span class="n">tau_cur</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="mf">1.2</span><span class="o">*</span><span class="p">(</span><span class="n">tau_wave</span><span class="o">/</span><span class="p">(</span><span class="n">tau_cur</span><span class="o">+</span><span class="n">tau_wave</span><span class="p">))</span><span class="o">**</span><span class="mf">3.2</span><span class="p">)</span>
+        <span class="c1"># max bed shear stress during wave cycle &gt;&gt; used for the resuspension criterion.</span>
+        <span class="n">theta_cur_dir</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="c1">#angle between direction of travel of wave and current, in radians, in practice rarely known so assume 0.0 for now</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;angle between direction of travel of wave and current not implemented yet&#39;</span><span class="p">)</span>
+        <span class="n">tau_cw_max</span> <span class="o">=</span> <span class="p">(</span> <span class="n">tau_cur</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">tau_wave</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">tau_cur</span><span class="o">*</span><span class="n">tau_wave</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta_cur_dir</span><span class="p">)</span> <span class="p">)</span><span class="o">**</span><span class="mf">0.5</span> <span class="c1"># COHERENS eq. 7.15</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">dfout</span><span class="p">[</span><span class="s1">&#39;tau_cw&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">tau_cw</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dfout</span><span class="p">[</span><span class="s1">&#39;tau_cw_max&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">tau_cw_max</span>
+
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dfout</span></div></div>
+
+
+    
 </pre></div>
 
           </div>

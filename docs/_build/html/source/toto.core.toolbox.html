@@ -126,6 +126,25 @@
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="toto.core.toolbox.qkhfs">
+<span class="sig-prename descclassname"><span class="pre">toto.core.toolbox.</span></span><span class="sig-name descname"><span class="pre">qkhfs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/core/toolbox.html#qkhfs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.core.toolbox.qkhfs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Quick iterative calculation of kh in gravity-wave dispersion relationship
+kh = qkhfs(w, h )</p>
+<dl class="simple">
+<dt>Input</dt><dd><p>w - angular wave frequency = 2*pi/T where T = wave period [1/s]
+h - water depth [m]</p>
+</dd>
+<dt>Returns</dt><dd><p>kh - wavenumber * depth [ ]</p>
+</dd>
+</dl>
+<p>Orbital velocities from kh are accurate to 3e-12 !
+RL Soulsby (2006) “Simplified calculation of wave orbital velocities”
+HR Wallingford Report TR 155, February 2006
+Eqns. 12a - 14
+from  <a class="reference external" href="https://github.com/csherwood-usgs/crspy/blob/master/crspy.py">https://github.com/csherwood-usgs/crspy/blob/master/crspy.py</a></p>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="toto.core.toolbox.spdir2uv">
 <span class="sig-prename descclassname"><span class="pre">toto.core.toolbox.</span></span><span class="sig-name descname"><span class="pre">spdir2uv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'going</span> <span class="pre">to'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/core/toolbox.html#spdir2uv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.core.toolbox.spdir2uv" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>

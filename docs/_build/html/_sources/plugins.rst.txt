@@ -64,6 +64,8 @@ Transformations
 
 •	:doc:`U & V / Spd & drr <uv_trans>`
 
+•	:doc:`Bed shear stress <bed_shear>`
+
 Wave
 ~~~~
 

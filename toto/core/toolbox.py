@@ -8,6 +8,36 @@ def display_message():
         r.zyngfogel@calypso.science or\n\
         b.beamsley@metocean.co.nz')
     print('########################################################################')
+
+def qkhfs( w, h ):
+    """
+    Quick iterative calculation of kh in gravity-wave dispersion relationship
+    kh = qkhfs(w, h )
+    
+    Input
+        w - angular wave frequency = 2*pi/T where T = wave period [1/s]
+        h - water depth [m]
+    Returns
+        kh - wavenumber * depth [ ]
+    Orbital velocities from kh are accurate to 3e-12 !
+    RL Soulsby (2006) "Simplified calculation of wave orbital velocities"
+    HR Wallingford Report TR 155, February 2006
+    Eqns. 12a - 14
+    from  https://github.com/csherwood-usgs/crspy/blob/master/crspy.py
+    """
+    g = 9.81
+    x = w**2.0 *h/g
+    y = np.sqrt(x) * (x<1.) + x *(x>=1.)
+    # is this faster than a loop?
+    t = np.tanh( y )
+    y = y-( (y*t -x)/(t+y*(1.0-t**2.0)))
+    t = np.tanh( y )
+    y = y-( (y*t -x)/(t+y*(1.0-t**2.0)))
+    t = np.tanh( y )
+    y = y-( (y*t -x)/(t+y*(1.0-t**2.0)))
+    kh = y
+    return kh
+
 def peaks(y):
     """ return peaks and trough indx
         from Nagi Hatoum peaks.m

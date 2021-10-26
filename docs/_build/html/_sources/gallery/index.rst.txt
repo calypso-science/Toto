@@ -262,6 +262,27 @@ Gallery
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Create bed shear stress example">
+
+.. only:: html
+
+ .. figure:: /gallery/images/thumb/sphx_glr_plot_bed_shear_stress_thumb.png
+     :alt: Create bed shear stress example
+
+     :ref:`sphx_glr_gallery_plot_bed_shear_stress.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /gallery/plot_bed_shear_stress
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Linz post-processing examples">
 
 .. only:: html

@@ -350,7 +350,7 @@
         <span class="s1">&#39;direction binning&#39;</span><span class="p">:{</span><span class="s1">&#39;centered&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;not-centered&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
         <span class="s1">&#39;direction interval&#39;</span><span class="p">:</span> <span class="mf">45.</span><span class="p">,</span>
         <span class="s1">&#39;time blocking&#39;</span><span class="p">:{</span><span class="s1">&#39;Annual&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span><span class="s1">&#39;Seasonal (South hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Seasonal (North hemisphere)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;Monthly&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
-        <span class="s1">&#39;Probablity expressed in&#39;</span><span class="p">:{</span><span class="s1">&#39;percent&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;per thoushand&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">}</span>
+        <span class="s1">&#39;probablity expressed in&#39;</span><span class="p">:{</span><span class="s1">&#39;percent&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span><span class="s1">&#39;per thoushand&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">}</span>
         <span class="p">}):</span>
         <span class="sd">&quot;&quot;&quot;This function provides joint distribution tables for X and Y, i.e. the</span>
 <span class="sd">            probability of events defined in terms of both X and Y (per 1000)</span>
@@ -379,7 +379,7 @@
 <span class="sd">                        Dirctionnal interval for the bins in degrees</span>
 <span class="sd">                    folder out: str</span>
 <span class="sd">                        Path to save the output</span>
-<span class="sd">                    Probablity expressed in: str</span>
+<span class="sd">                    probablity expressed in: str</span>
 <span class="sd">                        This can be `percent` or `per thoushand`</span>
 <span class="sd">                    X Min Res Max(optional): list</span>
 <span class="sd">                        Minimum, resolution and maximum value of X axis use in the join probability</span>
@@ -437,7 +437,7 @@
 <span class="sd">                 -</span>
 <span class="sd">                 - 100</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">analysis_method</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;method&#39;</span><span class="p">]</span>
+        <span class="n">analysis_method</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;method&#39;</span><span class="p">,</span><span class="s1">&#39;Mag vs Dir&#39;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">analysis_method</span><span class="o">==</span><span class="s1">&#39;Mag vs Dir&#39;</span><span class="p">:</span>
             <span class="n">Ydata</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">mag</span><span class="p">]</span>
@@ -450,9 +450,12 @@
             <span class="n">Ydata</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">mag</span><span class="p">]</span>
             <span class="n">Xdata</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">period</span><span class="p">]</span>
 
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="s1">&#39;filename&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
         <span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;folder out&#39;</span><span class="p">,</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()),</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;JP.xlsx&#39;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;Probablity expressed in&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;percent&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;probablity expressed in&#39;</span><span class="p">,</span><span class="s1">&#39;percent&#39;</span><span class="p">)</span><span class="o">==</span><span class="s1">&#39;percent&#39;</span><span class="p">:</span>
             <span class="n">multiplier</span><span class="o">=</span><span class="mf">100.</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">multiplier</span><span class="o">=</span><span class="mf">1000.</span>
@@ -460,8 +463,9 @@
         
 
         <span class="k">if</span> <span class="n">analysis_method</span><span class="o">==</span><span class="s1">&#39;Mag vs Dir&#39;</span> <span class="ow">or</span> <span class="n">analysis_method</span><span class="o">==</span><span class="s1">&#39;Per Vs Dir&#39;</span><span class="p">:</span>
-            <span class="n">X_interval</span><span class="o">=</span><span class="n">dir_interval</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;direction interval&#39;</span><span class="p">],</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;direction binning&#39;</span><span class="p">])</span>
-            <span class="n">binning</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;direction binning&#39;</span><span class="p">]</span>
+            <span class="n">X_interval</span><span class="o">=</span><span class="n">dir_interval</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;direction interval&#39;</span><span class="p">,</span><span class="mi">45</span><span class="p">),</span>
+                <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;direction binning&#39;</span><span class="p">,</span><span class="s1">&#39;centered&#39;</span><span class="p">))</span>
+            <span class="n">binning</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;direction binning&#39;</span><span class="p">,</span><span class="s1">&#39;centered&#39;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">X_interval</span><span class="o">=</span><span class="n">get_increment</span><span class="p">(</span><span class="n">Xdata</span><span class="p">,</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;X Min Res Max(optional)&#39;</span><span class="p">])</span>
             <span class="n">binning</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
@@ -469,7 +473,8 @@
 
         <span class="n">X_interval</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">X_interval</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
         <span class="n">Y_interval</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Y_interval</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
-        <span class="n">do_joint_prob</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="n">Xdata</span><span class="p">,</span><span class="n">Ydata</span><span class="p">,</span><span class="n">X_interval</span><span class="p">,</span><span class="n">Y_interval</span><span class="p">,</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;time blocking&#39;</span><span class="p">],</span><span class="n">binning</span><span class="p">,</span><span class="n">multiplier</span><span class="p">,</span><span class="n">mag</span><span class="p">)</span></div>
+        <span class="n">do_joint_prob</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="n">Xdata</span><span class="p">,</span><span class="n">Ydata</span><span class="p">,</span><span class="n">X_interval</span><span class="p">,</span><span class="n">Y_interval</span><span class="p">,</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;time blocking&#39;</span><span class="p">,</span><span class="s1">&#39;Annual&#39;</span><span class="p">),</span><span class="n">binning</span><span class="p">,</span><span class="n">multiplier</span><span class="p">,</span><span class="n">mag</span><span class="p">)</span></div>
 
 
 

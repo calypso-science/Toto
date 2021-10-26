@@ -51,6 +51,49 @@
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="toto.plugins.transformations.wind_profile.DataTransformation.bed_shear_stress">
+<span class="sig-name descname"><span class="pre">bed_shear_stress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'spd'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'hs'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'tp'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'mode':</span> <span class="pre">{'3D':</span> <span class="pre">'Off',</span> <span class="pre">'dav':</span> <span class="pre">'On'},</span> <span class="pre">'rho_water':</span> <span class="pre">1027,</span> <span class="pre">'water_depth':</span> <span class="pre">10,</span> <span class="pre">'z0':</span> <span class="pre">0.001}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/plugins/transformations/wind_profile.html#DataTransformation.bed_shear_stress"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.plugins.transformations.wind_profile.DataTransformation.bed_shear_stress" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computation of bed shear stress due to current and waves
+current-related stress is computed following a drag-coefficient approach
+wave-related stress is computed following Van Rijn approach
+Combined wave-current mean and max stresses are computed following Soulsby(1995) approach
+<a class="reference external" href="https://odnature.naturalsciences.be/coherens/manual#manual">https://odnature.naturalsciences.be/coherens/manual#manual</a>
+<a class="reference external" href="https://odnature.naturalsciences.be/downloads/coherens/documentation/chapter7.pdf#nameddest=Bed_shear_stresses">https://odnature.naturalsciences.be/downloads/coherens/documentation/chapter7.pdf#nameddest=Bed_shear_stresses</a></p>
+<p><a class="reference external" href="http://www.coastalwiki.org/wiki/Shallow">http://www.coastalwiki.org/wiki/Shallow</a>-water_wave_theory#
+<a class="reference external" href="http://www.coastalwiki.org/wiki/Shallow-water_wave_theory#Seabed_Friction">http://www.coastalwiki.org/wiki/Shallow-water_wave_theory#Seabed_Friction</a>  
+General relationships obtained from :
+<a class="reference external" href="https://repository.tudelft.nl/islandora/object/uuid%3Aea12eb20-aee3-4f58-99fb-ebc216e98879">https://repository.tudelft.nl/islandora/object/uuid%3Aea12eb20-aee3-4f58-99fb-ebc216e98879</a>
+Description of TRANSPOR2004 and Implementation in Delft3D-ONLINE
+Take from the work of Simon Wepp in Opendrift</p>
+<dl>
+<dt>spd<span class="classifier">str</span></dt><dd><p>Name of the column from which to get current speed.</p>
+</dd>
+<dt>hs<span class="classifier">str, optional</span></dt><dd><p>Column name representing the wave height.</p>
+</dd>
+<dt>tp<span class="classifier">str, optional</span></dt><dd><p>Column name representing the wave period.</p>
+</dd>
+<dt>args: dict</dt><dd><p>Dictionnary with the folowing keys:
+water_depth: float</p>
+<blockquote>
+<div><p>Total water depth or level from which the current was taken</p>
+</div></blockquote>
+<dl class="simple">
+<dt>mode: str</dt><dd><p>Use <cite>3D</cite> or <cite>dav</cite> for 3D current or depth=average current. default <cite>dav</cite></p>
+</dd>
+<dt>rho_water float:</dt><dd><p>Sea water density kg/m3, default 1027</p>
+</dd>
+<dt>z0 float:</dt><dd><p>Roughness height, default 0.001</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">=</span><span class="n">tf</span><span class="p">[</span><span class="s1">&#39;test1&#39;</span><span class="p">][</span><span class="s1">&#39;dataframe&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">DataTransformation</span><span class="o">.</span><span class="n">bed_shear_stress</span><span class="p">(</span><span class="n">spd</span><span class="o">=</span><span class="s1">&#39;spd&#39;</span><span class="p">,</span><span class="n">hs</span><span class="o">=</span><span class="s1">&#39;hs&#39;</span><span class="p">,</span><span class="n">tp</span><span class="o">=</span><span class="s1">&#39;tp&#39;</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;water_depth&#39;</span><span class="p">:</span><span class="mi">10</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="toto.plugins.transformations.wind_profile.DataTransformation.dav_to_layers">
 <span class="sig-name descname"><span class="pre">dav_to_layers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'u'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'dp'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'z':</span> <span class="pre">0.0,</span> <span class="pre">'z0':</span> <span class="pre">0.001}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/plugins/transformations/wind_profile.html#DataTransformation.dav_to_layers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.plugins.transformations.wind_profile.DataTransformation.dav_to_layers" title="Permalink to this definition">¶</a></dt>
 <dd><p>Change depth-average value to any depth</p>
