@@ -112,7 +112,7 @@ def do_wavelet(time,mag,mother,period,dj,unit,filename,display):
     plt.subplot(gs[0, 0:3])
     plt.plot(time, mag, 'k')
     plt.xlim([min(time),max(time)])
-    plt.xlabel('Time (year)')
+    plt.xlabel('Time ('+t_unit+')')
     plt.ylabel('Elevation ['+unit+']')
     plt.title('Sea Surface elevation')
     
@@ -140,7 +140,7 @@ def do_wavelet(time,mag,mother,period,dj,unit,filename,display):
 
     CS = plt.contourf(time, period, power, len(levels))  #*** or use 'contour'
     im = plt.contourf(CS, levels=levels, colors=['white','bisque','orange','orangered','darkred'])
-    plt.ylabel('Period (years)')
+    plt.ylabel('Period ('+t_unit+')')
     plt.title('Wavelet Power Spectrum')
     plt.xlim([min(time),max(time)])
     # 95# significance contour, levels at -99 (fake) and 1 (95# signif)

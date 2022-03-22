@@ -2,6 +2,7 @@ import pandas as pd
 import os
 from ...core.toolbox import display_message,dir_interval
 from ._extreme_tools import ExtremeBase
+
 import numpy as np
 
 @pd.api.extensions.register_dataframe_accessor("Extreme")

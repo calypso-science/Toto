@@ -184,7 +184,7 @@ class TideAnalysis:
         dt=args['dt(s)']
 
 
-        df_new=cons2ts(min_time,max_time,dt,constituents,amplitudes,phase,latitude)
+        df_new=self._cons2ts(min_time,max_time,dt,constituents,amplitudes,phase,latitude)
 
 
 

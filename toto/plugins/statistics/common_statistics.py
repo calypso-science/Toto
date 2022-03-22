@@ -21,14 +21,14 @@ class Statistics:
 
 
     def common_statistics(self,mag=['mag'],drr='drr',
-        args={'Minimum occurrence (main direction) [%]':15,
+        args={'minimum occurrence (main direction) [%]':15,
         'folder out':os.getcwd(),
-        'time blocking':{'Yearly':True,
-        'South hemisphere(Summer/Winter)':False,
-        'South hemisphere 4 seasons':False,
-        'North hemishere(Summer/Winter)':False,
-        'North hemisphere 4 seasons':False,        
-        'North hemisphere moosoon(SW,NE,Hot season)':False},
+        'time blocking':{'yearly':True,
+        'south hemisphere(Summer/Winter)':False,
+        'south hemisphere 4 seasons':False,
+        'north hemishere(Summer/Winter)':False,
+        'north hemisphere 4 seasons':False,        
+        'north hemisphere moosoon(SW,NE,Hot season)':False},
                                                             }):
         """Extract statistics from a Panda dataframe column
 
@@ -43,23 +43,23 @@ class Statistics:
             args: dict
                 Dictionnary with the folowing keys:
 
-                    Minimum occurrence (main direction) [%]: int
+                    minimum occurrence (main direction) [%]: int
                         Use to calculate the main direction. Main direction is when
                         occurence>= Minimum occurrence. Default is 15
                     folder out: str
                         Path to save the output
-                    Time blocking: str
-                         if ``Time blocking=='Yearly'``,
+                    time blocking: str
+                         if ``time blocking=='yearly'``,
                             Statistics will be calculated for the whole timeserie
-                         if ``Time blocking=='South hemisphere(Summer/Winter)'``,
+                         if ``time blocking=='south hemisphere(Summer/Winter)'``,
                             Statistics will be calculated for South hemisphere summer and winter seasons
-                         if ``Time blocking=='South hemisphere 4 seasons'``,
+                         if ``time blocking=='south hemisphere 4 seasons'``,
                             Statistics will be calculated for each South hemisphere seasons
-                         if ``Time blocking=='North hemishere(Summer/Winter)'``,
+                         if ``time blocking=='north hemishere(Summer/Winter)'``,
                             Statistics will be calculated for North hemisphere summer and winter seasons
-                         if ``Time blocking=='North hemisphere 4 seasons'``,
+                         if ``time blocking=='north hemisphere 4 seasons'``,
                             Statistics will be calculated for each North hemisphere seasons
-                         if ``Time blocking=='North hemisphere moosoon(SW,NE,Hot season)'``,
+                         if ``time blocking=='north hemisphere moosoon(SW,NE,Hot season)'``,
                             Statistics will be calculated for the North hemisphere moonsoon seasons
 
             Examples:
@@ -127,7 +127,7 @@ class Statistics:
         else:
             drr=self.data[drr]
 
-        min_occ=args['Minimum occurrence (main direction) [%]']
+        min_occ=args.get('minimum occurrence (main direction) [%]',15)
 
         if isinstance(drr,str):
             #statf=['min','max','mean','std',[90,95,99]]
@@ -135,7 +135,7 @@ class Statistics:
         else:
             statf=['n','min','max','mean','std',[1,5,10,50,90,95,99],np.nan]         
 
-        hem=args['time blocking']
+        hem=args.get('time blocking','yearly')
         filename=os.path.join(args.get('folder out',os.getcwd()),os.path.splitext(self.data.filename)[0]+'stat.xlsx')
         time=self.data.index
 
