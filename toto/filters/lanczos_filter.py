@@ -37,14 +37,14 @@ def lanczos_filter(input_array,args={'window':int(),\
     delt=(input_array.index[1]-input_array.index[0]).total_seconds()/3600 # in hours
     
     if filter_type == 'lanczos lowpas 1st order':
-        input_array= lanczos_lowpass_first_order(input_array - mean, window, dt=delt, order=3) + mean
+        input_array= lanczos_lowpass_first_order(input_array - mean, window, dt=delt) + mean
     elif filter_type == 'lanczos lowpas 2nd order':
-        input_array= lanczos_lowpass_second_order(input_array - mean, window, dt=delt, order=3) + mean
+        input_array= lanczos_lowpass_second_order(input_array - mean, window, dt=delt) + mean
 
     return input_array
 
 
-def lanczos_lowpass_second_order(data, window, dt=1, order=5):
+def lanczos_lowpass_second_order(data, window, dt=1):
     
     
     """
@@ -60,8 +60,7 @@ def lanczos_lowpass_second_order(data, window, dt=1, order=5):
 
     high = (highcut / nyq) #/ C # to prevent phase lag
     
-    
-    m = window*5 # Rule of thumb is 120 point for a 40 h window of hourly data
+    m = 100 # Rule of thumb is 100 point for a 40 h window of hourly data
     
     coefs=lanczos_lowpass_filter_coeffs(high, m)#window)
     
@@ -74,12 +73,12 @@ def lanczos_lowpass_second_order(data, window, dt=1, order=5):
     
     ## replace edge points with nan if pading is not used
     #if (padtype is None) and (fill_edge_nan==True):
-    d2[0:2*m]=np.nan
-    d2[len(d2)-2*m:len(d2)]=np.nan
+    d2[:m] = np.nan
+    d2[-m:] = np.nan
 
     return d2
 
-def lanczos_lowpass_first_order(data, window, dt=1, order=5):
+def lanczos_lowpass_first_order(data, window, dt=1):
     
     freq = 1./window  # Hours
     
