@@ -55,8 +55,8 @@ Link to lINZ files
 
 .. code-block:: default
 
-    BASEURL='https://sealevel-data.linz.govt.nz/%s/%i/%i/%s_%i_%s.zip'
-
+    BASEURL='https://sealevel-data.linz.govt.nz/tidegauge/%s/%i/%i/%s_%i_%s.zip'
+    #BASEURL='https://sealevel-data.linz.govt.nz/tidegauge/AUCT/2009/40/AUCT_40_2009085.zip
 
 
 
@@ -84,26 +84,47 @@ Station to download
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 33-34
-
-Download Linz elevation file from `tstart` to `tend` at `station` tidal gauge
-
-.. GENERATED FROM PYTHON SOURCE LINES 34-47
+.. GENERATED FROM PYTHON SOURCE LINES 33-71
 
 .. code-block:: default
 
-    dt=copy.deepcopy(tstart)
-    files=[]
-    while dt<tend:
-        fileout='%s_%03i.zip' % (station,dt.timetuple().tm_yday)
-        linzurl=BASEURL % (station,dt.year,sensor,station,sensor,str(dt.year)+'%03i'%dt.timetuple().tm_yday)
+    if not os.path.isfile('AUCT_40_2019001.csv'):
+        # Download Linz elevation file from `tstart` to `tend` at `station` tidal gauge
+        dt=copy.deepcopy(tstart)
+        files=[]
+        while dt<tend:
+            fileout='%s_%03i.zip' % (station,dt.timetuple().tm_yday)
+            linzurl=BASEURL % (station,dt.year,sensor,station,sensor,str(dt.year)+'%03i'%dt.timetuple().tm_yday)
+            linzfile = requests.get(linzurl, allow_redirects=True)
+            if linzfile.status_code != 404:
+                files.append(fileout)
+                with open(fileout, 'wb') as fd:
+                    for chunk in linzfile.iter_content(chunk_size=128):
+                        fd.write(chunk)
+            dt+=datetime.timedelta(days=1)
+
+        #%%
+        # Download AUCKLAND station README
+        fileout='%s_readme.txt' % station
+        linzurl='https://sealevel-data.linz.govt.nz/tidegauge/%s/%s_readme.txt' % (station,station)
         linzfile = requests.get(linzurl, allow_redirects=True)
-        if linzfile.status_code != 404:
-            files.append(fileout)
-            with open(fileout, 'wb') as fd:
-                for chunk in linzfile.iter_content(chunk_size=128):
-                    fd.write(chunk)
-        dt+=datetime.timedelta(days=1)
+        with open(fileout, 'wb') as fd:
+            fd.write(linzfile.content)
+
+        #%%
+        # Unzip the all files and save to file
+        filenames=[]
+        for file in files:
+            with zipfile.ZipFile(file) as z:
+                filenames.append(z.namelist()[0])
+                z.extractall()
+
+        #%%
+        # Merge all timeseries into 1
+        with open(filenames[0], 'w') as outfile:
+            for fname in filenames[1:]:
+                with open(fname) as infile:
+                    outfile.write(infile.read())
 
 
 
@@ -112,74 +133,12 @@ Download Linz elevation file from `tstart` to `tend` at `station` tidal gauge
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 48-49
-
-Download AUCKLAND station README
-
-.. GENERATED FROM PYTHON SOURCE LINES 49-55
-
-.. code-block:: default
-
-    fileout='%s_readme.txt' % station
-    linzurl='https://sealevel-data.linz.govt.nz/%s/%s_readme.txt' % (station,station)
-    linzfile = requests.get(linzurl, allow_redirects=True)
-    with open(fileout, 'wb') as fd:
-        fd.write(linzfile.content)
-
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 56-57
-
-Unzip the all files and save to file
-
-.. GENERATED FROM PYTHON SOURCE LINES 57-63
-
-.. code-block:: default
-
-    filenames=[]
-    for file in files:
-        with zipfile.ZipFile(file) as z:
-            filenames.append(z.namelist()[0])
-            z.extractall()
-
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 64-65
-
-Merge all timeseries into 1
-
-.. GENERATED FROM PYTHON SOURCE LINES 65-70
-
-.. code-block:: default
-
-    with open(filenames[0], 'w') as outfile:
-        for fname in filenames[1:]:
-            with open(fname) as infile:
-                outfile.write(infile.read())
-
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 71-73
+.. GENERATED FROM PYTHON SOURCE LINES 72-74
 
 Reading the files into a dataframe
 df=LINZfile(filenames[0])._toDataFrame()[0]
 
-.. GENERATED FROM PYTHON SOURCE LINES 73-74
+.. GENERATED FROM PYTHON SOURCE LINES 74-75
 
 .. code-block:: default
 
@@ -199,11 +158,11 @@ df=LINZfile(filenames[0])._toDataFrame()[0]
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 75-76
+.. GENERATED FROM PYTHON SOURCE LINES 76-77
 
 plot the raw timeseries
 
-.. GENERATED FROM PYTHON SOURCE LINES 76-80
+.. GENERATED FROM PYTHON SOURCE LINES 77-81
 
 .. code-block:: default
 
@@ -222,7 +181,7 @@ plot the raw timeseries
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 81-86
+.. GENERATED FROM PYTHON SOURCE LINES 82-87
 
 Add the Panda Dataframe to a Totoframe.
 The reason is so if anyhting changes to the dataframe,
@@ -230,7 +189,7 @@ the metadata get saved in a sperate dictionary.
 Also the dataframe gets clean and any gaps in the data get filled with NaN.
 The timeserie is now with a uniform time interval
 
-.. GENERATED FROM PYTHON SOURCE LINES 86-91
+.. GENERATED FROM PYTHON SOURCE LINES 87-92
 
 .. code-block:: default
 
@@ -246,11 +205,11 @@ The timeserie is now with a uniform time interval
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 92-93
+.. GENERATED FROM PYTHON SOURCE LINES 93-94
 
 Resample to hourly otherwise the next steps might crash
 
-.. GENERATED FROM PYTHON SOURCE LINES 93-95
+.. GENERATED FROM PYTHON SOURCE LINES 94-96
 
 .. code-block:: default
 
@@ -263,11 +222,11 @@ Resample to hourly otherwise the next steps might crash
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 96-97
+.. GENERATED FROM PYTHON SOURCE LINES 97-98
 
 Apply a phase-space method filter to remove most of the spike 
 
-.. GENERATED FROM PYTHON SOURCE LINES 97-102
+.. GENERATED FROM PYTHON SOURCE LINES 98-103
 
 .. code-block:: default
 
@@ -287,15 +246,15 @@ Apply a phase-space method filter to remove most of the spike
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 103-104
+.. GENERATED FROM PYTHON SOURCE LINES 104-105
 
 Remove the rest of the spike if needed
 
-.. GENERATED FROM PYTHON SOURCE LINES 107-108
+.. GENERATED FROM PYTHON SOURCE LINES 108-109
 
 Now the timeseries is clean will start extracting the component
 
-.. GENERATED FROM PYTHON SOURCE LINES 108-111
+.. GENERATED FROM PYTHON SOURCE LINES 109-112
 
 .. code-block:: default
 
@@ -309,12 +268,12 @@ Now the timeseries is clean will start extracting the component
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 112-114
+.. GENERATED FROM PYTHON SOURCE LINES 113-115
 
 Detrending but don't think there is much to detrend
 Before detrending we store the position of all the gaps
 
-.. GENERATED FROM PYTHON SOURCE LINES 114-122
+.. GENERATED FROM PYTHON SOURCE LINES 115-123
 
 .. code-block:: default
 
@@ -333,11 +292,11 @@ Before detrending we store the position of all the gaps
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 123-124
+.. GENERATED FROM PYTHON SOURCE LINES 124-125
 
 the tidal analysis
 
-.. GENERATED FROM PYTHON SOURCE LINES 124-135
+.. GENERATED FROM PYTHON SOURCE LINES 125-136
 
 .. code-block:: default
 
@@ -368,11 +327,11 @@ the tidal analysis
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 136-137
+.. GENERATED FROM PYTHON SOURCE LINES 137-138
 
 Monthly sea level analysis using lanczos filter
 
-.. GENERATED FROM PYTHON SOURCE LINES 137-142
+.. GENERATED FROM PYTHON SOURCE LINES 138-143
 
 .. code-block:: default
 
@@ -388,11 +347,11 @@ Monthly sea level analysis using lanczos filter
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 143-144
+.. GENERATED FROM PYTHON SOURCE LINES 144-145
 
 Storm surgeanalysis using lanczos filter
 
-.. GENERATED FROM PYTHON SOURCE LINES 144-149
+.. GENERATED FROM PYTHON SOURCE LINES 145-150
 
 .. code-block:: default
 
@@ -408,11 +367,11 @@ Storm surgeanalysis using lanczos filter
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 150-151
+.. GENERATED FROM PYTHON SOURCE LINES 151-152
 
 Finally we subtract the tide to get the residual
 
-.. GENERATED FROM PYTHON SOURCE LINES 151-153
+.. GENERATED FROM PYTHON SOURCE LINES 152-154
 
 .. code-block:: default
 
@@ -425,7 +384,7 @@ Finally we subtract the tide to get the residual
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 154-158
+.. GENERATED FROM PYTHON SOURCE LINES 155-159
 
 .. code-block:: default
 
@@ -440,11 +399,11 @@ Finally we subtract the tide to get the residual
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 159-160
+.. GENERATED FROM PYTHON SOURCE LINES 160-161
 
 Plot the results
 
-.. GENERATED FROM PYTHON SOURCE LINES 160-173
+.. GENERATED FROM PYTHON SOURCE LINES 161-174
 
 .. code-block:: default
 
@@ -472,11 +431,11 @@ Plot the results
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 174-175
+.. GENERATED FROM PYTHON SOURCE LINES 175-176
 
 Water elevation fit the distribution
 
-.. GENERATED FROM PYTHON SOURCE LINES 175-186
+.. GENERATED FROM PYTHON SOURCE LINES 176-187
 
 .. code-block:: default
 
@@ -510,13 +469,34 @@ Water elevation fit the distribution
           :class: sphx-glr-multi-img
 
 
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    FitDistribution:
+    alpha = 0.05
+    method = ml
+    LLmax = 23.15105550486007
+    LPSmax = -51.51073426408082
+    pvalue = 0.11421246906897149
+    par = [1.14123187 0.09934601 0.07528642]
+    par_lower = [0.69650123 0.09934601 0.03863236]
+    par_upper = [1.58596251 0.09934601 0.11194048]
+    par_fix = [nan, 0.09934601253759345, nan]
+    par_cov = [[0.05148704 0.         0.00141487]
+     [0.         0.         0.        ]
+     [0.00141487 0.         0.00034974]]
+
+
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 1 minutes  42.125 seconds)
+   **Total running time of the script:** ( 0 minutes  27.995 seconds)
 
 
 .. _sphx_glr_download_gallery_plot_linz_exemple.py:

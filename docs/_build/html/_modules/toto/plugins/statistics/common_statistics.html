@@ -59,14 +59,14 @@
 
 
 <div class="viewcode-block" id="Statistics.common_statistics"><a class="viewcode-back" href="../../../../source/toto.plugins.statistics.common_statistics.html#toto.plugins.statistics.common_statistics.Statistics.common_statistics">[docs]</a>    <span class="k">def</span> <span class="nf">common_statistics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">mag</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;mag&#39;</span><span class="p">],</span><span class="n">drr</span><span class="o">=</span><span class="s1">&#39;drr&#39;</span><span class="p">,</span>
-        <span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Minimum occurrence (main direction) [%]&#39;</span><span class="p">:</span><span class="mi">15</span><span class="p">,</span>
+        <span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;minimum occurrence (main direction) [%]&#39;</span><span class="p">:</span><span class="mi">15</span><span class="p">,</span>
         <span class="s1">&#39;folder out&#39;</span><span class="p">:</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span>
-        <span class="s1">&#39;time blocking&#39;</span><span class="p">:{</span><span class="s1">&#39;Yearly&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span>
-        <span class="s1">&#39;South hemisphere(Summer/Winter)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span>
-        <span class="s1">&#39;South hemisphere 4 seasons&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span>
-        <span class="s1">&#39;North hemishere(Summer/Winter)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span>
-        <span class="s1">&#39;North hemisphere 4 seasons&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span>        
-        <span class="s1">&#39;North hemisphere moosoon(SW,NE,Hot season)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
+        <span class="s1">&#39;time blocking&#39;</span><span class="p">:{</span><span class="s1">&#39;yearly&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;south hemisphere(Summer/Winter)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span>
+        <span class="s1">&#39;south hemisphere 4 seasons&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span>
+        <span class="s1">&#39;north hemishere(Summer/Winter)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span>
+        <span class="s1">&#39;north hemisphere 4 seasons&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span>        
+        <span class="s1">&#39;north hemisphere moosoon(SW,NE,Hot season)&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span>
                                                             <span class="p">}):</span>
         <span class="sd">&quot;&quot;&quot;Extract statistics from a Panda dataframe column</span>
 
@@ -81,23 +81,23 @@
 <span class="sd">            args: dict</span>
 <span class="sd">                Dictionnary with the folowing keys:</span>
 
-<span class="sd">                    Minimum occurrence (main direction) [%]: int</span>
+<span class="sd">                    minimum occurrence (main direction) [%]: int</span>
 <span class="sd">                        Use to calculate the main direction. Main direction is when</span>
 <span class="sd">                        occurence&gt;= Minimum occurrence. Default is 15</span>
 <span class="sd">                    folder out: str</span>
 <span class="sd">                        Path to save the output</span>
-<span class="sd">                    Time blocking: str</span>
-<span class="sd">                         if ``Time blocking==&#39;Yearly&#39;``,</span>
+<span class="sd">                    time blocking: str</span>
+<span class="sd">                         if ``time blocking==&#39;yearly&#39;``,</span>
 <span class="sd">                            Statistics will be calculated for the whole timeserie</span>
-<span class="sd">                         if ``Time blocking==&#39;South hemisphere(Summer/Winter)&#39;``,</span>
+<span class="sd">                         if ``time blocking==&#39;south hemisphere(Summer/Winter)&#39;``,</span>
 <span class="sd">                            Statistics will be calculated for South hemisphere summer and winter seasons</span>
-<span class="sd">                         if ``Time blocking==&#39;South hemisphere 4 seasons&#39;``,</span>
+<span class="sd">                         if ``time blocking==&#39;south hemisphere 4 seasons&#39;``,</span>
 <span class="sd">                            Statistics will be calculated for each South hemisphere seasons</span>
-<span class="sd">                         if ``Time blocking==&#39;North hemishere(Summer/Winter)&#39;``,</span>
+<span class="sd">                         if ``time blocking==&#39;north hemishere(Summer/Winter)&#39;``,</span>
 <span class="sd">                            Statistics will be calculated for North hemisphere summer and winter seasons</span>
-<span class="sd">                         if ``Time blocking==&#39;North hemisphere 4 seasons&#39;``,</span>
+<span class="sd">                         if ``time blocking==&#39;north hemisphere 4 seasons&#39;``,</span>
 <span class="sd">                            Statistics will be calculated for each North hemisphere seasons</span>
-<span class="sd">                         if ``Time blocking==&#39;North hemisphere moosoon(SW,NE,Hot season)&#39;``,</span>
+<span class="sd">                         if ``time blocking==&#39;north hemisphere moosoon(SW,NE,Hot season)&#39;``,</span>
 <span class="sd">                            Statistics will be calculated for the North hemisphere moonsoon seasons</span>
 
 <span class="sd">            Examples:</span>
@@ -165,7 +165,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">drr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">drr</span><span class="p">]</span>
 
-        <span class="n">min_occ</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;Minimum occurrence (main direction) [%]&#39;</span><span class="p">]</span>
+        <span class="n">min_occ</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;minimum occurrence (main direction) [%]&#39;</span><span class="p">,</span><span class="mi">15</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">drr</span><span class="p">,</span><span class="nb">str</span><span class="p">):</span>
             <span class="c1">#statf=[&#39;min&#39;,&#39;max&#39;,&#39;mean&#39;,&#39;std&#39;,[90,95,99]]</span>
@@ -173,7 +173,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">statf</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">,</span><span class="s1">&#39;min&#39;</span><span class="p">,</span><span class="s1">&#39;max&#39;</span><span class="p">,</span><span class="s1">&#39;mean&#39;</span><span class="p">,</span><span class="s1">&#39;std&#39;</span><span class="p">,[</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">50</span><span class="p">,</span><span class="mi">90</span><span class="p">,</span><span class="mi">95</span><span class="p">,</span><span class="mi">99</span><span class="p">],</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]</span>         
 
-        <span class="n">hem</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;time blocking&#39;</span><span class="p">]</span>
+        <span class="n">hem</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;time blocking&#39;</span><span class="p">,</span><span class="s1">&#39;yearly&#39;</span><span class="p">)</span>
         <span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;folder out&#39;</span><span class="p">,</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()),</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;stat.xlsx&#39;</span><span class="p">)</span>
         <span class="n">time</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">index</span>
 

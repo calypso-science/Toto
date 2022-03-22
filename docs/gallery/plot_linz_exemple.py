@@ -20,8 +20,8 @@ import copy
 
 #%%
 # Link to lINZ files
-BASEURL='https://sealevel-data.linz.govt.nz/%s/%i/%i/%s_%i_%s.zip'
-
+BASEURL='https://sealevel-data.linz.govt.nz/tidegauge/%s/%i/%i/%s_%i_%s.zip'
+#BASEURL='https://sealevel-data.linz.govt.nz/tidegauge/AUCT/2009/40/AUCT_40_2009085.zip
 #%%
 # Station to download
 tstart=datetime.datetime(2019,1,1)
@@ -30,42 +30,43 @@ station='AUCT'
 sensor=40
 
 #%%
-# Download Linz elevation file from `tstart` to `tend` at `station` tidal gauge
-dt=copy.deepcopy(tstart)
-files=[]
-while dt<tend:
-    fileout='%s_%03i.zip' % (station,dt.timetuple().tm_yday)
-    linzurl=BASEURL % (station,dt.year,sensor,station,sensor,str(dt.year)+'%03i'%dt.timetuple().tm_yday)
+if not os.path.isfile('AUCT_40_2019001.csv'):
+    # Download Linz elevation file from `tstart` to `tend` at `station` tidal gauge
+    dt=copy.deepcopy(tstart)
+    files=[]
+    while dt<tend:
+        fileout='%s_%03i.zip' % (station,dt.timetuple().tm_yday)
+        linzurl=BASEURL % (station,dt.year,sensor,station,sensor,str(dt.year)+'%03i'%dt.timetuple().tm_yday)
+        linzfile = requests.get(linzurl, allow_redirects=True)
+        if linzfile.status_code != 404:
+            files.append(fileout)
+            with open(fileout, 'wb') as fd:
+                for chunk in linzfile.iter_content(chunk_size=128):
+                    fd.write(chunk)
+        dt+=datetime.timedelta(days=1)
+
+    #%%
+    # Download AUCKLAND station README
+    fileout='%s_readme.txt' % station
+    linzurl='https://sealevel-data.linz.govt.nz/tidegauge/%s/%s_readme.txt' % (station,station)
     linzfile = requests.get(linzurl, allow_redirects=True)
-    if linzfile.status_code != 404:
-        files.append(fileout)
-        with open(fileout, 'wb') as fd:
-            for chunk in linzfile.iter_content(chunk_size=128):
-                fd.write(chunk)
-    dt+=datetime.timedelta(days=1)
+    with open(fileout, 'wb') as fd:
+        fd.write(linzfile.content)
 
-#%%
-# Download AUCKLAND station README
-fileout='%s_readme.txt' % station
-linzurl='https://sealevel-data.linz.govt.nz/%s/%s_readme.txt' % (station,station)
-linzfile = requests.get(linzurl, allow_redirects=True)
-with open(fileout, 'wb') as fd:
-    fd.write(linzfile.content)
+    #%%
+    # Unzip the all files and save to file
+    filenames=[]
+    for file in files:
+        with zipfile.ZipFile(file) as z:
+            filenames.append(z.namelist()[0])
+            z.extractall()
 
-#%%
-# Unzip the all files and save to file
-filenames=[]
-for file in files:
-    with zipfile.ZipFile(file) as z:
-        filenames.append(z.namelist()[0])
-        z.extractall()
-
-#%%
-# Merge all timeseries into 1
-with open(filenames[0], 'w') as outfile:
-    for fname in filenames[1:]:
-        with open(fname) as infile:
-            outfile.write(infile.read())
+    #%%
+    # Merge all timeseries into 1
+    with open(filenames[0], 'w') as outfile:
+        for fname in filenames[1:]:
+            with open(fname) as infile:
+                outfile.write(infile.read())
 
 #%%
 # Reading the files into a dataframe

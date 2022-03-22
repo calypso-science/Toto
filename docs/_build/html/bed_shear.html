@@ -55,9 +55,15 @@ Take from the work of Simon Wepp in Opendrift</p>
 <dl>
 <dt>spd<span class="classifier">str</span></dt><dd><p>Name of the column from which to get current speed.</p>
 </dd>
+<dt>drr: str, optional</dt><dd><p>Column name representing the current direction.</p>
+</dd>
 <dt>hs<span class="classifier">str, optional</span></dt><dd><p>Column name representing the wave height.</p>
 </dd>
 <dt>tp<span class="classifier">str, optional</span></dt><dd><p>Column name representing the wave period.</p>
+</dd>
+<dt>dpm: str, optional</dt><dd><p>Column name representing the wave direction.</p>
+</dd>
+<dt>water_depth: str, optional</dt><dd><p>Column name representing the water depth.</p>
 </dd>
 <dt>args: dict</dt><dd><p>Dictionnary with the folowing keys:
 water_depth: float</p>
@@ -70,6 +76,12 @@ water_depth: float</p>
 <dt>rho_water float:</dt><dd><p>Sea water density kg/m3, default 1027</p>
 </dd>
 <dt>z0 float:</dt><dd><p>Roughness height, default 0.001</p>
+</dd>
+<dt>inlude_current str:</dt><dd><p><cite>On</cite> or <cite>Off</cite> if calculating the shear stress from current speed</p>
+</dd>
+<dt>inlude_wave str:</dt><dd><p><cite>On</cite> or <cite>Off</cite> if calculating the shear stress from wave</p>
+</dd>
+<dt>wave_friction str:</dt><dd><p><cite>Soulsby</cite> or <cite>Swart</cite> formulae, default <cite>Swart</cite></p>
 </dd>
 </dl>
 </dd>
