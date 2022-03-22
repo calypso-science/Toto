@@ -7,8 +7,12 @@
 #
 from copy import copy
 from functools import partial
-from ._infra import entropy, rv_discrete, rv_continuous, rv_frozen
 
+try:
+    from ._infra import entropy, rv_discrete, rv_continuous, rv_frozen
+except:
+    print('could not load totaly....')
+    
 from scipy.stats import _continuous_distns
 from scipy.stats import _discrete_distns
 from scipy.stats._constants import _EULER
