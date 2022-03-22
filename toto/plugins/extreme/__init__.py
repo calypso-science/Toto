@@ -6,7 +6,7 @@ The Wafo toolbox must be installed for this plugin to work
 __extreme_water_elevation__=False
 __do_extreme__=False
 __do_extreme_adjusted__=False
-
+__distribution_shape___=  True
 import scipy.stats as ss
 from scipy.stats import *
 from ._core import *
@@ -28,6 +28,6 @@ you must use the Profile-, ProfileProbability- or ProfileQuantile-class, respect
 """)
 
 
-# remove vonmises_cython from __all__, I don't know why it is included
+# # remove vonmises_cython from __all__, I don't know why it is included
 __all__ = [s for s in dir() if not (s.startswith('_') or s.endswith('cython'))]
 
