@@ -7,8 +7,8 @@
 #
 from copy import copy
 from functools import partial
-
-from ._infra import entropy, rv_discrete, rv_continuous, rv_frozen
+from scipy.stats import entropy, rv_discrete, rv_continuous
+from ._infra import rv_frozen
 
 
 from scipy.stats import _continuous_distns
