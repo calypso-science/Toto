@@ -17,3 +17,4 @@ grid_strategy
 xlwt
 xlrd
 requests
+sqlite3
