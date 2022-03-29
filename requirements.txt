@@ -1,4 +1,3 @@
-#sys
 numpy
 matplotlib
 pandas
@@ -12,12 +11,9 @@ pyyaml
 numba
 numdifftools
 git+https://github.com/wesleybowman/UTide.git
-#git+https://github.com/wafo-project/pywafo.git
 six
 netCDF4
 grid_strategy
 xlwt
 xlrd
 requests
-oceans
-
