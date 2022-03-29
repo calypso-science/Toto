@@ -4,7 +4,7 @@ from toto.inputs.mat import MATfile
 import numpy as np
 import pandas as pd
 
-filename=r'mat_file/F3.mat'
+filename=os.path.join('mat_file','F3.mat')
 tx=MATfile(filename)
 df=tx._toDataFrame()
 df[0].filename='test'
