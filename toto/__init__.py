@@ -3,7 +3,7 @@
 - Making reading functions available at module level
 """
 
-__version__ = "1.0"
+__version__ = "1.1"
 __author__ = "Calypso Science"
 __contact__ = "r.zyngfogel@calypso.science"
 __url__ = "calyps.science"
