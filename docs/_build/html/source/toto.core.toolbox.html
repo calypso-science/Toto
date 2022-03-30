@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>toto.core.toolbox &#8212; Toto 1.0 documentation</title>
+    <title>toto.core.toolbox &#8212; Toto 1.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
@@ -114,6 +114,41 @@
 <dt class="sig sig-object py" id="toto.core.toolbox.get_seasons">
 <span class="sig-prename descclassname"><span class="pre">toto.core.toolbox.</span></span><span class="sig-name descname"><span class="pre">get_seasons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">typ</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/core/toolbox.html#get_seasons"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.core.toolbox.get_seasons" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="toto.core.toolbox.lanc">
+<span class="sig-prename descclassname"><span class="pre">toto.core.toolbox.</span></span><span class="sig-name descname"><span class="pre">lanc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">numwt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">haf</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/core/toolbox.html#lanc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.core.toolbox.lanc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a numwt + 1 + numwt lanczos cosine low pass filter with -6dB
+(1/4 power, 1/2 amplitude) point at haf</p>
+<p>Function from Oceans Toolbox
+Parameters
+———-
+numwt : int</p>
+<blockquote>
+<div><p>number of points</p>
+</div></blockquote>
+<dl class="simple">
+<dt>haf<span class="classifier">float</span></dt><dd><p>frequency (in ‘cpi’ of -6dB point, ‘cpi’ is cycles per interval.
+For hourly data cpi is cph,</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">oceans.filters</span> <span class="kn">import</span> <span class="n">lanc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">500</span><span class="p">)</span>  <span class="c1"># Time in hours.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">h</span> <span class="o">=</span> <span class="mf">2.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">t</span> <span class="o">/</span> <span class="mf">12.42</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">h</span> <span class="o">+=</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">t</span> <span class="o">/</span> <span class="mf">12.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">h</span> <span class="o">+=</span> <span class="mf">0.3</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wt</span> <span class="o">=</span> <span class="n">lanc</span><span class="p">(</span><span class="mi">96</span><span class="o">+</span><span class="mi">1</span><span class="o">+</span><span class="mi">96</span><span class="p">,</span> <span class="mf">1.</span><span class="o">/</span><span class="mi">40</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">low</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">convolve</span><span class="p">(</span><span class="n">wt</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">high</span> <span class="o">=</span> <span class="n">h</span> <span class="o">-</span> <span class="n">low</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax0</span><span class="p">,</span> <span class="n">ax1</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">_</span> <span class="o">=</span> <span class="n">ax0</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">high</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;high&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">_</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">low</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;low&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">_</span> <span class="o">=</span> <span class="n">ax0</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">numpoints</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">_</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">numpoints</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="toto.core.toolbox.peaks">
