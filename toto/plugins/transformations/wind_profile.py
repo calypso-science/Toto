@@ -84,7 +84,7 @@ class DataTransformation:
             z=0.0001
         
         fac=(np.log(z/z0)/(np.log(h/z0)-1))
-        self.dfout[self.data[u].short_name+'_lev_'+str(Z)]=U*fac
+        self.dfout[u+'_lev_'+str(Z)]=U*fac
         return self.dfout
 
 
