@@ -5,7 +5,6 @@ future
 scipy
 xarray
 git+https://github.com/python-windrose/windrose
-attrdict
 openpyxl
 pyyaml
 numba

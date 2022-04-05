@@ -4,7 +4,11 @@
 import os
 
 import yaml
-from attrdict import AttrDict
+
+class AttrDict(dict):
+    def __init__(self, *args, **kwargs):
+        super(AttrDict, self).__init__(*args, **kwargs)
+        self.__dict__ = self
 
 HERE = os.path.dirname(os.path.abspath(__file__)).replace('\\library.zip','')
 
