@@ -85,8 +85,8 @@ class TXTfile():
                                unitNames=[],\
                                miss_val='NaN',\
                                colNamesLine=1,\
-                               skiprows=2,\
-                               unitNamesLine=2,\
+                               skiprows=1,\
+                               unitNamesLine=0,\
                                skipfooter=0,\
                                single_column=False,\
                                unit='s',\
