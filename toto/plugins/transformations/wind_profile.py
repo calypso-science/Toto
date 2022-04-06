@@ -75,13 +75,13 @@ class DataTransformation:
         opt.update(args)      
 
         U=self.data[u]
-        h=np.nanmean(self.data[dp])
+        h=self.data[dp]#np.nanmean(self.data[dp])
         z0=opt['z0']
         Z=np.abs(opt['z']);
         z=h-Z;
-        
-        if z==0:
-            z=0.0001
+        z[z==0]=0.0001
+        # if z==0:
+        #     z=0.0001
         
         fac=(np.log(z/z0)/(np.log(h/z0)-1))
         self.dfout[u+'_lev_'+str(Z)]=U*fac
