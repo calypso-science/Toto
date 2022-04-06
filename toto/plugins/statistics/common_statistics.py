@@ -29,6 +29,7 @@ class Statistics:
         'north hemishere(Summer/Winter)':False,
         'north hemisphere 4 seasons':False,        
         'north hemisphere moosoon(SW,NE,Hot season)':False},
+        'stats':"n min max mean std [1,5,10,50,90,95,99]",
                                                             }):
         """Extract statistics from a Panda dataframe column
 
@@ -61,6 +62,13 @@ class Statistics:
                             Statistics will be calculated for each North hemisphere seasons
                          if ``time blocking=='north hemisphere moosoon(SW,NE,Hot season)'``,
                             Statistics will be calculated for the North hemisphere moonsoon seasons
+                    stats: str
+                        string containing the name of the stats to do (must be numpy function)
+                        exemple: ``n min max mean std [1,5,10,50,90,95,99]``,
+                        where:
+                         - n is for number of sample
+                         - Put exceedence values in ``[]``
+
 
             Examples:
             ~~~~~~~~~
@@ -129,11 +137,16 @@ class Statistics:
 
         min_occ=args.get('minimum occurrence (main direction) [%]',15)
 
-        if isinstance(drr,str):
-            #statf=['min','max','mean','std',[90,95,99]]
-            statf=['n','min','max','mean','std',[1,5,10,50,90,95,99]] 
-        else:
-            statf=['n','min','max','mean','std',[1,5,10,50,90,95,99],np.nan]         
+        stats=args.get('stats',"n min max mean std [1,5,10,50,90,95,99]")
+        stats=stats.split(' ')
+        statf=[]
+        for stat_name in stats:
+            if '[' in stat_name:
+                statf.append(eval(stat_name))
+            else:
+                statf.append(stat_name)
+        if not isinstance(drr,str):
+            statf.append(np.nan)     
 
         hem=args.get('time blocking','yearly')
         filename=os.path.join(args.get('folder out',os.getcwd()),os.path.splitext(self.data.filename)[0]+'stat.xlsx')
