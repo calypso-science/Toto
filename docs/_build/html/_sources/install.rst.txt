@@ -31,6 +31,10 @@ Then install toto:
 
    python setup.py install
 
+Installation tutorial:
+
+`TOTO`_
+
 
 Adding the extra pluggins
 -------------------------
@@ -47,3 +51,4 @@ To install them naviguate the toto_plugins folder and type:
 .. code:: bash
    python add_module.py
 
+.. _`TOTO`: https://youtu.be/PB3O_AQ0Ots
