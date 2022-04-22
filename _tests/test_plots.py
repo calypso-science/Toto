@@ -18,7 +18,7 @@ df.StatPlots.density_diagramm(X='hs',Y='tp',args={
         'X unit':'m',
         'X limits':[0,np.inf],
         'Y limits':[0,np.inf],
-        'display': 'On' ,
+        'display': 'Off' ,
         'folder out':os.getcwd()})
 
 

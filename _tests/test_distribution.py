@@ -15,13 +15,13 @@ df.Extreme.distribution_shape(mag='hs',drr=None,\
          'method':'ml',#{'pkd':False,'pwm':False,'mom':False,'ml':True},
          'threshold type':'percentile',#:True,'value':False},
          'threshold value':70,
-         'directional':'Off',#:True,'Off':False},
+         'directional':False,#:True,'Off':False},
          'minimum number of peaks over threshold': 5,
          'minimum time interval between peaks (h)':2.0,
          'direction binning':'centered',#:True,'not-centered':False},
          'direction interval': 45.,
          'time blocking':'Monthly',#:True,'Seasonal (South hemisphere)':False,'Seasonal (North hemisphere)':False,'Monthly':False},
-         'display peaks':'On',#{'On':True,'Off':False},
-         'display CDFs':'On',#{'On':True,'Off':False},
+         'display peaks':True,#{'On':True,'Off':False},
+         'display CDFs':False,#{'On':True,'Off':False},
          'folder out':os.getcwd()
          })
