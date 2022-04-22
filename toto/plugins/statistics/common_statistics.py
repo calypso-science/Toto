@@ -12,6 +12,17 @@ from ._do_dir_max import do_directional_stat
 
 import numpy as np
 
+
+
+# def clean_args(args):
+#     for key in args:
+#         if isinstance(args[key],dict):
+#             for subkey in args[key]:
+#                 if args[key][subkey]:
+#                     args[key]=subkey
+#                     break
+
+
 @pd.api.extensions.register_dataframe_accessor("Statistics")
 class Statistics:
     def __init__(self, pandas_obj):
@@ -129,6 +140,12 @@ class Statistics:
                  -
 
         """
+
+        
+        # for key in args:
+        #     if isinstance(args[key],dict):
+        #         import pdb;pdb.set_trace()
+
 
         if drr not in self.data:
             drr='none'

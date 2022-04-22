@@ -25,7 +25,7 @@ class StatPlots:
         '% quadran (optional)':[],
         'time blocking':{'Annual':True,'Seasonal (South hemisphere)':False,'Seasonal (North hemisphere)':False,'Monthly':False},
         'folder out':os.getcwd(),
-        'display':{'On':True,'Off':False}
+        'display':True
         }):
 
         """ This function provides annual, seasonal or monthly rose plots for wind,
@@ -68,9 +68,9 @@ class StatPlots:
             >>> 
         """
 
-        display=True
-        if args.get('display','Off')=='Off':
-            display=False
+        display=args.get('display',True)
+        # if args.get('display','Off')=='Off':
+        #     display=False
         unit=get_opt(self.data[mag],'units',args['units'])
 
         if not hasattr(self.data,'filename'):
