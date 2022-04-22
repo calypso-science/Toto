@@ -14,6 +14,7 @@ toto.plugins package
    :maxdepth: 2
 
    toto.plugins.extreme
+   toto.plugins.metcalc
    toto.plugins.plots
    toto.plugins.statistics
    toto.plugins.tide

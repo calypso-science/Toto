@@ -3,7 +3,7 @@
 - Making reading functions available at module level
 """
 
-__version__ = "1.0"
+__version__ = "1.2"
 __author__ = "Calypso Science"
 __contact__ = "r.zyngfogel@calypso.science"
 __url__ = "calyps.science"
@@ -68,3 +68,13 @@ _import_functions(pkgname="filters",name='filters')
 _import_functions(pkgname="interpolations",name='interp')
 _import_functions(pkgname="selections",name='select')
 _import_plugins(pkgname="plugins",name='plug')
+for fct in [x for x in dir(getattr(globals()['plugins'],'extreme'))]:
+
+    if hasattr(getattr(getattr(globals()['plugins'],'extreme'),fct),'__name__'):
+        if getattr(getattr(globals()['plugins'],'extreme'),fct).__name__ not in ['do_extreme_adjusted','do_extreme','extreme_water_elevation','distribution_shape']:
+            delattr(getattr(globals()['plugins'],'extreme'),fct)
+    else:
+        if fct not in ['__extreme_water_elevation__','__do_extreme__','__do_extreme_adjusted__','__distribution_shape___']:
+            delattr(getattr(globals()['plugins'],'extreme'),fct)
+
+# toto.plugins.extreme.zipf.__class__==toto.plugins.extreme.distribution_shape.__class__

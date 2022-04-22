@@ -21,8 +21,9 @@ sys.path.append('.')
 from links.link import *
 from links import *
 #sys.path.insert(0, os.path.abspath('../Toto'))
-import toto
 import scipy
+import toto
+
 
 project = 'Toto'
 copyright = '2021, Calypso Science'

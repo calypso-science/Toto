@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Linz post-processing examples &#8212; Toto 1.0 documentation</title>
+    <title>Linz post-processing examples &#8212; Toto 1.2 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
@@ -61,7 +61,8 @@ to download the full example code</p>
 </pre></div>
 </div>
 <p>Link to lINZ files</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">BASEURL</span><span class="o">=</span><span class="s1">&#39;https://sealevel-data.linz.govt.nz/</span><span class="si">%s</span><span class="s1">/</span><span class="si">%i</span><span class="s1">/</span><span class="si">%i</span><span class="s1">/</span><span class="si">%s</span><span class="s1">_</span><span class="si">%i</span><span class="s1">_</span><span class="si">%s</span><span class="s1">.zip&#39;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">BASEURL</span><span class="o">=</span><span class="s1">&#39;https://sealevel-data.linz.govt.nz/tidegauge/</span><span class="si">%s</span><span class="s1">/</span><span class="si">%i</span><span class="s1">/</span><span class="si">%i</span><span class="s1">/</span><span class="si">%s</span><span class="s1">_</span><span class="si">%i</span><span class="s1">_</span><span class="si">%s</span><span class="s1">.zip&#39;</span>
+<span class="c1">#BASEURL=&#39;https://sealevel-data.linz.govt.nz/tidegauge/AUCT/2009/40/AUCT_40_2009085.zip</span>
 </pre></div>
 </div>
 <p>Station to download</p>
@@ -71,42 +72,43 @@ to download the full example code</p>
 <span class="n">sensor</span><span class="o">=</span><span class="mi">40</span>
 </pre></div>
 </div>
-<p>Download Linz elevation file from <cite>tstart</cite> to <cite>tend</cite> at <cite>station</cite> tidal gauge</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dt</span><span class="o">=</span><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">tstart</span><span class="p">)</span>
-<span class="n">files</span><span class="o">=</span><span class="p">[]</span>
-<span class="k">while</span> <span class="n">dt</span><span class="o">&lt;</span><span class="n">tend</span><span class="p">:</span>
-    <span class="n">fileout</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">_</span><span class="si">%03i</span><span class="s1">.zip&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">station</span><span class="p">,</span><span class="n">dt</span><span class="o">.</span><span class="n">timetuple</span><span class="p">()</span><span class="o">.</span><span class="n">tm_yday</span><span class="p">)</span>
-    <span class="n">linzurl</span><span class="o">=</span><span class="n">BASEURL</span> <span class="o">%</span> <span class="p">(</span><span class="n">station</span><span class="p">,</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">sensor</span><span class="p">,</span><span class="n">station</span><span class="p">,</span><span class="n">sensor</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;</span><span class="si">%03i</span><span class="s1">&#39;</span><span class="o">%</span><span class="n">dt</span><span class="o">.</span><span class="n">timetuple</span><span class="p">()</span><span class="o">.</span><span class="n">tm_yday</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="s1">&#39;AUCT_40_2019001.csv&#39;</span><span class="p">):</span>
+    <span class="c1"># Download Linz elevation file from `tstart` to `tend` at `station` tidal gauge</span>
+    <span class="n">dt</span><span class="o">=</span><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">tstart</span><span class="p">)</span>
+    <span class="n">files</span><span class="o">=</span><span class="p">[]</span>
+    <span class="k">while</span> <span class="n">dt</span><span class="o">&lt;</span><span class="n">tend</span><span class="p">:</span>
+        <span class="n">fileout</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">_</span><span class="si">%03i</span><span class="s1">.zip&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">station</span><span class="p">,</span><span class="n">dt</span><span class="o">.</span><span class="n">timetuple</span><span class="p">()</span><span class="o">.</span><span class="n">tm_yday</span><span class="p">)</span>
+        <span class="n">linzurl</span><span class="o">=</span><span class="n">BASEURL</span> <span class="o">%</span> <span class="p">(</span><span class="n">station</span><span class="p">,</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">sensor</span><span class="p">,</span><span class="n">station</span><span class="p">,</span><span class="n">sensor</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;</span><span class="si">%03i</span><span class="s1">&#39;</span><span class="o">%</span><span class="n">dt</span><span class="o">.</span><span class="n">timetuple</span><span class="p">()</span><span class="o">.</span><span class="n">tm_yday</span><span class="p">)</span>
+        <span class="n">linzfile</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">linzurl</span><span class="p">,</span> <span class="n">allow_redirects</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">linzfile</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">404</span><span class="p">:</span>
+            <span class="n">files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fileout</span><span class="p">)</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fileout</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">linzfile</span><span class="o">.</span><span class="n">iter_content</span><span class="p">(</span><span class="n">chunk_size</span><span class="o">=</span><span class="mi">128</span><span class="p">):</span>
+                    <span class="n">fd</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+        <span class="n">dt</span><span class="o">+=</span><span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1">#%%</span>
+    <span class="c1"># Download AUCKLAND station README</span>
+    <span class="n">fileout</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">_readme.txt&#39;</span> <span class="o">%</span> <span class="n">station</span>
+    <span class="n">linzurl</span><span class="o">=</span><span class="s1">&#39;https://sealevel-data.linz.govt.nz/tidegauge/</span><span class="si">%s</span><span class="s1">/</span><span class="si">%s</span><span class="s1">_readme.txt&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">station</span><span class="p">,</span><span class="n">station</span><span class="p">)</span>
     <span class="n">linzfile</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">linzurl</span><span class="p">,</span> <span class="n">allow_redirects</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">linzfile</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">404</span><span class="p">:</span>
-        <span class="n">files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fileout</span><span class="p">)</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fileout</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">linzfile</span><span class="o">.</span><span class="n">iter_content</span><span class="p">(</span><span class="n">chunk_size</span><span class="o">=</span><span class="mi">128</span><span class="p">):</span>
-                <span class="n">fd</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
-    <span class="n">dt</span><span class="o">+=</span><span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Download AUCKLAND station README</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fileout</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">_readme.txt&#39;</span> <span class="o">%</span> <span class="n">station</span>
-<span class="n">linzurl</span><span class="o">=</span><span class="s1">&#39;https://sealevel-data.linz.govt.nz/</span><span class="si">%s</span><span class="s1">/</span><span class="si">%s</span><span class="s1">_readme.txt&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">station</span><span class="p">,</span><span class="n">station</span><span class="p">)</span>
-<span class="n">linzfile</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">linzurl</span><span class="p">,</span> <span class="n">allow_redirects</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fileout</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
-    <span class="n">fd</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">linzfile</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Unzip the all files and save to file</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">filenames</span><span class="o">=</span><span class="p">[]</span>
-<span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
-    <span class="k">with</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="n">file</span><span class="p">)</span> <span class="k">as</span> <span class="n">z</span><span class="p">:</span>
-        <span class="n">filenames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">z</span><span class="o">.</span><span class="n">namelist</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
-        <span class="n">z</span><span class="o">.</span><span class="n">extractall</span><span class="p">()</span>
-</pre></div>
-</div>
-<p>Merge all timeseries into 1</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filenames</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
-    <span class="k">for</span> <span class="n">fname</span> <span class="ow">in</span> <span class="n">filenames</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span> <span class="k">as</span> <span class="n">infile</span><span class="p">:</span>
-            <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">infile</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fileout</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
+        <span class="n">fd</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">linzfile</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+
+    <span class="c1">#%%</span>
+    <span class="c1"># Unzip the all files and save to file</span>
+    <span class="n">filenames</span><span class="o">=</span><span class="p">[]</span>
+    <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="n">file</span><span class="p">)</span> <span class="k">as</span> <span class="n">z</span><span class="p">:</span>
+            <span class="n">filenames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">z</span><span class="o">.</span><span class="n">namelist</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">z</span><span class="o">.</span><span class="n">extractall</span><span class="p">()</span>
+
+    <span class="c1">#%%</span>
+    <span class="c1"># Merge all timeseries into 1</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filenames</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">fname</span> <span class="ow">in</span> <span class="n">filenames</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span> <span class="k">as</span> <span class="n">infile</span><span class="p">:</span>
+                <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">infile</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
 </pre></div>
 </div>
 <p>Reading the files into a dataframe
@@ -239,7 +241,23 @@ prep/calcs ... done.
 <li><img alt="Annual: Omni" class="sphx-glr-multi-img" src="../_images/sphx_glr_plot_linz_exemple_005.png" />
 </li>
 </ul>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 1 minutes  42.125 seconds)</p>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>FitDistribution:
+alpha = 0.05
+method = ml
+LLmax = 23.15105550486007
+LPSmax = -51.51073426408082
+pvalue = 0.11421246906897149
+par = [1.14123187 0.09934601 0.07528642]
+par_lower = [0.69650123 0.09934601 0.03863236]
+par_upper = [1.58596251 0.09934601 0.11194048]
+par_fix = [nan, 0.09934601253759345, nan]
+par_cov = [[0.05148704 0.         0.00141487]
+ [0.         0.         0.        ]
+ [0.00141487 0.         0.00034974]]
+</pre></div>
+</div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  27.995 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-plot-linz-exemple-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/987d9297e03b5829546ab5783fbaa8a4/plot_linz_exemple.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_linz_exemple.py</span></code></a></p>

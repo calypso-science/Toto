@@ -115,5 +115,10 @@ Depending on the type of the key’s dictionary, the option will be displayed di
 
     args={'date':datetime}
 
+•   To get a boolean input:
+
+.. code:: python
+
+    args={'mask':True}
 
 .. _attributes.yml: https://github.com/calypso-science/Toto/blob/master/toto/core/attributes.yml

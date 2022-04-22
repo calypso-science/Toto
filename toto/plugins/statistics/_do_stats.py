@@ -52,33 +52,34 @@ def do_stats(time,statf,data,drr,hem,filename,sheetname,min_occ):
 
 
         # Do seasons
-        if hem=='South hemisphere(Summer/Winter)':
+
+        if hem=='south hemisphere(Summer/Winter)':
             seas=[((month<=3) | (month>=10))] # Summer: October to March
             seas.append(((month>=4) & (month<=9))) # Winter: April to September
             sea_names=['Summer','Winter']
 
-        elif hem=='South hemisphere 4 seasons':
+        elif hem=='south hemisphere 4 seasons':
             seas=[(month>=6) & (month <=8)]# winter
             seas.append((month>=9) & (month <=11))# spring
             seas.append((month>=12) | (month<=2))#summer
             seas.append((month>=3) & (month<=5))# autumn
             sea_names=['Winter','Spring','Summer','Autumn']
-        elif hem =='North hemishere(Summer/Winter)':
+        elif hem =='north hemishere(Summer/Winter)':
             seas=[(month>=4) & (month<=9)]  # Winter: April to September
             seas.append((month<=3) | (month>=10)) # Summer: October to March
             sea_names=['Summer','Winter']
-        elif hem=='North hemisphere moosoon(SW,NE,Hot season)':
+        elif hem=='north hemisphere moosoon(SW,NE,Hot season)':
             seas=[(month>=5) & (month<=10)] # SW: May to Oct
             seas.append((month<=2) | (month>=11)) # SE: Nov to Feb
             seas.append((month==3) | (month==4)) # Hot: March and April
             sea_names=['SW monsoon','NE monsoon','Hot season']
-        elif hem=='North hemisphere 4 seasons':
+        elif hem=='north hemisphere 4 seasons':
             seas=[(month>=12) | (month<=2)] # winter
             seas.append((month>=3) & (month<=5)) # spring
             seas.append((month>=6) & (month <=8)) # summer
             seas.append((month>=9) & (month <=11)) # autumn
             sea_names=['Winter','Spring','Summer','Autumn']
-        elif hem == 'Yearly':
+        elif hem == 'yearly':
             unique_year=np.unique(year)
             seas=[]
             sea_names=[]

@@ -21,7 +21,7 @@
 """
 
 from scipy.signal import butter, filtfilt, detrend
-from oceans.filters import lanc
+from toto.core.toolbox import lanc
 import numpy as np
 
 

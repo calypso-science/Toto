@@ -11,20 +11,8 @@ from matplotlib import gridspec
 import matplotlib.dates as mdate
 import copy
 from grid_strategy import strategies
-
-try:
-    import wafo
-    wafo.plotbackend.plotbackend.interactive(False)
-    import wafo.stats as ws
-
-except:
-    print('')
-    print('')
-    print('Error: problem loading wafo package:')
-    print('  - Check if this package is installed ( e.g. type: `pip install pywafo`)')
-    print('')
-    print('This module is likely to no work')
-    #sys.exit(-1)
+import scipy.stats as ws
+from ._estimation import FitDistribution
 
 
 def sub_table(stats,varname,rp):
@@ -66,7 +54,8 @@ def do_fitting(mag,fitting,method,loc=None):
         loc=np.nanmin(mag)*.999
 
     if fitting.lower()=='weibull':
-        phat = ws.weibull_min.fit2(mag,floc=loc,method=method.lower(),alpha=0.05)
+        phat = ws.weibull_min.fit2(mag,floc=loc,alpha=0.05,method=method.lower())
+        print(phat)
         scale=phat.par[-1]
         shape=phat.par[0]
     elif fitting.lower() == 'gumbel':

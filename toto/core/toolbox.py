@@ -8,6 +8,53 @@ def display_message():
         r.zyngfogel@calypso.science or\n\
         b.beamsley@metocean.co.nz')
     print('########################################################################')
+import numpy as np
+
+
+def lanc(numwt, haf):
+    """
+    Generates a numwt + 1 + numwt lanczos cosine low pass filter with -6dB
+    (1/4 power, 1/2 amplitude) point at haf
+
+    Function from Oceans Toolbox
+    Parameters
+    ----------
+    numwt : int
+            number of points
+    haf : float
+          frequency (in 'cpi' of -6dB point, 'cpi' is cycles per interval.
+          For hourly data cpi is cph,
+    Examples
+    --------
+    >>> from oceans.filters import lanc
+    >>> import matplotlib.pyplot as plt
+    >>> t = np.arange(500)  # Time in hours.
+    >>> h = 2.5 * np.sin(2 * np.pi * t / 12.42)
+    >>> h += 1.5 * np.sin(2 * np.pi * t / 12.0)
+    >>> h += 0.3 * np.random.randn(len(t))
+    >>> wt = lanc(96+1+96, 1./40)
+    >>> low = np.convolve(wt, h, mode='same')
+    >>> high = h - low
+    >>> fig, (ax0, ax1) = plt.subplots(nrows=2)
+    >>> _ = ax0.plot(high, label='high')
+    >>> _ = ax1.plot(low, label='low')
+    >>> _ = ax0.legend(numpoints=1)
+    >>> _ = ax1.legend(numpoints=1)
+    """
+    summ = 0
+    numwt += 1
+    wt = np.zeros(numwt)
+
+    # Filter weights.
+    ii = np.arange(numwt)
+    wt = 0.5 * (1.0 + np.cos(np.pi * ii * 1.0 / numwt))
+    ii = np.arange(1, numwt)
+    xx = np.pi * 2 * haf * ii
+    wt[1 : numwt + 1] = wt[1 : numwt + 1] * np.sin(xx) / xx
+    summ = wt[1 : numwt + 1].sum()
+    xx = wt.sum() + summ
+    wt /= xx
+    return np.r_[wt[::-1], wt[1 : numwt + 1]]
 
 def qkhfs( w, h ):
     """
