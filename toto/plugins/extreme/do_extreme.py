@@ -16,14 +16,14 @@ class Extreme(ExtremeBase):
          'method':{'pkd':False,'pwm':False,'mom':False,'ml':True},
          'threshold type':{'percentile':True,'value':False},
          'threshold value':95.0,
-         'directional':{'On':True,'Off':False},
+         'directional':True,
          'minimum number of peaks over threshold': 30,
          'minimum time interval between peaks (h)':24.0,
          'direction binning':{'centered':True,'not-centered':False},
          'direction interval': 45.,
          'time blocking':{'Annual':True,'Seasonal (South hemisphere)':False,'Seasonal (North hemisphere)':False,'Monthly':False},
-         'display peaks':{'On':True,'Off':False},
-         'display CDFs':{'On':True,'Off':False},
+         'display peaks':True,
+         'display CDFs':True,
          'folder out':os.getcwd()
          }):
 
@@ -56,8 +56,8 @@ class Extreme(ExtremeBase):
                         `value`: using a treshold value
                     threshold value: float
                         Either a absolute value or percentile value depending on the `threshold type`
-                    directional: str
-                        Can be `On` or `Off`, to calculate stats for each direction.
+                    directional: bool
+                        Can be `True` or `False`, to calculate stats for each direction.
                         Needs `drr` variable
                     direction binning: str
                         Can be `centered` or `not-centered` depending if the directionnal are centered over 0
@@ -65,10 +65,10 @@ class Extreme(ExtremeBase):
                         Dirctionnal interval for the bins in degrees
                     minimum number of peaks over threshold: int
                     minimum time interval between peaks (h): int
-                    display peaks: str
-                        `On` or `Off` to display peaks over threshold
-                    display CDFs: str
-                        `On` or `Off` to display CFDs image
+                    display peaks: bool
+                        `True` or `False` to display peaks over threshold
+                    display CDFs: bool
+                        `True` or `False` to display CFDs image
                     folder out: str
                         Path to save the output
                     time blocking: str
@@ -112,7 +112,7 @@ class Extreme(ExtremeBase):
         method=args.get('method','ml')
         min_peak=args['minimum number of peaks over threshold']      
 
-        if args.get('directional','Off')=='On':
+        if args.get('directional',True):
             drr_interval=dir_interval(args.get('direction interval',45),
                 args.get('direction binning','centered'))
         else:
@@ -140,16 +140,13 @@ class Extreme(ExtremeBase):
 
         self._get_shape(mag,fitting,method,time_blocking,)
 
-        if args.get('display peaks','Off')=='On':
+        if args.get('display peaks',True):
             self._plot_peaks(mag,display=True,folder=folderout)
         else:
             self._plot_peaks(mag,display=False,folder=folderout)
 
         all_dirs=list(self.peaks_index['Annual'].keys())
-        if args.get('display CDFs','Off')=='On':
-            display=True
-        else:
-            display=False
+        display = args.get('display CDFs',True)
 
 
         for all_dir in all_dirs:
@@ -169,8 +166,8 @@ class Extreme(ExtremeBase):
          'minimum number of peaks over threshold': 30,
          'minimum time interval between peaks (h)':24.0,
          'time blocking':{'Annual':True,'Seasonal (South hemisphere)':False,'Seasonal (North hemisphere)':False,'Monthly':False},
-         'display peaks':{'On':True,'Off':False},
-         'display CDFs':{'On':True,'Off':False},
+         'display peaks':True,
+         'display CDFs':True,
          'folder out':os.getcwd()
          }):
 
@@ -215,10 +212,10 @@ class Extreme(ExtremeBase):
                         Either a absolute value or percentile value depending on the `threshold type`
                     minimum number of peaks over threshold: int
                     minimum time interval between peaks (h): int
-                    display peaks: str
-                        `On` or `Off` to display peaks over threshold
-                    display CDFs: str
-                        `On` or `Off` to display CFDs image
+                    display peaks: bool
+                        `True` or `False` to display peaks over threshold
+                    display CDFs: bool
+                        `True` or `False` to display CFDs image
                     folder out: str
                         Path to save the output
                     time blocking: str
@@ -277,14 +274,14 @@ class Extreme(ExtremeBase):
          'estimate Hmax & Cmax RPVs':{'On':False,'Off':True},
          'threshold type':{'percentile':True,'value':False},
          'threshold value':95.0,
-         'directional':{'On':True,'Off':False},
+         'directional':False,
          'minimum number of peaks over threshold': 30,
          'minimum time interval between peaks (h)':24.0,
          'direction binning':{'centered':True,'not-centered':False},
          'direction interval': 45.,
          'time blocking':{'Annual':True,'Seasonal (South hemisphere)':False,'Seasonal (North hemisphere)':False,'Monthly':False},
-         'display peaks':{'On':True,'Off':False},
-         'display CDFs':{'On':True,'Off':False},
+         'display peaks':True,
+         'display CDFs':True,
          'water depth':5000.0,
          'folder out':os.getcwd()
          }):
@@ -340,7 +337,7 @@ class Extreme(ExtremeBase):
                     water depth: float
                         Total water depth if not specified in the input
                     directional: str
-                        Can be `On` or `Off`, to calculate stats for each direction.
+                        Can be `True` or `False`, to calculate stats for each direction.
                         Needs `drr` variable
                     direction binning: str
                         Can be `centered` or `not-centered` depending if the directionnal are centered over 0
@@ -414,7 +411,7 @@ class Extreme(ExtremeBase):
          'transport speed (m/s)':2.572,
          'transport distance (km)':1000.0,
          'time blocking':{'Annual':True,'Seasonal (South hemisphere)':False,'Seasonal (North hemisphere)':False,'Monthly':False},
-         'display CDFs':{'On':True,'Off':False},
+         'display CDFs':True,
          'folder out':os.getcwd()
          }):
     
