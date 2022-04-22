@@ -18,156 +18,13 @@ class TideAnalysis:
         self.data = pandas_obj
         self.dfout = pd.DataFrame(index=self.data.index.copy())
         self.constituents = None
-
-    def _cons2ts(min_time,max_time,dt,constituents,amplitudes,phases,latitude):
-
-        idx = pd.period_range(min_time, max_time,freq='%is'%dt)
-        idx=idx.to_timestamp()
-        df_new=pd.DataFrame(index=idx)
-
-        const_idx = np.asarray([ut_constants['const']['name'].tolist().index(i) for i in constituents])
-        frq = ut_constants['const']['freq'][const_idx]
-
-        coef = utilities.Bunch(name=constituents, mean=0, slope=0)
-        coef['aux'] = utilities.Bunch(reftime=729572.47916666674, lind=const_idx, frq=frq)
-        coef['aux']['opt'] = utilities.Bunch(twodim=False, nodsatlint=False, nodsatnone=False,nodiagn=True,
-                                   gwchlint=False, gwchnone=False, notrend=True, prefilt=[])
-
-        # Prepare the time data for predicting the time series. UTide needs MATLAB times.
-        times = date2num(df_new.index)
-
-
-        coef['aux']['lat'] = latitude  # float
-        coef['A'] = amplitudes
-        coef['g'] = phases
-        coef['A_ci'] = np.zeros(amplitudes.shape)
-        coef['g_ci'] = np.zeros(phases.shape)
-        df_new['tide'] = reconstruct(times, coef, verbose=True).h
-
-        return df_new
-
-    def _export_cons(self,outfile,var,cons,amp,pha):
-
-        mat=[['Constituent','Amplitude [m]','Phase [deg]']]
-        for i,con in enumerate(cons):
-            row=[con]
-            row.append('%.4f' %amp[i])
-            row.append('%.4f' %pha[i])
-            mat.append(row)
-
-        create_table(outfile,var,np.array(mat))
-
-    def get_constituents(self, constituents=None):
-
-        # If no constituents provided use precomputed ones if available
-        if constituents is None:
-            if self.constituents is None:
-                print("No constituents available in Tide Analysis object please provide constituents")
-                raise
-            print("Using pre-computed constituents from TideAnalysis object")
-            constituents = self.constituents
-        return constituents
-
-
-    def fit_tides(self,
-                  mag='mag',
-                  args={'minimum SNR':2,
-                        'latitude':-36.0,
-                        'method': 'ols',
-                        'conf_int': 'linear',
-                        'trend': True
-                  }):
-
-        # Parse latitude
-        if hasattr(self.data,'latitude'):
-            try:
-                latitude=self.data.latitude[0]
-                if not latitude:
-                    latitude=args.pop('latitude')
-            except:
-                    latitude=args.pop('latitude')
-        else:
-            latitude=args.pop('latitude')
-
-        # Center timeseries around mean
-        demeaned = self.data[mag].values - np.nanmean(self.data[mag].values)
-
-        # Parse and set options for the tidal analysis
-        # if those have not already been defined
-        for key,value in dict(method = args.get('method', 'ols'),
-                              conf_int = args.get('conf_int', 'linear'),
-                              trend = args.get('trend', False),
-                              Rayleigh_min = args.get('minimum SNR',2)).items():
-            if not key in args:
-                args[key] = value
-
-        # This is because the key gets renamed to "Rayleigh_min"
-        if 'minimum SNR' in args:
-            args.pop('minimum SNR')
-
-
-        # Fit the tides and get the constituents
-        self.constituents = solve(np.array(date2num(self.data.index)),
-                                  demeaned,
-                                  lat= latitude,
-                                  **args)
-
-        return self.constituents
-
-
-    def tidal_elevation_from_constituents(self,
-                                          constituents=None,
-                                          time=None,
-                                          tstart=None, tend=None, dt=None):
-
-        # If no time provided use same as analyses dataset
-        # Generate times of time-series
-        if time is None:
-            if not tstart is None or not tend is None or not dt is None:
-                if tstart is None or tend is None or dt is None:
-                    print("Please supply all (tstart, tend, dt)")
-                    raise
-                time = pd.period_range(tstart, tend, freq=dt).to_timestamp()
-            else:
-                time = self.data.index
-        else:
-            if not tstart is None or not tend is None or not dt is None:
-                print("Please supply either time or (tstart, tend, dt)")
-                raise
-
-        # Parse constituents attribute and get them if available
-        constituents = self.get_constituents(constituents=constituents)
-
-        # Reconstructe elevation timeseries from constituents
-        tide_elevation = reconstruct(np.array(date2num(time)),
-                                     constituents).h
-
-        # Store it in a pandas dataframe
-        out = pd.DataFrame({'tidal_elevation': tide_elevation},
-                            index=time)
-
-        # Make sure the index is labelled as 'time'
-        out.index.name = 'time'
-
-        return out
-
-
-    def write_constituents_to_file(self,
-                                   filename):
-        pass
-
-
-    def load_constituents_from_file(self,
-                                    filename):
-        pass
-
-
+    
     def detide(self,
-               constituents=None,
                mag='mag',
                args={'minimum SNR':2,
                      'latitude':-36.0,
-                     'folder out':os.getcwd()}):
+                     'folder out':os.getcwd(),
+                     }):
 
         """ This function detide a timeseries using Utide software.
         Usefull if NaNs are in the timeseries
@@ -199,12 +56,13 @@ class TideAnalysis:
         demeaned = self.data[mag].values - np.nanmean(self.data[mag].values)
 
         # Fit tides to get tidal constituents if not provided
+        constituents=args.pop('constituents',None)
         if constituents is None:
-            constituents = self.fit_tides(mag=mag,
+            constituents = self._fit_tides(mag=mag,
                                           args=args)
 
         # Reconstuction astronomical tide time-series from coefficients
-        ts_recon = self.tidal_elevation_from_constituents(constituents=constituents,
+        ts_recon = self._tidal_elevation_from_constituents(constituents=constituents,
                                                           time=self.data.index)
 
         # Pack results in a dataframe with names defined from the raw data base name
@@ -233,159 +91,7 @@ class TideAnalysis:
 
         return dfout
 
-    def recreate(self,
-        args={'cons file':os.path.join(os.getcwd(),'cons_list.txt'),
-        'column cons': 'cons',
-        'column amp': 'amp',
-        'column pha': 'pha',
-        'minimum time':datetime.now(),
-        'maximum time':datetime.now()+timedelta(days=7),
-        'dt(s)':3600,
-        'latitude':-36.0,
-        }):
-
-        """ Re-create a time series using a file containing
-         Amplitude and Phase for each contituents.
-
-        Parameters
-        ~~~~~~~~~~
-
-        args: dict
-            Dictionnary with the folowing keys:
-                cons file: str
-                    Txt file containing the amplitude and phase
-                column cons: str
-                    Name of the column containing the constituent name
-                column amp: str
-                    Name of the column containing the constituent amplitude
-                column pha: str
-                    Name of the column containing the constituent phase (in degree)
-                minimum time: datetime
-                    Time the time series start
-                maximum time: datetime
-                    Time the time series end
-                dt(s): int
-                   Time interval in seconds
-                latitude: float
-
-        Examples:
-        ~~~~~~~~~
-        >>> df=tf['test1']['dataframe'].TideAnalysis.recreate(args={'cons file':'test.txt',\
-        'column cons':'cons','column amp':amp,'column pha':pha,\
-        'minimum time':datetime.datetime(2002,1,1),'maximum time':datetime.datetime(2003,1,1),\
-        'dt(s)':3600,'latitude':-36)
-        >>>
-        """
-
-        # Read constituents csv file
-        df = pd.read_csv(args['cons file'])
-
-        # Order constituents information
-        constituents = df[args['column cons']].values
-        amplitudes = df[args['column amp']].values
-        phases = df[args['column pha']].values
-
-        # Parse latitude information
-        latitude=args['latitude']
-
-        # Parse info on the times the time-series of tidal elevation has to be generated for
-        min_time=args['minimum time']
-        max_time=args['maximum time']
-        dt=args['dt(s)']
-
-        # Reconstruct the time-series of water elevation
-        df_new=self._cons2ts(min_time,max_time,dt,constituents,amplitudes,phases,latitude)
-
-
-        # Store as dataframe and return
-        self.dfout=df_new#pd.merge_asof(self.dfout,df_new,on='time',direction='nearest', tolerance=pd.Timedelta("1s")).set_index\('time')
-        self.dfout.index.name='time'
-        return self.dfout
-
-
-    def predict(self,
-                mag='mag',
-                args={'minimum time':datetime,'maximum time':datetime,'dt(s)':60,
-                      'minimum SNR':2,'trend': False,
-                      'latitude':-36.0,
-                },
-                constituents=None):
-
-        """ This function predict the tide by first detiding a timeseries.
-        Works if NaN are in the timeseries
-
-        Parameters
-        ~~~~~~~~~~
-
-        mag : str
-            Name of the column from which to extract the tide
-        args: dict
-            Dictionnary with the folowing keys:
-                minimum SNR: int
-                folder out: str
-                   Path to save the output
-                latitude: float
-                minimum time: datetime
-                    Time the time series start
-                maximum time: datetime
-                    Time the time series end
-                dt(s): int
-                    Time interval in seconds
-
-        Examples:
-        ~~~~~~~~~
-        >>> df=tf['test1']['dataframe'].TideAnalysis.predict(mag='U',args={'latitude':-36.5,\
-            'minimum time':datetime.datetime(2002,1,1),'maximum time':datetime.datetime(2003,1,1),\
-            'dt(s)':3600)
-        >>>
-        """
-
-        # Parse out of args anything not related to tides
-        # ideally this separation should be respected in the function interface
-        # but we won't do that right now for backward compatibility reasons
-        # I dont' think the folder out option in the doc is of any relevance here
-        minimum_time = args.pop('minimum time')
-        maximum_time = args.pop('maximum time')
-        min_dt = args.pop('dt(s)')
-
-        # Fit tides to get constituents if not provided
-        if constituents is None:
-            print("Using TideAnalysis constituents if available")
-            constituents = self.fit_tides(mag=mag,
-                                          args=args)
-
-        # Parse info on the times the time-series of tidal elevation has to be generated for
-        min_time = min(minimum_time, time[0])
-        max_time = max(maximum_time, time[-1])
-
-        # Generate times of time-series
-        idx = pd.period_range(minimum_time, maximum_time,freq='%is'%min_dt)
-        idx = idx.to_timestamp()
-
-        # Get tidal elevation time-series for times
-        dfout = self.tidal_elevation_from_constituents(idx, constituents)
-
-        # Rename variable to maintain backward compatibiity
-        dfout = dfout.rename(colums={'tidal_elevation': self.get_default_name()})
-        self.dfout = dfout
-
-        return dfout
-
-
-    def get_default_name(self):
-        """
-        Function that returns the default name for a time series of reconstructed
-        astronomical tidal water level.
-        """
-
-        if hasattr(self.data[mag], 'short_name'):
-            return self.data[mag].short_name+'t'
-        else:
-            return mag+'t'
-
-
     def tidal_stat(self,
-                   constituents=None,
                    mag='mag',
         args={'minimum SNR':2,
         'latitude':-36.0,
@@ -417,9 +123,9 @@ class TideAnalysis:
         # This should ideally be somewhere else in the interface than in args
         # but accomodating here to ensure backward compatibility
         folder_out = args.pop('folder out') if 'folder out' in args else os.getcwd()
-
+        constituents=args.pop('constituents',None)
         if constituents is None:
-            constituents = self.fit_tides(mag=mag,
+            constituents = self._fit_tides(mag=mag,
                                           args=args)
 
         m2=(constituents.name=='M2').nonzero()[0][0]
@@ -428,9 +134,9 @@ class TideAnalysis:
         M2 = constituents['A'][m2]
         S2 = constituents['A'][s2]
         t = pd.date_range(start='2000-01-01', periods=24*365*20, freq='H')
-        time = date2num(t.to_pydatetime())
+        time = t.to_pydatetime()
         #ts_recon = reconstruct(time, coef).h
-        ts_recon = self.tidal_elevation_from_constituents(constituents=constituents,
+        ts_recon = self._tidal_elevation_from_constituents(constituents=constituents,
                                                           time=time)
 
         stats=np.empty((8,3),dtype="object")
@@ -474,28 +180,30 @@ class TideAnalysis:
 
 
     def skew_surge(self,
-                   constituents=None,
-                   tide_dt=900,
                    mag='mag',
                    args={'minimum SNR':2,
-                        'latitude':-36.0}):
+                        'latitude':-36.0,
+                        'tide_dt': 900,
+                        }):
+
         """ This function calculate the skew surge :
         see https://www.ntslf.org/storm-surges/skew-surges
 
         Parameters
         ~~~~~~~~~~
-        constituents: object
-            Tidal constituents to use to estimate the astronomical tides. Get calculated
-            if not supplied.
-        tide_dt: int
-             Time delta to use to reconstruct the astronomical tides in seconds. Default is
-             15 minutes.
         mag : str
             Name of the column from which to extract the tide.
+
         args: dict
             Dictionnary with the parameters to use to fit the tides if required:
                 minimum SNR: int
                 latitude: float
+                tide_dt: int
+                     Time delta to use to reconstruct the astronomical tides in seconds. Default is
+                     15 minutes.
+                constituents: object
+                    Tidal constituents to use to estimate the astronomical tides. Get calculated
+                    if not supplied.
 
         Examples:
         ~~~~~~~~~
@@ -507,16 +215,18 @@ class TideAnalysis:
         xtwl = self.data.index
         ytwl = self.data[mag].values - np.nanmean(self.data[mag].values)
 
+        constituents=args.get('constituents',None)
         # Fit tides if constituents are not already provided
         if constituents is None:
-            constituents = self.fit_tides(mag=mag, args=args)
+            constituents = self._fit_tides(mag=mag, args=args)
 
         # Generate times over which the astronomical tide needs reconstructing
+        tide_dt=args.get('tide_dt',900)
         xtide = pd.period_range(xtwl[0], xtwl[-1], freq='%is'%(tide_dt))
         xtide = xtide.to_timestamp()
 
         # Reconstruct the astronomical tides
-        ytide = self.tidal_elevation_from_constituents(constituents=constituents,
+        ytide = self._tidal_elevation_from_constituents(constituents=constituents,
                                                         time=xtide)['tidal_elevation'].values
 
         # Find peaks in tide
@@ -571,3 +281,308 @@ class TideAnalysis:
         dout.index.name = 'time'
 
         return dout
+
+    # def recreate(self,
+    #         args={'cons file':os.path.join(os.getcwd(),'cons_list.txt'),
+    #         'column cons': 'cons',
+    #         'column amp': 'amp',
+    #         'column pha': 'pha',
+    #         'minimum time':datetime.now(),
+    #         'maximum time':datetime.now()+timedelta(days=7),
+    #         'dt(s)':3600,
+    #         'latitude':-36.0,
+    #         }):
+
+    #         """ Re-create a time series using a file containing
+    #          Amplitude and Phase for each contituents.
+
+    #         Parameters
+    #         ~~~~~~~~~~
+
+    #         args: dict
+    #             Dictionnary with the folowing keys:
+    #                 cons file: str
+    #                     Txt file containing the amplitude and phase
+    #                 column cons: str
+    #                     Name of the column containing the constituent name
+    #                 column amp: str
+    #                     Name of the column containing the constituent amplitude
+    #                 column pha: str
+    #                     Name of the column containing the constituent phase (in degree)
+    #                 minimum time: datetime
+    #                     Time the time series start
+    #                 maximum time: datetime
+    #                     Time the time series end
+    #                 dt(s): int
+    #                    Time interval in seconds
+    #                 latitude: float
+
+    #         Examples:
+    #         ~~~~~~~~~
+    #         >>> df=tf['test1']['dataframe'].TideAnalysis.recreate(args={'cons file':'test.txt',\
+    #         'column cons':'cons','column amp':amp,'column pha':pha,\
+    #         'minimum time':datetime.datetime(2002,1,1),'maximum time':datetime.datetime(2003,1,1),\
+    #         'dt(s)':3600,'latitude':-36)
+    #         >>>
+    #         """
+
+    #         # Read constituents csv file
+    #         df = pd.read_csv(args['cons file'])
+
+    #         # Order constituents information
+    #         constituents = df[args['column cons']].values
+    #         amplitudes = df[args['column amp']].values
+    #         phases = df[args['column pha']].values
+
+    #         # Parse latitude information
+    #         latitude=args['latitude']
+
+    #         # Parse info on the times the time-series of tidal elevation has to be generated for
+    #         min_time=args['minimum time']
+    #         max_time=args['maximum time']
+    #         dt=args['dt(s)']
+
+    #         # Reconstruct the time-series of water elevation
+    #         df_new=self._cons2ts(min_time,max_time,dt,constituents,amplitudes,phases,latitude)
+
+
+    #         # Store as dataframe and return
+    #         self.dfout=df_new#pd.merge_asof(self.dfout,df_new,on='time',direction='nearest', tolerance=pd.Timedelta("1s")).set_index\('time')
+    #         self.dfout.index.name='time'
+    #         return self.dfout
+
+
+    def predict(self,
+                mag='mag',
+                args={'minimum time':datetime,'maximum time':datetime,'dt(s)':60,
+                      'minimum SNR':2,'trend': False,
+                      'latitude':-36.0,
+                },
+                ):
+
+        """ This function predict the tide by first detiding a timeseries.
+        Works if NaN are in the timeseries
+
+        Parameters
+        ~~~~~~~~~~
+
+        mag : str
+            Name of the column from which to extract the tide
+        args: dict
+            Dictionnary with the folowing keys:
+                minimum SNR: int
+                folder out: str
+                   Path to save the output
+                latitude: float
+                minimum time: datetime
+                    Time the time series start
+                maximum time: datetime
+                    Time the time series end
+                dt(s): int
+                    Time interval in seconds
+
+        Examples:
+        ~~~~~~~~~
+        >>> df=tf['test1']['dataframe'].TideAnalysis.predict(mag='U',args={'latitude':-36.5,\
+            'minimum time':datetime.datetime(2002,1,1),'maximum time':datetime.datetime(2003,1,1),\
+            'dt(s)':3600)
+        >>>
+        """
+
+        # Parse out of args anything not related to tides
+        # ideally this separation should be respected in the function interface
+        # but we won't do that right now for backward compatibility reasons
+        # I dont' think the folder out option in the doc is of any relevance here
+        minimum_time = args.pop('minimum time')
+        maximum_time = args.pop('maximum time')
+        min_dt = args.pop('dt(s)')
+        constituents=args.pop('constituents',None)
+        # Fit tides to get constituents if not provided
+        if constituents is None:
+            print("Using TideAnalysis constituents if available")
+            constituents = self._fit_tides(mag=mag,
+                                          args=args)
+
+        # Parse info on the times the time-series of tidal elevation has to be generated for
+        time=self.data.index
+        min_time = min(minimum_time, time[0])
+        max_time = max(maximum_time, time[-1])
+
+        # Generate times of time-series
+        idx = pd.period_range(minimum_time, maximum_time,freq='%is'%min_dt)
+        idx = idx.to_timestamp()
+
+        # Get tidal elevation time-series for times
+        dfout = self._tidal_elevation_from_constituents(time=idx, constituents=constituents)
+
+        # Rename variable to maintain backward compatibiity
+        dfout = dfout.rename(columns={'tidal_elevation': self._get_default_name(mag)})
+        self.dfout = dfout
+
+        return dfout
+
+
+    def _fit_tides(self,
+                  mag='mag',
+                  args={'minimum SNR':2,
+                        'latitude':-36.0,
+                        'method': 'ols',
+                        'conf_int': 'linear',
+                        'trend': True
+                  }):
+
+        # Parse latitude
+        if hasattr(self.data,'latitude'):
+            try:
+                latitude=self.data.latitude[0]
+                if not latitude:
+                    latitude=args.pop('latitude')
+            except:
+                    latitude=args.pop('latitude')
+        else:
+            latitude=args.pop('latitude')
+
+        # Center timeseries around mean
+        demeaned = self.data[mag].values - np.nanmean(self.data[mag].values)
+
+        # Parse and set options for the tidal analysis
+        # if those have not already been defined
+        for key,value in dict(method = args.get('method', 'ols'),
+                              conf_int = args.get('conf_int', 'linear'),
+                              trend = args.get('trend', False),
+                              Rayleigh_min = args.get('minimum SNR',2)).items():
+            if not key in args:
+                args[key] = value
+
+        # This is because the key gets renamed to "Rayleigh_min"
+        if 'minimum SNR' in args:
+            args.pop('minimum SNR')
+
+
+        # Fit the tides and get the constituents
+        self.constituents = solve(np.array(date2num(self.data.index)),
+                                  demeaned,
+                                  lat= latitude,
+                                  **args)
+
+        return self.constituents
+
+
+
+
+
+
+
+
+    def _cons2ts(min_time,max_time,dt,constituents,amplitudes,phases,latitude):
+
+        idx = pd.period_range(min_time, max_time,freq='%is'%dt)
+        idx=idx.to_timestamp()
+        df_new=pd.DataFrame(index=idx)
+
+        const_idx = np.asarray([ut_constants['const']['name'].tolist().index(i) for i in constituents])
+        frq = ut_constants['const']['freq'][const_idx]
+
+        coef = utilities.Bunch(name=constituents, mean=0, slope=0)
+        coef['aux'] = utilities.Bunch(reftime=729572.47916666674, lind=const_idx, frq=frq)
+        coef['aux']['opt'] = utilities.Bunch(twodim=False, nodsatlint=False, nodsatnone=False,nodiagn=True,
+                                   gwchlint=False, gwchnone=False, notrend=True, prefilt=[])
+
+        # Prepare the time data for predicting the time series. UTide needs MATLAB times.
+        times = date2num(df_new.index)
+
+
+        coef['aux']['lat'] = latitude  # float
+        coef['A'] = amplitudes
+        coef['g'] = phases
+        coef['A_ci'] = np.zeros(amplitudes.shape)
+        coef['g_ci'] = np.zeros(phases.shape)
+        df_new['tide'] = reconstruct(times, coef, verbose=True).h
+
+        return df_new
+
+    def _export_cons(self,outfile,var,cons,amp,pha):
+
+        mat=[['Constituent','Amplitude [m]','Phase [deg]']]
+        for i,con in enumerate(cons):
+            row=[con]
+            row.append('%.4f' %amp[i])
+            row.append('%.4f' %pha[i])
+            mat.append(row)
+
+        create_table(outfile,var,np.array(mat))
+
+    def _get_constituents(self, constituents=None):
+
+        # If no constituents provided use precomputed ones if available
+        if constituents is None:
+            if self.constituents is None:
+                print("No constituents available in Tide Analysis object please provide constituents")
+                raise
+            print("Using pre-computed constituents from TideAnalysis object")
+            constituents = self.constituents
+        return constituents
+
+
+
+
+
+    def _tidal_elevation_from_constituents(self,
+                                          constituents=None,
+                                          time=None,
+                                          tstart=None, tend=None, dt=None):
+
+        # If no time provided use same as analyses dataset
+        # Generate times of time-series
+        if time is None:
+            if not tstart is None or not tend is None or not dt is None:
+                if tstart is None or tend is None or dt is None:
+                    print("Please supply all (tstart, tend, dt)")
+                    raise
+                time = pd.period_range(tstart, tend, freq=dt).to_timestamp()
+            else:
+                time = self.data.index
+        else:
+            if not tstart is None or not tend is None or not dt is None:
+                print("Please supply either time or (tstart, tend, dt)")
+                raise
+
+        # Parse constituents attribute and get them if available
+        constituents = self._get_constituents(constituents=constituents)
+
+        # Reconstructe elevation timeseries from constituents
+        tide_elevation = reconstruct(np.array(date2num(time)),
+                                     constituents).h
+
+        # Store it in a pandas dataframe
+        out = pd.DataFrame({'tidal_elevation': tide_elevation},
+                            index=time)
+
+        # Make sure the index is labelled as 'time'
+        out.index.name = 'time'
+
+        return out
+
+
+    def _write_constituents_to_file(self,
+                                   filename):
+        pass
+
+
+    def _load_constituents_from_file(self,
+                                    filename):
+        pass
+
+
+    def _get_default_name(self,mag):
+        """
+        Function that returns the default name for a time series of reconstructed
+        astronomical tidal water level.
+        """
+
+        if hasattr(self.data[mag], 'short_name'):
+            return self.data[mag].short_name+'t'
+        else:
+            return mag+'t'
+
+
