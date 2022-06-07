@@ -215,10 +215,13 @@ class TideAnalysis:
         xtwl = self.data.index
         ytwl = self.data[mag].values - np.nanmean(self.data[mag].values)
 
+
         constituents=args.get('constituents',None)
         # Fit tides if constituents are not already provided
         if constituents is None:
-            constituents = self._fit_tides(mag=mag, args=args)
+            args2=copy.deepcopy(args)
+            args2.pop('tide_dt')
+            constituents = self._fit_tides(mag=mag, args=args2)
 
         # Generate times over which the astronomical tide needs reconstructing
         tide_dt=args.get('tide_dt',900)
@@ -243,7 +246,7 @@ class TideAnalysis:
         ytwl_max[:] = np.nan
         xtide_max[:] = np.nan
         ytide_max[:] = np.nan
-
+        
         # Loop over peaks in tide (tidal cycles)
         for i in range(0,len(tr)-1):
             # Extract astronomical tide and total water level data for cycle
@@ -264,11 +267,12 @@ class TideAnalysis:
 
             # Calculate skew surge and lag (in hours)
             skew[total_max_twl_idx] = max_twl - max_tide
-            skew_lag[total_max_twl_idx] =            (xtide[total_max_tide_idx] - xtwl[total_max_twl_idx]) / np.timedelta64(1, 'h')
+            skew_lag[total_max_twl_idx] = (xtide[total_max_tide_idx] - xtwl[total_max_twl_idx]) / np.timedelta64(1, 'h')
 
             ytide_max[total_max_twl_idx] = max_tide
             xtide_max[total_max_twl_idx] = xtide[total_max_tide_idx]
             ytwl_max[total_max_twl_idx] = max_twl
+
 
         # Fit all results in a dataframe and return
         dout = pd.DataFrame({'skew_surge_magnitude': skew,
@@ -428,7 +432,7 @@ class TideAnalysis:
                         'latitude':-36.0,
                         'method': 'ols',
                         'conf_int': 'linear',
-                        'trend': True
+                        'trend': False
                   }):
 
         # Parse latitude
