@@ -112,6 +112,7 @@ def do_roses(time,spd,drr,units,title,spdedg,quadran,time_blocking,fileout,show=
 
             ax.bar(drr[index],spd[index], normed=True, bins=np.array(spdedg),opening=0.8, edgecolor='white')               
             ax.set_yticks(quadran)
+            ax.set_yticklabels(quadran)
             
             if i==number_of_real_loops-1:
                 ax.set_yticklabels(quadran)

@@ -462,9 +462,9 @@ class TideAnalysis:
         if 'minimum SNR' in args:
             args.pop('minimum SNR')
 
-
+        print(args)
         # Fit the tides and get the constituents
-        self.constituents = solve(np.array(date2num(self.data.index)),
+        self.constituents = solve(np.array(self.data.index),
                                   demeaned,
                                   lat= latitude,
                                   **args)
@@ -555,7 +555,7 @@ class TideAnalysis:
         constituents = self._get_constituents(constituents=constituents)
 
         # Reconstructe elevation timeseries from constituents
-        tide_elevation = reconstruct(np.array(date2num(time)),
+        tide_elevation = reconstruct(np.array(time),
                                      constituents).h
 
         # Store it in a pandas dataframe

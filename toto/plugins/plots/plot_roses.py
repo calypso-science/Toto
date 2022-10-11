@@ -139,6 +139,7 @@ class StatPlots:
         'Y limits':[0,np.inf],
         'X limits':[0,np.inf],
         'display':{'On':True,'Off':False},
+        'minimum': 0.001,
         'folder out':os.getcwd()}):
 
 
@@ -171,6 +172,8 @@ class StatPlots:
                     `On` or `Off` to display image
                 folder out: str
                     Path to save the output
+                minimum: float
+                    Minimum value to plot
 
             Examples:
             ~~~~~~~~~
@@ -181,6 +184,8 @@ class StatPlots:
         display=True
         if args.get('display','Off')=='Off':
             display=False
+
+
         X_short_name=get_opt(self.data[X],'short_name',args.get('X name',''))
         Y_short_name=get_opt(self.data[Y],'short_name',args.get('Y name',''))
 
@@ -195,7 +200,7 @@ class StatPlots:
         else:
             filename=os.path.join(args.get('folder out',os.getcwd()),'density_diagramm.png')
 
-        do_density_diagramm(self.data[X].values,self.data[Y].values,X_short_name,Y_short_name,X_unit,Y_unit,Xlim,Ylim,filename,display)
+        do_density_diagramm(self.data[X].values,self.data[Y].values,X_short_name,Y_short_name,X_unit,Y_unit,Xlim,Ylim,filename,display,args.get('minimum',0.001))
 
 
     def QQ_plot(self,measured='measured',modelled='modelled',args={
