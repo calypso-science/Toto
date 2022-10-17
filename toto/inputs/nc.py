@@ -54,7 +54,8 @@ class NCfile():
             if 'longitude' in ds:
                 setattr(df,'longitude',ds['longitude'].values)
                 setattr(df,'latitude',ds['latitude'].values)
-
+            df.reset_index(inplace=True)
+            df.set_index('time',inplace=True,drop=False)
             self.data.append(df)
 
         else:
@@ -110,6 +111,7 @@ class NCfile():
                     self.data.append(df1)
 
 
+                #print(df1)
                 #import pdb;pdb.set_trace()
 
 
@@ -171,7 +173,6 @@ class NCfile():
 
 
     def _toDataFrame(self):
-       #print(self.data)
         return self.data
 
 if __name__ == '__main__':
