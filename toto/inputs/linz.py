@@ -43,31 +43,33 @@ def lat2msl(readme, ds,sensor=41):
     reference_mark=False
     for il,line in enumerate(readme):
         if 'WGS-84 POSITION' in line:
-            line=line.replace('Â','').replace('°','').replace("'",'')
+            line = line.replace('Â','').replace('°','').replace("'",'').replace("\"",'')
 
             if 'S' in line:
-                line=line.replace("S",'')
-                fac=-1
+                line = line.replace("S",'').split(' ')
+                fac = -1
             else:
-                fac=1
-                line=line.replace("N",'')
+                fac = 1
+                line = line.replace("N",'').split(' ')
 
-            lat_deg=float(line.split(' ')[4])
-            lat_dec=float(line.split(' ')[5])
-            lat=(lat_deg+lat_dec/60)*fac
+            lat_deg = float(line[4])
+            lat_dec = float(line[5])
+            lat_sec = float(line[6]) if len(line) >=7 else 0
+            lat = (lat_deg + lat_dec/60 + lat_sec/3600)*fac
 
-            line=readme[il+1]
-            line=line.replace('Â','').replace('°','').replace("'",'')
+            line = readme[il+1]
+            line = line.replace('Â','').replace('°','').replace("'",'').replace("\"",'')
             if 'W' in line:
-                line=line.replace("W",'')
-                fac=-1
+                line = line.replace("W",'').strip().split(' ')
+                fac = -1
             else:
-                fac=1
-                line=line.replace("E",'')
+                fac = 1
+                line = line.replace("E",'').strip().split(' ')
 
-            lon_deg=float(line.split(' ')[-2])
-            lon_dec=float(line.split(' ')[-1])
-            lon=(lon_deg+lon_dec/60)*fac
+            lon_deg = float(line[0])
+            lon_dec = float(line[1])
+            lon_sec = float(line[2]) if len(line) >=3 else 0
+            lon = (lon_deg + lon_dec/60 + lon_sec/3600)*fac
 
         if 'SUMMARY OF TIDE GAUGE ZERO' in line:
             reference_mark = line.split(' ')[6]
