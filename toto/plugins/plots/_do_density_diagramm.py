@@ -4,9 +4,10 @@ from matplotlib import pyplot as plt
 from matplotlib.figure import Figure
 from scipy.stats import kde
 
-def do_density_diagramm(X,Y,X_short_name,Y_short_name,X_unit,Y_unit,Xlim,Ylim,fileout,show=True):
+def do_density_diagramm(X,Y,X_short_name,Y_short_name,X_unit,Y_unit,Xlim,Ylim,fileout,show=True,min_value=0.001):
 
-    fig = plt.figure(figsize=(8.27, 11.69), dpi=100)
+    #fig = plt.figure(figsize=(8.27, 11.69), dpi=100)
+    fig = plt.figure(figsize=(11.69,8.27 ), dpi=100)
     ax =fig.add_subplot(111)
 
 
@@ -38,7 +39,8 @@ def do_density_diagramm(X,Y,X_short_name,Y_short_name,X_unit,Y_unit,Xlim,Ylim,fi
     xi, yi = np.mgrid[xmin:xmax:nbins*1j, ymin:ymax:nbins*1j]
 
     zi = k(np.vstack([xi.flatten(), yi.flatten()]))
-    zi[zi<0.001]=np.nan
+    zmin=min_value #np.percentile(zi,[10])
+    zi[zi<=zmin]=np.nan
 
     # Make the plot
     plt.pcolormesh(xi, yi, zi.reshape(xi.shape))
