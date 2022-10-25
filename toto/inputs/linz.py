@@ -71,11 +71,11 @@ def lat2msl(readme, ds,sensor=41):
             lon_sec = float(line[2]) if len(line) >=3 else 0
             lon = (lon_deg + lon_dec/60 + lon_sec/3600)*fac
 
-        if 'SUMMARY OF TIDE GAUGE ZERO' in line:
+        if 'GAUGE ZERO' in line:
             reference_mark = line.split(' ')[6]
 
     if not reference_mark:
-        print('Line SUMMARY OF TIDE GAUGE ZERO not found')
+        print('Line GAUGE ZERO not found')
         return ds,lon,lat
 
 
@@ -84,7 +84,7 @@ def lat2msl(readme, ds,sensor=41):
             try:
                 ref_datum = float(line.split(',')[-1].split()[0])
             except:
-                print('reference bench mark not found set to 0')
+                print('Reference bench mark not found. Will set to time average water level after correcting height drifting')
                 ref_datum=0
 
 
@@ -113,17 +113,26 @@ def lat2msl(readme, ds,sensor=41):
     while line != '\r\n' and line != '\n':
         m1 = datetime.strptime(line.split(' ')[0], '%b').month
         y1 = int(line.split(' ')[1])
-        m2 = datetime.strptime(line.split(' ')[3], '%b').month + 1
-        y2 = int(line.split(' ')[4][:-1])
-        if m2 > 12:
-            m2 = 1
-            y2 += 1
+        try:
+            m2 = datetime.strptime(line.split(' ')[3], '%b').month + 1
+            y2 = int(line.split(' ')[4][:-1])
+            if m2 > 12:
+                m2 = 1
+                y2 += 1
+            d2, H2, M2, S2 = 1, 0, 0, 0
+        except:
+            if line.split(' ')[2] == '->':
+                y2, m2, d2, H2, M2, S2 = ds.index[-1].year, ds.index[-1].month, ds.index[-1].day,\
+                    ds.index[-1].hour, ds.index[-1].minute, ds.index[-1].second
 
         key = 'ref{}'.format(count)
         ref_gauge[key] = dict()
-        ref_gauge[key]['value'] = float(line.split(' ')[5]) - ref_datum
+        try:
+            ref_gauge[key]['value'] = float(line.split(' ')[5]) - ref_datum
+        except:
+            ref_gauge[key]['value'] = 0 - ref_datum
         ref_gauge[key]['t1'] = datetime(y1, m1, 1)
-        ref_gauge[key]['t2'] = datetime(y2, m2, 1)
+        ref_gauge[key]['t2'] = datetime(y2, m2, d2, H2, M2, S2)
         count += 1
         line = readme[start + count]
 
@@ -147,6 +156,11 @@ def lat2msl(readme, ds,sensor=41):
                 ref_gauge[key]['t2'] = ref_gauge['ref{}'.format(c+2)]['t1'] - timedelta(hours=1)
 
         ds[ref_gauge[key]['t1'] : ref_gauge[key]['t2']] = ds[ref_gauge[key]['t1'] : ref_gauge[key]['t2']] - ref_gauge[key]['value']
+
+    if ref_datum == 0:
+        ref_datum = ds.mean()
+        ds = ds - ref_datum
+        print(f'Assuming reference datum equal to time average of water levels = {ref_datum:.2f}')
 
     return ds,lon,lat
 def download_linz(station,start_date,end_date=None,fileout=None,sensors=[40,41]):
