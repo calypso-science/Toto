@@ -85,8 +85,16 @@ def lat2msl(readme, ds,sensor=41):
             try:
                 ref_datum = float(line.split(',')[-1].split()[0])
             except:
-                print('Reference bench mark not found. Will set to time average water level after correcting height drifting')
-                ref_datum=0
+                # print('Reference bench mark not found. Will set to time average water level after correcting height drifting')
+                # ref_datum = 0
+                ref_datum = 3.4878
+                print(f'Hardcoding reference bench mark = {ref_datum}')
+                # req = requests.get("https://www.geodesy.linz.govt.nz/gdb/index.cgi?code=DD1N")
+                # text = req.text
+                # for i, line in enumerate(text.split('\n')):
+                #     if 'Vertical Datum' in line:
+                #         print(f'{i}   {line}')
+
 
 
     start=False
@@ -109,7 +117,7 @@ def lat2msl(readme, ds,sensor=41):
 
     line = 'start'
     ref_gauge = dict()
-    count = 1
+    count, key_idx = 1, 1
     line = readme[start + count]
     while line != '\r\n' and line != '\n':
         m1 = datetime.strptime(line.split(' ')[0], '%b').month
@@ -126,14 +134,17 @@ def lat2msl(readme, ds,sensor=41):
                 y2, m2, d2, H2, M2, S2 = ds.index[-1].year, ds.index[-1].month, ds.index[-1].day,\
                     ds.index[-1].hour, ds.index[-1].minute, ds.index[-1].second
 
-        key = 'ref{}'.format(count)
-        ref_gauge[key] = dict()
+        key = 'ref{}'.format(key_idx)
         try:
-            ref_gauge[key]['value'] = float(line.split(' ')[5]) - ref_datum
+            ref = float(line.split(' ')[5]) - ref_datum
+            ref_gauge[key] = dict()
+            ref_gauge[key]['value'] = ref
+            ref_gauge[key]['t1'] = datetime(y1, m1, 1)
+            ref_gauge[key]['t2'] = datetime(y2, m2, d2, H2, M2, S2)
+            key_idx += 1
         except:
-            ref_gauge[key]['value'] = 0 - ref_datum
-        ref_gauge[key]['t1'] = datetime(y1, m1, 1)
-        ref_gauge[key]['t2'] = datetime(y2, m2, d2, H2, M2, S2)
+            print(f"Skipping {line}")
+
         count += 1
         line = readme[start + count]
 
