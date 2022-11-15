@@ -37,6 +37,7 @@ def url_response(url):
 
 def lat2msl(readme, ds,sensor=41):
     # Converts data to mean sea level based on information contained in the station's readme
+    print(f'Reading data from sensor {sensor}')
     f = open(readme,
              encoding='latin-1')
     readme = f.readlines()
@@ -282,11 +283,11 @@ class LINZfile():
             setattr(df['elev41'],'long_name','water_level')
 
         if 'longitude' in ds:
-            setattr(df,'longitude',ds['longitude'].values)
-            setattr(df,'latitude',ds['latitude'].values)
+            df = df.assign(longitude=ds['longitude'].values[0])
+            df = df.assign(latitude=ds['latitude'].values[0])
         else:
-            setattr(df,'longitude',lon)
-            setattr(df,'latitude',lat)           
+            df = df.assign(longitude=lon)
+            df = df.assign(latitude=lat)
         self.data.append(df)
 
 
