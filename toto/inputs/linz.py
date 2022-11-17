@@ -169,10 +169,10 @@ def lat2msl(readme, ds,sensor=41):
 
     return ds,lon,lat
 
-def get_latlon(readme, ds, sensor=41):
+def get_latlon(readme):
 
     # Get data lat/lon from station's readme file
-    print(f'Reading lat, lon data from sensor {sensor}')
+
     f = open(readme,
              encoding='latin-1')
     readme = f.readlines()
@@ -399,8 +399,8 @@ class LINZfile():
 
         ## get lat/lon info and sea level data from each sensor
         ## sea level will be referenced around 0 using either given datum_height or derived mean sea level
+        lon, lat = get_latlon(readmefile)
         if 'elev41' in df:
-            lon, lat = get_latlon(readmefile, df['elev41'], sensor=41)
             if self.datum_height:
                 print(f"Using datum height of {self.datum_height:.4f} m")
                 df['elev41'] = correct_vertical_drifting(readmefile, self.datum_height, df['elev41'], sensor=41)
@@ -408,7 +408,6 @@ class LINZfile():
                 print(f"Assuming datum height equal to time average of water levels = {df['elev41'].mean():.4f} m. No sensor offset drifting corrections applied.")
                 df['elev41'] = df['elev41'] - df['elev41'].mean()
         if 'elev40' in df:
-            lon, lat = get_latlon(readmefile, df['elev40'], sensor=40)
             if self.datum_height:
                 print(f"Using datum height of {self.datum_height:.4f} m")
                 df['elev40'] = correct_vertical_drifting(readmefile, self.datum_height, df['elev40'], sensor=40)
