@@ -233,7 +233,8 @@ def correct_vertical_drifting(readme, ref_datum, ds, sensor=41):
             break
 
     if not start:
-        print('No information for sensor # %i' % sensor)
+        print('No information for sensor # %i. No sensor offset drifting corrections applied.' % sensor)
+        ds = ds - ref_datum
         return ds
 
     ## calculate (ref_gauge = offset - ref_datum) for each period
@@ -400,20 +401,14 @@ class LINZfile():
         ## get lat/lon info and sea level data from each sensor
         ## sea level will be referenced around 0 using either given datum_height or derived mean sea level
         lon, lat = get_latlon(readmefile)
-        if 'elev41' in df:
+        for col in df.columns: ## loop through 'elev40', 'elev41' columns
+            print(f'Processing water levels for sensor {int(col[-2:])}')
             if self.datum_height:
                 print(f"Using datum height of {self.datum_height:.4f} m")
-                df['elev41'] = correct_vertical_drifting(readmefile, self.datum_height, df['elev41'], sensor=41)
+                df[col] = correct_vertical_drifting(readmefile, self.datum_height, df[col], sensor=int(col[-2:]))
             else:
-                print(f"Assuming datum height equal to time average of water levels = {df['elev41'].mean():.4f} m. No sensor offset drifting corrections applied.")
-                df['elev41'] = df['elev41'] - df['elev41'].mean()
-        if 'elev40' in df:
-            if self.datum_height:
-                print(f"Using datum height of {self.datum_height:.4f} m")
-                df['elev40'] = correct_vertical_drifting(readmefile, self.datum_height, df['elev40'], sensor=40)
-            else:
-                print(f"Assuming datum height equal to time average of water levels = {df['elev40'].mean():.4f} m. No sensor offset drifting corrections applied.")
-                df['elev40'] = df['elev40'] - df['elev40'].mean()
+                print(f"Assuming datum height equal to time average of water levels = {df[col].mean():.4f} m. No sensor offset drifting corrections applied.")
+                df[col] = df[col] - df[col].mean()
 
         df.reset_index(inplace=True)
         df.set_index('time',inplace=True,drop=False)
