@@ -1,21 +1,24 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>toto.core package &#8212; Toto 1.2 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -38,22 +41,80 @@
           <div class="body" role="main">
             
   <a class="reference internal image-reference" href="../_images/calypso.png"><img alt="../_images/calypso.png" class="align-right" src="../_images/calypso.png" style="width: 150px;" /></a>
-<div class="section" id="module-toto.core">
-<span id="toto-core-package"></span><h1>toto.core package<a class="headerlink" href="#module-toto.core" title="Permalink to this headline">¶</a></h1>
+<section id="module-toto.core">
+<span id="toto-core-package"></span><h1>toto.core package<a class="headerlink" href="#module-toto.core" title="Permalink to this heading">¶</a></h1>
 <p>Access functions to process time series from dataframe.</p>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="toto.core.attributes.html">toto.core.attributes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="toto.core.cyclone_mask.html">toto.core.cyclone_mask</a></li>
-<li class="toctree-l1"><a class="reference internal" href="toto.core.make_table.html">toto.core.make_table</a></li>
-<li class="toctree-l1"><a class="reference internal" href="toto.core.metadataframe.html">toto.core.metadataframe</a></li>
-<li class="toctree-l1"><a class="reference internal" href="toto.core.toolbox.html">toto.core.toolbox</a></li>
-<li class="toctree-l1"><a class="reference internal" href="toto.core.totoframe.html">toto.core.totoframe</a></li>
-<li class="toctree-l1"><a class="reference internal" href="toto.core.waveletFunctions.html">toto.core.waveletFunctions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="toto.core.wavestats.html">toto.core.wavestats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="toto.core.attributes.html">toto.core.attributes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="toto.core.attributes.html#toto.core.attributes.AttrDict"><code class="docutils literal notranslate"><span class="pre">AttrDict</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="toto.core.attributes.html#toto.core.attributes.set_metadata_attributes"><code class="docutils literal notranslate"><span class="pre">set_metadata_attributes()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="toto.core.cyclone_mask.html">toto.core.cyclone_mask</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="toto.core.cyclone_mask.html#toto.core.cyclone_mask.Cyclone"><code class="docutils literal notranslate"><span class="pre">Cyclone</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="toto.core.cyclone_mask.html#toto.core.cyclone_mask.binaries_directory"><code class="docutils literal notranslate"><span class="pre">binaries_directory()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="toto.core.cyclone_mask.html#toto.core.cyclone_mask.sphere_dist"><code class="docutils literal notranslate"><span class="pre">sphere_dist()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="toto.core.make_table.html">toto.core.make_table</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="toto.core.make_table.html#toto.core.make_table.create_table"><code class="docutils literal notranslate"><span class="pre">create_table()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="toto.core.make_table.html#toto.core.make_table.nice_rounding"><code class="docutils literal notranslate"><span class="pre">nice_rounding()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="toto.core.metadataframe.html">toto.core.metadataframe</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="toto.core.metadataframe.html#toto.core.metadataframe.MetadataFrame"><code class="docutils literal notranslate"><span class="pre">MetadataFrame</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="toto.core.toolbox.html">toto.core.toolbox</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="toto.core.toolbox.html#toto.core.toolbox.PolyArea"><code class="docutils literal notranslate"><span class="pre">PolyArea()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="toto.core.toolbox.html#toto.core.toolbox.cart2pol"><code class="docutils literal notranslate"><span class="pre">cart2pol()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="toto.core.toolbox.html#toto.core.toolbox.cart2sph"><code class="docutils literal notranslate"><span class="pre">cart2sph()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="toto.core.toolbox.html#toto.core.toolbox.degToCompass"><code class="docutils literal notranslate"><span class="pre">degToCompass()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="toto.core.toolbox.html#toto.core.toolbox.dir_interval"><code class="docutils literal notranslate"><span class="pre">dir_interval()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="toto.core.toolbox.html#toto.core.toolbox.display_message"><code class="docutils literal notranslate"><span class="pre">display_message()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="toto.core.toolbox.html#toto.core.toolbox.do_occurence"><code class="docutils literal notranslate"><span class="pre">do_occurence()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="toto.core.toolbox.html#toto.core.toolbox.dyadlength"><code class="docutils literal notranslate"><span class="pre">dyadlength()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="toto.core.toolbox.html#toto.core.toolbox.get_increment"><code class="docutils literal notranslate"><span class="pre">get_increment()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="toto.core.toolbox.html#toto.core.toolbox.get_number_of_loops"><code class="docutils literal notranslate"><span class="pre">get_number_of_loops()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="toto.core.toolbox.html#toto.core.toolbox.get_opt"><code class="docutils literal notranslate"><span class="pre">get_opt()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="toto.core.toolbox.html#toto.core.toolbox.get_seasons"><code class="docutils literal notranslate"><span class="pre">get_seasons()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="toto.core.toolbox.html#toto.core.toolbox.lanc"><code class="docutils literal notranslate"><span class="pre">lanc()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="toto.core.toolbox.html#toto.core.toolbox.peaks"><code class="docutils literal notranslate"><span class="pre">peaks()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="toto.core.toolbox.html#toto.core.toolbox.qkhfs"><code class="docutils literal notranslate"><span class="pre">qkhfs()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="toto.core.toolbox.html#toto.core.toolbox.spdir2uv"><code class="docutils literal notranslate"><span class="pre">spdir2uv()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="toto.core.toolbox.html#toto.core.toolbox.sph2cart"><code class="docutils literal notranslate"><span class="pre">sph2cart()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="toto.core.toolbox.html#toto.core.toolbox.uv2spdir"><code class="docutils literal notranslate"><span class="pre">uv2spdir()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="toto.core.toolbox.html#toto.core.toolbox.wavenuma"><code class="docutils literal notranslate"><span class="pre">wavenuma()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="toto.core.totoframe.html">toto.core.totoframe</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="toto.core.totoframe.html#toto.core.totoframe.TotoFrame"><code class="docutils literal notranslate"><span class="pre">TotoFrame</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="toto.core.totoframe.html#toto.core.totoframe.add_metadata_to_df"><code class="docutils literal notranslate"><span class="pre">add_metadata_to_df()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="toto.core.totoframe.html#toto.core.totoframe.filled_gap"><code class="docutils literal notranslate"><span class="pre">filled_gap()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="toto.core.totoframe.html#toto.core.totoframe.get_freq"><code class="docutils literal notranslate"><span class="pre">get_freq()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="toto.core.totoframe.html#toto.core.totoframe.sort_dataset"><code class="docutils literal notranslate"><span class="pre">sort_dataset()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="toto.core.waveletFunctions.html">toto.core.waveletFunctions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="toto.core.waveletFunctions.html#toto.core.waveletFunctions.chisquare_inv"><code class="docutils literal notranslate"><span class="pre">chisquare_inv()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="toto.core.waveletFunctions.html#toto.core.waveletFunctions.chisquare_solve"><code class="docutils literal notranslate"><span class="pre">chisquare_solve()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="toto.core.waveletFunctions.html#toto.core.waveletFunctions.wave_bases"><code class="docutils literal notranslate"><span class="pre">wave_bases()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="toto.core.waveletFunctions.html#toto.core.waveletFunctions.wave_signif"><code class="docutils literal notranslate"><span class="pre">wave_signif()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="toto.core.waveletFunctions.html#toto.core.waveletFunctions.wavelet"><code class="docutils literal notranslate"><span class="pre">wavelet()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="toto.core.wavestats.html">toto.core.wavestats</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="toto.core.wavestats.html#toto.core.wavestats.calc_slp"><code class="docutils literal notranslate"><span class="pre">calc_slp()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="toto.core.wavestats.html#toto.core.wavestats.calc_wavelength"><code class="docutils literal notranslate"><span class="pre">calc_wavelength()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="toto.core.wavestats.html#toto.core.wavestats.get_stats"><code class="docutils literal notranslate"><span class="pre">get_stats()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="toto.core.wavestats.html#toto.core.wavestats.specstats"><code class="docutils literal notranslate"><span class="pre">specstats()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="toto.core.wavestats.html#toto.core.wavestats.split"><code class="docutils literal notranslate"><span class="pre">split()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </div>
-</div>
+</section>
 
 
           </div>
@@ -115,7 +176,7 @@
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -132,7 +193,7 @@
       &copy;2021, Calypso Science.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

@@ -1,21 +1,24 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>toto.core.cyclone_mask &#8212; Toto 1.2 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -38,11 +41,11 @@
           <div class="body" role="main">
             
   <a class="reference internal image-reference" href="../_images/calypso.png"><img alt="../_images/calypso.png" class="align-right" src="../_images/calypso.png" style="width: 150px;" /></a>
-<div class="section" id="module-toto.core.cyclone_mask">
-<span id="toto-core-cyclone-mask"></span><h1>toto.core.cyclone_mask<a class="headerlink" href="#module-toto.core.cyclone_mask" title="Permalink to this headline">¶</a></h1>
+<section id="module-toto.core.cyclone_mask">
+<span id="toto-core-cyclone-mask"></span><h1>toto.core.cyclone_mask<a class="headerlink" href="#module-toto.core.cyclone_mask" title="Permalink to this heading">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="toto.core.cyclone_mask.Cyclone">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">toto.core.cyclone_mask.</span></span><span class="sig-name descname"><span class="pre">Cyclone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_directory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'/tmp/'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'https://www.ncei.noaa.gov/data/international-best-track-archive-for-climate-stewardship-ibtracs/v04r00/access/netcdf/IBTrACS.ALL.v04r00.nc'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cyclone_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'/tmp/IBTrACS.ALL.v04r00.nc'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/core/cyclone_mask.html#Cyclone"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.core.cyclone_mask.Cyclone" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">toto.core.cyclone_mask.</span></span><span class="sig-name descname"><span class="pre">Cyclone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_directory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'/tmp/'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'https://www.ncei.noaa.gov/data/international-best-track-archive-for-climate-stewardship-ibtracs/v04r00/access/netcdf/IBTrACS.ALL.v04r00.nc'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cyclone_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'/tmp/IBTrACS.ALL.v04r00.nc'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/core/cyclone_mask.html#Cyclone"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.core.cyclone_mask.Cyclone" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="toto.core.cyclone_mask.Cyclone.add_categories">
@@ -87,7 +90,7 @@
 <span class="sig-prename descclassname"><span class="pre">toto.core.cyclone_mask.</span></span><span class="sig-name descname"><span class="pre">sphere_dist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">from_lonlat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_lonlats</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius_of_sphere</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6378.1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/core/cyclone_mask.html#sphere_dist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.core.cyclone_mask.sphere_dist" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-</div>
+</section>
 
 
           </div>
@@ -151,7 +154,7 @@
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -168,7 +171,7 @@
       &copy;2021, Calypso Science.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

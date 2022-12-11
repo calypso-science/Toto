@@ -1,21 +1,24 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>toto.inputs.nc &#8212; Toto 1.2 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -38,36 +41,37 @@
           <div class="body" role="main">
             
   <a class="reference internal image-reference" href="../_images/calypso.png"><img alt="../_images/calypso.png" class="align-right" src="../_images/calypso.png" style="width: 150px;" /></a>
-<div class="section" id="module-toto.inputs.nc">
-<span id="toto-inputs-nc"></span><h1>toto.inputs.nc<a class="headerlink" href="#module-toto.inputs.nc" title="Permalink to this headline">¶</a></h1>
+<section id="module-toto.inputs.nc">
+<span id="toto-inputs-nc"></span><h1>toto.inputs.nc<a class="headerlink" href="#module-toto.inputs.nc" title="Permalink to this heading">¶</a></h1>
 <p>Read generic netcdf file
-This import function works well is NetCDF files created by <cite>XARRAY</cite>. This class returns a Panda Dataframe with some extra attributes such as Latitude,Longitude,Units.</p>
-<div class="section" id="parameters">
-<h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h2>
+This import function works well is NetCDF or Zarr files created by <cite>XARRAY</cite>.
+This class returns a Panda Dataframe with some extra attributes such as Latitude,Longitude,Units.</p>
+<section id="parameters">
+<h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">¶</a></h2>
 <dl class="simple">
 <dt>filename<span class="classifier">(files,) str or list_like</span></dt><dd><p>A list of filename to process.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="examples">
-<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">¶</a></h2>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">toto.inputs.nc</span> <span class="kn">import</span> <span class="n">NCfile</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">nc</span><span class="o">=</span><span class="n">NCfile</span><span class="p">(</span><span class="s1">&#39;filename.nc&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">_toDataFrame</span><span class="p">()</span>
 </pre></div>
 </div>
+</section>
 <dl class="py class">
 <dt class="sig sig-object py" id="toto.inputs.nc.NCfile">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">toto.inputs.nc.</span></span><span class="sig-name descname"><span class="pre">NCfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filenames</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/inputs/nc.html#NCfile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.inputs.nc.NCfile" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">toto.inputs.nc.</span></span><span class="sig-name descname"><span class="pre">NCfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filenames</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/inputs/nc.html#NCfile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.inputs.nc.NCfile" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="toto.inputs.nc.NCfile.defaultExtensions">
-<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">defaultExtensions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/inputs/nc.html#NCfile.defaultExtensions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.inputs.nc.NCfile.defaultExtensions" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">defaultExtensions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/inputs/nc.html#NCfile.defaultExtensions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.inputs.nc.NCfile.defaultExtensions" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
-</div>
-</div>
+</section>
 
 
           </div>
@@ -131,7 +135,7 @@ This import function works well is NetCDF files created by <cite>XARRAY</cite>. 
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -148,7 +152,7 @@ This import function works well is NetCDF files created by <cite>XARRAY</cite>. 
       &copy;2021, Calypso Science.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

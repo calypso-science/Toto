@@ -1,21 +1,24 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>toto.filters.spike_removal &#8212; Toto 1.2 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -38,11 +41,11 @@
           <div class="body" role="main">
             
   <a class="reference internal image-reference" href="../_images/calypso.png"><img alt="../_images/calypso.png" class="align-right" src="../_images/calypso.png" style="width: 150px;" /></a>
-<div class="section" id="module-toto.filters.spike_removal">
-<span id="toto-filters-spike-removal"></span><h1>toto.filters.spike_removal<a class="headerlink" href="#module-toto.filters.spike_removal" title="Permalink to this headline">¶</a></h1>
+<section id="module-toto.filters.spike_removal">
+<span id="toto-filters-spike-removal"></span><h1>toto.filters.spike_removal<a class="headerlink" href="#module-toto.filters.spike_removal" title="Permalink to this heading">¶</a></h1>
 <p>Find Peaks using the scipy function and replace them with NaN.</p>
-<div class="section" id="parameters">
-<h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h2>
+<section id="parameters">
+<h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">¶</a></h2>
 <dl class="simple">
 <dt>input_array<span class="classifier">Panda Obj</span></dt><dd><p>The Panda dataframe.</p>
 </dd>
@@ -85,17 +88,17 @@ The first element is always interpreted as the minimal and the second,
 if supplied as the maximal required plateau size.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="notes">
-<h2>Notes<a class="headerlink" href="#notes" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="notes">
+<h2>Notes<a class="headerlink" href="#notes" title="Permalink to this heading">¶</a></h2>
 <p>see <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.find_peaks.html">https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.find_peaks.html</a></p>
+</section>
 <dl class="py function">
 <dt class="sig sig-object py" id="toto.filters.spike_removal.spike_removal">
 <span class="sig-prename descclassname"><span class="pre">toto.filters.spike_removal.</span></span><span class="sig-name descname"><span class="pre">spike_removal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'distance':</span> <span class="pre">0.0,</span> <span class="pre">'height':</span> <span class="pre">0.0,</span> <span class="pre">'plateau_size':</span> <span class="pre">0,</span> <span class="pre">'prominence':</span> <span class="pre">0.0,</span> <span class="pre">'rel_height':</span> <span class="pre">0.0,</span> <span class="pre">'threshold':</span> <span class="pre">0.0,</span> <span class="pre">'width':</span> <span class="pre">0.0,</span> <span class="pre">'wlen':</span> <span class="pre">0.0}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/toto/filters/spike_removal.html#spike_removal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#toto.filters.spike_removal.spike_removal" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-</div>
-</div>
+</section>
 
 
           </div>
@@ -159,7 +162,7 @@ if supplied as the maximal required plateau size.</p>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -176,7 +179,7 @@ if supplied as the maximal required plateau size.</p>
       &copy;2021, Calypso Science.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
