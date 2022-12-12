@@ -1,7 +1,7 @@
 matplotlib
 pandas
 future
-scipy
+scipy>=1.7.3
 xarray
 git+https://github.com/python-windrose/windrose
 attrdict
