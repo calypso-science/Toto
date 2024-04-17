@@ -1,9 +1,9 @@
-numpy
+numpy<=1.22.4
 matplotlib
 pandas
 future
-scipy
-xarray
+scipy<=1.8
+xarray<=v2022.3.0
 git+https://github.com/python-windrose/windrose
 openpyxl
 pyyaml
