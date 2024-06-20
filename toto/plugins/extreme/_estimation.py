@@ -11,7 +11,10 @@ import warnings
 import scipy.stats as ss
 from scipy.stats._distn_infrastructure import rv_frozen as _rv_frozen
 from scipy import special
-from scipy.linalg import pinv2
+try : 
+    from scipy.linalg import pinv2
+except:
+    from scipy.linalg import pinv
 from scipy import optimize
 from scipy.special import expm1  # pylint: disable=no-name-in-module
 import numpy as np
